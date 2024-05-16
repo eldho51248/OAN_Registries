@@ -10,8 +10,12 @@
     "development_status": "Alpha",
     "depends": [
         "g2p_social_registry",
+        "g2p_farmer_profile",
     ],
-    "data": [],
+    "data": [
+        'security/ir.model.access.csv',
+        'views/land_information.xml',
+    ],
     "assets": {"web.assets_backend": []},
     "demo": [],
     "images": [],
