@@ -13,6 +13,7 @@
     ],
     "data": [
         'security/ir.model.access.csv',
+        "views/social_registry_menu.xml",
         "views/livestock.xml",
         "views/farming_type.xml",
         "views/res_partner.xml",
