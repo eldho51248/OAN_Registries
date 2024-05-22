@@ -1,6 +1,7 @@
 from odoo import api, fields, models, _
 
 
+
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
@@ -15,6 +16,7 @@ class ResPartner(models.Model):
     livestock_information_ids = fields.One2many('live.stock.information',
                                    'partner_id',
                                    string="Live Stock Information")
+
 
 class LandInformation(models.Model):
     _name = "land.information"

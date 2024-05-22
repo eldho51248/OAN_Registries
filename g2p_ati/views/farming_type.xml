@@ -1,0 +1,45 @@
+<odoo>
+
+  <record id="view_farming_type_tree" model="ir.ui.view">
+        <field name="name">view_farming_type_tree</field>
+        <field name="model">g2p.farming.type</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <tree editable="top">
+                <field name="name" required="1" />
+            </tree>
+        </field>
+    </record>
+
+
+
+
+<record id="g2p_farming_type_view_tree_action" model="ir.actions.act_window">
+    <field name="name">Farming Type</field>
+    <field name="res_model">g2p.farming.type</field>
+    <field name="view_mode">tree</field>
+     <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add an Farming Type!
+            </p><p>
+                Click the create button to enter a new Farm type.
+            </p>
+        </field>
+</record>
+
+
+
+
+
+<menuitem
+    id="g2p_farming_type_menu"
+    action="g2p_farming_type_view_tree_action"
+    name="Farming Types"
+    sequence="500"
+        groups="g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
+
+    parent ="g2p_registry_base.g2p_configuration_menu_root"/>
+
+
+
+    </odoo>

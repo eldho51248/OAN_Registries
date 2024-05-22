@@ -1,7 +1,7 @@
-from odoo import api, fields, models, _
+from odoo import api, fields, models
 
 
-class LIveStocInformation(models.Model):
+class LIveStockInformation(models.Model):
     _name = "live.stock.information"
 
     partner_id = fields.Many2one('res.partner', string="partner")
@@ -22,7 +22,7 @@ class LIveStocInformation(models.Model):
 
 
 
-class LIveStocIllnessType(models.Model):
+class LIveStockIllnessType(models.Model):
     _name = "livestock.illness.type"
 
     name = fields.Char(string="Name")
