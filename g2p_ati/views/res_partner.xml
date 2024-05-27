@@ -1,0 +1,131 @@
+<odoo>
+	<record id="product_template_only_form_view_inherit" model="ir.ui.view">
+		<field name="name">view_individuals_form.inherited</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="g2p_registry_individual.view_individuals_form" />
+		<field name="arch" type="xml">
+
+
+
+		<xpath expr="//field[@name='family_name']" position="attributes">
+			<attribute name="placeholder">Father's Name...</attribute>
+		</xpath>
+
+
+
+		
+			<xpath expr="//field[@name='given_name']" position="after">
+				<h2>
+					<field name="grand_father_name" class="oe_edit_only" default_focus="1" required="1" placeholder="Grand Father's Name..." />
+				</h2>
+			</xpath>
+
+
+
+			<xpath expr="//sheet/notebook[@name='individual_detail']/page[@name='basic_info']" position="inside">
+			
+	
+
+			<group string="Social Economic Data">
+
+
+				<field name="hh_size" />
+			<field name="hh_income" />
+			<field name="ed_level" />
+
+
+			</group>
+			
+			
+			</xpath>
+
+
+
+
+			<xpath expr="//sheet/notebook" position="inside">
+				<page string="Farmer Details" sequence="2">
+
+
+
+
+			<group>
+					<group name="name" string="Membership">
+					
+						<field name="is_member_of_primary_cooperative" />
+						<field name="is_member_of_union" />
+						<field name="is_member_in_farmer_cluster" />
+					</group>
+					
+					
+					<group name="name" string="Access To Resources">
+						<field name="access_to_water" />
+						<field name="access_to_machinery" />
+					</group>
+
+
+			</group>
+
+
+			<group>
+					
+					<group name="name" string="Agricultural Input">
+						<field name="amount_fertilizer_utilized" />
+						<field name="amount_pesticide_utilized" />
+						<field name="amount_insecticide_utilized" />
+						<field name="amount_improved_seed_utilized" />
+					</group>
+
+					<group name="name" string="Financial Services">
+						<field name="fund_received_type" />
+						<field name="loans" />
+						<field name="insurance" />
+						<field name="savings" />
+					</group>
+
+
+					
+ 
+			</group>
+
+
+			<group>
+			<field name="farming_type"></field>
+			</group>
+
+
+
+					
+
+
+					
+
+
+
+
+				</page>
+			</xpath>
+	
+		</field>
+	</record>
+
+
+
+
+
+  <record id="view_individuals_action_inherit" model="ir.actions.act_window.view">
+            <field name="sequence" eval="10"/>
+            <field name="view_mode">graph</field>
+            <field name="act_window_id" ref="g2p_registry_individual.action_individuals_list"/>
+        </record>
+
+
+
+
+
+
+
+
+	
+
+
+</odoo>
