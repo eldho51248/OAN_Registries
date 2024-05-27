@@ -1,8 +1,8 @@
 from odoo import fields, models
 
 
-class LandInformation(models.Model):
-    _name = "land.information"
+class G2PLandInformation(models.Model):
+    _name = "g2p.land.information"
 
     location = fields.Char()
     geolocation = fields.Char()

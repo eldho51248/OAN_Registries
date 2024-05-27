@@ -35,7 +35,6 @@ class G2PFarmer(models.Model):
 
     # Financial Services
     fund_received_type = fields.Selection(selection=[("cash", "Cash"), ("inkind", "In Kind")])
-
     loans = fields.Boolean()
     insurance = fields.Boolean()
     savings = fields.Boolean()
@@ -45,9 +44,8 @@ class G2PFarmer(models.Model):
     access_to_machinery = fields.Boolean()
 
     # Land Informations
-
-    land_information_ids = fields.One2many("land.information", "partner_id", string="Land Information")
-    crop_information_ids = fields.One2many("crop.information", "partner_id", string="Crop Information")
+    land_information_ids = fields.One2many("g2p.land.information", "partner_id", string="Land Information")
+    crop_information_ids = fields.One2many("g2p.crop.information", "partner_id", string="Crop Information")
     livestock_information_ids = fields.One2many(
-        "live.stock.information", "partner_id", string="Live Stock Information"
+        "g2p.live.stock.information", "partner_id", string="Live Stock Information"
     )

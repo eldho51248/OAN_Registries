@@ -42,14 +42,14 @@
 
     <!-- <record model="ir.actions.act_window" id="land_information_action">
         <field name="name">Land Information</field>
-        <field name="res_model">land.information</field>
+        <field name="res_model">g2p.land.information</field>
         <field name="view_mode">tree,form</field>
     </record>
 
 
     <record id="land_information_tree" model="ir.ui.view">
-        <field name="name">land.information.tree</field>
-        <field name="model">land.information</field>
+        <field name="name">g2p.land.information.tree</field>
+        <field name="model">g2p.land.information</field>
         <field name="arch" type="xml">
             <tree string="Land Information">
                 <field name="total_land_area"/>

@@ -1,8 +1,8 @@
 from odoo import fields, models
 
 
-class LIveStockInformation(models.Model):
-    _name = "live.stock.information"
+class G2PLiveStockInformation(models.Model):
+    _name = "g2p.live.stock.information"
 
     partner_id = fields.Many2one("res.partner", string="partner")
 
@@ -13,12 +13,11 @@ class LIveStockInformation(models.Model):
     livestock_bred = fields.Many2one("g2p.livestock.breed", string="Breed")
 
     number_of_livestock = fields.Char(string="Number")
-
-    illness_type = fields.Many2many("livestock.illness.type")
+    illness_type = fields.Many2many("g2p.livestock.illness.type")
     illness_images = fields.Many2many("ir.attachment")
 
 
-class LIveStockIllnessType(models.Model):
-    _name = "livestock.illness.type"
+class G2PLiveStockIllnessType(models.Model):
+    _name = "g2p.livestock.illness.type"
 
     name = fields.Char()
