@@ -1,7 +1,7 @@
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class FarmingType(models.Model):
-    _name = 'g2p.farming.type' 
+    _name = "g2p.farming.type"
 
-    name = fields.Char(string='Name')
+    name = fields.Char()

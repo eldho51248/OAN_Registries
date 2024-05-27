@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
 <odoo>
     <record id="view_individuals_form_land_information_inherited" model="ir.ui.view">
         <field name="name">view_individuals_form_land_information</field>
@@ -20,19 +19,19 @@
                         <tree editable="top">
                             <field name="crop" />
                             <field name="variety" />
-                            <field name="illness_type" widget="many2many_tags"/>
-                            <field name="illness_images" widget="many2many_binary"/>
+                            <field name="illness_type" widget="many2many_tags" />
+                            <field name="illness_images" widget="many2many_binary" />
                         </tree>
                     </field>
                 </page>
                 <page string="Livestock Information" name="livestocks">
                     <field name="livestock_information_ids">
                         <tree editable="top">
-                            <field name="livestock_type"/>
-                            <field name="livestock_bred"/>
-                            <field name="number_of_livestock"/>
-                            <field name="illness_type" widget="many2many_tags"/>
-                            <field name="illness_images" widget="many2many_binary"/>
+                            <field name="livestock_type" />
+                            <field name="livestock_bred" />
+                            <field name="number_of_livestock" />
+                            <field name="illness_type" widget="many2many_tags" />
+                            <field name="illness_images" widget="many2many_binary" />
                         </tree>
                     </field>
                 </page>
@@ -41,14 +40,14 @@
     </record>
 
 
-       <!-- <record model="ir.actions.act_window" id="land_information_action">
+    <!-- <record model="ir.actions.act_window" id="land_information_action">
         <field name="name">Land Information</field>
         <field name="res_model">land.information</field>
         <field name="view_mode">tree,form</field>
     </record>
 
 
-       <record id="land_information_tree" model="ir.ui.view">
+    <record id="land_information_tree" model="ir.ui.view">
         <field name="name">land.information.tree</field>
         <field name="model">land.information</field>
         <field name="arch" type="xml">

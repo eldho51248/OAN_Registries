@@ -1,94 +1,47 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-
-
-  <record id="view_crop_category_tree" model="ir.ui.view">
+    <record id="view_crop_category_tree" model="ir.ui.view">
         <field name="name">view_crop_category_tree</field>
         <field name="model">crop.category</field>
         <field name="priority">1</field>
         <field name="arch" type="xml">
             <tree editable="top">
-            	<field name="name"/>
-            </tree>
-        </field>
-    </record>
-
-
-
-  <record id="view_crop_variety_tree" model="ir.ui.view">
-        <field name="name">view_crop_variety_tree</field>
-        <field name="model">crop.variety</field>
-        <field name="priority">1</field>
-        <field name="arch" type="xml">
-            <tree>
             	<field name="name" />
-
             </tree>
         </field>
     </record>
-
-
 
   <record id="view_crop_tree" model="ir.ui.view">
         <field name="name">view_crop_tree</field>
         <field name="model">g2p.crop</field>
         <field name="priority">1</field>
         <field name="arch" type="xml">
-            <tree >
-				<field name="name" />		
+            <tree>
+				<field name="name" />
             	<field name="category" />
             </tree>
         </field>
     </record>
-
-
-<record id="view_crop_variety_form" model="ir.ui.view">
-		<field name="name">view_crop_variety_form</field>
-		<field name="model">crop.variety</field>
-		<field name="arch" type="xml">
-			<form>
-            <sheet>
-
-            <group>
-		   	<field name="name" />
-
-                </group>
-
-                </sheet>
-
-		
-
-			</form>
-		</field>
-	</record>
-
-
 
 	<record id="view_crop_form" model="ir.ui.view">
 		<field name="name">view_crop_form</field>
 		<field name="model">g2p.crop</field>
 		<field name="arch" type="xml">
 			<form>
-            <sheet>
-
-            <group>
-		   	<field name="category" />
-				<field name="name" />
-                </group>
-
+                <sheet>
+                    <group>
+		   	            <field name="category" />
+				        <field name="name" />
+                    </group>
                 </sheet>
-
 				<div class="oe_chatter">
 					<field name="message_follower_ids" widget="mail_followers" />
 					<field name="activity_ids" widget="mail_activity" />
 					<field name="message_ids" widget="mail_thread" />
 				</div>
-
 			</form>
 		</field>
 	</record>
-
-
 
 	<record id="g2p_crop_category_tree_action" model="ir.actions.act_window">
 		<field name="name">Crop category</field>
@@ -109,22 +62,33 @@
 		<field name="view_mode">tree,form,graph</field>
 	</record>
 
-	<menuitem id="g2p_crop_variety_menu" action="g2p_crop_variety_tree_action" name="Crop Varieties" sequence="630" 
+	<menuitem
+        id="g2p_crop_variety_menu"
+        action="g2p_crop_variety_tree_action"
+        name="Crop Varieties"
+        sequence="630"
         groups="g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
-	
-	parent="g2p_registry_base.g2p_configuration_menu_root" />
+        parent="g2p_registry_base.g2p_configuration_menu_root"
+    />
 
 
-	<menuitem id="g2p_crop_category_menu" action="g2p_crop_category_tree_action" name="Crop Category" sequence="620" 
+	<menuitem
+        id="g2p_crop_category_menu"
+        action="g2p_crop_category_tree_action"
+        name="Crop Category"
+        sequence="620"
         groups="g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
-	
-	parent="g2p_registry_base.g2p_configuration_menu_root" />
+        parent="g2p_registry_base.g2p_configuration_menu_root"
+    />
 
 
-		<menuitem id="g2p_crop_menu" action="g2p_crop_view_tree_action" name="Crops" sequence="610" 
+	<menuitem
+        id="g2p_crop_menu"
+        action="g2p_crop_view_tree_action"
+        name="Crops"
+        sequence="610"
         groups="g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
-	
-	parent="g2p_registry_base.g2p_configuration_menu_root" />
-
+        parent="g2p_registry_base.g2p_configuration_menu_root"
+    />
 
 </odoo>

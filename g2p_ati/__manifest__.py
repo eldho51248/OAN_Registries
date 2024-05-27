@@ -8,18 +8,16 @@
     "website": "https://openg2p.org",
     "license": "Other OSI approved licence",
     "development_status": "Alpha",
-    "depends": [
-        "g2p_social_registry"
-    ],
+    "depends": ["g2p_social_registry"],
     "data": [
-        'security/ir.model.access.csv',
+        "security/ir.model.access.csv",
         "views/social_registry_menu.xml",
         "views/livestock.xml",
         "views/farming_type.xml",
         "views/res_partner.xml",
         "views/crop.xml",
         "views/crop_variety_views.xml",
-        'views/land_information.xml',
+        "views/land_information.xml",
     ],
     "assets": {"web.assets_backend": []},
     "demo": [],

@@ -9,4 +9,3 @@ crop_information,crop.information,model_crop_information,base.group_user,1,1,1,1
 live_stock_information,live.stock.information,model_live_stock_information,base.group_user,1,1,1,1
 crop_illness_type,crop.illness.type,model_crop_illness_type,base.group_user,1,1,1,1
 livestock_illness_type,livestock.illness.type,model_livestock_illness_type,base.group_user,1,1,1,1
-
