@@ -2,7 +2,7 @@ from odoo import fields, models
 
 
 class G2PLiveStockInformation(models.Model):
-    _name = "g2p.live.stock.information"
+    _name = "g2p.livestock.information"
 
     partner_id = fields.Many2one("res.partner", string="partner")
 

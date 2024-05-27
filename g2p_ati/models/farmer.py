@@ -47,5 +47,5 @@ class G2PFarmer(models.Model):
     land_information_ids = fields.One2many("g2p.land.information", "partner_id", string="Land Information")
     crop_information_ids = fields.One2many("g2p.crop.information", "partner_id", string="Crop Information")
     livestock_information_ids = fields.One2many(
-        "g2p.live.stock.information", "partner_id", string="Live Stock Information"
+        "g2p.livestock.information", "partner_id", string="Live Stock Information"
     )
