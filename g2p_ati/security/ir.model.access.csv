@@ -1,12 +1,10 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-
-g2p_crop,g2p_crop,model_g2p_crop,base.group_user,1,1,1,1
-g2p_farming_type,g2p_farming_type,model_g2p_farming_type,base.group_user,1,1,1,1
-crop_category,crop_category,model_crop_category,base.group_user,1,1,1,1
-crop_variety,crop_variety,model_crop_variety,base.group_user,1,1,1,1
-land_information,land.information,model_land_information,base.group_user,1,1,1,1
-crop_information,crop.information,model_crop_information,base.group_user,1,1,1,1
-live_stock_information,live.stock.information,model_live_stock_information,base.group_user,1,1,1,1
-crop_illness_type,crop.illness.type,model_crop_illness_type,base.group_user,1,1,1,1
-livestock_illness_type,livestock.illness.type,model_livestock_illness_type,base.group_user,1,1,1,1
-
+g2p_crop_admin,Crop Admin Access,model_g2p_crop,,1,1,1,1
+g2p_farming_type_admin,Farming Type Admin Access,model_g2p_farming_type,,1,1,1,1
+g2p_crop_category_admin,Crop Category Admin Access,model_g2p_crop_category,,1,1,1,1
+g2p_crop_variety_admin,Crop Variety Admin Access,model_g2p_crop_variety,,1,1,1,1
+g2p_land_information_admin,Land Information Admin Access,model_g2p_land_information,,1,1,1,1
+g2p_crop_information_admin,Crop Information Admin Access,model_g2p_crop_information,,1,1,1,1
+g2p_livestock_information_admin,Livestock Information Admin Access,model_g2p_livestock_information,,1,1,1,1
+g2p_crop_illness_type_admin,Crop Illness Type Admin Access,model_g2p_crop_illness_type,,1,1,1,1
+g2p_livestock_illness_type_admin,Livestock Illness Type Admin,model_g2p_livestock_illness_type,,1,1,1,1

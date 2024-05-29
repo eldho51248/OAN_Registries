@@ -8,4 +8,3 @@ from . import farmer
 from . import land_information
 from . import livestock_information
 from . import crop_information
-

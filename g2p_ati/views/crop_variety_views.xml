@@ -1,28 +1,28 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
-    <!-- View crop.variety View Tree -->
+    <!-- View g2p.crop.variety View Tree -->
     <record id="view_crop_variety_tree" model="ir.ui.view">
-        <field name="name">view.crop.variety.tree</field>
-        <field name="model">crop.variety</field>
+        <field name="name">view.g2p.crop.variety.tree</field>
+        <field name="model">g2p.crop.variety</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="name"/>
+                <field name="name" />
             </tree>
         </field>
     </record>
 
-    <!-- View crop.variety form -->
+    <!-- View g2p.crop.variety form -->
     <record id="view_crop_variety_form" model="ir.ui.view">
-        <field name="name">view.crop.variety.form</field>
-        <field name="model">crop.variety</field>
+        <field name="name">view.g2p.crop.variety.form</field>
+        <field name="model">g2p.crop.variety</field>
         <field name="arch" type="xml">
             <form string="Crop Variety">
                 <sheet>
                     <div class="oe_title">
-                        <label for="name"/>
+                        <label for="name" />
                         <h1>
-                            <field name="name" placeholder="Name..."/>
+                            <field name="name" placeholder="Name..." />
                         </h1>
                     </div>
                 </sheet>
@@ -30,24 +30,24 @@
         </field>
     </record>
 
-    <!-- View crop.variety search -->
+    <!-- View g2p.crop.variety search -->
     <record id="view_crop_variety_search" model="ir.ui.view">
-        <field name="name">view.crop.variety.search</field>
-        <field name="model">crop.variety</field>
+        <field name="name">view.g2p.crop.variety.search</field>
+        <field name="model">g2p.crop.variety</field>
         <field name="arch" type="xml">
             <search>
                 <group expand="1" string="Group By">
-                    <filter string="Name" name="name" domain="[]" context="{'group_by':'name'}"/>
+                    <filter string="Name" name="name" domain="[]" context="{'group_by':'name'}" />
                 </group>
             </search>
         </field>
     </record>
 
-    <!-- Action crop.variety -->
+    <!-- Action g2p.crop.variety -->
     <record id="action_crop_variety" model="ir.actions.act_window">
         <field name="name">Crop Variety</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">crop.variety</field>
+        <field name="res_model">g2p.crop.variety</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[]</field>
         <field name="context">{}</field>
