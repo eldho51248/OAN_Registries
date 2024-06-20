@@ -8,25 +8,24 @@
             <xpath expr="//page[@name='relationships']" position="after">
                 <page string="Land Information" name="lands">
                     <field name="land_information_ids">
-                        <tree editable="top">
+                        <tree editable="bottom">
                             <field name="total_land_area" />
                             <field name="ownership_type" />
+                            <field name="land_certificate" />
                         </tree>
                     </field>
                 </page>
                 <page string="Crop Information" name="crops">
                     <field name="crop_information_ids">
-                        <tree editable="top">
+                        <tree editable="bottom">
                             <field name="crop" />
-                            <field name="variety" />
                             <field name="illness_type" widget="many2many_tags" />
-                            <field name="illness_images" widget="many2many_binary" />
                         </tree>
                     </field>
                 </page>
                 <page string="Livestock Information" name="livestocks">
                     <field name="livestock_information_ids">
-                        <tree editable="top">
+                        <tree editable="bottom">
                             <field name="livestock_type" />
                             <field name="livestock_bred" />
                             <field name="number_of_livestock" />

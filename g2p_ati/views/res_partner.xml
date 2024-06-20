@@ -4,13 +4,15 @@
 		<field name="model">res.partner</field>
 		<field name="inherit_id" ref="g2p_registry_individual.view_individuals_form" />
 		<field name="arch" type="xml">
+		
 		<xpath expr="//field[@name='family_name']" position="attributes">
 			<attribute name="placeholder">Father's Name...</attribute>
 		</xpath>
+
 		<xpath expr="//field[@name='given_name']" position="after">
 			<h2>
 				<field
-                        name="grand_father_name"
+                        name="gf_name_eng"
                         class="oe_edit_only"
                         default_focus="1"
                         required="1"
@@ -18,26 +20,79 @@
                     />
 			</h2>
 		</xpath>
+
+
+
+
+
+<xpath expr="//field[@name='birthdate']" position="after">
+<field name="birthdate_gc"/>
+</xpath>
+
+
+
+		<xpath expr="//notebook" position="before">
+	
+		</xpath>
+
+
+
+
 		<xpath expr="//sheet/notebook[@name='individual_detail']/page[@name='basic_info']" position="inside">
+			
+
+<group colspan="2">
+
+<group string="Farmer Data">
+
+	<field name="is_farmer"></field>
+	<field name="primary_Language"></field>
+	<field name="farming_type"></field>
+			
+</group>
 			<group string="Social Economic Data">
 				<field name="hh_size" />
 				<field name="hh_income" />
-				<field name="ed_level" />
+				<field name="education" />
 			</group>
+
+			</group>
+
+
 		</xpath>
-			<xpath expr="//sheet/notebook" position="inside">
+
+
+
+		<xpath expr="//sheet/notebook" position="inside">
 				<page string="Farmer Details" sequence="2">
+					
+					
 					<group>
 						<group name="name" string="Membership">
+
 							<field name="is_member_of_primary_cooperative" />
-							<field name="is_member_of_union" />
+							<field name="primary_cooperatives" readonly="is_member_of_primary_cooperative!=False" />		
+							
+							<field name="is_member_of_cooperative_union" />
+							<field name="cooperative_unions"  readonly="is_member_of_cooperative_union!=False"/>
+
 							<field name="is_member_in_farmer_cluster" />
+							<field name="primary_commodity"  readonly="is_member_in_farmer_cluster!=False" />
+							<field name="role_in_farmer_cluster" readonly="is_member_in_farmer_cluster!=False" />
+
+
 						</group>
+
+
 						<group name="name" string="Access To Resources">
-							<field name="access_to_water" />
-							<field name="access_to_machinery" />
+							<field name="water_resources" readonly="no_finace_access!=False"/>
+							<field name="access_to_machinery" readonly="no_finace_access!=False" />
+							<field name="type_of_machinery" readonly="no_finace_access!=False" />
 						</group>
+
 					</group>
+
+
 					<group>
 						<group name="name" string="Agricultural Input">
 							<field name="amount_fertilizer_utilized" />
@@ -46,16 +101,18 @@
 							<field name="amount_improved_seed_utilized" />
 						</group>
 
+
+
+
 						<group name="name" string="Financial Services">
-							<field name="fund_received_type" />
-							<field name="loans" />
-							<field name="insurance" />
-							<field name="savings" />
+							<!-- <field name="fund_received_type" /> -->
+							<field name="no_finace_access" />
+							<field name="loans" readonly="no_finace_access!=False" />
+							<field name="insurance" readonly="no_finace_access!=False" />
+							<field name="savings" readonly="no_finace_access!=False" />
 						</group>
 					</group>
-					<group>
-						<field name="farming_type" />
-					</group>
+					
 				</page>
 			</xpath>
 		</field>
