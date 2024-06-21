@@ -16,7 +16,3 @@ class G2PCrop(models.Model):
     name = fields.Char(string="Crop")
 
 
-class G2PCropVariety(models.Model):
-    _name = "g2p.crop.variety"
-
-    name = fields.Char()

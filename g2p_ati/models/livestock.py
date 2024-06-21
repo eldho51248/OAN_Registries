@@ -7,7 +7,7 @@ class G2PLivestockType(models.Model):
     name = fields.Char()
 
 
-class G2PLivestockBreed(models.Model):
-    _name = "g2p.livestock.breed"
+# class G2PLivestockBreed(models.Model):
+#     _name = "g2p.livestock.breed"
 
-    name = fields.Char()
+#     name = fields.Char()

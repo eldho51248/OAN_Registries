@@ -16,64 +16,37 @@
 			</xpath>
 
 			<xpath expr="//field[@name='birthdate']" position="after">
-				<field name="birthdate_gc"/>
+				<field name="birthdate_ec"/>
 			</xpath>
 
-
-         <xpath expr="//span[@class='o_form_label o_td_label' and @name='address_name']" position="attributes">
-	<attribute name="invisible">1</attribute>
-                    
-                </xpath>
-
-
-<xpath expr="//field[@name='address']" position="attributes">
-	<attribute name="invisible">1</attribute>
-</xpath>
-
-<xpath expr="//field[@name='district']" position="attributes">
-	<attribute name="invisible">1</attribute>
-</xpath>
-
-
-
-<xpath expr="//field[@name='email']" position="attributes">
-	<attribute name="invisible">1</attribute>
-</xpath>
-
-	<xpath expr="//field[@name='region']" position="replace">
-		
-		<group colspan="4">
-
-			<group>
-				<field name="region"/>
-			</group>
-
-			<group>
-				<field name="zone" domain="[('region', '=', region)]"/>
-			</group>
-
-			<group>
-				<field name="woreda" domain="[('zone', '=', zone)]"/>
-			</group>
-
-			<group>
-				<field name="kebele" domain="[('woreda', '=', woreda)]"/>
-			</group>
-		</group>
-	</xpath>
-
-			<xpath expr="//notebook" position="before">
-
+			<xpath expr="//span[@class='o_form_label o_td_label' and @name='address_name']" position="attributes">
+				<attribute name="invisible">1</attribute>
 			</xpath>
 
+			<xpath expr="//field[@name='address']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
 
+			<xpath expr="//field[@name='district']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+
+			<xpath expr="//field[@name='email']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+
+			<xpath expr="//field[@name='region']" position="replace">
+				<group >
+						<field name="region"/>
+						<field name="zone" domain="[('region', '=', region)]"/>
+						<field name="woreda" domain="[('zone', '=', zone)]"/>
+						<field name="kebele" domain="[('woreda', '=', woreda)]"/>
+				</group>
+			</xpath>
 
 
 			<xpath expr="//sheet/notebook[@name='individual_detail']/page[@name='basic_info']" position="inside">
-
-
 				<group colspan="2">
-
 					<group string="Farmer Data">
 						<field name="is_farmer"></field>
 						<field name="primary_Language"></field>
@@ -95,18 +68,18 @@
 
 			<xpath expr="//sheet/notebook" position="inside">
 				<page string="Farmer Details" sequence="2">
-					
+
 					<group>
 						<group name="name" string="Membership">
-								<field name="is_member_of_primary_cooperative" />
-								<field name="primary_cooperatives" invisible="is_member_of_primary_cooperative!=True" />
+							<field name="is_member_of_primary_cooperative" />
+							<field name="primary_cooperatives" invisible="is_member_of_primary_cooperative!=True" />
 
-								<field name="is_member_of_cooperative_union" />
-								<field name="cooperative_unions" invisible="is_member_of_cooperative_union!=True"/>
+							<field name="is_member_of_cooperative_union" />
+							<field name="cooperative_unions" invisible="is_member_of_cooperative_union!=True"/>
 
-								<field name="is_member_in_farmer_cluster" />
-								<field name="primary_commodity" invisible="is_member_in_farmer_cluster!=True" />
-								<field name="role_in_farmer_cluster" invisible="is_member_in_farmer_cluster!=True" />
+							<field name="is_member_in_farmer_cluster" />
+							<field name="primary_commodity" invisible="is_member_in_farmer_cluster!=True" />
+							<field name="role_in_farmer_cluster" invisible="is_member_in_farmer_cluster!=True" />
 						</group>
 
 
@@ -144,6 +117,36 @@
 
 				</page>
 			</xpath>
+
+
+			      <xpath expr="//page[@name='relationships']" position="after">
+                <page string="Land Information" name="lands">
+                    <field name="land_information_ids">
+                        <tree editable="bottom">
+                            <field name="total_land_area" />
+                            <field name="ownership_type" />
+                            <field name="land_certificate" />
+                        </tree>
+                    </field>
+                </page>
+                <page string="Crop Information" name="crops">
+                    <field name="crop_information_ids">
+                        <tree editable="bottom">
+                            <field name="crop" />
+                            <field name="illness_type" widget="many2many_tags" />
+                        </tree>
+                    </field>
+                </page>
+                <page string="Livestock Information" name="livestocks">
+                    <field name="livestock_information_ids">
+                        <tree editable="bottom">
+                            <field name="livestock_type" />
+                            <field name="number_of_livestock" />
+                            <field name="illness_type" widget="many2many_tags" />
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
 		</field>
 	</record>
 

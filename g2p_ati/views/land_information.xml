@@ -9,8 +9,8 @@
                 <page string="Land Information" name="lands">
                     <field name="land_information_ids">
                         <tree editable="bottom">
-                            <field name="total_land_area" />
                             <field name="ownership_type" />
+                            <field name="total_land_area" />
                             <field name="land_certificate" />
                         </tree>
                     </field>
@@ -27,10 +27,8 @@
                     <field name="livestock_information_ids">
                         <tree editable="bottom">
                             <field name="livestock_type" />
-                            <field name="livestock_bred" />
                             <field name="number_of_livestock" />
                             <field name="illness_type" widget="many2many_tags" />
-                            <field name="illness_images" widget="many2many_binary" />
                         </tree>
                     </field>
                 </page>

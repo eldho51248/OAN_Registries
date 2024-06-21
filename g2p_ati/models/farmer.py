@@ -1,34 +1,5 @@
-from odoo import fields, models
+from odoo import fields, models, api
 from ethiopian_date import ethiopian_date
-
-class Region(models.Model):
-    _name = 'g2p.region'
-    
-    code = fields.Char(string="Code")
-    
-
-class Zone(models.Model):
-    _name = 'g2p.zone'
-    
-    region = fields.Many2one("g2p.region", string="Region")
-    code = fields.Char(string="Code")
-
-
-
-class Woreda(models.Model):
-    _name = 'g2p.woreda'
-    
-    zone = fields.Many2one("g2p.zone", string="Zone")
-    code = fields.Char(string="Code")
-
-
-class Kebele(models.Model):
-    _name = 'g2p.kebele'
-    woreda = fields.Many2one("g2p.woreda", string="Woreda")
-    code = fields.Char(string="Code")
-
-
-
 
 class G2PPrimaryCooperative(models.Model):
     _name = 'g2p.primary.cooperative'
@@ -41,7 +12,6 @@ class G2PPrimaryCooperative(models.Model):
         string='Name',
         required=True,
     )
-
 
 class G2PCooperativeUnion(models.Model):
     _name = 'g2p.cooperative.union'
@@ -67,9 +37,6 @@ class G2PPrimaryCommodity(models.Model):
         required=True,
     )
 
-
-
-
 class G2PWaterSource(models.Model):
     _name = 'g2p.water.source'
     _description = 'Water Source'
@@ -81,8 +48,7 @@ class G2PWaterSource(models.Model):
         string='Name',
         required=True,
     )
-    
-
+   
 class G2PMachinery(models.Model):
     _name = 'g2p.machinery'
     _description = 'Machinery'
@@ -98,6 +64,8 @@ class G2PMachinery(models.Model):
 #TODO add type to phone number and logic
 
 
+
+
 class G2PFarmer(models.Model):
     _inherit = "res.partner"
     
@@ -105,9 +73,9 @@ class G2PFarmer(models.Model):
     # Basic Information
     
     region = fields.Many2one("g2p.region", string="Region")
-    zone = fields.Many2one("g2p.zone", string="Zone")
-    woreda = fields.Many2one("g2p.woreda", string="Woreda")
-    kebele = fields.Many2one("g2p.kebele", string="Kebele")
+    zone = fields.Many2one("g2p.zone", string="Zone", domain="[('region', '=', region)]")
+    woreda = fields.Many2one("g2p.woreda", string="Woreda", domain="[('zone', '=', zone)]")
+    kebele = fields.Many2one("g2p.kebele", string="Kebele", domain="[('woreda', '=', woreda)]")
     
     
     given_name = fields.Char(string="First Name(Eng)", translate=False)
@@ -123,16 +91,14 @@ class G2PFarmer(models.Model):
     gf_name_amh_oro = fields.Char(string="Grand Father Name(Oro)", translate=False)
     
     birthdate = fields.Date(string="Date Of Birth(GC)")
-    birthdate_gc = fields.Date(string="Date Of Birth(GC)")
+    birthdate_ec = fields.Date(string="Date Of Birth(EC)")
     
     primary_Language = fields.Many2one("res.lang", string="Primary language")
     is_farmer = fields.Boolean("Are you a Farmer? ")
     farming_type = fields.Selection(string="farming Type", selection=[
         ('agro', 'Agro-Pastorial'),
         ('pastorial', 'Pastorial'),
-        ('mixed', 'Mixed farming'),
-
-    ])
+        ('mixed', 'Mixed farming')])
 
     
     # Memebership
@@ -166,11 +132,6 @@ class G2PFarmer(models.Model):
     access_to_machinery = fields.Boolean(string="Do you use machinery? ")
     type_of_machinery =fields.Many2many('g2p.machinery', string='What kind of machinery do you use? ')
     
-    
-    # Acces To Finance    
-    # type_of_machinery =fields.Many2many('g2p.machinery',string='What kind of Machinery do you use? ')
-    # fund_received_type = fields.Selection(selection=[("cash", "Cash"), ("inkind", "In Kind")])
-    
     no_finace_access = fields.Boolean("No finance access")
     loans = fields.Boolean("Loans")
     insurance = fields.Boolean("Insurance")
@@ -178,8 +139,7 @@ class G2PFarmer(models.Model):
     
     other_farmer_in_hh = fields.Boolean('Is there any other farmer in the household who has separate land?')
     
-    # Socio economic Data
-    
+    # Socio economic Dat
     martial_status = fields.Selection(
         string='Martial Status',
         selection=[
@@ -209,7 +169,58 @@ class G2PFarmer(models.Model):
         "g2p.livestock.information", "partner_id", string="Live Stock Information"
     )
     
+    data_enumerator_name = fields.Char(string="Data Enumerator")
+    data_collection_date= fields.Date(string="Data Collection Date")
     
+
+    land_ownership = fields.Selection(
+        selection=[('owner', 'Owner'), ('tenant', 'Tenant'), ('hybrid', 'Hybrid')],
+        compute='_compute_land_ownership',
+        store=True,
+        copy=False,
+        readonly=True,
+        string='Land Ownership'
+    )
+
+    @api.depends('land_information_ids.ownership_type')
+    def _compute_land_ownership(self):
+        for record in self:
+            land_info_records = record.land_information_ids
+            owner_count = len(land_info_records.filtered(lambda r: r.ownership_type == 'owner'))
+            tenant_count = len(land_info_records.filtered(lambda r: r.ownership_type == 'tenant'))
+
+            if owner_count > 0 and tenant_count == 0:
+                record.land_ownership = 'owner'
+            elif tenant_count > 0 and owner_count == 0:
+                record.land_ownership = 'tenant'
+            elif owner_count > 0 and tenant_count > 0:
+                record.land_ownership = 'hybrid'
+            else:
+                record.land_ownership = False
+
+
+    @api.onchange('birthdate')
+    def _onchange_birthdate(self):
+        if self.birthdate:
+            converter = ethiopian_date.EthiopianDateConverter()
+            ethiopian_date_str = converter.date_to_ethiopian(self.birthdate)
+            self.birthdate_ec = ethiopian_date_str
+
+    @api.onchange('birthdate_ec')
+    def _onchange_birthdate_ec(self):
+        if self.birthdate_ec:
+            converter = ethiopian_date.EthiopianDateConverter()
+            gregorian_date = converter.to_gregorian(self.birthdate_ec.year,self.birthdate_ec.month,self.birthdate_ec.day)
+            self.birthdate = gregorian_date
+
     
-    # @api.depends('field')
+
+    def write(self, values):
+        
+        
+        
+    
+        result = super(G2PFarmer, self).write(values)
+        return result
+    
     
