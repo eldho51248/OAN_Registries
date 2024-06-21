@@ -15,15 +15,49 @@
 				</h2>
 			</xpath>
 
-
-
-
-
 			<xpath expr="//field[@name='birthdate']" position="after">
 				<field name="birthdate_gc"/>
 			</xpath>
 
 
+
+
+
+<xpath expr="//field[@name='address']" position="attributes">
+	<attribute name="invisible">1</attribute>
+</xpath>
+
+<xpath expr="//field[@name='district']" position="attributes">
+	<attribute name="invisible">1</attribute>
+</xpath>
+
+
+
+<xpath expr="//field[@name='email']" position="attributes">
+	<attribute name="invisible">1</attribute>
+</xpath>
+
+	<xpath expr="//field[@name='region']" position="replace">
+		
+		<group colspan="4">
+
+			<group>
+				<field name="region"/>
+			</group>
+
+			<group>
+				<field name="zone" domain="[('region', '=', region)]"/>
+			</group>
+
+			<group>
+				<field name="woreda" domain="[('zone', '=', zone)]"/>
+			</group>
+
+			<group>
+				<field name="kebele" domain="[('woreda', '=', woreda)]"/>
+			</group>
+		</group>
+	</xpath>
 
 			<xpath expr="//notebook" position="before">
 
@@ -38,12 +72,11 @@
 				<group colspan="2">
 
 					<group string="Farmer Data">
-
 						<field name="is_farmer"></field>
 						<field name="primary_Language"></field>
 						<field name="farming_type"></field>
-
 					</group>
+
 					<group string="Social Economic Data">
 						<field name="hh_size" />
 						<field name="hh_income" />
@@ -59,34 +92,27 @@
 
 			<xpath expr="//sheet/notebook" position="inside">
 				<page string="Farmer Details" sequence="2">
-
-
+					
 					<group>
-
 						<group name="name" string="Membership">
-							<group>
 								<field name="is_member_of_primary_cooperative" />
 								<field name="primary_cooperatives" invisible="is_member_of_primary_cooperative!=True" />
-							</group>
 
-							<group>
 								<field name="is_member_of_cooperative_union" />
 								<field name="cooperative_unions" invisible="is_member_of_cooperative_union!=True"/>
-							</group>
 
-							<group>
 								<field name="is_member_in_farmer_cluster" />
 								<field name="primary_commodity" invisible="is_member_in_farmer_cluster!=True" />
 								<field name="role_in_farmer_cluster" invisible="is_member_in_farmer_cluster!=True" />
-
-							</group>
 						</group>
+
 
 						<group name="name" string="Access To Resources">
-							<field name="water_resources" invisible="no_finace_access!=True"/>
-							<field name="access_to_machinery" invisible="no_finace_access!=True" />
-							<field name="type_of_machinery" invisible="no_finace_access!=True" />
+							<field name="water_resources" />
+							<field name="access_to_machinery" />
+							<field name="type_of_machinery" invisible="access_to_machinery!=True" />
 						</group>
+
 					</group>
 
 
