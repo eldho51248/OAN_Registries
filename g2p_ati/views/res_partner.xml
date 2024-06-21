@@ -20,7 +20,10 @@
 			</xpath>
 
 
-
+         <xpath expr="//span[@class='o_form_label o_td_label' and @name='address_name']" position="attributes">
+	<attribute name="invisible">1</attribute>
+                    
+                </xpath>
 
 
 <xpath expr="//field[@name='address']" position="attributes">
