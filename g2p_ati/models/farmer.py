@@ -1,5 +1,5 @@
 from odoo import fields, models
-
+from ethiopian_date import ethiopian_date
 
 class Region(models.Model):
     _name = 'g2p.region'
@@ -16,17 +16,16 @@ class Zone(models.Model):
 
 
 class Woreda(models.Model):
-    _name = 'g2p.zone'
+    _name = 'g2p.woreda'
     
     zone = fields.Many2one("g2p.zone", string="Zone")
     code = fields.Char(string="Code")
 
 
 class Kebele(models.Model):
-    _name = 'g2p.zone'
+    _name = 'g2p.kebele'
     woreda = fields.Many2one("g2p.woreda", string="Woreda")
     code = fields.Char(string="Code")
-
 
 
 
@@ -123,8 +122,9 @@ class G2PFarmer(models.Model):
     family_name_oro = fields.Char(string="Father Name(Oro)", translate=False)
     gf_name_amh_oro = fields.Char(string="Grand Father Name(Oro)", translate=False)
     
-    birthdate = fields.Date(string="Date Of Birth(EC)")
+    birthdate = fields.Date(string="Date Of Birth(GC)")
     birthdate_gc = fields.Date(string="Date Of Birth(GC)")
+    
     primary_Language = fields.Many2one("res.lang", string="Primary language")
     is_farmer = fields.Boolean("Are you a Farmer? ")
     farming_type = fields.Selection(string="farming Type", selection=[
@@ -208,4 +208,8 @@ class G2PFarmer(models.Model):
     livestock_information_ids = fields.One2many(
         "g2p.livestock.information", "partner_id", string="Live Stock Information"
     )
+    
+    
+    
+    # @api.depends('field')
     

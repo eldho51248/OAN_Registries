@@ -8,3 +8,4 @@ g2p_crop_information_admin,Crop Information Admin Access,model_g2p_crop_informat
 g2p_livestock_information_admin,Livestock Information Admin Access,model_g2p_livestock_information,,1,1,1,1
 g2p_crop_illness_type_admin,Crop Illness Type Admin Access,model_g2p_crop_illness_type,,1,1,1,1
 g2p_livestock_illness_type_admin,Livestock Illness Type Admin,model_g2p_livestock_illness_type,,1,1,1,1
+access_g2p_kebele_manager,g2p_kebele_manager,model_g2p_kebele,,1,1,1,1
