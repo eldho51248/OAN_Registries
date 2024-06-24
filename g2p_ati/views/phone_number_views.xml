@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="_tree" model="ir.ui.view">
+        <field name="name">.tree</field>
+        <field name="model"></field>
+        <field name="inherit_id" ref="" />
+        <field name="arch" type="xml">
+            <xpath expr="" position="after">
+                
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

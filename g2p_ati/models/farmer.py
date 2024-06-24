@@ -1,5 +1,8 @@
 from odoo import fields, models, api
 from ethiopian_date import ethiopian_date
+from datetime import datetime
+from odoo.exceptions import ValidationError
+from dateutil.relativedelta import relativedelta
 
 class G2PPrimaryCooperative(models.Model):
     _name = 'g2p.primary.cooperative'
@@ -64,34 +67,33 @@ class G2PMachinery(models.Model):
 #TODO add type to phone number and logic
 
 
-
-
 class G2PFarmer(models.Model):
     _inherit = "res.partner"
     
-    
     # Basic Information
-    
-    region = fields.Many2one("g2p.region", string="Region")
+    regionn = fields.Many2one("g2p.region", string="Region")
     zone = fields.Many2one("g2p.zone", string="Zone", domain="[('region', '=', region)]")
     woreda = fields.Many2one("g2p.woreda", string="Woreda", domain="[('zone', '=', zone)]")
     kebele = fields.Many2one("g2p.kebele", string="Kebele", domain="[('woreda', '=', woreda)]")
     
     
-    given_name = fields.Char(string="First Name(Eng)", translate=False)
-    family_name = fields.Char(string="Father Name(Eng)", translate=False)
-    gf_name_eng = fields.Char(string="Grand Father Name(Eng)", translate=False)
+    given_name = fields.Char(string="First Name", translate=False)
+    family_name = fields.Char(string="Father Name", translate=False)
+    gf_name_eng = fields.Char(string="Grand Father Name", translate=False)
     
-    first_name_amh = fields.Char(string="First Name(Amh)", translate=False)
-    family_name_amh = fields.Char(string="Father Name(Amh)", translate=False)
-    gf_name_amh = fields.Char(string="Grand Father Name(Amh)", translate=False)
+    first_name_amh = fields.Char(string="ስም", translate=False)
+    family_name_amh = fields.Char(string="የአባት ስም", translate=False)
+    gf_name_amh = fields.Char(string="የአያት ስም", translate=False)
     
     first_name_oro = fields.Char(string="First Name(Oro)", translate=False)
     family_name_oro = fields.Char(string="Father Name(Oro)", translate=False)
     gf_name_amh_oro = fields.Char(string="Grand Father Name(Oro)", translate=False)
     
-    birthdate = fields.Date(string="Date Of Birth(GC)")
+    
+    # birthdate = fields.Date(string="Date Of Birth(GC)")
     birthdate_ec = fields.Date(string="Date Of Birth(EC)")
+    # birthplace = fields.Many2one('res.country', string='Birth Country', default=lambda self: self.env.ref('base.et_001').id)
+    birthplace = fields.Many2one('res.country', string='Birth Country')
     
     primary_Language = fields.Many2one("res.lang", string="Primary language")
     is_farmer = fields.Boolean("Are you a Farmer? ")
@@ -100,12 +102,11 @@ class G2PFarmer(models.Model):
         ('pastorial', 'Pastorial'),
         ('mixed', 'Mixed farming')])
 
+
     
-    # Memebership
-    
+    # MEMEBERSHIP
     is_member_of_primary_cooperative = fields.Boolean(string="Is Member Of Primary Cooperative? ")
     primary_cooperatives = fields.Many2many('g2p.primary.cooperative', string="Primary Cooperatives" )
-
     is_member_of_cooperative_union = fields.Boolean(string="Is Member Of Cooperative Union? ")
     cooperative_unions = fields.Many2many('g2p.cooperative.union', string="Cooperative Unions" )
     
@@ -120,34 +121,41 @@ class G2PFarmer(models.Model):
     ])
     
     
-    # Agricultural Input
+    # AGRICULTURAL RESOURCES
     amount_fertilizer_utilized = fields.Float(string="What is The amount Of fertilizer you have(qt)? ")
     amount_pesticide_utilized = fields.Float(string="What is The amount Of pesticide you have(L)? ")
     amount_insecticide_utilized = fields.Float(string="What is The amount Of insecticide you have in(L)? ")
     amount_improved_seed_utilized = fields.Float(string="What is The amount Of improved seed you have used(qt)? ")
     
     
-    # Access To resources
+    # ACCESS TO RESOURCES
     water_resources = fields.Many2many('g2p.water.source', string="What Water Sources do you use?")
     access_to_machinery = fields.Boolean(string="Do you use machinery? ")
     type_of_machinery =fields.Many2many('g2p.machinery', string='What kind of machinery do you use? ')
+    irregation_types = fields.Selection(
+        string='Martial Status',
+        selection=[
+            ('pump', 'Pump'), 
+            ('canal', 'canal')
+            ])
     
     no_finace_access = fields.Boolean("No finance access")
     loans = fields.Boolean("Loans")
     insurance = fields.Boolean("Insurance")
     savings = fields.Boolean("Savings")
-    
+
+
     other_farmer_in_hh = fields.Boolean('Is there any other farmer in the household who has separate land?')
     
-    # Socio economic Dat
+    
+    # SOCIO-ECONOMIC DATA
     martial_status = fields.Selection(
         string='Martial Status',
         selection=[
             ('single', 'Single'), 
             ('married', 'Married'), 
             ('divorced', 'Divorced'), 
-            ('widowed', 'Widowed')]
-    )
+            ('widowed', 'Widowed')])
     
     education = fields.Selection(
         [ ("illeterate", "Illeterate"),
@@ -155,24 +163,20 @@ class G2PFarmer(models.Model):
             ("basic", "Basic(1-8)"),
             ("intermediary", "Intermediary(9-12)"),
             ("technic", "Vocational and Technical School"),
-            ("higher", "Higher education(Unversity, College)"),
-        ],
-        string="Educational Level",
-    )
+            ("higher", "Higher education(Unversity, College)")], string="Educational Level",)
     hh_income = fields.Float(string='Total Amount')
     hh_size = fields.Integer(string="Household Size")
+    hh_income_type = fields.Selection(string='House Hold Income Type',
+        selection=[
+            ('crop', 'Crop'), 
+            ('livestock', 'Livestock'), 
+            ('gov_ngo', 'Government/NGO Support'), 
+            ('other', 'Other')])
 
-    # Land Informations
+
+    # Land INFORMATIONS
     land_information_ids = fields.One2many("g2p.land.information", "partner_id", string="Land Information")
     crop_information_ids = fields.One2many("g2p.crop.information", "partner_id", string="Crop Information")
-    livestock_information_ids = fields.One2many(
-        "g2p.livestock.information", "partner_id", string="Live Stock Information"
-    )
-    
-    data_enumerator_name = fields.Char(string="Data Enumerator")
-    data_collection_date= fields.Date(string="Data Collection Date")
-    
-
     land_ownership = fields.Selection(
         selection=[('owner', 'Owner'), ('tenant', 'Tenant'), ('hybrid', 'Hybrid')],
         compute='_compute_land_ownership',
@@ -181,14 +185,46 @@ class G2PFarmer(models.Model):
         readonly=True,
         string='Land Ownership'
     )
+    total_land_area = fields.Integer("Total Land Area")
 
+    livestock_information_ids = fields.One2many("g2p.livestock.information", "partner_id", string="Live Stock Information")
+    data_enumerator_name = fields.Char(string="Data Enumerator")
+    data_collection_date= fields.Date(string="Data Collection Date")
+    
+
+    @api.onchange("is_group", "family_name", "given_name", "gf_name_eng")
+    def name_change_farmer(self):
+        vals = {}
+        if not self.is_group:
+            name = ""
+            if self.given_name:
+                name += self.given_name + " "
+                
+            if self.family_name:
+                name += self.family_name + " "
+
+            if self.gf_name_eng:
+                name += self.gf_name_eng + " "
+                
+            vals.update({"name": name.upper()})
+            self.update(vals)
+
+
+
+
+    @api.depends('land_information_ids.total_land_area')
+    def _compute_total_land_area(self):
+        for record in self:
+            total_area = sum(r.total_land_area for r in record.land_information_ids)
+            record.total_land_area = total_area
+        
+        
     @api.depends('land_information_ids.ownership_type')
     def _compute_land_ownership(self):
         for record in self:
             land_info_records = record.land_information_ids
             owner_count = len(land_info_records.filtered(lambda r: r.ownership_type == 'owner'))
             tenant_count = len(land_info_records.filtered(lambda r: r.ownership_type == 'tenant'))
-
             if owner_count > 0 and tenant_count == 0:
                 record.land_ownership = 'owner'
             elif tenant_count > 0 and owner_count == 0:
@@ -206,6 +242,7 @@ class G2PFarmer(models.Model):
             ethiopian_date_str = converter.date_to_ethiopian(self.birthdate)
             self.birthdate_ec = ethiopian_date_str
 
+
     @api.onchange('birthdate_ec')
     def _onchange_birthdate_ec(self):
         if self.birthdate_ec:
@@ -213,14 +250,10 @@ class G2PFarmer(models.Model):
             gregorian_date = converter.to_gregorian(self.birthdate_ec.year,self.birthdate_ec.month,self.birthdate_ec.day)
             self.birthdate = gregorian_date
 
-    
 
-    def write(self, values):
-        
-        
-        
-    
-        result = super(G2PFarmer, self).write(values)
-        return result
+    @api.model
+    def create(self, vals):
+        if 'phone_number_ids' in vals and not vals.get('phone_number_ids'):
+            raise ValidationError("You must add at least one phone number.")
     
     

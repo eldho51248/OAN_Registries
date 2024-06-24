@@ -1,5 +1,6 @@
 from odoo import fields, models, api
 
+
 class Region(models.Model):
     _name = 'g2p.region'
     

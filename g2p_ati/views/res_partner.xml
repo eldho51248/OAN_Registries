@@ -5,7 +5,7 @@
 		<field name="inherit_id" ref="g2p_registry_individual.view_individuals_form" />
 		<field name="arch" type="xml">
 
-			<xpath expr="//field[@name='family_name']" position="attributes">
+			<!-- <xpath expr="//field[@name='family_name']" position="attributes">
 				<attribute name="placeholder">Father's Name...</attribute>
 			</xpath>
 
@@ -13,34 +13,133 @@
 				<h2>
 					<field name="gf_name_eng" class="oe_edit_only" default_focus="1" required="1" placeholder="Grand Father's Name..." />
 				</h2>
+			</xpath> -->
+			<xpath expr="//field[@name='given_name']" position="replace">
 			</xpath>
+
+			<xpath expr="//field[@name='family_name']" position="replace">
+			</xpath>
+
+
+			<xpath expr="//field[@name='image_1920']" position="after">
+				<group>
+					<div class="mt24">
+						<h1>
+							<field name="name" class="oe_inline" placeholder="Full Name(ENG)" />
+						</h1>
+					</div>
+				</group>
+			</xpath>
+
+						<xpath expr="//field[@name='phone_number_ids']/tree" position="attributes">
+				<attribute name="editable">bottom</attribute>
+
+
+
+			</xpath>
+
+
+			<xpath expr="//field[@name='phone_number_ids']/tree/field[@name='phone_no']" position="after">
+				<field name="phone_type"/>
+
+			</xpath>
+
+
+			<!-- <xpath expr="//field[@name='phone_number_ids']" position="replace">
+
+	 <field name="phone_number_ids" readonly="disabled" context="{'reg_form':True}" nolabel="1" colspan="2">
+                                        <tree decoration-danger="disabled">
+                                            <field name="phone_no" string="Phone Numbers" widget="phone" options="{'enable_sms': false}" />
+											<field name="phone_type"/>
+                                            <field name="country_id" />
+                                            <field name="date_collected" />
+                                            <field name="disabled" column_invisible="1" />
+                                        </tree>
+                                    </field>
+  </xpath>
+   -->
+
+
+			<xpath expr="//div[@class='o_row']" position="before">
+
+				<group>
+
+					<group string="ENG">
+
+						<field name="given_name" placecholder="First Name(ENG)"/>
+						<field name="family_name" placecholder="Last Name(ENG)"/>
+						<field name="gf_name_eng" placecholder="G.Father Name(ENG)"/>
+
+
+					</group>
+
+
+					<group string="አማርኛ">
+						<field name="first_name_amh" placecholder="ስም"/>
+						<field name="family_name_amh" placecholder="የአባት ስም"/>
+						<field name="gf_name_amh" placecholder="የአያት ስም" />
+					</group>
+
+
+				</group>
+
+			</xpath>
+
+
+
+
+			<xpath expr="//field[@name='addl_name']" position="replace">
+			</xpath>
+
 
 			<xpath expr="//field[@name='birthdate']" position="after">
 				<field name="birthdate_ec"/>
 			</xpath>
 
-			<xpath expr="//span[@class='o_form_label o_td_label' and @name='address_name']" position="attributes">
-				<attribute name="invisible">1</attribute>
+			<xpath expr="//span[@class='o_form_label o_td_label' and @name='address_name']" position="replace">
 			</xpath>
 
-			<xpath expr="//field[@name='address']" position="attributes">
-				<attribute name="invisible">1</attribute>
+			<xpath expr="//field[@name='address']" position="replace">
 			</xpath>
 
-			<xpath expr="//field[@name='district']" position="attributes">
-				<attribute name="invisible">1</attribute>
+			<xpath expr="//field[@name='district']" position="replace">
 			</xpath>
 
-			<xpath expr="//field[@name='email']" position="attributes">
-				<attribute name="invisible">1</attribute>
+			<xpath expr="//field[@name='email']" position="replace">
 			</xpath>
+
+			
+			<xpath expr="//field[@name='birth_place']" position="replace">
+			</xpath>
+
+
+		
+		<xpath expr="//field[@name='birthdate']" position="attributes">
+				<attribute name="string">Date Of Birth(GC)</attribute>
+
+		</xpath>
+		
 
 			<xpath expr="//field[@name='region']" position="replace">
+				<group  colspan="2">
 				<group >
-						<field name="region"/>
-						<field name="zone" domain="[('region', '=', region)]"/>
-						<field name="woreda" domain="[('zone', '=', zone)]"/>
-						<field name="kebele" domain="[('woreda', '=', woreda)]"/>
+				
+					<field name="regionn"/>
+					<field name="zone" domain="[('region', '=', regionn)]"/>
+				</group>
+
+								<group >
+
+
+					<field name="woreda" domain="[('zone', '=', zone)]"/>
+					<field name="kebele" domain="[('woreda', '=', woreda)]"/>
+									</group>
+
+				</group>
+
+				<group>
+				<field name="birthplace"></field>
+				
 				</group>
 			</xpath>
 
@@ -63,8 +162,6 @@
 
 
 			</xpath>
-
-
 
 			<xpath expr="//sheet/notebook" position="inside">
 				<page string="Farmer Details" sequence="2">
@@ -119,34 +216,34 @@
 			</xpath>
 
 
-			      <xpath expr="//page[@name='relationships']" position="after">
-                <page string="Land Information" name="lands">
-                    <field name="land_information_ids">
-                        <tree editable="bottom">
-                            <field name="total_land_area" />
-                            <field name="ownership_type" />
-                            <field name="land_certificate" />
-                        </tree>
-                    </field>
-                </page>
-                <page string="Crop Information" name="crops">
-                    <field name="crop_information_ids">
-                        <tree editable="bottom">
-                            <field name="crop" />
-                            <field name="illness_type" widget="many2many_tags" />
-                        </tree>
-                    </field>
-                </page>
-                <page string="Livestock Information" name="livestocks">
-                    <field name="livestock_information_ids">
-                        <tree editable="bottom">
-                            <field name="livestock_type" />
-                            <field name="number_of_livestock" />
-                            <field name="illness_type" widget="many2many_tags" />
-                        </tree>
-                    </field>
-                </page>
-            </xpath>
+			<xpath expr="//page[@name='relationships']" position="after">
+				<page string="Land Information" name="lands">
+					<field name="land_information_ids">
+						<tree editable="bottom">
+							<field name="ownership_type" />
+							<field name="total_land_area" />
+							<field name="land_certificate" />
+						</tree>
+					</field>
+				</page>
+				<page string="Crop Information" name="crops">
+					<field name="crop_information_ids">
+						<tree editable="bottom">
+							<field name="crop" />
+							<field name="illness_type" widget="many2many_tags" />
+						</tree>
+					</field>
+				</page>
+				<page string="Livestock Information" name="livestocks">
+					<field name="livestock_information_ids">
+						<tree editable="bottom">
+							<field name="livestock_type" />
+							<field name="number_of_livestock" />
+							<field name="illness_type" widget="many2many_tags" />
+						</tree>
+					</field>
+				</page>
+			</xpath>
 		</field>
 	</record>
 
