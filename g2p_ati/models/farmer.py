@@ -84,9 +84,9 @@ class G2PFarmer(models.Model):
 
     # Basic Information
     regionn = fields.Many2one("g2p.region", string="Region")
-    zone = fields.Many2one("g2p.zone", string="Zone", domain="[('region', '=', region)]")
-    woreda = fields.Many2one("g2p.woreda", string="Woreda", domain="[('zone', '=', zone)]")
-    kebele = fields.Many2one("g2p.kebele", string="Kebele", domain="[('woreda', '=', woreda)]")
+    zone = fields.Many2one("g2p.zone", domain="[('region', '=', region)]")
+    woreda = fields.Many2one("g2p.woreda", domain="[('zone', '=', zone)]")
+    kebele = fields.Many2one("g2p.kebele", domain="[('woreda', '=', woreda)]")
 
     given_name = fields.Char(string="First Name", translate=False)
     family_name = fields.Char(string="Father Name", translate=False)

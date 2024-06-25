@@ -1,11 +1,12 @@
 /** @odoo-module */
 import {registry} from "@web/core/registry";
-import {Component, useSubEnv, useState, onMounted, useRef} from "@odoo/owl";
+import {Component, useState, useSubEnv} from "@odoo/owl";
 import {getDefaultConfig} from "@web/views/view";
-import {useService} from "@web/core/utils/hooks";
 
 export class G2PSupersetDashboard extends Component {
-    superSetUrl
+
+
+
 
     async setup() {
         this.state = useState({
