@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
-    
+
 
 
 
@@ -20,10 +20,24 @@
 </record>
 
 
-    <menuitem id="g2p_primary_cooperative_menu" action="g2_primary_cooperative_action" name="Primary Cooperations" sequence="620" groups="g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar" parent="g2p_registry_base.g2p_configuration_menu_root" />
-    <menuitem id="g2p_cooperative_union_menu" action="g2p_cooperative_union_action" name="Cooperative Unions" sequence="620" groups="g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar" parent="g2p_registry_base.g2p_configuration_menu_root" />
+    <menuitem
+        id="g2p_primary_cooperative_menu"
+        action="g2_primary_cooperative_action"
+        name="Primary Cooperations"
+        sequence="620"
+        groups="g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
+        parent="g2p_registry_base.g2p_configuration_menu_root"
+    />
+    <menuitem
+        id="g2p_cooperative_union_menu"
+        action="g2p_cooperative_union_action"
+        name="Cooperative Unions"
+        sequence="620"
+        groups="g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
+        parent="g2p_registry_base.g2p_configuration_menu_root"
+    />
 
 
 
-    
+
 </odoo>

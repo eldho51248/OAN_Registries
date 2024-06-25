@@ -31,7 +31,7 @@
 
 
 			<xpath expr="//field[@name='phone_number_ids']/tree/field[@name='phone_no']" position="after">
-				<field name="phone_type"/>
+				<field name="phone_type" />
 
 			</xpath>
 
@@ -44,17 +44,17 @@
 
 					<group string="ENG">
 
-						<field name="given_name" placecholder="First Name(ENG)"/>
-						<field name="family_name" placecholder="Last Name(ENG)"/>
-						<field name="gf_name_eng" placecholder="G.Father Name(ENG)"/>
+						<field name="given_name" placecholder="First Name(ENG)" />
+						<field name="family_name" placecholder="Last Name(ENG)" />
+						<field name="gf_name_eng" placecholder="G.Father Name(ENG)" />
 
 
 					</group>
 
 
 					<group string="አማርኛ">
-						<field name="first_name_amh" placecholder="ስም"/>
-						<field name="family_name_amh" placecholder="የአባት ስም"/>
+						<field name="first_name_amh" placecholder="ስም" />
+						<field name="family_name_amh" placecholder="የአባት ስም" />
 						<field name="gf_name_amh" placecholder="የአያት ስም" />
 					</group>
 
@@ -71,7 +71,7 @@
 
 
 			<xpath expr="//field[@name='birthdate']" position="after">
-				<field name="birthdate_ec"/>
+				<field name="birthdate_ec" />
 			</xpath>
 
 			<xpath expr="//span[@class='o_form_label o_td_label' and @name='address_name']" position="replace">
@@ -86,38 +86,40 @@
 			<xpath expr="//field[@name='email']" position="replace">
 			</xpath>
 
-			
+
 			<xpath expr="//field[@name='birth_place']" position="replace">
 			</xpath>
 
 
-		
+
 		<xpath expr="//field[@name='birthdate']" position="attributes">
 				<attribute name="string">Date Of Birth(GC)</attribute>
 
 		</xpath>
-		
+
 
 			<xpath expr="//field[@name='region']" position="replace">
-				<group  colspan="2">
-				<group >
-				
-					<field name="regionn"/>
-					<field name="zone" domain="[('region', '=', regionn)]"/>
+				<group colspan="2">
+				<group>
+
+					<field name="regionn" />
+					<field name="zone" domain="[('region', '=', regionn)]" />
 				</group>
 
-								<group >
+								<group>
 
 
-					<field name="woreda" domain="[('zone', '=', zone)]"/>
-					<field name="kebele" domain="[('woreda', '=', woreda)]"/>
+					<field name="woreda" domain="[('zone', '=', zone)]" />
+					<field name="kebele" domain="[('woreda', '=', woreda)]" />
 									</group>
 
 				</group>
 
 				<group>
-				<field name="birthplace"></field>
-				
+				<field name="birthplace" />
+				<field name="is_disabled" />
+
+
 				</group>
 			</xpath>
 
@@ -125,9 +127,9 @@
 			<xpath expr="//sheet/notebook[@name='individual_detail']/page[@name='basic_info']" position="inside">
 				<group colspan="2">
 					<group string="Farmer Data">
-						<field name="is_farmer"></field>
-						<field name="primary_Language"></field>
-						<field name="farming_type"></field>
+						<field name="is_farmer" />
+						<field name="primary_Language" />
+						<field name="farming_type" />
 					</group>
 
 					<group string="Social Economic Data">
@@ -150,7 +152,7 @@
 							<field name="primary_cooperatives" invisible="is_member_of_primary_cooperative!='yes'" />
 
 							<field name="is_member_of_cooperative_union" />
-							<field name="cooperative_unions" invisible="is_member_of_cooperative_union!='yes'"/>
+							<field name="cooperative_unions" invisible="is_member_of_cooperative_union!='yes'" />
 
 							<field name="is_member_in_farmer_cluster" />
 							<field name="primary_commodity" invisible="is_member_in_farmer_cluster!='yes'" />
@@ -178,7 +180,6 @@
 
 
 						<group name="name" string="Financial Services">
-							<!-- <field name="fund_received_type" /> -->
 							<field name="no_finace_access" />
 							<field name="loans" readonly="no_finace_access!='no'" />
 							<field name="insurance" readonly="no_finace_access!='no'" />
@@ -208,7 +209,7 @@
 						<tree editable="bottom">
 							<field name="crop" />
 							<field name="is_diseased" />
-							<field name="illness_type" widget="many2many_tags" />
+							<field name="illness_type" widget="many2many_tags" required="is_diseased=='yes'" />
 						</tree>
 					</field>
 				</page>
@@ -218,7 +219,7 @@
 							<field name="livestock_type" />
 							<field name="number_of_livestock" />
 							<field name="is_diseased" />
-							<field name="illness_type" widget="many2many_tags" />
+							<field name="illness_type" widget="many2many_tags" required="is_diseased=='yes'" />
 						</tree>
 					</field>
 				</page>

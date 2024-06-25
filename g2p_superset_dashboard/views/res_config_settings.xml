@@ -13,9 +13,12 @@
                     logo="/g2p_superset_dashboard/static/description/icon.png"
                 >
                     <block title="G2P Superset Dashboard Settings">
-                          <setting string="Superset Instance URL" help="Enter the URL for your Superset instance to configure the dashboard. URL must start with 'http://' or 'https://'">
-                       
-                        <field name="superset_url" placeholder="e.g. http://localhost:8088"/>
+                          <setting
+                            string="Superset Instance URL"
+                            help="Enter the URL for your Superset instance to configure the dashboard. URL must start with 'http://' or 'https://'"
+                        >
+
+                        <field name="superset_url" placeholder="e.g. http://localhost:8088" />
 
                         </setting>
 

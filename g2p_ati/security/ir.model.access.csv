@@ -1,7 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 g2p_crop_admin,Crop Admin Access,model_g2p_crop,,1,1,1,1
 g2p_farming_type_admin,Farming Type Admin Access,model_g2p_farming_type,,1,1,1,1
-g2p_crop_category_admin,Crop Category Admin Access,model_g2p_crop_category,,1,1,1,1
 g2p_land_information_admin,Land Information Admin Access,model_g2p_land_information,,1,1,1,1
 g2p_crop_information_admin,Crop Information Admin Access,model_g2p_crop_information,,1,1,1,1
 g2p_livestock_information_admin,Livestock Information Admin Access,model_g2p_livestock_information,,1,1,1,1
@@ -10,6 +9,7 @@ g2p_crop_illness_type_admin,Crop Illness Type Admin Access,model_g2p_crop_illnes
 g2p_livestock_illness_type_admin,Livestock Illness Type Admin,model_g2p_livestock_illness_type,,1,1,1,1
 access_g2p_cooperative_union,g2p_cooperative_union_access,model_g2p_cooperative_union,base.group_user,1,1,1,1
 access_g2p_primary_commodity,g2p_primary_commodity_access,model_g2p_primary_commodity,base.group_user,1,1,1,1
+access_g2p_lang,g2p_lang_access,model_g2p_lang,base.group_user,1,1,1,1
 access_g2p_primary_cooperative,g2p_primary_cooperative_access,model_g2p_primary_cooperative,base.group_user,1,1,1,1
 access_g2p_kebele_manager,g2p_kebele_manager,model_g2p_kebele,base.group_user,1,1,1,1
 access_g2p_woreda_manager,g2p_woreda_manager,model_g2p_woreda,base.group_user,1,1,1,1

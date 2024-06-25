@@ -1,15 +1,11 @@
+from odoo import fields, models
 
-from odoo import api, fields, models
 
 class PhoneNumber(models.Model):
-    _inherit="g2p.phone.number"
-    
+    _inherit = "g2p.phone.number"
+
     phone_type = fields.Selection(
         required=True,
-        string='Type',
-        selection=[('primary', 'Primary'),
-                   ('secondary', 'Secondary'),
-                   ('other', 'Other')
-            ]
+        string="Type",
+        selection=[("primary", "Primary"), ("secondary", "Secondary"), ("other", "Other")],
     )
-    

@@ -9,6 +9,7 @@
     "license": "Other OSI approved licence",
     "development_status": "Alpha",
     "depends": ["g2p_social_registry"],
+    "external_dependencies": {"python": ["ethiopian-date "]},
     "data": [
         "security/ir.model.access.csv",
         "views/social_registry_menu.xml",
@@ -19,7 +20,6 @@
         "views/zone.xml",
         "views/woreda.xml",
         "views/kebele.xml",
-   
         # "views/farming_type.xml",
         "views/res_partner.xml",
         "views/crop.xml",
