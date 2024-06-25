@@ -15,6 +15,11 @@ class G2PPrimaryCooperative(models.Model):
         string='Name',
         required=True,
     )
+    
+    code = fields.Char(
+        string='Code',
+        required=True,
+    )
 
 class G2PCooperativeUnion(models.Model):
     _name = 'g2p.cooperative.union'
@@ -27,6 +32,10 @@ class G2PCooperativeUnion(models.Model):
         string='Name',
         required=True,
     )
+    code = fields.Char(
+        string='Code',
+        required=True,
+    )
 
 class G2PPrimaryCommodity(models.Model):
     _name = 'g2p.primary.commodity'
@@ -37,6 +46,10 @@ class G2PPrimaryCommodity(models.Model):
 
     name = fields.Char(
         string='Name',
+        required=True,
+    )
+    code = fields.Char(
+        string='Code',
         required=True,
     )
 
@@ -61,6 +74,10 @@ class G2PMachinery(models.Model):
 
     name = fields.Char(
         string='Name',
+        required=True,
+    )
+    code = fields.Char(
+        string='Code',
         required=True,
     )
 
@@ -96,21 +113,33 @@ class G2PFarmer(models.Model):
     birthplace = fields.Many2one('res.country', string='Birth Country')
     
     primary_Language = fields.Many2one("res.lang", string="Primary language")
-    is_farmer = fields.Boolean("Are you a Farmer? ")
-    farming_type = fields.Selection(string="farming Type", selection=[
-        ('agro', 'Agro-Pastorial'),
-        ('pastorial', 'Pastorial'),
-        ('mixed', 'Mixed farming')])
+    
 
+    is_farmer = fields.Selection(
+        string='Are you a Farmer? ',
+        selection=[('yes', 'Yes'), ('no', 'No')] )
+    
+    farming_type = fields.Selection(string="farming Type", selection=[  
+                                                                      ('agro_pastoral', 'Agro-Pastoral'),
+                                                                      ('pastoral', 'Pastoral'),
+                                                                      ('mixed', 'Mixed Farming')])
 
     
     # MEMEBERSHIP
-    is_member_of_primary_cooperative = fields.Boolean(string="Is Member Of Primary Cooperative? ")
-    primary_cooperatives = fields.Many2many('g2p.primary.cooperative', string="Primary Cooperatives" )
-    is_member_of_cooperative_union = fields.Boolean(string="Is Member Of Cooperative Union? ")
-    cooperative_unions = fields.Many2many('g2p.cooperative.union', string="Cooperative Unions" )
+    is_member_of_primary_cooperative =    fields.Selection(
+        string="Is Member Of Primary Cooperative? ",
+        selection=[('yes', 'Yes'), ('no', 'No')] )  
+    primary_cooperatives = fields.Many2one('g2p.primary.cooperative', string="Primary Cooperatives" )
     
-    is_member_in_farmer_cluster = fields.Boolean(string="Is Member In Farmer Cluster? ")
+    is_member_of_cooperative_union = fields.Selection(
+        string="Is Member Of Cooperative Union? ",
+        selection=[('yes', 'Yes'), ('no', 'No')] )
+    cooperative_unions = fields.Many2one('g2p.cooperative.union', string="Cooperative Unions" )
+    
+    is_member_in_farmer_cluster = fields.Selection(
+        string="Is Member In Farmer Cluster? ",
+        selection=[('yes', 'Yes'), ('no', 'No')] )
+    
     primary_commodity = fields.Many2one('g2p.primary.commodity', string="Primary Commodity")
     role_in_farmer_cluster = fields.Selection(string="Role In Farmer Cluster", selection=[
         ('lead', 'Lead'),
@@ -128,9 +157,9 @@ class G2PFarmer(models.Model):
     amount_improved_seed_utilized = fields.Float(string="What is The amount Of improved seed you have used(qt)? ")
     
     
-    # ACCESS TO RESOURCES
-    water_resources = fields.Many2many('g2p.water.source', string="What Water Sources do you use?")
-    access_to_machinery = fields.Boolean(string="Do you use machinery? ")
+    # ACCESS TO RESOURCES  
+    
+    access_to_machinery = fields.Selection( string="Do you use machinery? ", selection=[('yes', 'Yes'), ('no', 'No')])  
     type_of_machinery =fields.Many2many('g2p.machinery', string='What kind of machinery do you use? ')
     irregation_types = fields.Selection(
         string='Martial Status',
@@ -139,13 +168,28 @@ class G2PFarmer(models.Model):
             ('canal', 'canal')
             ])
     
-    no_finace_access = fields.Boolean("No finance access")
-    loans = fields.Boolean("Loans")
-    insurance = fields.Boolean("Insurance")
-    savings = fields.Boolean("Savings")
+
+    no_finace_access = fields.Selection(
+        string="No Finance Access ",
+        selection=[('yes', 'Yes'), ('no', 'No')] )
+    
+    loans = fields.Selection(
+        string="Loans ",
+        selection=[('yes', 'Yes'), ('no', 'No')] )
+
+    insurance =  fields.Selection(
+        string="Insurance ",
+        selection=[('yes', 'Yes'), ('no', 'No')] )
+    
+    savings = fields.Selection(
+        string="Savings ",
+        selection=[('yes', 'Yes'), ('no', 'No')] )
+    
 
 
-    other_farmer_in_hh = fields.Boolean('Is there any other farmer in the household who has separate land?')
+    other_farmer_in_hh = fields.Selection(
+        string="Is there any other farmer in the household who has separate land? ",
+        selection=[('yes', 'Yes'), ('no', 'No')] )  
     
     
     # SOCIO-ECONOMIC DATA
@@ -255,5 +299,15 @@ class G2PFarmer(models.Model):
     def create(self, vals):
         if 'phone_number_ids' in vals and not vals.get('phone_number_ids'):
             raise ValidationError("You must add at least one phone number.")
+        
+        
+    @api.depends('no_finace_access')
+    def _compute_finance_values(self):
+        for record in self:
+            if record.no_finace_access!= 'yes':
+                record.loans = 'no'
+                record.insurance = 'no'
+                record.savings = 'no'
+        
     
     

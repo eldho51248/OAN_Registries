@@ -13,6 +13,8 @@
         "security/ir.model.access.csv",
         "views/social_registry_menu.xml",
         "views/livestock.xml",
+        "views/commodity.xml",
+        "views/cooperations.xml",
         "views/region.xml",
         "views/zone.xml",
         "views/woreda.xml",
