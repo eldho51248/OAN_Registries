@@ -4,10 +4,6 @@ import {Component, useState, useSubEnv} from "@odoo/owl";
 import {getDefaultConfig} from "@web/views/view";
 
 export class G2PSupersetDashboard extends Component {
-
-
-
-
     async setup() {
         this.state = useState({
             isLoading: true,
