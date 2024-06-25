@@ -124,6 +124,9 @@ class G2PFarmer(models.Model):
                                                                       ('pastoral', 'Pastoral'),
                                                                       ('mixed', 'Mixed Farming')])
 
+    disabled = fields.Selection(
+        string="Are you disabled? ",
+        selection=[('yes', 'Yes'), ('no', 'No')] )  
     
     # MEMEBERSHIP
     is_member_of_primary_cooperative =    fields.Selection(
@@ -158,15 +161,12 @@ class G2PFarmer(models.Model):
     
     
     # ACCESS TO RESOURCES  
-    
+    crop_water_sources = fields.Many2many('g2p.water.source', string="What water sources do you use for your crops? ")
+    livestock_water_sources = fields.Many2many('g2p.water.source', string="What water sources do you use for your livestocks? ")
+
     access_to_machinery = fields.Selection( string="Do you use machinery? ", selection=[('yes', 'Yes'), ('no', 'No')])  
     type_of_machinery =fields.Many2many('g2p.machinery', string='What kind of machinery do you use? ')
-    irregation_types = fields.Selection(
-        string='Martial Status',
-        selection=[
-            ('pump', 'Pump'), 
-            ('canal', 'canal')
-            ])
+    irregation_types = fields.Selection( string='What Type of Irregation do you use?', selection=[('pump', 'Pump'), ('canal', 'canal')])
     
 
     no_finace_access = fields.Selection(

@@ -7,7 +7,7 @@ class G2PCropInformation(models.Model):
 
     partner_id = fields.Many2one("res.partner", string="partner")
     crop = fields.Many2one("g2p.crop", string='Crop')
-    water_resources = fields.Many2many('g2p.water.source', string="What Water Sources do you use?")
+    is_diseased =fields.Selection(string="Does this crop have been affected by illness? ", selection=[('yes', 'Yes'), ('no', 'No')])  
     illness_type = fields.Many2many("g2p.crop.illness.type", string="Disease")
 
     

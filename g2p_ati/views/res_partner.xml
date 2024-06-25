@@ -36,19 +36,6 @@
 			</xpath>
 
 
-			<!-- <xpath expr="//field[@name='phone_number_ids']" position="replace">
-
-	 <field name="phone_number_ids" readonly="disabled" context="{'reg_form':True}" nolabel="1" colspan="2">
-                                        <tree decoration-danger="disabled">
-                                            <field name="phone_no" string="Phone Numbers" widget="phone" options="{'enable_sms': false}" />
-											<field name="phone_type"/>
-                                            <field name="country_id" />
-                                            <field name="date_collected" />
-                                            <field name="disabled" column_invisible="1" />
-                                        </tree>
-                                    </field>
-  </xpath>
-   -->
 
 
 			<xpath expr="//div[@class='o_row']" position="before">
@@ -220,7 +207,7 @@
 					<field name="crop_information_ids">
 						<tree editable="bottom">
 							<field name="crop" />
-							<field name="water_resources" />
+							<field name="is_diseased" />
 							<field name="illness_type" widget="many2many_tags" />
 						</tree>
 					</field>
@@ -230,7 +217,7 @@
 						<tree editable="bottom">
 							<field name="livestock_type" />
 							<field name="number_of_livestock" />
-							<field name="water_resources" />
+							<field name="is_diseased" />
 							<field name="illness_type" widget="many2many_tags" />
 						</tree>
 					</field>

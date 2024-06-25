@@ -24,7 +24,6 @@
         "views/res_partner.xml",
         "views/crop.xml",
         # "views/crop_variety_views.xml",
-        # "views/land_information.xml",
     ],
     "assets": {"web.assets_backend": []},
     "demo": [],

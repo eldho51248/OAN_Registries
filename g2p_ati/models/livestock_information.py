@@ -5,7 +5,8 @@ class G2PLiveStockInformation(models.Model):
     _name = "g2p.livestock.information"
 
     partner_id = fields.Many2one("res.partner", string="partner")
-
+    is_diseased =fields.Selection(string="Does this livestock have been affected by illness? ", selection=[('yes', 'Yes'), ('no', 'No')])  
+    
     # livestock_type = fields.Char(string="Livestock Type")
     livestock_type = fields.Many2one("g2p.livestock.type")
 
@@ -13,7 +14,7 @@ class G2PLiveStockInformation(models.Model):
     # livestock_bred = fields.Many2one("g2p.livestock.breed", string="Breed")
 
     number_of_livestock = fields.Char(string="Number")
-    water_resources = fields.Many2many('g2p.water.source', string="What Water Sources do you use?")
+    # water_resources = fields.Many2many('g2p.water.source', string="What Water Sources do you use?")
     illness_type = fields.Many2many("g2p.livestock.illness.type")
     # illness_images = fields.Many2many("ir.attachment")
 

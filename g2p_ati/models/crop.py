@@ -1,18 +1,20 @@
 from odoo import fields, models
 
 
-class G2PCropCategory(models.Model):
-    _name = "g2p.crop.category"
+# class G2PCropCategory(models.Model):
+#     _name = "g2p.crop.category"
 
-    name = fields.Char()
+#     name = fields.Char()
+#     code = fields.Char()
+
 
 
 class G2PCrop(models.Model):
     _name = "g2p.crop"
     _description = "Crop Information Model"
-    _inherit = ["mail.thread", "mail.activity.mixin"]
 
-    category = fields.Many2one("g2p.crop.category")
+    # category = fields.Many2one("g2p.crop.category")
     name = fields.Char(string="Crop")
+    code = fields.Char(string="Code")
 
 
