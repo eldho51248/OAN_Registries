@@ -1,24 +1,25 @@
+from datetime import datetime
+
 from ethiopian_date import ethiopian_date
 
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
-from datetime import datetime
-
 
 ETHIOPIAN_MONTH_ORDER = {
-        "September": 1,  
-        "October": 2,  
-        "November": 3, 
-        "December": 4,  
-        "January": 5,  
-        "February": 6,  
-        "March": 7,
-        "April": 8,
-        "May": 9,
-        "June": 10,
-        "July": 11,
-        "August": 12,
-    }
+    "September": 1,
+    "October": 2,
+    "November": 3,
+    "December": 4,
+    "January": 5,
+    "February": 6,
+    "March": 7,
+    "April": 8,
+    "May": 9,
+    "June": 10,
+    "July": 11,
+    "August": 12,
+}
+
 
 class G2PPrimaryCooperative(models.Model):
     _name = "g2p.primary.cooperative"
@@ -218,7 +219,9 @@ class G2PFarmer(models.Model):
         ],
         string="Educational Level",
     )
-    hh_is_household_head = fields.Selection(string="Are You a household head? ", selection=[("yes", "Yes"), ("no", "No")])
+    hh_is_household_head = fields.Selection(
+        string="Are You a household head? ", selection=[("yes", "Yes"), ("no", "No")]
+    )
     hh_income = fields.Float(string="Household Income")
     hh_size = fields.Integer(string="Household Size")
     hh_income_type = fields.Selection(
@@ -234,6 +237,7 @@ class G2PFarmer(models.Model):
     # Land INFORMATIONS
     land_information_ids = fields.One2many("g2p.land.information", "partner_id", string="Land Information")
     crop_information_ids = fields.One2many("g2p.crop.information", "partner_id", string="Crop Information")
+
     # land_ownership = fields.Selection(
     #     selection=[("owner", "Owner"), ("tenant", "Tenant"), ("hybrid", "Hybrid")],
     #     compute="_compute_land_ownership",
@@ -267,14 +271,11 @@ class G2PFarmer(models.Model):
             vals.update({"name": name.upper()})
             self.update(vals)
 
-
     # @api.depends("land_information_ids.total_land_area")
     # def _compute_total_land_area(self):
     #     for record in self:
     #         total_area = sum(r.total_land_area for r in record.land_information_ids)
     #         record.total_land_area = total_area
-
-
 
     # @api.depends("land_information_ids.ownership_type")
     # def _compute_land_ownership(self):
@@ -303,7 +304,7 @@ class G2PFarmer(models.Model):
         if self.birthdate_ec:
             converter = ethiopian_date.EthiopianDateConverter()
             self.check_birthdate(self.birthdate_ec)
-            
+
             gregorian_date = converter.to_gregorian(
                 self.birthdate_ec.year, self.birthdate_ec.month, self.birthdate_ec.day
             )
@@ -325,13 +326,13 @@ class G2PFarmer(models.Model):
                 record.loans = "no"
                 record.insurance = "no"
                 record.savings = "no"
-    
-    def check_birthdate(self,birthdate_ec):
+
+    def check_birthdate(self, birthdate_ec):
         converter = ethiopian_date.EthiopianDateConverter()
-        ethiopian_date_today = converter.date_to_ethiopian(fields.date.today()) 
-        actual_month_number = ETHIOPIAN_MONTH_ORDER[birthdate_ec.strftime('%B')]
+        ethiopian_date_today = converter.date_to_ethiopian(fields.date.today())
+        actual_month_number = ETHIOPIAN_MONTH_ORDER[birthdate_ec.strftime("%B")]
         actual_selected_ec = datetime(birthdate_ec.year, actual_month_number, birthdate_ec.day).date()
-    
+
         if actual_selected_ec > ethiopian_date_today:
             error_msg = "You can't select a date of birth greater than today"
             raise ValidationError(error_msg)

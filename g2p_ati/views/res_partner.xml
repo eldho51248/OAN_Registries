@@ -16,7 +16,7 @@
 				<!-- <group> -->
 					<div class="mt24 w-full">
 						<h1>
-							<field name="name" readonly="True"  placeholder="Full Name(ENG)" />
+							<field name="name" readonly="True" placeholder="Full Name(ENG)" />
 						</h1>
 					</div>
 				<!-- </group> -->
@@ -54,7 +54,7 @@
 						<field name="family_name_amh" placecholder="የአባት ስም" />
 						<field name="gf_name_amh" placecholder="የአያት ስም" />
 					</group>
-					
+
 					<!-- <group string="Afan Oromo">
 						<field name="first_name_oro" placecholder="Maqaa" />
 						<field name="family_name_oro" placecholder="Maqaa Giddu Galeessaa" />
@@ -134,7 +134,7 @@
 
 					<group string="Social Economic Data">
 						<field name="hh_size" />
-						<field name="hh_is_household_head"/>
+						<field name="hh_is_household_head" />
 						<field name="hh_income" />
 						<field name="education" />
 					</group>
