@@ -3,8 +3,9 @@ from odoo import fields, models
 
 class G2PLiveStockInformation(models.Model):
     _name = "g2p.livestock.information"
+    _rec_name = 'partner_id'
 
-    partner_id = fields.Many2one("res.partner", string="partner")
+    partner_id = fields.Many2one("res.partner", string="Farmer")
     is_diseased = fields.Selection(
         string="Does this livestock have been affected by illness? ", selection=[("yes", "Yes"), ("no", "No")]
     )

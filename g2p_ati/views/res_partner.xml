@@ -13,13 +13,13 @@
 
 
 			<xpath expr="//field[@name='image_1920']" position="after">
-				<group>
-					<div class="mt24">
+				<!-- <group> -->
+					<div class="mt24 w-full">
 						<h1>
-							<field name="name" class="oe_inline" placeholder="Full Name(ENG)" />
+							<field name="name" readonly="True"  placeholder="Full Name(ENG)" />
 						</h1>
 					</div>
-				</group>
+				<!-- </group> -->
 			</xpath>
 
 						<xpath expr="//field[@name='phone_number_ids']/tree" position="attributes">
@@ -40,15 +40,12 @@
 
 			<xpath expr="//div[@class='o_row']" position="before">
 
-				<group>
+				<group colspan="4">
 
 					<group string="ENG">
-
 						<field name="given_name" placecholder="First Name(ENG)" />
 						<field name="family_name" placecholder="Last Name(ENG)" />
 						<field name="gf_name_eng" placecholder="G.Father Name(ENG)" />
-
-
 					</group>
 
 
@@ -57,7 +54,12 @@
 						<field name="family_name_amh" placecholder="የአባት ስም" />
 						<field name="gf_name_amh" placecholder="የአያት ስም" />
 					</group>
-
+					
+					<!-- <group string="Afan Oromo">
+						<field name="first_name_oro" placecholder="Maqaa" />
+						<field name="family_name_oro" placecholder="Maqaa Giddu Galeessaa" />
+						<field name="gf_name_oro" placecholder="Maqaa Akaakayyuu" />
+					</group> -->
 
 				</group>
 
@@ -106,12 +108,10 @@
 					<field name="zone" domain="[('region', '=', regionn)]" />
 				</group>
 
-								<group>
-
-
+				<group>
 					<field name="woreda" domain="[('zone', '=', zone)]" />
 					<field name="kebele" domain="[('woreda', '=', woreda)]" />
-									</group>
+				</group>
 
 				</group>
 
@@ -134,6 +134,7 @@
 
 					<group string="Social Economic Data">
 						<field name="hh_size" />
+						<field name="hh_is_household_head"/>
 						<field name="hh_income" />
 						<field name="education" />
 					</group>
@@ -143,7 +144,37 @@
 
 			</xpath>
 
-			<xpath expr="//sheet/notebook" position="inside">
+			<xpath expr="//page[@name='relationships']" position="after">
+				<page string="Land Information" name="lands">
+					<field name="land_information_ids">
+						<tree editable="bottom">
+							<field name="ownership_type" />
+							<field name="total_land_area" />
+							<field name="land_certificate" />
+						</tree>
+					</field>
+				</page>
+
+				<page string="Crop Information" name="crops">
+					<field name="crop_information_ids">
+						<tree editable="bottom">
+							<field name="crop" />
+							<field name="is_diseased" />
+							<field name="illness_type" widget="many2many_tags" required="is_diseased=='yes'" />
+						</tree>
+					</field>
+				</page>
+				<page string="Livestock Information" name="livestocks">
+					<field name="livestock_information_ids">
+						<tree editable="bottom">
+							<field name="livestock_type" />
+							<field name="number_of_livestock" />
+							<field name="is_diseased" />
+							<field name="illness_type" widget="many2many_tags" required="is_diseased=='yes'" />
+						</tree>
+					</field>
+				</page>
+
 				<page string="Farmer Details" sequence="2">
 
 					<group>
@@ -190,38 +221,6 @@
 
 
 
-				</page>
-			</xpath>
-
-
-			<xpath expr="//page[@name='relationships']" position="after">
-				<page string="Land Information" name="lands">
-					<field name="land_information_ids">
-						<tree editable="bottom">
-							<field name="ownership_type" />
-							<field name="total_land_area" />
-							<field name="land_certificate" />
-						</tree>
-					</field>
-				</page>
-				<page string="Crop Information" name="crops">
-					<field name="crop_information_ids">
-						<tree editable="bottom">
-							<field name="crop" />
-							<field name="is_diseased" />
-							<field name="illness_type" widget="many2many_tags" required="is_diseased=='yes'" />
-						</tree>
-					</field>
-				</page>
-				<page string="Livestock Information" name="livestocks">
-					<field name="livestock_information_ids">
-						<tree editable="bottom">
-							<field name="livestock_type" />
-							<field name="number_of_livestock" />
-							<field name="is_diseased" />
-							<field name="illness_type" widget="many2many_tags" required="is_diseased=='yes'" />
-						</tree>
-					</field>
 				</page>
 			</xpath>
 		</field>

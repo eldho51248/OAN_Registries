@@ -8,9 +8,12 @@
     "website": "https://openg2p.org",
     "license": "Other OSI approved licence",
     "development_status": "Alpha",
-    "depends": ["g2p_social_registry"],
+    "depends": ["g2p_social_registry", 'storage_file'],
     "external_dependencies": {"python": ["ethiopian-date "]},
     "data": [
+        "data/region.xml",
+        "data/zone.xml",
+        "data/genders.xml",
         "security/ir.model.access.csv",
         "views/social_registry_menu.xml",
         "views/livestock.xml",
@@ -23,6 +26,8 @@
         # "views/farming_type.xml",
         "views/res_partner.xml",
         "views/crop.xml",
+        "views/land_info.xml"
+        
         # "views/crop_variety_views.xml",
     ],
     "assets": {"web.assets_backend": []},

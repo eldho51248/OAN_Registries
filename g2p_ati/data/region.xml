@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+
+    <record id="region_tigray" model="g2p.region">
+        <field name="code">tigray</field>
+        <field name="name">Tigray</field>
+    </record>
+
+    <record id="region_afar" model="g2p.region">
+        <field name="code">afar</field>
+        <field name="name">Afar</field>
+    </record>
+
+    <record id="region_amhara" model="g2p.region">
+        <field name="code">amhara</field>
+        <field name="name">Amhara</field>
+    </record>
+
+    <record id="region_oromia" model="g2p.region">
+        <field name="code">oromia</field>
+        <field name="name">Oromia</field>
+    </record>
+
+    <record id="region_somali" model="g2p.region">
+        <field name="code">somali</field>
+        <field name="name">Somali</field>
+    </record>
+
+    <record id="region_benishangul_gumuz" model="g2p.region">
+        <field name="code">benishangul_gumuz</field>
+        <field name="name">Benishangul Gumuz</field>
+    </record>
+
+    <record id="region_central_ethiopia" model="g2p.region">
+        <field name="code">central_ethiopia</field>
+        <field name="name">Central Ethiopia</field>
+    </record>
+
+    <record id="region_south_ethiopia" model="g2p.region">
+        <field name="code">south_ethiopia</field>
+        <field name="name">South Ethiopia</field>
+    </record>
+
+    <record id="region_southwest_ethiopia" model="g2p.region">
+        <field name="code">southwest_ethiopia</field>
+        <field name="name">Southwest Ethiopia</field>
+    </record>
+
+    <record id="region_gambela" model="g2p.region">
+        <field name="code">gambela</field>
+        <field name="name">Gambela</field>
+    </record>
+
+    <record id="region_harari" model="g2p.region">
+        <field name="code">harari</field>
+        <field name="name">Harari</field>
+    </record>
+
+    <record id="region_addis_ababa" model="g2p.region">
+        <field name="code">addis_ababa</field>
+        <field name="name">Addis Ababa</field>
+    </record>
+
+    <record id="region_dire_dawa" model="g2p.region">
+        <field name="code">dire_dawa</field>
+        <field name="name">Dire Dawa</field>
+    </record>
+
+    <record id="region_sidama" model="g2p.region">
+        <field name="code">sidama</field>
+        <field name="name">Sidama</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+ <record id="view_g2p_land_info_tree" model="ir.ui.view">
+    <field name="name">view.g2p.land.information.tree</field>
+    <field name="model">g2p.land.information</field>
+    <field name="type">tree</field>
+    <field name="mode">primary</field>
+    <field name="priority" eval="16" />
+    <field name="active" eval="True" />
+    <field name="arch" type="xml">
+        <tree string="g2p_land_info_tree" create="false" delete="false" edit="false">
+
+            <field name="partner_id" />
+            <field name="total_land_area" />
+            <field name="ownership_type" />
+            <field name="land_certificate" />
+        </tree>
+    </field>
+</record>
+
+<record id="view_g2p_land_info_form" model="ir.ui.view">
+    <field name="name">view.land.info.form</field>
+    <field name="model">g2p.land.information</field>
+    <field name="type">form</field>
+    <field name="mode">primary</field>
+    <field name="priority" eval="16" />
+    <field name="active" eval="True" />
+    <field name="arch" type="xml">
+           <form string="g2p_crop_info_form" create="false" delete="false" edit="false">
+           <sheet> 
+            <field name="partner_id" />
+            <field name="total_land_area" />
+            <field name="ownership_type" />
+            <field name="land_certificate" />
+        </sheet> 
+
+
+        </form>
+    </field>
+</record>
+
+<record id="view_g2p_crop_info_tree" model="ir.ui.view">
+    <field name="name">view.g2p.crop.information.tree</field>
+    <field name="model">g2p.crop.information</field>
+    <field name="type">tree</field>
+    <field name="mode">primary</field>
+    <field name="priority" eval="16" />
+    <field name="active" eval="True" />
+    <field name="arch" type="xml">
+        <tree string="model_tree" create="false" delete="false" edit="false">
+            <field name="partner_id" />
+            <field name="crop" />
+            <field name="is_diseased" />
+            <field name="illness_type" />
+        </tree>
+    </field>
+</record>
+ 
+<record id="view_g2p_crop_info_form" model="ir.ui.view">
+    <field name="name">view.crop.infoform</field>
+    <field name="model">g2p.crop.information</field>
+    <field name="type">form</field>
+    <field name="arch" type="xml">
+        <form string="g2p_crop_info_form" create="false" delete="false" edit="false">
+
+    <group>
+
+        <group >
+            <field name="partner_id" />
+        </group>
+
+        <group>
+            <field name="crop" />
+            <field name="is_diseased" />
+        </group>
+    </group> 
+
+
+       <notebook name="Ilness" string="Illness" invisible="is_diseased!='yes'">
+                <page name="Ilness" string="Illness">
+                    <field name="illness_type" />
+            </page>
+        </notebook>
+       
+
+
+        </form>
+    </field>
+</record>
+    
+<record id="view_g2p_livestock_info_tree" model="ir.ui.view">
+    <field name="name">view.g2p.livestock.information.tree</field>
+    <field name="model">g2p.livestock.information</field>
+    <field name="type">tree</field>
+    <field name="mode">primary</field>
+    <field name="priority" eval="16" />
+    <field name="active" eval="True" />
+    <field name="arch" type="xml">
+        <tree string="model_tree" create="false" delete="false" edit="false">
+            <field name="partner_id" />
+            <field name="livestock_type" />
+            <field name="number_of_livestock" />
+            <field name="is_diseased" />
+            <field name="illness_type" />
+        </tree>
+    </field>
+</record>
+
+<record id="view_g2p_livestock_info_form" model="ir.ui.view">
+    <field name="name">view.livestock.form</field>
+    <field name="model">g2p.livestock.information</field>
+    <field name="type">form</field>
+    <field name="mode">primary</field>
+    <field name="priority" eval="16" />
+    <field name="active" eval="True" />
+    <field name="arch" type="xml">
+        <form string="g2p_livestock_info_form" create="false" delete="false" edit="false">
+                <group colspan="2" >
+                <group>
+                    <field name="partner_id" />
+                    </group>
+                   
+                    <group>
+                    <field name="livestock_type" />
+                    <field name="number_of_livestock" />
+                    <field name="is_diseased" />
+                    </group>
+                </group>
+
+                    <notebook>
+                        <page name="Ilness" string="Illness" invisible="is_diseased!='yes'">
+                            <field name="illness_type" />
+                        </page>
+                    </notebook>
+
+        </form>
+    </field>
+</record>
+
+
+
+<!-- 
+<record id="view_model_form" model="ir.ui.view">
+    <field name="name">view.livestock.form</field>
+    <field name="model">model</field>
+    <field name="type">form</field>
+    <field name="mode">primary</field>
+    <field name="priority" eval="16" />
+    <field name="active" eval="True" />
+    <field name="arch" type="xml">
+        <form string="model_form" create="false" delete="false" edit="false">
+            <header>
+            </header>
+            <sheet>
+                <div class="oe_title">
+                    <label for="name" class="oe_edit_only" />
+                    <h1>
+                        <field name="name" class="oe_inline"
+                            placeholder="name" />
+                    </h1>
+                </div>
+                <group>
+
+                </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+<record id="view_model_search" model="ir.ui.view">
+    <field name="name">view.model.search</field>
+    <field name="model">model</field>
+    <field name="type">search</field>
+    <field name="mode">primary</field>
+    <field name="priority" eval="16" />
+    <field name="active" eval="True" />
+    <field name="arch" type="xml">
+        <search string="model_search">
+            <field name="name" />
+            
+        </search>
+    </field>
+</record> -->
+
+
+<record id="action_g2p_livestock_information_act_window" model="ir.actions.act_window">
+    <field name="type">ir.actions.act_window</field>
+    <field name="name">Livestock Information</field>
+    <field name="res_model">g2p.livestock.information</field>
+    <field name="view_mode">tree,form</field> 
+      <!-- <field name="views">[(False, 'tree'), (False, 'form')]</field>   -->
+</record>
+
+<record id="menu_g2p_livestock_info" model="ir.ui.menu" >
+    <field name="name">Livestock Information</field>
+    <field name="sequence" eval="50" />
+    <field name="action" ref="action_g2p_livestock_information_act_window" />
+    <field name="parent_id" ref="g2p_registry_base.g2p_main_menu_root" />
+</record>
+
+
+<record id="action_g2p_crop_information_act_window" model="ir.actions.act_window">
+    <field name="type">ir.actions.act_window</field>
+    <field name="name">Crop Information</field>
+    <field name="res_model">g2p.crop.information</field>
+    <field name="view_mode">tree,form</field>  
+      <!-- <field name="views">[(False, 'tree'), (False, 'form')]</field>  -->
+</record>
+
+
+<record id="menu_g2p_crop_info" model="ir.ui.menu" >
+    <field name="name">Crop Information</field>
+    <field name="sequence" eval="40" />
+    <field name="action" ref="action_g2p_crop_information_act_window" />
+    <field name="parent_id" ref="g2p_registry_base.g2p_main_menu_root" />
+</record>
+
+<record id="action_g2p_land_information_act_window" model="ir.actions.act_window">
+    <field name="type">ir.actions.act_window</field>
+    <field name="name">Land Information</field>
+    <field name="res_model">g2p.land.information</field>
+    <field name="view_mode">tree,form</field>  
+    
+</record>
+
+
+<record id="menu_g2p_land_info" model="ir.ui.menu" >
+    <field name="name">Land Information</field>
+    <field name="sequence" eval="30" />
+    <field name="action" ref="action_g2p_land_information_act_window" />
+    <field name="parent_id" ref="g2p_registry_base.g2p_main_menu_root" />
+</record>
+</odoo>

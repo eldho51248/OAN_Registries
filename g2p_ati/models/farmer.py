@@ -2,7 +2,23 @@ from ethiopian_date import ethiopian_date
 
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
+from datetime import datetime
 
+
+ETHIOPIAN_MONTH_ORDER = {
+        "September": 1,  
+        "October": 2,  
+        "November": 3, 
+        "December": 4,  
+        "January": 5,  
+        "February": 6,  
+        "March": 7,
+        "April": 8,
+        "May": 9,
+        "June": 10,
+        "July": 11,
+        "August": 12,
+    }
 
 class G2PPrimaryCooperative(models.Model):
     _name = "g2p.primary.cooperative"
@@ -88,17 +104,17 @@ class G2PFarmer(models.Model):
     woreda = fields.Many2one("g2p.woreda", domain="[('zone', '=', zone)]")
     kebele = fields.Many2one("g2p.kebele", domain="[('woreda', '=', woreda)]")
 
-    given_name = fields.Char(string="First Name", translate=False)
-    family_name = fields.Char(string="Father Name", translate=False)
-    gf_name_eng = fields.Char(string="Grand Father Name", translate=False)
+    given_name = fields.Char(string="First Name(English)", translate=False)
+    family_name = fields.Char(string="Father Name(English)", translate=False)
+    gf_name_eng = fields.Char(string="Grand Father Name(English)", translate=False)
 
-    first_name_amh = fields.Char(string="ስም", translate=False)
-    family_name_amh = fields.Char(string="የአባት ስም", translate=False)
-    gf_name_amh = fields.Char(string="የአያት ስም", translate=False)
+    first_name_amh = fields.Char(string="First Name(Amharic)", translate=False)
+    family_name_amh = fields.Char(string="Father Name(Amharic)", translate=False)
+    gf_name_amh = fields.Char(string="Grand Father Name(Amharic)", translate=False)
 
-    first_name_oro = fields.Char(string="First Name(Oro)", translate=False)
-    family_name_oro = fields.Char(string="Father Name(Oro)", translate=False)
-    gf_name_amh_oro = fields.Char(string="Grand Father Name(Oro)", translate=False)
+    first_name_oro = fields.Char(string="First Name(Afaan Oromo)", translate=False)
+    family_name_oro = fields.Char(string="Father Name(Afaan Oromo)", translate=False)
+    gf_name_oro = fields.Char(string="Grand Father Name(Afaan Oromo)", translate=False)
 
     # birthdate = fields.Date(string="Date Of Birth(GC)")
     birthdate_ec = fields.Date(string="Date Of Birth(EC)")
@@ -121,12 +137,10 @@ class G2PFarmer(models.Model):
         string="Is Member Of Primary Cooperative? ", selection=[("yes", "Yes"), ("no", "No")]
     )
     primary_cooperatives = fields.Many2one("g2p.primary.cooperative", string="Primary Cooperatives")
-
     is_member_of_cooperative_union = fields.Selection(
         string="Is Member Of Cooperative Union? ", selection=[("yes", "Yes"), ("no", "No")]
     )
     cooperative_unions = fields.Many2one("g2p.cooperative.union", string="Cooperative Unions")
-
     is_member_in_farmer_cluster = fields.Selection(
         string="Is Member In Farmer Cluster? ", selection=[("yes", "Yes"), ("no", "No")]
     )
@@ -174,13 +188,9 @@ class G2PFarmer(models.Model):
     )
 
     no_finace_access = fields.Selection(string="No Finance Access ", selection=[("yes", "Yes"), ("no", "No")])
-
     loans = fields.Selection(string="Loans ", selection=[("yes", "Yes"), ("no", "No")])
-
     insurance = fields.Selection(string="Insurance ", selection=[("yes", "Yes"), ("no", "No")])
-
     savings = fields.Selection(string="Savings ", selection=[("yes", "Yes"), ("no", "No")])
-
     other_farmer_in_hh = fields.Selection(
         string="Is there any other farmer in the household who has separate land? ",
         selection=[("yes", "Yes"), ("no", "No")],
@@ -208,7 +218,8 @@ class G2PFarmer(models.Model):
         ],
         string="Educational Level",
     )
-    hh_income = fields.Float(string="Total Amount")
+    hh_is_household_head = fields.Selection(string="Are You a household head? ", selection=[("yes", "Yes"), ("no", "No")])
+    hh_income = fields.Float(string="Household Income")
     hh_size = fields.Integer(string="Household Size")
     hh_income_type = fields.Selection(
         string="House Hold Income Type",
@@ -223,15 +234,15 @@ class G2PFarmer(models.Model):
     # Land INFORMATIONS
     land_information_ids = fields.One2many("g2p.land.information", "partner_id", string="Land Information")
     crop_information_ids = fields.One2many("g2p.crop.information", "partner_id", string="Crop Information")
-    land_ownership = fields.Selection(
-        selection=[("owner", "Owner"), ("tenant", "Tenant"), ("hybrid", "Hybrid")],
-        compute="_compute_land_ownership",
-        store=True,
-        copy=False,
-        readonly=True,
-        string="Land Ownership",
-    )
-    total_land_area = fields.Integer("Total Land Area")
+    # land_ownership = fields.Selection(
+    #     selection=[("owner", "Owner"), ("tenant", "Tenant"), ("hybrid", "Hybrid")],
+    #     compute="_compute_land_ownership",
+    #     store=True,
+    #     copy=False,
+    #     readonly=True,
+    #     string="Land Ownership",
+    # )
+    # total_land_area = fields.Integer("Total Land Area")
 
     livestock_information_ids = fields.One2many(
         "g2p.livestock.information", "partner_id", string="Live Stock Information"
@@ -256,26 +267,29 @@ class G2PFarmer(models.Model):
             vals.update({"name": name.upper()})
             self.update(vals)
 
-    @api.depends("land_information_ids.total_land_area")
-    def _compute_total_land_area(self):
-        for record in self:
-            total_area = sum(r.total_land_area for r in record.land_information_ids)
-            record.total_land_area = total_area
 
-    @api.depends("land_information_ids.ownership_type")
-    def _compute_land_ownership(self):
-        for record in self:
-            land_info_records = record.land_information_ids
-            owner_count = len(land_info_records.filtered(lambda r: r.ownership_type == "owner"))
-            tenant_count = len(land_info_records.filtered(lambda r: r.ownership_type == "tenant"))
-            if owner_count > 0 and tenant_count == 0:
-                record.land_ownership = "owner"
-            elif tenant_count > 0 and owner_count == 0:
-                record.land_ownership = "tenant"
-            elif owner_count > 0 and tenant_count > 0:
-                record.land_ownership = "hybrid"
-            else:
-                record.land_ownership = False
+    # @api.depends("land_information_ids.total_land_area")
+    # def _compute_total_land_area(self):
+    #     for record in self:
+    #         total_area = sum(r.total_land_area for r in record.land_information_ids)
+    #         record.total_land_area = total_area
+
+
+
+    # @api.depends("land_information_ids.ownership_type")
+    # def _compute_land_ownership(self):
+    #     for record in self:
+    #         land_info_records = record.land_information_ids
+    #         owner_count = len(land_info_records.filtered(lambda r: r.ownership_type == "owner"))
+    #         tenant_count = len(land_info_records.filtered(lambda r: r.ownership_type == "tenant"))
+    #         if owner_count > 0 and tenant_count == 0:
+    #             record.land_ownership = "owner"
+    #         elif tenant_count > 0 and owner_count == 0:
+    #             record.land_ownership = "tenant"
+    #         elif owner_count > 0 and tenant_count > 0:
+    #             record.land_ownership = "hybrid"
+    #         else:
+    #             record.land_ownership = False
 
     @api.onchange("birthdate")
     def _onchange_birthdate(self):
@@ -288,19 +302,21 @@ class G2PFarmer(models.Model):
     def _onchange_birthdate_ec(self):
         if self.birthdate_ec:
             converter = ethiopian_date.EthiopianDateConverter()
+            self.check_birthdate(self.birthdate_ec)
+            
             gregorian_date = converter.to_gregorian(
                 self.birthdate_ec.year, self.birthdate_ec.month, self.birthdate_ec.day
             )
+
             self.birthdate = gregorian_date
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals):
         if "phone_number_ids" in vals and not vals.get("phone_number_ids"):
             raise ValidationError("You must add at least one phone number.")
 
         else:
-            result = super(G2PFarmer).create(vals)
-            return result
+            return super(G2PFarmer, self).create(vals)
 
     @api.depends("no_finace_access")
     def _compute_finance_values(self):
@@ -309,3 +325,13 @@ class G2PFarmer(models.Model):
                 record.loans = "no"
                 record.insurance = "no"
                 record.savings = "no"
+    
+    def check_birthdate(self,birthdate_ec):
+        converter = ethiopian_date.EthiopianDateConverter()
+        ethiopian_date_today = converter.date_to_ethiopian(fields.date.today()) 
+        actual_month_number = ETHIOPIAN_MONTH_ORDER[birthdate_ec.strftime('%B')]
+        actual_selected_ec = datetime(birthdate_ec.year, actual_month_number, birthdate_ec.day).date()
+    
+        if actual_selected_ec > ethiopian_date_today:
+            error_msg = "You can't select a date of birth greater than today"
+            raise ValidationError(error_msg)
