@@ -16,7 +16,7 @@ class G2PLiveStockInformation(models.Model):
     # livestock_bred = fields.Char(string="Breed")
     # livestock_bred = fields.Many2one("g2p.livestock.breed", string="Breed")
 
-    number_of_livestock = fields.Char(string="Number")
+    number_of_livestock = fields.Integer(string="Number")
     # water_resources = fields.Many2many('g2p.water.source', string="What Water Sources do you use?")
     illness_type = fields.Many2many("g2p.livestock.illness.type")
     # illness_images = fields.Many2many("ir.attachment")

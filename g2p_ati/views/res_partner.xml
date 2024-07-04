@@ -21,22 +21,28 @@
 					</div>
 				<!-- </group> -->
 			</xpath>
-
 						<xpath expr="//field[@name='phone_number_ids']/tree" position="attributes">
 				<attribute name="editable">bottom</attribute>
-
-
-
 			</xpath>
+<!-- 			
+			
+
+			<xpath expr="//field[@name='income']" position="replace"/>
+			<xpath expr="//field[@name='civil_status']" position="replace"/>
+			<xpath expr="//field[@name='occupation']" position="replace"/> -->
+			
+	<xpath expr="//group[@colspan='3']/field[@name='income']" position="replace"/>
+	<xpath expr="//group[@colspan='3']/field[@name='civil_status']" position="replace"/>
+	<xpath expr="//group[@colspan='3']/field[@name='occupation']" position="replace"/>
+
+
+
 
 
 			<xpath expr="//field[@name='phone_number_ids']/tree/field[@name='phone_no']" position="after">
 				<field name="phone_type" />
 
 			</xpath>
-
-
-
 
 			<xpath expr="//div[@class='o_row']" position="before">
 
@@ -65,9 +71,6 @@
 
 			</xpath>
 
-
-
-
 			<xpath expr="//field[@name='addl_name']" position="replace">
 			</xpath>
 
@@ -79,18 +82,13 @@
 			<xpath expr="//span[@class='o_form_label o_td_label' and @name='address_name']" position="replace">
 			</xpath>
 
-			<xpath expr="//field[@name='address']" position="replace">
-			</xpath>
+			<xpath expr="//field[@name='address']" position="replace"/>
 
-			<xpath expr="//field[@name='district']" position="replace">
-			</xpath>
+			<xpath expr="//field[@name='district']" position="replace"/>
 
-			<xpath expr="//field[@name='email']" position="replace">
-			</xpath>
+			<xpath expr="//field[@name='email']" position="replace"/>
 
-
-			<xpath expr="//field[@name='birth_place']" position="replace">
-			</xpath>
+			<xpath expr="//field[@name='birth_place']" position="replace"/>
 
 
 

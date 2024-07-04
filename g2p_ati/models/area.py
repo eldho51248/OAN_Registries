@@ -6,6 +6,7 @@ class Region(models.Model):
 
     name = fields.Char()
     code = fields.Char()
+    int_code = fields.Char()
 
 
 class Zone(models.Model):

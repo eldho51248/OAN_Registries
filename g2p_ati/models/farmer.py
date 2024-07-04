@@ -116,10 +116,9 @@ class G2PFarmer(models.Model):
     first_name_oro = fields.Char(string="First Name(Afaan Oromo)", translate=False)
     family_name_oro = fields.Char(string="Father Name(Afaan Oromo)", translate=False)
     gf_name_oro = fields.Char(string="Grand Father Name(Afaan Oromo)", translate=False)
-
-    # birthdate = fields.Date(string="Date Of Birth(GC)")
+    
     birthdate_ec = fields.Date(string="Date Of Birth(EC)")
-    # birthplace = fields.Many2one('res.country', string='Birth Country', default=lambda self: self.env.ref('base.et_001').id)
+    
     birthplace = fields.Many2one("res.country", string="Birth Country")
 
     primary_Language = fields.Many2one("g2p.lang", string="Primary language")
@@ -188,10 +187,11 @@ class G2PFarmer(models.Model):
         string="What Type of Irregation do you use?", selection=[("pump", "Pump"), ("canal", "canal")]
     )
 
-    no_finace_access = fields.Selection(string="No Finance Access ", selection=[("yes", "Yes"), ("no", "No")])
+    no_finace_access = fields.Selection(string="No Finance Access ", selection=[("yes", "Yes"), ("no", "No")], default='no')
     loans = fields.Selection(string="Loans ", selection=[("yes", "Yes"), ("no", "No")])
     insurance = fields.Selection(string="Insurance ", selection=[("yes", "Yes"), ("no", "No")])
     savings = fields.Selection(string="Savings ", selection=[("yes", "Yes"), ("no", "No")])
+    
     other_farmer_in_hh = fields.Selection(
         string="Is there any other farmer in the household who has separate land? ",
         selection=[("yes", "Yes"), ("no", "No")],
