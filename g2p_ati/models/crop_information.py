@@ -13,4 +13,3 @@ class G2PCropInformation(models.Model):
     illness_type = fields.Many2many("g2p.illness.type", string="Disease")
 
     # illness_images = fields.Many2many("ir.attachment")
-

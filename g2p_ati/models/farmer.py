@@ -80,6 +80,7 @@ class G2PWaterSource(models.Model):
         required=True,
     )
 
+
 class G2PFinanceAccess(models.Model):
     _name = "g2p.finance.access"
     _description = "Finance Access"
@@ -201,13 +202,12 @@ class G2PFarmer(models.Model):
         string="What Type of Irregation do you use?", selection=[("pump", "Pump"), ("canal", "canal")]
     )
 
-    
     has_finace_access = fields.Selection(
         string="Do you have Financial Access ", selection=[("yes", "Yes"), ("no", "No")], default="no"
     )
-    
-    finance_accesses = fields.Many2many(comodel_name='g2p.finance.access', string='Finance Accesses')
-    
+
+    finance_accesses = fields.Many2many(comodel_name="g2p.finance.access", string="Finance Accesses")
+
     # loans = fields.Selection(string="Loans ", selection=[("yes", "Yes"), ("no", "No")])
     # insurance = fields.Selection(string="Insurance ", selection=[("yes", "Yes"), ("no", "No")])
     # savings = fields.Selection(string="Savings ", selection=[("yes", "Yes"), ("no", "No")])
@@ -216,8 +216,6 @@ class G2PFarmer(models.Model):
         string="Is there any other farmer in the household who has separate land? ",
         selection=[("yes", "Yes"), ("no", "No")],
     )
-    
-    
 
     # SOCIO-ECONOMIC DATA
     martial_status = fields.Selection(
@@ -341,13 +339,11 @@ class G2PFarmer(models.Model):
         else:
             return super(G2PFarmer, self).create(vals)
 
-
-    @api.onchange('has_finace_access')
+    @api.onchange("has_finace_access")
     def _onchange_has_finace_access(self):
-        if self.has_finace_access == 'no':
+        if self.has_finace_access == "no":
             # Clear all entries in finance_accesses
-            return {'finance_accesses': [(6, 0, [])]}
- 
+            return {"finance_accesses": [(6, 0, [])]}
 
     def check_birthdate(self, birthdate_ec):
         converter = ethiopian_date.EthiopianDateConverter()

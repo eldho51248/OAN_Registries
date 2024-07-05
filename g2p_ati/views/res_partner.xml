@@ -31,9 +31,9 @@
 			<xpath expr="//field[@name='civil_status']" position="replace"/>
 			<xpath expr="//field[@name='occupation']" position="replace"/> -->
 
-	<xpath expr="//group[@colspan='3']/field[@name='income']" position="replace"><field name="email"/></xpath>
-	<xpath expr="//group[@colspan='3']/field[@name='civil_status']" position="replace" >
-	<field name="martial_status"/>
+	<xpath expr="//group[@colspan='3']/field[@name='income']" position="replace"><field name="email" /></xpath>
+	<xpath expr="//group[@colspan='3']/field[@name='civil_status']" position="replace">
+	<field name="martial_status" />
 	</xpath>
 
 	<xpath expr="//group[@colspan='3']/field[@name='occupation']" position="replace" />
