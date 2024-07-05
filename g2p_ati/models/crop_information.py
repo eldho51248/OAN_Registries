@@ -10,12 +10,7 @@ class G2PCropInformation(models.Model):
     is_diseased = fields.Selection(
         string="Does this crop have been affected by illness? ", selection=[("yes", "Yes"), ("no", "No")]
     )
-    illness_type = fields.Many2many("g2p.crop.illness.type", string="Disease")
+    illness_type = fields.Many2many("g2p.illness.type", string="Disease")
 
     # illness_images = fields.Many2many("ir.attachment")
 
-
-class G2PCropIllnessType(models.Model):
-    _name = "g2p.crop.illness.type"
-
-    name = fields.Char()

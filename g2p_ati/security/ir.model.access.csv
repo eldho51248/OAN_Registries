@@ -4,11 +4,12 @@ g2p_farming_type_admin,Farming Type Admin Access,model_g2p_farming_type,,1,1,1,1
 g2p_crop_information_admin,Crop Information Admin Access,model_g2p_crop_information,,1,1,1,1
 g2p_livestock_information_admin,Livestock Information Admin Access,model_g2p_livestock_information,,1,1,1,1
 g2p_livestock_type_admin,Livestock Type Access,model_g2p_livestock_type,base.group_user,1,1,1,1
-g2p_crop_illness_type_admin,Crop Illness Type Admin Access,model_g2p_crop_illness_type,,1,1,1,1
-g2p_livestock_illness_type_admin,Livestock Illness Type Admin,model_g2p_livestock_illness_type,,1,1,1,1
 access_g2p_cooperative_union,g2p_cooperative_union_access,model_g2p_cooperative_union,base.group_user,1,1,1,1
 access_g2p_primary_commodity,g2p_primary_commodity_access,model_g2p_primary_commodity,base.group_user,1,1,1,1
 access_g2p_lang,g2p_lang_access,model_g2p_lang,base.group_user,1,1,1,1
+access_g2p_finances_access,g2p_finance_access,model_g2p_finance_access,base.group_user,1,1,1,1
+access_g2p_illness_source,g2p_illness,model_g2p_illness_type,base.group_user,1,1,1,1
+access_g2p_machinery,g2p_machinery,model_g2p_machinery,base.group_user,1,1,1,1
 access_g2p_primary_cooperative,g2p_primary_cooperative_access,model_g2p_primary_cooperative,base.group_user,1,1,1,1
 access_g2p_kebele_manager,g2p_kebele_manager,model_g2p_kebele,base.group_user,1,1,1,1
 access_g2p_woreda_manager,g2p_woreda_manager,model_g2p_woreda,base.group_user,1,1,1,1

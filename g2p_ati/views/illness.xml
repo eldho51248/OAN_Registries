@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+<record id="g2p_illness_action" model="ir.actions.act_window">
+    <field name="name">Language</field>
+    <field name="res_model">g2p.lang</field>
+    <field name="view_mode">tree,form</field>
+</record>
+
+    <menuitem
+        id="g2p_ilness_menu"
+        action="g2p_illness_action"
+        name="Illness Types"
+        sequence="620"
+        groups="g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
+        parent="g2p_registry_base.g2p_configuration_menu_root"
+    />
+</odoo>

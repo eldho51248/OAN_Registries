@@ -31,8 +31,11 @@
 			<xpath expr="//field[@name='civil_status']" position="replace"/>
 			<xpath expr="//field[@name='occupation']" position="replace"/> -->
 
-	<xpath expr="//group[@colspan='3']/field[@name='income']" position="replace" />
-	<xpath expr="//group[@colspan='3']/field[@name='civil_status']" position="replace" />
+	<xpath expr="//group[@colspan='3']/field[@name='income']" position="replace"><field name="email"/></xpath>
+	<xpath expr="//group[@colspan='3']/field[@name='civil_status']" position="replace" >
+	<field name="martial_status"/>
+	</xpath>
+
 	<xpath expr="//group[@colspan='3']/field[@name='occupation']" position="replace" />
 
 
@@ -134,6 +137,7 @@
 						<field name="hh_size" />
 						<field name="hh_is_household_head" />
 						<field name="hh_income" />
+						<field name="hh_income_type" />
 						<field name="education" />
 					</group>
 
@@ -209,10 +213,8 @@
 
 
 						<group name="name" string="Financial Services">
-							<field name="no_finace_access" />
-							<field name="loans" readonly="no_finace_access!='no'" />
-							<field name="insurance" readonly="no_finace_access!='no'" />
-							<field name="savings" readonly="no_finace_access!='no'" />
+							<field name="has_finace_access" />
+							<field name="finance_accesses" readonly="has_finace_access!='yes'" />
 						</group>
 					</group>
 

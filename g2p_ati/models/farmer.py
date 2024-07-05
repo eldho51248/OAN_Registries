@@ -80,6 +80,20 @@ class G2PWaterSource(models.Model):
         required=True,
     )
 
+class G2PFinanceAccess(models.Model):
+    _name = "g2p.finance.access"
+    _description = "Finance Access"
+
+    _rec_name = "name"
+    _order = "name ASC"
+
+    name = fields.Char(
+        required=True,
+    )
+    code = fields.Char(
+        required=True,
+    )
+
 
 class G2PMachinery(models.Model):
     _name = "g2p.machinery"
@@ -187,17 +201,23 @@ class G2PFarmer(models.Model):
         string="What Type of Irregation do you use?", selection=[("pump", "Pump"), ("canal", "canal")]
     )
 
-    no_finace_access = fields.Selection(
-        string="No Finance Access ", selection=[("yes", "Yes"), ("no", "No")], default="no"
+    
+    has_finace_access = fields.Selection(
+        string="Do you have Financial Access ", selection=[("yes", "Yes"), ("no", "No")], default="no"
     )
-    loans = fields.Selection(string="Loans ", selection=[("yes", "Yes"), ("no", "No")])
-    insurance = fields.Selection(string="Insurance ", selection=[("yes", "Yes"), ("no", "No")])
-    savings = fields.Selection(string="Savings ", selection=[("yes", "Yes"), ("no", "No")])
+    
+    finance_accesses = fields.Many2many(comodel_name='g2p.finance.access', string='Finance Accesses')
+    
+    # loans = fields.Selection(string="Loans ", selection=[("yes", "Yes"), ("no", "No")])
+    # insurance = fields.Selection(string="Insurance ", selection=[("yes", "Yes"), ("no", "No")])
+    # savings = fields.Selection(string="Savings ", selection=[("yes", "Yes"), ("no", "No")])
 
     other_farmer_in_hh = fields.Selection(
         string="Is there any other farmer in the household who has separate land? ",
         selection=[("yes", "Yes"), ("no", "No")],
     )
+    
+    
 
     # SOCIO-ECONOMIC DATA
     martial_status = fields.Selection(
@@ -212,12 +232,12 @@ class G2PFarmer(models.Model):
 
     education = fields.Selection(
         [
-            ("illeterate", "Illeterate"),
-            ("readwrite", "Can Read and Write"),
+            ("illitrate", "Illitrate"),
+            ("read_write", "Can Read and Write"),
             ("basic", "Basic(1-8)"),
             ("intermediary", "Intermediary(9-12)"),
             ("technic", "Vocational and Technical School"),
-            ("higher", "Higher education(Unversity, College)"),
+            ("higher_education", "Higher Education(University and College)"),
         ],
         string="Educational Level",
     )
@@ -321,13 +341,13 @@ class G2PFarmer(models.Model):
         else:
             return super(G2PFarmer, self).create(vals)
 
-    @api.depends("no_finace_access")
-    def _compute_finance_values(self):
-        for record in self:
-            if record.no_finace_access != "yes":
-                record.loans = "no"
-                record.insurance = "no"
-                record.savings = "no"
+
+    @api.onchange('has_finace_access')
+    def _onchange_has_finace_access(self):
+        if self.has_finace_access == 'no':
+            # Clear all entries in finance_accesses
+            return {'finance_accesses': [(6, 0, [])]}
+ 
 
     def check_birthdate(self, birthdate_ec):
         converter = ethiopian_date.EthiopianDateConverter()
