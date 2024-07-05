@@ -34,6 +34,10 @@ class G2PPrimaryCooperative(models.Model):
     code = fields.Char(
         required=True,
     )
+    _sql_constraints = [('code_unique', 'unique(code)', "The code must be unique!")]
+    
+    
+    
 
 
 class G2PCooperativeUnion(models.Model):
@@ -49,6 +53,10 @@ class G2PCooperativeUnion(models.Model):
     code = fields.Char(
         required=True,
     )
+    _sql_constraints = [('code_unique', 'unique(code)', "The code must be unique!")]
+
+    
+    
 
 
 class G2PPrimaryCommodity(models.Model):
@@ -58,12 +66,12 @@ class G2PPrimaryCommodity(models.Model):
     _rec_name = "name"
     _order = "name ASC"
 
-    name = fields.Char(
-        required=True,
-    )
-    code = fields.Char(
-        required=True,
-    )
+    name = fields.Char(required=True)
+    code = fields.Char(required=True)
+    _sql_constraints = [('code_unique', 'unique(code)', "The code must be unique!")]
+    
+    
+
 
 
 class G2PWaterSource(models.Model):
@@ -79,6 +87,10 @@ class G2PWaterSource(models.Model):
     code = fields.Char(
         required=True,
     )
+    _sql_constraints = [('code_unique', 'unique(code)', "The code must be unique!")]
+    
+    
+    
 
 
 class G2PFinanceAccess(models.Model):
@@ -94,6 +106,10 @@ class G2PFinanceAccess(models.Model):
     code = fields.Char(
         required=True,
     )
+    _sql_constraints = [('code_unique', 'unique(code)', "The code must be unique!")]
+    
+    
+    
 
 
 class G2PMachinery(models.Model):
@@ -109,6 +125,11 @@ class G2PMachinery(models.Model):
     code = fields.Char(
         required=True,
     )
+    _sql_constraints = [('code_unique', 'unique(code)', "The code must be unique!")]
+    
+    
+    
+    
 
 
 class G2PFarmer(models.Model):
@@ -234,7 +255,6 @@ class G2PFarmer(models.Model):
             ("read_write", "Can Read and Write"),
             ("basic", "Basic(1-8)"),
             ("intermediary", "Intermediary(9-12)"),
-            ("technic", "Vocational and Technical School"),
             ("higher_education", "Higher Education(University and College)"),
         ],
         string="Educational Level",

@@ -5,7 +5,7 @@
         <field name="model">g2p.zone</field>
         <field name="priority">1</field>
         <field name="arch" type="xml">
-            <tree editable="top">
+            <tree string="Zones" create="true" delete="true" edit="true" editable="bottom">
                 <field name="region" required="1" />
                 <field name="code" required="1" />
                 <field name="name" required="1" />

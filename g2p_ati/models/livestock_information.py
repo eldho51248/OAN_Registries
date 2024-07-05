@@ -27,4 +27,5 @@ class G2PIllnessType(models.Model):
 
     name = fields.Char()
     code = fields.Char()
-    type = fields.Selection(string="Type", selection=[("crop", "Crop"), ("animal", "Livestock")])
+    illness_type = fields.Selection(string="Type", selection=[("crop", "Crop"), ("animal", "Livestock")])
+    _sql_constraints = [('code_unique', 'unique(code)', "The code must be unique!")]

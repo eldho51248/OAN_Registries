@@ -5,7 +5,7 @@
         <field name="model">g2p.kebele</field>
         <field name="priority">1</field>
         <field name="arch" type="xml">
-            <tree editable="top">
+         <tree string="Kebele" create="true" delete="true" edit="true" editable="bottom">
                 <field name="woreda" required="1" />
                 <field name="code" required="1" />
                 <field name="name" required="1" />

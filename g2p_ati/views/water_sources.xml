@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
+
+<record id="g2p_water_source_tree" model="ir.ui.view">
+    <field name="name">g2p.water.source.view.form</field>
+    <field name="model">g2p.water.source</field>
+    <field name="arch" type="xml">
+         <tree string="Water Sources" create="true" delete="true" edit="true" editable="bottom">
+                <field name="name"/>
+                <field name="code"/>
+        </tree>
+    </field>
+</record>
+
+
+
+
+
 <record id="g2p_water_source_action" model="ir.actions.act_window">
     <field name="name">Water Sources</field>
     <field name="res_model">g2p.water.source</field>

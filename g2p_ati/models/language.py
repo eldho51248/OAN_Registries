@@ -6,3 +6,6 @@ class G2pLang(models.Model):
 
     name = fields.Char(string="Language")
     code = fields.Char(string="Code")
+    _sql_constraints = [('code_unique', 'unique(code)', "The code must be unique!")]
+    
+
