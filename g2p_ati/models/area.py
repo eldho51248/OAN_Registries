@@ -7,9 +7,7 @@ class Region(models.Model):
     name = fields.Char()
     code = fields.Char()
     int_code = fields.Char()
-    _sql_constraints = [('code_unique', 'unique(code)', "The code must be unique!")]
-    
-    
+    _sql_constraints = [("code_unique", "unique(code)", "The code must be unique!")]
 
 
 class Zone(models.Model):
@@ -18,9 +16,7 @@ class Zone(models.Model):
     region = fields.Many2one("g2p.region", string="Region")
     code = fields.Char()
     name = fields.Char()
-    _sql_constraints = [('code_unique', 'unique(code)', "The code must be unique!")]
-    
-    
+    _sql_constraints = [("code_unique", "unique(code)", "The code must be unique!")]
 
 
 class Woreda(models.Model):
@@ -29,8 +25,7 @@ class Woreda(models.Model):
     zone = fields.Many2one("g2p.zone", string="Zone")
     code = fields.Char()
     name = fields.Char()
-    _sql_constraints = [('code_unique', 'unique(code)', "The code must be unique!")]
-    
+    _sql_constraints = [("code_unique", "unique(code)", "The code must be unique!")]
 
 
 class Kebele(models.Model):
@@ -39,5 +34,4 @@ class Kebele(models.Model):
     woreda = fields.Many2one("g2p.woreda", string="Woreda")
     code = fields.Char()
     name = fields.Char()
-    _sql_constraints = [('code_unique', 'unique(code)', "The code must be unique!")]
-    
+    _sql_constraints = [("code_unique", "unique(code)", "The code must be unique!")]

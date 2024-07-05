@@ -5,11 +5,11 @@
     <field name="name">g2p.illness.type.view.form</field>
     <field name="model">g2p.illness.type</field>
     <field name="arch" type="xml">
-    
+
     <tree string="Illness Types" create="true" delete="true" edit="true" editable="bottom">
-                <field name="name"/>
-                <field name="code"/>
-                <field name="illness_type"/>
+                <field name="name" />
+                <field name="code" />
+                <field name="illness_type" />
         </tree>
     </field>
 </record>

@@ -9,8 +9,8 @@
     <field name="arch" type="xml">
          <tree string="Primary Commodity" create="true" delete="true" edit="true" editable="bottom">
 
-                <field name="name"/>
-                <field name="code"/>
+                <field name="name" />
+                <field name="code" />
         </tree>
     </field>
 </record>

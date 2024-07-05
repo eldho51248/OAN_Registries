@@ -15,7 +15,7 @@
         </field>
     </record>
 
-   
+
 
 
     <record id="g2p_crop_view_tree_action" model="ir.actions.act_window">

@@ -6,8 +6,8 @@ class G2PLivestockType(models.Model):
 
     name = fields.Char()
     code = fields.Char()
-    
-    _sql_constraints = [('code_unique', 'unique(code)', "The code must be unique!")]
+
+    _sql_constraints = [("code_unique", "unique(code)", "The code must be unique!")]
 
 
 # class G2PLivestockBreed(models.Model):

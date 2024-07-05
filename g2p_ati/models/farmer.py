@@ -34,10 +34,7 @@ class G2PPrimaryCooperative(models.Model):
     code = fields.Char(
         required=True,
     )
-    _sql_constraints = [('code_unique', 'unique(code)', "The code must be unique!")]
-    
-    
-    
+    _sql_constraints = [("code_unique", "unique(code)", "The code must be unique!")]
 
 
 class G2PCooperativeUnion(models.Model):
@@ -53,10 +50,7 @@ class G2PCooperativeUnion(models.Model):
     code = fields.Char(
         required=True,
     )
-    _sql_constraints = [('code_unique', 'unique(code)', "The code must be unique!")]
-
-    
-    
+    _sql_constraints = [("code_unique", "unique(code)", "The code must be unique!")]
 
 
 class G2PPrimaryCommodity(models.Model):
@@ -68,10 +62,7 @@ class G2PPrimaryCommodity(models.Model):
 
     name = fields.Char(required=True)
     code = fields.Char(required=True)
-    _sql_constraints = [('code_unique', 'unique(code)', "The code must be unique!")]
-    
-    
-
+    _sql_constraints = [("code_unique", "unique(code)", "The code must be unique!")]
 
 
 class G2PWaterSource(models.Model):
@@ -87,10 +78,7 @@ class G2PWaterSource(models.Model):
     code = fields.Char(
         required=True,
     )
-    _sql_constraints = [('code_unique', 'unique(code)', "The code must be unique!")]
-    
-    
-    
+    _sql_constraints = [("code_unique", "unique(code)", "The code must be unique!")]
 
 
 class G2PFinanceAccess(models.Model):
@@ -106,10 +94,7 @@ class G2PFinanceAccess(models.Model):
     code = fields.Char(
         required=True,
     )
-    _sql_constraints = [('code_unique', 'unique(code)', "The code must be unique!")]
-    
-    
-    
+    _sql_constraints = [("code_unique", "unique(code)", "The code must be unique!")]
 
 
 class G2PMachinery(models.Model):
@@ -125,11 +110,7 @@ class G2PMachinery(models.Model):
     code = fields.Char(
         required=True,
     )
-    _sql_constraints = [('code_unique', 'unique(code)', "The code must be unique!")]
-    
-    
-    
-    
+    _sql_constraints = [("code_unique", "unique(code)", "The code must be unique!")]
 
 
 class G2PFarmer(models.Model):
