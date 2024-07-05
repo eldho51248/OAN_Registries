@@ -196,6 +196,9 @@
 						<group name="name" string="Access To Resources">
 							<field name="access_to_machinery" />
 							<field name="type_of_machinery" invisible="access_to_machinery!='yes'" />
+							<field name="crop_water_sources" />
+							<field name="livestock_water_sources" />
+
 						</group>
 
 					</group>
