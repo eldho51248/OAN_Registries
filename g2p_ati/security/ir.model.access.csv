@@ -1,6 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 g2p_crop_admin,Crop Admin Access,model_g2p_crop,,1,1,1,1
 g2p_crop_information_admin,Crop Information Admin Access,model_g2p_crop_information,,1,1,1,1
+g2p_land_information_admin,Land Information Admin Access,model_g2p_land_information,,1,1,1,1
 g2p_livestock_information_admin,Livestock Information Admin Access,model_g2p_livestock_information,,1,1,1,1
 g2p_livestock_type_admin,Livestock Type Access,model_g2p_livestock_type,base.group_user,1,1,1,1
 access_g2p_cooperative_union,g2p_cooperative_union_access,model_g2p_cooperative_union,base.group_user,1,1,1,1
@@ -15,3 +16,4 @@ access_g2p_woreda_manager,g2p_woreda_manager,model_g2p_woreda,base.group_user,1,
 access_g2p_zone_manager,g2p_zone_manager,model_g2p_zone,base.group_user,1,1,1,1
 access_g2p_region_manager,g2p_region_manager,model_g2p_region,base.group_user,1,1,1,1
 access_g2p_water_source_manager,g2p_water_source,model_g2p_water_source,base.group_user,1,1,1,1
+access_g2p_hh_income_manager,g2p_g2p_hh_income,model_g2p_hh_income,base.group_user,1,1,1,1

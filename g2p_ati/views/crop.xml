@@ -30,7 +30,6 @@
         action="g2p_crop_view_tree_action"
         name="Crops"
         sequence="610"
-        groups="g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
         parent="g2p_registry_base.g2p_configuration_menu_root"
     />
 

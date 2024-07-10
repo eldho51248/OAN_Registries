@@ -23,7 +23,6 @@
 	<menuitem
         id="g2p_livestock_type_menu"
         action="g2p_livestock_type_view_tree_action"
-        groups="g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
         name="Livestock Types"
         sequence="600"
         parent="g2p_registry_base.g2p_configuration_menu_root"

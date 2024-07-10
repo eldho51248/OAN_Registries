@@ -19,7 +19,7 @@ class G2PLiveStockInformation(models.Model):
     number_of_livestock = fields.Integer(string="Number")
     # water_resources = fields.Many2many('g2p.water.source', string="What Water Sources do you use?")
     illness_type = fields.Many2many("g2p.illness.type")
-    # illness_images = fields.Many2many("ir.attachment")
+
 
 
 class G2PIllnessType(models.Model):

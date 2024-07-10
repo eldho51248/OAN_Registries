@@ -81,6 +81,23 @@ class G2PWaterSource(models.Model):
     _sql_constraints = [("code_unique", "unique(code)", "The code must be unique!")]
 
 
+class G2PHHIncome(models.Model):
+    _name = "g2p.hh.income"
+    _description = "House Hold Income"
+
+    _rec_name = "name"
+    _order = "name ASC"
+
+    name = fields.Char(
+        required=True,
+    )
+    code = fields.Char(
+        required=True,
+    )
+    _sql_constraints = [("code_unique", "unique(code)", "The code must be unique!")]
+
+
+
 class G2PFinanceAccess(models.Model):
     _name = "g2p.finance.access"
     _description = "Finance Access"
@@ -243,17 +260,18 @@ class G2PFarmer(models.Model):
     hh_is_household_head = fields.Selection(
         string="Are You a household head? ", selection=[("yes", "Yes"), ("no", "No")]
     )
-    hh_income = fields.Float(string="Household Income")
+    hh_income_type = fields.Many2many(comodel_name='g2p.hh.income', string="House Hold Income")
     hh_size = fields.Integer(string="Household Size")
-    hh_income_type = fields.Selection(
-        string="House Hold Income Type",
-        selection=[
-            ("crop", "Crop"),
-            ("livestock", "Livestock"),
-            ("gov_ngo", "Government/NGO Support"),
-            ("other", "Other"),
-        ],
-    )
+    
+    # hh_income_type = fields.Selection(
+    #     string="House Hold Income Type",
+    #     selection=[
+    #         ("crop", "Crop"),
+    #         ("livestock", "Livestock"),
+    #         ("gov_ngo", "Government/NGO Support"),
+    #         ("other", "Other"),
+    #     ],
+    # )
 
     # Land INFORMATIONS
     land_information_ids = fields.One2many("g2p.land.information", "partner_id", string="Land Information")

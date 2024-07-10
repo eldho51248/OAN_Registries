@@ -66,13 +66,24 @@
 						<field name="gf_name_amh" placecholder="የአያት ስም" />
 					</group>
 
-					<!-- <group string="Afan Oromo">
+
+					 <!-- <group name="prefered_language" string="Afan Oromo">
 						<field name="first_name_oro" placecholder="Maqaa" />
 						<field name="family_name_oro" placecholder="Maqaa Giddu Galeessaa" />
 						<field name="gf_name_oro" placecholder="Maqaa Akaakayyuu" />
-					</group> -->
+					</group>  -->
+
+
+					 <!-- <group name="prefered_language" string="prefered_language" >
+						<field name="first_name_oro" placecholder="Maqaa" />
+						<field name="family_name_oro" placecholder="Maqaa Giddu Galeessaa"  />
+						<field name="gf_name_oro" placecholder="Maqaa Akaakayyuu" />
+					</group>  -->
+
+
 
 				</group>
+
 
 			</xpath>
 
@@ -137,9 +148,8 @@
 
 					<group string="Social Economic Data">
 						<field name="hh_size" />
-						<field name="hh_is_household_head" />
-						<field name="hh_income" />
-						<field name="hh_income_type" />
+						<field name="hh_is_household_head"/>
+						<field name="hh_income_type"  create="False" widget="many2many_tags"  />
 						<field name="education" />
 					</group>
 
@@ -168,9 +178,9 @@
 
 						<group name="name" string="Access To Resources">
 							<field name="access_to_machinery" />
-							<field name="type_of_machinery" invisible="access_to_machinery!='yes'" />
-							<field name="crop_water_sources" />
-							<field name="livestock_water_sources" />
+							<field name="type_of_machinery" create="False" widget="many2many_tags" invisible="access_to_machinery!='yes'" />
+							<field name="crop_water_sources" create="False" widget="many2many_tags" />
+							<field name="livestock_water_sources" create="False" widget="many2many_tags" />
 
 						</group>
 
@@ -190,7 +200,7 @@
 
 						<group name="name" string="Financial Services">
 							<field name="has_finace_access" />
-							<field name="finance_accesses" readonly="has_finace_access!='yes'" />
+							<field name="finance_accesses" create="False" widget="many2many_tags" readonly="has_finace_access!='yes'" />
 						</group>
 					</group>
 
@@ -209,6 +219,7 @@
 						<tree editable="bottom">
 							<field name="ownership_type" />
 							<field name="total_land_area" />
+							<field  name="land_id"/>
 							<field name="land_certificate" />
 						</tree>
 					</field>

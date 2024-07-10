@@ -26,6 +26,7 @@
         "views/lang.xml",
         "views/illness.xml",
         "views/water_sources.xml",
+        "views/hh_income_type.xml",
         # "views/farming_type.xml",
         "views/res_partner.xml",
         "views/crop.xml",

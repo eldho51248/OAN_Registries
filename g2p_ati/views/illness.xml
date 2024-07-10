@@ -28,7 +28,6 @@
         action="g2p_illness_action"
         name="Illness Types"
         sequence="620"
-        groups="g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
         parent="g2p_registry_base.g2p_configuration_menu_root"
     />
 </odoo>
