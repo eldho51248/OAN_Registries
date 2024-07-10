@@ -97,7 +97,6 @@ class G2PHHIncome(models.Model):
     _sql_constraints = [("code_unique", "unique(code)", "The code must be unique!")]
 
 
-
 class G2PFinanceAccess(models.Model):
     _name = "g2p.finance.access"
     _description = "Finance Access"
@@ -260,9 +259,9 @@ class G2PFarmer(models.Model):
     hh_is_household_head = fields.Selection(
         string="Are You a household head? ", selection=[("yes", "Yes"), ("no", "No")]
     )
-    hh_income_type = fields.Many2many(comodel_name='g2p.hh.income', string="House Hold Income")
+    hh_income_type = fields.Many2many(comodel_name="g2p.hh.income", string="House Hold Income")
     hh_size = fields.Integer(string="Household Size")
-    
+
     # hh_income_type = fields.Selection(
     #     string="House Hold Income Type",
     #     selection=[

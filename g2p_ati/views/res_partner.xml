@@ -148,8 +148,8 @@
 
 					<group string="Social Economic Data">
 						<field name="hh_size" />
-						<field name="hh_is_household_head"/>
-						<field name="hh_income_type"  create="False" widget="many2many_tags"  />
+						<field name="hh_is_household_head" />
+						<field name="hh_income_type" create="False" widget="many2many_tags" />
 						<field name="education" />
 					</group>
 
@@ -178,7 +178,12 @@
 
 						<group name="name" string="Access To Resources">
 							<field name="access_to_machinery" />
-							<field name="type_of_machinery" create="False" widget="many2many_tags" invisible="access_to_machinery!='yes'" />
+							<field
+                                name="type_of_machinery"
+                                create="False"
+                                widget="many2many_tags"
+                                invisible="access_to_machinery!='yes'"
+                            />
 							<field name="crop_water_sources" create="False" widget="many2many_tags" />
 							<field name="livestock_water_sources" create="False" widget="many2many_tags" />
 
@@ -219,7 +224,7 @@
 						<tree editable="bottom">
 							<field name="ownership_type" />
 							<field name="total_land_area" />
-							<field  name="land_id"/>
+							<field name="land_id" />
 							<field name="land_certificate" />
 						</tree>
 					</field>

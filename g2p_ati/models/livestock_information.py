@@ -21,7 +21,6 @@ class G2PLiveStockInformation(models.Model):
     illness_type = fields.Many2many("g2p.illness.type")
 
 
-
 class G2PIllnessType(models.Model):
     _name = "g2p.illness.type"
 
