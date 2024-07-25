@@ -5,7 +5,7 @@
     <field name="name">g2p.hh.income.view.form</field>
     <field name="model">g2p.hh.income</field>
     <field name="arch" type="xml">
-         <tree string="Household income" create="true" delete="true" edit="true" editable="bottom">
+         <tree create="true" delete="true" edit="true" editable="bottom">
                 <field name="name" />
                 <field name="code" />
         </tree>

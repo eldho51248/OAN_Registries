@@ -13,7 +13,7 @@ class Region(models.Model):
 class Zone(models.Model):
     _name = "g2p.zone"
 
-    region = fields.Many2one("g2p.region", string="Region")
+    region = fields.Many2one("g2p.region")
     code = fields.Char()
     name = fields.Char()
     _sql_constraints = [("code_unique", "unique(code)", "The code must be unique!")]
@@ -22,7 +22,7 @@ class Zone(models.Model):
 class Woreda(models.Model):
     _name = "g2p.woreda"
 
-    zone = fields.Many2one("g2p.zone", string="Zone")
+    zone = fields.Many2one("g2p.zone")
     code = fields.Char()
     name = fields.Char()
     _sql_constraints = [("code_unique", "unique(code)", "The code must be unique!")]
@@ -31,7 +31,7 @@ class Woreda(models.Model):
 class Kebele(models.Model):
     _name = "g2p.kebele"
 
-    woreda = fields.Many2one("g2p.woreda", string="Woreda")
+    woreda = fields.Many2one("g2p.woreda")
     code = fields.Char()
     name = fields.Char()
     _sql_constraints = [("code_unique", "unique(code)", "The code must be unique!")]

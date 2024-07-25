@@ -1,5 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 g2p_crop_admin,Crop Admin Access,model_g2p_crop,,1,1,1,1
+g2p_crop_category,Crop Category Access,model_g2p_crop_category,,1,1,1,1
 g2p_crop_information_admin,Crop Information Admin Access,model_g2p_crop_information,,1,1,1,1
 g2p_land_information_admin,Land Information Admin Access,model_g2p_land_information,,1,1,1,1
 g2p_livestock_information_admin,Livestock Information Admin Access,model_g2p_livestock_information,,1,1,1,1

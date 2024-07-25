@@ -133,6 +133,9 @@ class G2PFarmer(models.Model):
     _inherit = "res.partner"
 
     # Basic Information
+    uid = fields.Char("UID")
+    rid = fields.Char("RID")
+
     regionn = fields.Many2one("g2p.region", string="Region")
     zone = fields.Many2one("g2p.zone", domain="[('region', '=', region)]")
     woreda = fields.Many2one("g2p.woreda", domain="[('zone', '=', zone)]")
@@ -150,16 +153,23 @@ class G2PFarmer(models.Model):
     family_name_oro = fields.Char(string="Father Name(Afaan Oromo)", translate=False)
     gf_name_oro = fields.Char(string="Grand Father Name(Afaan Oromo)", translate=False)
 
+    farmer_location_longitude = fields.Float(string="Longitude")
+    farmer_location_latitude = fields.Float(string="Latitude")
+
+    has_personal_phone = fields.Selection(
+        string="Do you have a personal phone number? ", selection=[("yes", "Yes"), ("no", "No")]
+    )
+    has_national_id = fields.Selection(
+        string="Do you have a national id? ", selection=[("yes", "Yes"), ("no", "No")]
+    )
+
     birthdate_ec = fields.Date(string="Date Of Birth(EC)")
 
-    birthplace = fields.Many2one("res.country", string="Birth Country")
-
-    primary_Language = fields.Many2one("g2p.lang", string="Primary language")
+    primary_Language = fields.Many2one("g2p.lang")
 
     is_farmer = fields.Selection(string="Are you a Farmer? ", selection=[("yes", "Yes"), ("no", "No")])
 
     farming_type = fields.Selection(
-        string="Farming Type",
         selection=[("agro_pastoral", "Agro-Pastoral"), ("pastoral", "Pastoral"), ("mixed", "Mixed Farming")],
     )
 
@@ -169,25 +179,30 @@ class G2PFarmer(models.Model):
     is_member_of_primary_cooperative = fields.Selection(
         string="Is Member Of Primary Cooperative? ", selection=[("yes", "Yes"), ("no", "No")]
     )
-    primary_cooperatives = fields.Many2one("g2p.primary.cooperative", string="Primary Cooperatives")
+    primary_cooperatives = fields.Many2one("g2p.primary.cooperative")
     is_member_of_cooperative_union = fields.Selection(
         string="Is Member Of Cooperative Union? ", selection=[("yes", "Yes"), ("no", "No")]
     )
-    cooperative_unions = fields.Many2one("g2p.cooperative.union", string="Cooperative Unions")
+    cooperative_unions = fields.Many2one("g2p.cooperative.union")
     is_member_in_farmer_cluster = fields.Selection(
         string="Is Member In Farmer Cluster? ", selection=[("yes", "Yes"), ("no", "No")]
     )
 
-    primary_commodity = fields.Many2one("g2p.primary.commodity", string="Primary Commodity")
+    primary_commodity = fields.Many2one("g2p.primary.commodity")
     role_in_farmer_cluster = fields.Selection(
-        string="Role In Farmer Cluster",
         selection=[
             ("lead", "Lead"),
             ("deputy", "Deputy"),
             ("secretary", "Secretary"),
-            ("accountant", "Accounatnt"),
+            ("accountant", "Accountant"),
             ("member", "Member"),
         ],
+    )
+
+    state = fields.Selection(
+        tracking=True,
+        selection=[("draft", "Draft"), ("update_requested", "Update Requested"), ("approved", "Approved")],
+        default="draft",
     )
 
     # AGRICULTURAL RESOURCES
@@ -209,26 +224,22 @@ class G2PFarmer(models.Model):
         "g2p.water.source",
         "livestock_water",
         "livestock_water_source_rel",
-        string="What water sources do you use for your livestocks? ",
+        string="What water sources do you use for your livestock? ",
     )
 
     access_to_machinery = fields.Selection(
         string="Do you use machinery? ", selection=[("yes", "Yes"), ("no", "No")]
     )
     type_of_machinery = fields.Many2many("g2p.machinery", string="What kind of machinery do you use? ")
-    irregation_types = fields.Selection(
-        string="What Type of Irregation do you use?", selection=[("pump", "Pump"), ("canal", "canal")]
+    irrigation_types = fields.Selection(
+        string="What Type of Irrigation do you use?", selection=[("pump", "Pump"), ("canal", "canal")]
     )
 
-    has_finace_access = fields.Selection(
+    has_finance_access = fields.Selection(
         string="Do you have Financial Access ", selection=[("yes", "Yes"), ("no", "No")], default="no"
     )
 
-    finance_accesses = fields.Many2many(comodel_name="g2p.finance.access", string="Finance Accesses")
-
-    # loans = fields.Selection(string="Loans ", selection=[("yes", "Yes"), ("no", "No")])
-    # insurance = fields.Selection(string="Insurance ", selection=[("yes", "Yes"), ("no", "No")])
-    # savings = fields.Selection(string="Savings ", selection=[("yes", "Yes"), ("no", "No")])
+    finance_accesses = fields.Many2many(comodel_name="g2p.finance.access")
 
     other_farmer_in_hh = fields.Selection(
         string="Is there any other farmer in the household who has separate land? ",
@@ -237,7 +248,6 @@ class G2PFarmer(models.Model):
 
     # SOCIO-ECONOMIC DATA
     martial_status = fields.Selection(
-        string="Martial Status",
         selection=[
             ("single", "Single"),
             ("married", "Married"),
@@ -248,7 +258,7 @@ class G2PFarmer(models.Model):
 
     education = fields.Selection(
         [
-            ("illitrate", "Illitrate"),
+            ("illiterate", "Illiterate"),
             ("read_write", "Can Read and Write"),
             ("basic", "Basic(1-8)"),
             ("intermediary", "Intermediary(9-12)"),
@@ -260,37 +270,27 @@ class G2PFarmer(models.Model):
         string="Are You a household head? ", selection=[("yes", "Yes"), ("no", "No")]
     )
     hh_income_type = fields.Many2many(comodel_name="g2p.hh.income", string="House Hold Income")
-    hh_size = fields.Integer(string="Household Size")
-
-    # hh_income_type = fields.Selection(
-    #     string="House Hold Income Type",
-    #     selection=[
-    #         ("crop", "Crop"),
-    #         ("livestock", "Livestock"),
-    #         ("gov_ngo", "Government/NGO Support"),
-    #         ("other", "Other"),
-    #     ],
-    # )
 
     # Land INFORMATIONS
     land_information_ids = fields.One2many("g2p.land.information", "partner_id", string="Land Information")
     crop_information_ids = fields.One2many("g2p.crop.information", "partner_id", string="Crop Information")
 
-    # land_ownership = fields.Selection(
-    #     selection=[("owner", "Owner"), ("tenant", "Tenant"), ("hybrid", "Hybrid")],
-    #     compute="_compute_land_ownership",
-    #     store=True,
-    #     copy=False,
-    #     readonly=True,
-    #     string="Land Ownership",
-    # )
-    # total_land_area = fields.Integer("Total Land Area")
+    total_land_area = fields.Float()
+
+    land_ownership = fields.Selection(
+        selection=[("owner", "Owner"), ("tenant", "Tenant"), ("hybrid", "Hybrid")],
+        compute="_compute_land_ownership",
+        store=True,
+        copy=False,
+        readonly=True,
+    )
 
     livestock_information_ids = fields.One2many(
         "g2p.livestock.information", "partner_id", string="Live Stock Information"
     )
     data_enumerator_name = fields.Char(string="Data Enumerator")
-    data_collection_date = fields.Date(string="Data Collection Date")
+    data_collection_date = fields.Date()
+    odk_reference_id = fields.Char()
 
     @api.onchange("is_group", "family_name", "given_name", "gf_name_eng")
     def name_change_farmer(self):
@@ -310,25 +310,29 @@ class G2PFarmer(models.Model):
             self.update(vals)
 
     # @api.depends("land_information_ids.total_land_area")
-    # def _compute_total_land_area(self):
-    #     for record in self:
-    #         total_area = sum(r.total_land_area for r in record.land_information_ids)
-    #         record.total_land_area = total_area
+    def _compute_total_land_area(self):
+        for record in self:
+            record.total_land_area = sum(land.total_land_area for land in record.land_information_ids)
 
-    # @api.depends("land_information_ids.ownership_type")
-    # def _compute_land_ownership(self):
-    #     for record in self:
-    #         land_info_records = record.land_information_ids
-    #         owner_count = len(land_info_records.filtered(lambda r: r.ownership_type == "owner"))
-    #         tenant_count = len(land_info_records.filtered(lambda r: r.ownership_type == "tenant"))
-    #         if owner_count > 0 and tenant_count == 0:
-    #             record.land_ownership = "owner"
-    #         elif tenant_count > 0 and owner_count == 0:
-    #             record.land_ownership = "tenant"
-    #         elif owner_count > 0 and tenant_count > 0:
-    #             record.land_ownership = "hybrid"
-    #         else:
-    #             record.land_ownership = False
+    @api.depends("land_information_ids.total_land_area")
+    def _compute_total_land_area(self):
+        for record in self:
+            record.total_land_area = sum(land.total_land_area for land in record.land_information_ids)
+
+    @api.depends("land_information_ids.ownership_type")
+    def _compute_land_ownership(self):
+        for record in self:
+            land_info_records = record.land_information_ids
+            owner_count = len(land_info_records.filtered(lambda r: r.ownership_type == "owner"))
+            tenant_count = len(land_info_records.filtered(lambda r: r.ownership_type == "tenant"))
+            if owner_count > 0 and tenant_count == 0:
+                record.land_ownership = "owner"
+            elif tenant_count > 0 and owner_count == 0:
+                record.land_ownership = "tenant"
+            elif owner_count > 0 and tenant_count > 0:
+                record.land_ownership = "hybrid"
+            else:
+                record.land_ownership = False
 
     @api.onchange("birthdate")
     def _onchange_birthdate(self):
@@ -352,15 +356,14 @@ class G2PFarmer(models.Model):
     @api.model_create_multi
     def create(self, vals):
         if "phone_number_ids" in vals and not vals.get("phone_number_ids"):
-            raise ValidationError("You must add at least one phone number.")
+            error_msg = "You must add at least one phone number."
+            raise ValidationError(error_msg)
 
-        else:
-            return super(G2PFarmer, self).create(vals)
+        return super().create(vals)
 
-    @api.onchange("has_finace_access")
-    def _onchange_has_finace_access(self):
-        if self.has_finace_access == "no":
-            # Clear all entries in finance_accesses
+    @api.onchange("has_finance_access")
+    def _onchange_has_finance_access(self):
+        if self.has_finance_access == "no":
             return {"finance_accesses": [(6, 0, [])]}
 
     def check_birthdate(self, birthdate_ec):
@@ -372,3 +375,9 @@ class G2PFarmer(models.Model):
         if actual_selected_ec > ethiopian_date_today:
             error_msg = "You can't select a date of birth greater than today"
             raise ValidationError(error_msg)
+
+    def state_approve(self):
+        self.state = "approved"
+
+    def state_reject(self):
+        self.state = "rejected"

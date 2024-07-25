@@ -1,93 +1,138 @@
 <odoo>
-	<record id="product_template_only_form_view_inherit" model="ir.ui.view">
+	<record id="g2p_registry_individual_form_view_inherit" model="ir.ui.view">
 		<field name="name">view_individuals_form.inherited</field>
 		<field name="model">res.partner</field>
 		<field name="inherit_id" ref="g2p_registry_individual.view_individuals_form" />
 		<field name="arch" type="xml">
+			<xpath expr="//form/sheet" position="before">
+				<header>
 
-			<xpath expr="//field[@name='given_name']" position="replace">
+					<button name="state_approve" invisible="state!='draft'" string="Approve" type="object" class="btn-success" />
+					<button name="state_reject" invisible="state!='draft'" string="Reject" type="object" class="btn-danger" />
+					<field name="state" widget="statusbar" readonly="1" statusbar_visible="draft,update_requested,approved" />
+				</header>
+
+
 			</xpath>
 
-			<xpath expr="//field[@name='family_name']" position="replace">
+
+			<xpath expr="//field[@name='given_name']" position="attributes">
+			<attribute name="invisible">1</attribute>
+			</xpath>
+
+			<xpath expr="//field[@name='family_name']" position="attributes">
+			<attribute name="invisible">1</attribute>
+
 			</xpath>
 
 
 			<xpath expr="//field[@name='image_1920']" position="after">
-				<!-- <group> -->
 				<div class="mt24 w-full">
 					<h1>
 						<field name="name" readonly="True" placeholder="Full Name(ENG)" />
 					</h1>
 				</div>
-				<!-- </group> -->
 			</xpath>
+
+<xpath expr="//field[@name='registration_date']" position="attributes">
+	<attribute name="invisible">1</attribute>
+</xpath>
+
+			<xpath expr="//field[@name='registration_date']" position="before">
+
+			<group colspan="2">
+				<group>
+					<field name="has_national_id" />
+				</group>
+
+				<group>
+					<field name="uid" invisible="has_national_id!='yes'" />
+					<field name="rid" invisible="has_national_id!='no'" />
+				</group>
+			</group>
+
+			<group>
+				<field name="registration_date" readonly="1" />
+			</group>
+
+			</xpath>
+
+			<xpath expr="//field[@name='phone_number_ids']" position="before">
+				<field name="has_personal_phone" />
+			</xpath>
+
 			<xpath expr="//field[@name='phone_number_ids']/tree" position="attributes">
 				<attribute name="editable">bottom</attribute>
 			</xpath>
-			<!--
+
+			<xpath expr="//div[contains(@class, 'o_row')]" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</xpath>
 
 
-			<xpath expr="//field[@name='income']" position="replace"/>
-			<xpath expr="//field[@name='civil_status']" position="replace"/>
-			<xpath expr="//field[@name='occupation']" position="replace"/> -->
-
-			<xpath expr="//group[@colspan='3']/field[@name='income']" position="replace">
+			<xpath expr="//group[@colspan='3']/field[@name='income']" position="inside">
 				<field name="email" />
 			</xpath>
-			<xpath expr="//group[@colspan='3']/field[@name='civil_status']" position="replace">
+
+			<xpath expr="//group[@colspan='3']/field[@name='income']" position="inside">
 				<field name="martial_status" />
 			</xpath>
 
-			<xpath expr="//group[@colspan='3']/field[@name='occupation']" position="replace" />
+
+			<xpath expr="//field[@name='income']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
 
 
 
+			<xpath expr="//group[@colspan='3']/field[@name='civil_status']" position="attributes">
+			<attribute name="invisible">1</attribute>
+			</xpath>
+
+			<xpath expr="//group[@colspan='3']/field[@name='occupation']" position="attributes">
+			<attribute name="invisible">1</attribute>
+			</xpath>
 
 
 			<xpath expr="//field[@name='phone_number_ids']/tree/field[@name='phone_no']" position="after">
 				<field name="phone_type" />
-
 			</xpath>
 
 			<xpath expr="//div[@class='o_row']" position="before">
-
-				<group colspan="4">
-
-					<group string="ENG">
+				<group colspan="2">
+					<group name="english" string="English">
 						<field name="given_name" placecholder="First Name(ENG)" />
 						<field name="family_name" placecholder="Last Name(ENG)" />
 						<field name="gf_name_eng" placecholder="G.Father Name(ENG)" />
 					</group>
 
 
-					<group string="አማርኛ">
+					<group name="amharic" string="አማርኛ">
 						<field name="first_name_amh" placecholder="ስም" />
 						<field name="family_name_amh" placecholder="የአባት ስም" />
 						<field name="gf_name_amh" placecholder="የአያት ስም" />
 					</group>
 
 
-					 <!-- <group name="prefered_language" string="Afan Oromo">
+			 		<group name="afan_oromo" string="Afan Oromo">
 						<field name="first_name_oro" placecholder="Maqaa" />
 						<field name="family_name_oro" placecholder="Maqaa Giddu Galeessaa" />
 						<field name="gf_name_oro" placecholder="Maqaa Akaakayyuu" />
-					</group>  -->
-
-
-					 <!-- <group name="prefered_language" string="prefered_language" >
-						<field name="first_name_oro" placecholder="Maqaa" />
-						<field name="family_name_oro" placecholder="Maqaa Giddu Galeessaa"  />
-						<field name="gf_name_oro" placecholder="Maqaa Akaakayyuu" />
-					</group>  -->
-
-
+					</group>
 
 				</group>
+			</xpath>
 
+			<xpath expr="//field[@name='addl_name']" position="attributes">
+			<attribute name="invisible">1</attribute>
 
 			</xpath>
 
-			<xpath expr="//field[@name='addl_name']" position="replace">
+			<xpath expr="//field[@name='birth_place']" position="attributes">
+			<attribute name="invisible">1</attribute>
+			</xpath>
+		<xpath expr="//field[@name='birthdate_not_exact']" position="attributes">
+			<attribute name="invisible">1</attribute>
 			</xpath>
 
 
@@ -95,16 +140,37 @@
 				<field name="birthdate_ec" />
 			</xpath>
 
-			<xpath expr="//span[@class='o_form_label o_td_label' and @name='address_name']" position="replace">
+			<xpath expr="//span[@class='o_form_label o_td_label' and @name='address_name']" position="attributes">
+			<attribute name="invisible">1</attribute>
 			</xpath>
 
-			<xpath expr="//field[@name='address']" position="replace" />
+			<xpath expr="//field[@name='address']" position="attributes">
+			<attribute name="invisible">1</attribute>
 
-			<xpath expr="//field[@name='district']" position="replace" />
+			</xpath>
 
-			<xpath expr="//field[@name='email']" position="replace" />
 
-			<xpath expr="//field[@name='birth_place']" position="replace" />
+			<xpath expr="//page[@name='ids']" position="attributes">
+			<attribute name="invisible">1</attribute>
+			</xpath>
+
+
+			<xpath expr="//page[@name='relationships']" position="attributes">
+			<attribute name="invisible">1</attribute>
+			</xpath>
+
+
+			<xpath expr="//field[@name='district']" position="attributes">
+			<attribute name="invisible">1</attribute>
+			</xpath>
+
+			<xpath expr="//field[@name='email']" position="attributes">
+			<attribute name="invisible">1</attribute>
+			</xpath>
+
+			<xpath expr="//field[@name='birth_place']" position="attributes">
+			<attribute name="invisible">1</attribute>
+			</xpath>
 
 
 
@@ -113,11 +179,13 @@
 
 			</xpath>
 
+<xpath expr="//field[@name='region']" position="attributes">
+<attribute name="invisible">1</attribute>
+</xpath>
 
-			<xpath expr="//field[@name='region']" position="replace">
+			<xpath expr="//field[@name='region']" position="before">
 				<group colspan="2">
 					<group>
-
 						<field name="regionn" />
 						<field name="zone" domain="[('region', '=', regionn)]" />
 					</group>
@@ -129,12 +197,11 @@
 
 				</group>
 
+
 				<group>
-					<field name="birthplace" />
 					<field name="is_disabled" />
-
-
 				</group>
+
 			</xpath>
 
 
@@ -147,7 +214,6 @@
 					</group>
 
 					<group string="Social Economic Data">
-						<field name="hh_size" />
 						<field name="hh_is_household_head" />
 						<field name="hh_income_type" create="False" widget="many2many_tags" />
 						<field name="education" />
@@ -184,8 +250,7 @@
                                 widget="many2many_tags"
                                 invisible="access_to_machinery!='yes'"
                             />
-							<field name="crop_water_sources" create="False" widget="many2many_tags" />
-							<field name="livestock_water_sources" create="False" widget="many2many_tags" />
+
 
 						</group>
 
@@ -202,10 +267,9 @@
 
 
 
-
 						<group name="name" string="Financial Services">
-							<field name="has_finace_access" />
-							<field name="finance_accesses" create="False" widget="many2many_tags" readonly="has_finace_access!='yes'" />
+							<field name="has_finance_access" />
+							<field name="finance_accesses" create="False" widget="many2many_tags" readonly="has_finance_access!='yes'" />
 						</group>
 					</group>
 
@@ -214,14 +278,9 @@
 
 				</page>
 
-			</xpath>
-
-
-			<xpath expr="//page[@name='relationships']" position="after">
-
-				<page string="Land Information" name="lands">
+					<page string="Land Information" name="lands">
 					<field name="land_information_ids">
-						<tree editable="bottom">
+						<tree editable="bottom" create="False">
 							<field name="ownership_type" />
 							<field name="total_land_area" />
 							<field name="land_id" />
@@ -231,25 +290,129 @@
 				</page>
 
 				<page string="Crop Information" name="crops">
+						<group>
+								<field name="crop_water_sources" create="False" widget="many2many_tags" />
+							</group>
+
+
 					<field name="crop_information_ids">
+
 						<tree editable="bottom">
 							<field name="crop" />
 							<field name="is_diseased" />
 							<field name="illness_type" widget="many2many_tags" required="is_diseased=='yes'" />
 						</tree>
-					</field>
-				</page>
-				<page string="Livestock Information" name="livestocks">
-					<field name="livestock_information_ids">
-						<tree editable="bottom">
-							<field name="livestock_type" />
-							<field name="number_of_livestock" />
-							<field name="is_diseased" />
-							<field name="illness_type" widget="many2many_tags" required="is_diseased=='yes'" />
-						</tree>
+
 					</field>
 				</page>
 
+				<page string="Livestock Information" name="livestocks">
+							<group>
+								<field name="livestock_water_sources" create="False" widget="many2many_tags" />
+							</group>
+
+								<field name="livestock_information_ids">
+									<tree editable="bottom">
+										<field name="livestock_type" />
+										<field name="number_of_livestock" />
+										<field name="is_diseased" />
+										<field name="illness_type" widget="many2many_tags" required="is_diseased=='yes'" />
+									</tree>
+								</field>
+				</page>
+
+			</xpath>
+
+
+
+
+			<xpath expr="//page[@name='other']" position="inside">
+				<group>
+				<field name="data_enumerator_name" readonly="True" />
+				<field name="data_collection_date" readonly="True" />
+				<field name="odk_reference_id" readonly="True" />
+
+				</group>
+
+
+				</xpath>
+		</field>
+	</record>
+
+
+	<record id="g2p_registry_individual_tree_view_inherit" model="ir.ui.view">
+		<field name="name">view_individuals_tree.inherited</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="g2p_registry_individual.view_individuals_list_tree" />
+		<field name="arch" type="xml">
+
+			<xpath expr="//field[@name='tags_ids']" position="after">
+				<field name="state" />
+
+				<button
+                    title="Approve"
+                    icon="fa-check"
+                    name="state_approve"
+                    type="object"
+                    class="btn btn-success"
+                    invisible="state != 'draft'"
+                />
+				<button
+                    title="Reject"
+                    icon="fa-times"
+                    name="state_reject"
+                    type="object"
+                    class="btn btn-danger"
+                    invisible="state != 'draft'"
+                />
+
+			</xpath>
+		</field>
+	</record>
+
+
+	<record id="g2p_registry_group_form_view_inherit" model="ir.ui.view">
+		<field name="name">view_group_form.inherited</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="g2p_registry_group.view_groups_form" />
+		<field name="arch" type="xml">
+			<xpath expr="//form/sheet" position="before">
+				<header>
+					<button name="state_approve" invisible="state!='draft'" string="Approve" type="object" class="btn-success" />
+					<button name="state_reject" invisible="state!='draft'" string="Reject" type="object" class="btn-danger" />
+					<field name="state" widget="statusbar" readonly="1" statusbar_visible="draft,update_requested,approved" />
+				</header>
+
+			</xpath>
+
+		</field>
+	</record>
+
+	<record id="g2p_registry_group_tree_view_inherit" model="ir.ui.view">
+		<field name="name">view_group_tree.inherited</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="g2p_registry_group.view_groups_list_tree" />
+		<field name="arch" type="xml">
+
+			<xpath expr="//field[@name='tags_ids']" position="after">
+				<field name="state" />
+
+				<button
+                    title="Approve"
+                    icon="fa-check"
+                    name="state_approve"
+                    type="object"
+                    class="btn btn-success"
+                    invisible="state != 'draft'"
+                />
+				<button
+                    title="Reject"
+                    icon="fa-times"
+                    name="state_reject"
+                    type="object"
+                    class="btn btn-danger"
+                    invisible="state != 'draft'"
+                />
 
 			</xpath>
 		</field>
@@ -261,4 +424,21 @@
 		<field name="act_window_id" ref="g2p_registry_individual.action_individuals_list" />
 	</record>
 
+<record model="ir.ui.menu" id="g2p_registry_base.menu_registrant_tags">
+  <field name="action" eval="False" />
+</record>
+
+<record model="ir.ui.menu" id="g2p_registry_base.menu_id_type">
+  <field name="action" eval="False" />
+</record>
+
+
+<record model="ir.ui.menu" id="g2p_registry_base.menu_district_config">
+  <field name="action" eval="False" />
+</record>
+
+
+<record model="ir.ui.menu" id="g2p_registry_base.menu_relationship">
+  <field name="action" eval="False" />
+</record>
 </odoo>

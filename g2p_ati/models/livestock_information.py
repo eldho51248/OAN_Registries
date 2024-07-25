@@ -7,7 +7,7 @@ class G2PLiveStockInformation(models.Model):
 
     partner_id = fields.Many2one("res.partner", string="Farmer")
     is_diseased = fields.Selection(
-        string="Does this livestock have been affected by illness? ", selection=[("yes", "Yes"), ("no", "No")]
+        string="Has this livestock been affected by illness?", selection=[("yes", "Yes"), ("no", "No")]
     )
 
     # livestock_type = fields.Char(string="Livestock Type")

@@ -5,7 +5,7 @@
     <field name="name">g2p.lang.view.form</field>
     <field name="model">g2p.lang</field>
     <field name="arch" type="xml">
-         <tree string="Languages" create="true" delete="true" edit="true" editable="bottom">
+         <tree create="true" delete="true" edit="true" editable="bottom">
 
                 <field name="name" />
                 <field name="code" />

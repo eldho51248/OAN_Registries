@@ -22,7 +22,6 @@ Available addons
 addon | version | maintainers | summary
 --- | --- | --- | ---
 [g2p_ati](g2p_ati/) | 17.0.1.2.0 |  | OpenG2P Country Config: ATI
-[g2p_superset_dashboard](g2p_superset_dashboard/) | 17.0.1.2.0 |  | G2P Superset Dashboard
 
 [//]: # (end addons)
 

@@ -8,7 +8,7 @@
         <field name="model">g2p.primary.cooperative</field>
         <field name="priority">1</field>
         <field name="arch" type="xml">
-         <tree string="Kebele" create="true" delete="true" edit="true" editable="bottom">
+         <tree create="true" delete="true" edit="true" editable="bottom">
                 <field name="code" required="1" />
                 <field name="name" required="1" />
             </tree>
@@ -20,7 +20,7 @@
         <field name="model">g2p.cooperative.union</field>
         <field name="priority">1</field>
         <field name="arch" type="xml">
-         <tree string="Kebele" create="true" delete="true" edit="true" editable="bottom">
+         <tree create="true" delete="true" edit="true" editable="bottom">
                 <field name="code" required="1" />
                 <field name="name" required="1" />
             </tree>

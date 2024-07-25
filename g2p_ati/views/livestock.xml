@@ -6,7 +6,7 @@
         <field name="model">g2p.livestock.type</field>
         <field name="priority">1</field>
         <field name="arch" type="xml">
-            <tree string="Livestocks" create="true" delete="true" edit="true" editable="bottom">
+            <tree create="true" delete="true" edit="true" editable="bottom">
                 <field name="name" />
                 <field name="code" />
             </tree>
