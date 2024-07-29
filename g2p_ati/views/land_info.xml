@@ -140,7 +140,6 @@
 </record>
 
 
-
 <record id="action_g2p_livestock_information_act_window" model="ir.actions.act_window">
     <field name="type">ir.actions.act_window</field>
     <field name="name">Livestock Information</field>

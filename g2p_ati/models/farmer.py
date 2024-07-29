@@ -4,6 +4,7 @@ from ethiopian_date import ethiopian_date
 
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError
 
 ETHIOPIAN_MONTH_ORDER = {
     "September": 1,
@@ -133,9 +134,6 @@ class G2PFarmer(models.Model):
     _inherit = "res.partner"
 
     # Basic Information
-    uid = fields.Char("UID")
-    rid = fields.Char("RID")
-
     regionn = fields.Many2one("g2p.region", string="Region")
     zone = fields.Many2one("g2p.zone", domain="[('region', '=', region)]")
     woreda = fields.Many2one("g2p.woreda", domain="[('zone', '=', zone)]")
@@ -381,3 +379,13 @@ class G2PFarmer(models.Model):
 
     def state_reject(self):
         self.state = "rejected"
+        
+        
+
+    def check_user_group(self):
+        return self.env.user.has_group('g2p_ati.group_data_enumerator')
+
+    def write(self, vals):
+        if self.check_user_group():
+            raise UserError("You cannot edit record.")
+        return super().write(vals)

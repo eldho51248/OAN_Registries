@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+    <record id="machinery_tractor" model="g2p.machinery">
+        <field name="name">Tractor</field>
+        <field name="code">tractor</field>
+    </record>
+    <record id="machinery_combine_harvester" model="g2p.machinery">
+        <field name="name">Combine Harvester</field>
+        <field name="code">combine_harvester</field>
+    </record>
+    <record id="machinery_planter" model="g2p.machinery">
+        <field name="name">Planter</field>
+        <field name="code">planter</field>
+    </record>
+    <record id="machinery_other" model="g2p.machinery">
+        <field name="name">Other</field>
+        <field name="code">other</field>
+    </record>
+</odoo>

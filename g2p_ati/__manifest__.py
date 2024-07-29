@@ -11,11 +11,26 @@
     "depends": ["g2p_social_registry", "storage_file"],
     "external_dependencies": {"python": ["ethiopian-date"]},
     "data": [
+        "security/groups.xml",
+        "security/rule.xml",
+        "security/ir.model.access.csv",
         "data/region.xml",
         "data/zone.xml",
         "data/genders.xml",
-        "security/ir.model.access.csv",
-        "views/social_registry_menu.xml",
+        "data/crop.xml",
+        "data/finance_access.xml",
+        "data/illness_type.xml",
+        "data/income.xml",
+        "data/livestock_type.xml",
+        "data/machinery_types.xml",
+        "data/primary_language.xml",
+        "data/primary_commodity.xml",
+        "data/water_source.xml",
+        
+        
+        
+        
+        "views/farmer_profile_menu.xml",
         "views/livestock.xml",
         "views/commodity.xml",
         "views/cooperations.xml",
@@ -31,6 +46,7 @@
         "views/crop_category.xml",
         "views/crop.xml",
         "views/land_info.xml",
+        "views/main_menu.xml"
     ],
     "assets": {"web.assets_backend": []},
     "demo": [],

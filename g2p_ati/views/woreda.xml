@@ -33,4 +33,8 @@
         sequence="500"
         parent="g2p_registry_base.g2p_configuration_menu_root"
     />
+
+
+
+    
 </odoo>
