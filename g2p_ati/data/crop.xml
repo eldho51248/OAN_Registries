@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo noupdate="1">
 
   <record id="crop_category_cereals" model="g2p.crop.category">
@@ -11,21 +11,21 @@
         <field name="name">Pulses</field>
         <field name="code">pulses</field>
     </record>
-    
+
 
   <record id="crop_category_oil_seeds" model="g2p.crop.category">
 
         <field name="name">Oil Seeds</field>
         <field name="code">oil_seeds</field>
     </record>
-    
+
 
   <record id="crop_category_vegetables" model="g2p.crop.category">
 
         <field name="name">Vegetables</field>
         <field name="code">vegetables</field>
     </record>
-    
+
 
 
 

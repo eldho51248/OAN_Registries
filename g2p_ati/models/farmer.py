@@ -3,8 +3,7 @@ from datetime import datetime
 from ethiopian_date import ethiopian_date
 
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 ETHIOPIAN_MONTH_ORDER = {
     "September": 1,
@@ -379,13 +378,12 @@ class G2PFarmer(models.Model):
 
     def state_reject(self):
         self.state = "rejected"
-        
-        
 
     def check_user_group(self):
-        return self.env.user.has_group('g2p_ati.group_data_enumerator')
+        return self.env.user.has_group("g2p_ati.group_data_enumerator")
 
     def write(self, vals):
         if self.check_user_group():
-            raise UserError("You cannot edit record.")
+            error_msg = "You cannot edit record."
+            raise UserError(error_msg)
         return super().write(vals)
