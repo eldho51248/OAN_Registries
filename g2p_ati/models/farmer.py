@@ -199,7 +199,12 @@ class G2PFarmer(models.Model):
 
     state = fields.Selection(
         tracking=True,
-        selection=[("draft", "Draft"), ("update_requested", "Update Requested"), ("approved", "Approved")],
+        selection=[
+            ("draft", "Draft"),
+            ("rejected", "rejected"),
+            ("update_requested", "Update Requested"),
+            ("approved", "Approved"),
+        ],
         default="draft",
     )
 

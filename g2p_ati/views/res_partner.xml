@@ -482,7 +482,7 @@
 	<field name="inherit_id" ref="g2p_registry_group.view_groups_list_tree" />
 	<field name="arch" type="xml">
 
-		<xpath expr="//field[@name='tags_ids']" position="after">
+		<xpath expr="//field[@name='registration_date']" position="after">
 			<field name="state" />
 
 			<button
