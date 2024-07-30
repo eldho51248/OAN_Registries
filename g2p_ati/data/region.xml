@@ -2,10 +2,9 @@
 <odoo noupdate="1">
 
     <record id="region_tigray" model="g2p.region">
-        <field name="code">14</field>
+        <field name="code">1</field>
         <field name="name">Tigray</field>
         <field name="int_code">ET-TI</field>
-
     </record>
 
     <record id="region_afar" model="g2p.region">

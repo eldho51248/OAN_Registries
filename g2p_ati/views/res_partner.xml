@@ -13,7 +13,7 @@
                         string="Approve"
                         type="object"
                         class="btn-success"
-                        groups="g2p_ati.group_data_validator,g2p_ati.group_super_admin,g2p_registry_base.group_g2p_registrar"
+                        groups="g2p_ati.group_data_validator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
                     />
 				<button
                         name="state_reject"
@@ -21,7 +21,7 @@
                         string="Reject"
                         type="object"
                         class="btn-danger"
-                        groups="g2p_ati.group_data_validator,g2p_ati.group_super_admin,g2p_registry_base.group_g2p_registrar"
+                        groups="g2p_ati.group_data_validator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
                     />
 				<field name="state" widget="statusbar" readonly="1" statusbar_visible="draft,update_requested,approved" />
 			</header>
@@ -377,7 +377,7 @@
                     type="object"
                     class="btn btn-success"
                     invisible="state != 'draft'"
-                    groups="g2p_ati.group_data_validator,g2p_ati.group_super_admin,g2p_registry_base.group_g2p_registrar"
+                    groups="g2p_ati.group_data_validator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
                 />
 			<button
                     title="Reject"
@@ -386,7 +386,7 @@
                     type="object"
                     class="btn btn-danger"
                     invisible="state != 'draft'"
-                    groups="g2p_ati.group_data_validator,g2p_ati.group_super_admin,g2p_registry_base.group_g2p_registrar"
+                    groups="g2p_ati.group_data_validator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
                 />
 
 		<field name="data_enumerator_name" />
@@ -410,7 +410,7 @@
                         string="Approve"
                         type="object"
                         class="btn-success"
-                        groups="g2p_ati.group_data_validator,g2p_ati.group_super_admin,g2p_registry_base.group_g2p_registrar"
+                        groups="g2p_ati.group_data_validator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
                     />
 				<button
                         name="state_reject"
@@ -418,14 +418,14 @@
                         string="Reject"
                         type="object"
                         class="btn-danger"
-                        groups="g2p_ati.group_data_validator,g2p_ati.group_super_admin,g2p_registry_base.group_g2p_registrar"
+                        groups="g2p_ati.group_data_validator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
                     />
 				<field
                         name="state"
                         widget="statusbar"
                         readonly="1"
                         statusbar_visible="draft,update_requested,approved"
-                        groups="g2p_ati.group_data_validator,g2p_ati.group_super_admin,g2p_registry_base.group_g2p_registrar"
+                        groups="g2p_ati.group_data_validator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
                     />
 			</header>
 
@@ -492,7 +492,7 @@
                     type="object"
                     class="btn btn-success"
                     invisible="state != 'draft'"
-                    groups="g2p_ati.group_data_validator,g2p_ati.group_super_admin,g2p_registry_base.group_g2p_registrar"
+                    groups="g2p_ati.group_data_validator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
                 />
 			<button
                     title="Reject"
@@ -501,7 +501,7 @@
                     type="object"
                     class="btn btn-danger"
                     invisible="state != 'draft'"
-                    groups="g2p_ati.group_data_validator,g2p_ati.group_super_admin,g2p_registry_base.group_g2p_registrar"
+                    groups="g2p_ati.group_data_validator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
                 />
 
 		</xpath>

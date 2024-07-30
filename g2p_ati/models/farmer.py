@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from dateutil.relativedelta import relativedelta
 from ethiopian_date import ethiopian_date
 
 from odoo import api, fields, models
@@ -273,6 +274,7 @@ class G2PFarmer(models.Model):
     crop_information_ids = fields.One2many("g2p.crop.information", "partner_id", string="Crop Information")
 
     total_land_area = fields.Float()
+    age_int = fields.Integer(compute="_compute_calc_age_int", store=True)
 
     land_ownership = fields.Selection(
         selection=[("owner", "Owner"), ("tenant", "Tenant"), ("hybrid", "Hybrid")],
@@ -381,6 +383,22 @@ class G2PFarmer(models.Model):
 
     def check_user_group(self):
         return self.env.user.has_group("g2p_ati.group_data_enumerator")
+
+    @api.depends("birthdate")
+    def _compute_calc_age_int(self):
+        for line in self:
+            line.age_int = self.compute_age_int_from_dates(line.birthdate)
+
+    def compute_age_int_from_dates(self, partner_dob):
+        now = datetime.strptime(str(fields.Datetime.now())[:10], "%Y-%m-%d")
+        years_months_days = None
+        if partner_dob:
+            dob = partner_dob
+            delta = relativedelta(now, dob)
+            # years_months_days = str(delta.years) +"y "+ str(delta.months) +"m "+ str(delta.days)+"d"
+            years_months_days = str(delta.years)
+
+        return years_months_days
 
     def write(self, vals):
         if self.check_user_group():

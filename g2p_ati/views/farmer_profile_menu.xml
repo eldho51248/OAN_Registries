@@ -9,9 +9,6 @@
     </record>
 
 
-
-
-
     <record model="ir.ui.menu" id="g2p_registry_group.menu_groups_list">
         <field
             name="groups_id"
