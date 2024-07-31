@@ -13,7 +13,7 @@
         id="g2p_registry_base.g2p_main_menu_root"
         name="Farmer Profile"
         sequence="1"
-        groups="group_data_enumerator,group_data_admin,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
+        groups="group_data_enumerator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
         web_icon="g2p_ati,static/description/profile.png"
     />
 

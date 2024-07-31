@@ -444,6 +444,15 @@
 		</xpath>
 
 
+<xpath expr="//field[@name='region']" position="after">
+	<field name="zone" />
+	<field name="woreda" />
+	<field name="kebele" />
+
+</xpath>
+
+
+
 
 
 		<xpath expr="//div[contains(@class, 'o_row')]" position="attributes">

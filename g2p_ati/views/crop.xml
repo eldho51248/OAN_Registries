@@ -7,15 +7,13 @@
         <field name="model">g2p.crop</field>
         <field name="priority">1</field>
         <field name="arch" type="xml">
-               <tree create="true" delete="true" edit="true" editable="bottom">
+            <tree create="true" delete="true" edit="true" editable="bottom">
                 <field name="category" />
                 <field name="name" />
                 <field name="code" />
             </tree>
         </field>
     </record>
-
-
 
 
     <record id="g2p_crop_view_tree_action" model="ir.actions.act_window">
