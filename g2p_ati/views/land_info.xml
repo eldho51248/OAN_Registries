@@ -18,7 +18,7 @@
         </tree>
     </field>
 </record>
-
+<!--
 <record id="view_g2p_land_info_form" model="ir.ui.view">
     <field name="name">view.land.info.form</field>
     <field name="model">g2p.land.information</field>
@@ -35,11 +35,9 @@
             <field name="land_id" />
             <field name="land_certificate" />
         </sheet>
-
-
         </form>
     </field>
-</record>
+</record> -->
 
 <record id="view_g2p_crop_info_tree" model="ir.ui.view">
     <field name="name">view.g2p.crop.information.tree</field>
@@ -58,7 +56,7 @@
     </field>
 </record>
 
-<record id="view_g2p_crop_info_form" model="ir.ui.view">
+<!-- <record id="view_g2p_crop_info_form" model="ir.ui.view">
     <field name="name">view.crop.infoform</field>
     <field name="model">g2p.crop.information</field>
     <field name="type">form</field>
@@ -88,7 +86,7 @@
 
         </form>
     </field>
-</record>
+</record> -->
 
 <record id="view_g2p_livestock_info_tree" model="ir.ui.view">
     <field name="name">view.g2p.livestock.information.tree</field>
@@ -108,7 +106,7 @@
     </field>
 </record>
 
-<record id="view_g2p_livestock_info_form" model="ir.ui.view">
+<!-- <record id="view_g2p_livestock_info_form" model="ir.ui.view">
     <field name="name">view.livestock.form</field>
     <field name="model">g2p.livestock.information</field>
     <field name="type">form</field>
@@ -137,7 +135,7 @@
 
         </form>
     </field>
-</record>
+</record> -->
 
 
 <record id="action_g2p_livestock_information_act_window" model="ir.actions.act_window">

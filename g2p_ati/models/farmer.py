@@ -1,11 +1,17 @@
-from datetime import datetime
+import logging
+import re
+from datetime import date, datetime
 
 from dateutil.relativedelta import relativedelta
-from ethiopian_date import ethiopian_date
 
-from odoo import api, fields, models
-from odoo.exceptions import UserError, ValidationError
+# from ethiopian_date import ethiopian_date
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
+# from ethiopian_date import ethiopian_date
+from . import eth_date
+
+_logger = logging.getLogger(__name__)
 ETHIOPIAN_MONTH_ORDER = {
     "September": 1,
     "October": 2,
@@ -19,6 +25,7 @@ ETHIOPIAN_MONTH_ORDER = {
     "June": 10,
     "July": 11,
     "August": 12,
+    "Pagume": 13,
 }
 
 
@@ -35,9 +42,9 @@ class G2PFarmer(models.Model):
     first_name_amh = fields.Char(string="First Name(Amharic)", translate=False)
     family_name_amh = fields.Char(string="Father Name(Amharic)", translate=False)
     gf_name_amh = fields.Char(string="Grand Father Name(Amharic)", translate=False)
-    first_name_oro = fields.Char(string="First Name(Afaan Oromo)", translate=False)
-    family_name_oro = fields.Char(string="Father Name(Afaan Oromo)", translate=False)
-    gf_name_oro = fields.Char(string="Grand Father Name(Afaan Oromo)", translate=False)
+    first_name_other = fields.Char(string="First Name", translate=False)
+    family_name_other = fields.Char(string="Father Name", translate=False)
+    gf_name_other = fields.Char(string="Grand Father Name", translate=False)
     farmer_location_longitude = fields.Float(string="Longitude")
     farmer_location_latitude = fields.Float(string="Latitude")
     has_personal_phone = fields.Selection(
@@ -46,11 +53,15 @@ class G2PFarmer(models.Model):
     has_national_id = fields.Selection(
         string="Do you have a national id? ", selection=[("yes", "Yes"), ("no", "No")]
     )
-    birthdate_ec = fields.Date(string="Date Of Birth(EC)")
+    birthdate_ec = fields.Char(string="Date Of Birth (EC)", help="YYYY-MM-DD")
     primary_Language = fields.Many2one("g2p.lang")
     is_farmer = fields.Selection(string="Are you a Farmer? ", selection=[("yes", "Yes"), ("no", "No")])
     farming_type = fields.Selection(
-        selection=[("agro_pastoral", "Agro-Pastoral"), ("pastoral", "Pastoral"), ("mixed", "Mixed Farming")],
+        selection=[
+            ("crop_farming", "Crop Farming"),
+            ("livestock_farming", "Livestock Farming"),
+            ("mixed_farming", "Mixed Farming"),
+        ]
     )
     is_disabled = fields.Selection(string="Are you disabled? ", selection=[("yes", "Yes"), ("no", "No")])
     # MEMEBERSHIP
@@ -86,9 +97,21 @@ class G2PFarmer(models.Model):
         default="draft",
     )
     # AGRICULTURAL RESOURCES
+    do_you_use_fertilizer = fields.Float(
+        string="Do you use fertilizer? ", selection=[("yes", "Yes"), ("no", "No")]
+    )
     amount_fertilizer_utilized = fields.Float(string="What is The amount Of fertilizer you have(qt)? ")
+    do_you_use_pesticide = fields.Float(
+        string="Do you use pesticide? ", selection=[("yes", "Yes"), ("no", "No")]
+    )
     amount_pesticide_utilized = fields.Float(string="What is The amount Of pesticide you have(L)? ")
+    do_you_use_insecticide = fields.Float(
+        string="Do you use insecticide? ", selection=[("yes", "Yes"), ("no", "No")]
+    )
     amount_insecticide_utilized = fields.Float(string="What is The amount Of insecticide you have in(L)? ")
+    do_you_use_improved_seed = fields.Float(
+        string="Do you use improved_seed? ", selection=[("yes", "Yes"), ("no", "No")]
+    )
     amount_improved_seed_utilized = fields.Float(
         string="What is The amount Of improved seed you have used(qt)? "
     )
@@ -146,13 +169,12 @@ class G2PFarmer(models.Model):
     # Land INFORMATIONS
     land_information_ids = fields.One2many("g2p.land.information", "partner_id", string="Land Information")
     crop_information_ids = fields.One2many("g2p.crop.information", "partner_id", string="Crop Information")
-    total_land_area = fields.Float()
+    total_land_area = fields.Float(default=0.0, readonly=True, compute="_compute_total_land_area")
     age_int = fields.Integer(compute="_compute_calc_age_int", store=True)
     land_ownership = fields.Selection(
         selection=[("owner", "Owner"), ("tenant", "Tenant"), ("hybrid", "Hybrid")],
         compute="_compute_land_ownership",
         store=True,
-        copy=False,
         readonly=True,
     )
     livestock_information_ids = fields.One2many(
@@ -172,14 +194,9 @@ class G2PFarmer(models.Model):
             if self.family_name:
                 name += self.family_name + " "
             if self.gf_name_eng:
-                name += self.gf_name_eng + " "
+                name += self.gf_name_eng
             vals.update({"name": name.upper()})
             self.update(vals)
-
-    # @api.depends("land_information_ids.total_land_area")
-    def _compute_total_land_area(self):
-        for record in self:
-            record.total_land_area = sum(land.total_land_area for land in record.land_information_ids)
 
     @api.depends("land_information_ids.total_land_area")
     def _compute_total_land_area(self):
@@ -189,64 +206,59 @@ class G2PFarmer(models.Model):
     @api.depends("land_information_ids.ownership_type")
     def _compute_land_ownership(self):
         for record in self:
-            land_info_records = record.land_information_ids
-            owner_count = len(land_info_records.filtered(lambda r: r.ownership_type == "owner"))
-            tenant_count = len(land_info_records.filtered(lambda r: r.ownership_type == "tenant"))
-            if owner_count > 0 and tenant_count == 0:
-                record.land_ownership = "owner"
-            elif tenant_count > 0 and owner_count == 0:
-                record.land_ownership = "tenant"
-            elif owner_count > 0 and tenant_count > 0:
-                record.land_ownership = "hybrid"
+            if record.land_information_ids:
+                land_info_records = record.land_information_ids
+                owner_count = len(land_info_records.filtered(lambda r: r.ownership_type == "owner"))
+                tenant_count = len(land_info_records.filtered(lambda r: r.ownership_type == "tenant"))
+                if owner_count > 0 and tenant_count == 0:
+                    record.land_ownership = "owner"
+                elif tenant_count > 0 and owner_count == 0:
+                    record.land_ownership = "tenant"
+                elif owner_count > 0 and tenant_count > 0:
+                    record.land_ownership = "hybrid"
+                else:
+                    record.land_ownership = False
             else:
                 record.land_ownership = False
 
     @api.onchange("birthdate")
     def _onchange_birthdate(self):
         if self.birthdate:
-            converter = ethiopian_date.EthiopianDateConverter()
-            ethiopian_date_str = converter.date_to_ethiopian(self.birthdate)
-            self.birthdate_ec = ethiopian_date_str
+            bday = date(self.birthdate.year, self.birthdate.month, self.birthdate.day)
+            ethiopian_date_str = eth_date.to_ethiopian(bday.year, bday.month, bday.day)
+            self.birthdate_ec = eth_date.convert_tuple_to_string_with_separator(ethiopian_date_str)
 
     @api.onchange("birthdate_ec")
     def _onchange_birthdate_ec(self):
         if self.birthdate_ec:
-            converter = ethiopian_date.EthiopianDateConverter()
-            self.check_birthdate(self.birthdate_ec)
-            gregorian_date = converter.to_gregorian(
-                self.birthdate_ec.year, self.birthdate_ec.month, self.birthdate_ec.day
-            )
-            self.birthdate = gregorian_date
+            date_list = re.split("[-/,]", self.birthdate_ec)
+            gc_date = eth_date.to_gregorian(int(date_list[0]), int(date_list[1]), int(date_list[2]))
+            if gc_date > fields.date.today():
+                raise ValidationError(_("You can't select a date of birth greater than today"))
+            self.birthdate = gc_date
 
-    @api.model_create_multi
-    def create(self, vals):
-        if "phone_number_ids" in vals and not vals.get("phone_number_ids"):
-            error_msg = "You must add at least one phone number."
-            raise ValidationError(error_msg)
-        return super().create(vals)
+    @api.constrains("phone_number_ids")
+    def _check_phone_number_presence(self):
+        for record in self:
+            if not record.phone_number_ids:
+                raise ValidationError(_("At least one phone number must be present."))
+
+    @api.onchange("phone_number_ids")
+    def _onchange_phone_number_presence(self):
+        for record in self:
+            if not record.phone_number_ids:
+                raise ValidationError(_("At least one phone number must be present."))
 
     @api.onchange("has_finance_access")
     def _onchange_has_finance_access(self):
         if self.has_finance_access == "no":
             return {"finance_accesses": [(6, 0, [])]}
 
-    def check_birthdate(self, birthdate_ec):
-        converter = ethiopian_date.EthiopianDateConverter()
-        ethiopian_date_today = converter.date_to_ethiopian(fields.date.today())
-        actual_month_number = ETHIOPIAN_MONTH_ORDER[birthdate_ec.strftime("%B")]
-        actual_selected_ec = datetime(birthdate_ec.year, actual_month_number, birthdate_ec.day).date()
-        if actual_selected_ec > ethiopian_date_today:
-            error_msg = "You can't select a date of birth greater than today"
-            raise ValidationError(error_msg)
-
     def state_approve(self):
         self.state = "approved"
 
     def state_reject(self):
         self.state = "rejected"
-
-    def check_user_group(self):
-        return self.env.user.has_group("g2p_ati.group_data_enumerator")
 
     @api.depends("birthdate")
     def _compute_calc_age_int(self):
@@ -261,9 +273,3 @@ class G2PFarmer(models.Model):
             delta = relativedelta(now, dob)
             years_months_days = str(delta.years)
         return years_months_days
-
-    def write(self, vals):
-        if self.check_user_group():
-            error_msg = "You cannot edit record."
-            raise UserError(error_msg)
-        return super().write(vals)

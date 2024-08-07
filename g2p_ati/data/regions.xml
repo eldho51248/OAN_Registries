@@ -30,21 +30,25 @@
         <field name="name">Benishangul Gumuz</field>
         <field name="int_code">ET-BE</field>
     </record>
-    <record id="region_central_ethiopia" model="g2p.region">
+
+    <!-- <record id="region_central_ethiopia" model="g2p.region">
         <field name="code">central_ethiopia</field>
         <field name="name">Central Ethiopia</field>
         <field name="int_code" />
-    </record>
+    </record> -->
+
     <record id="region_south_ethiopia" model="g2p.region">
         <field name="code">7</field>
         <field name="name">South Ethiopia</field>
         <field name="int_code">ET-SN</field>
     </record>
-    <record id="region_southwest_ethiopia" model="g2p.region">
+
+    <!-- <record id="region_southwest_ethiopia" model="g2p.region">
         <field name="code">southwest_ethiopia</field>
         <field name="name">Southwest Ethiopia</field>
         <field name="int_code">ET-GA</field>
-    </record>
+    </record> -->
+
     <record id="region_gambela" model="g2p.region">
         <field name="code">12</field>
         <field name="name">Gambela</field>

@@ -1,4 +1,5 @@
-from odoo import fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class G2PLivestockType(models.Model):
@@ -7,10 +8,21 @@ class G2PLivestockType(models.Model):
     name = fields.Char()
     code = fields.Char()
 
-    _sql_constraints = [("code_unique", "unique(code)", "The code must be unique!")]
+    @api.constrains("name")
+    def _check_name(self):
+        for record in self:
+            if not record.name:
+                error_message = _("name should not empty.")
+                raise ValidationError(error_message)
 
+    @api.constrains("code")
+    def _check_code(self):
+        records = self.search([])
+        for record in self:
+            if not record.code:
+                error_message = _("Code should not empty.")
+                raise ValidationError(error_message)
 
-# class G2PLivestockBreed(models.Model):
-#     _name = "g2p.livestock.breed"
-
-#     name = fields.Char()
+        for rec in records:
+            if self.code.lower() == rec.code.lower() and self.id != rec.id:
+                raise ValidationError(_("The code must be unique!"))

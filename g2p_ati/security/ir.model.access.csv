@@ -1,6 +1,8 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 
 
+base.access_res_partner_group_partner_manager,res_partner group_partner_manager,base.model_res_partner,base.group_partner_manager,1,0,0,0
+
 acess_model_res_partner_group_data_collector,res_partner_group_data_collector_access,base.model_res_partner,group_data_collector,1,1,1,0
 acess_model_res_partner_group_data_enumerator,res_partner_group_data_enumerator_access,base.model_res_partner,group_data_enumerator,1,0,1,0
 acess_model_res_partner_group_data_admin,res_partner_group_data_admin_access,base.model_res_partner,group_data_admin,1,1,1,0
@@ -63,6 +65,7 @@ g2p_crop_information_admin,Crop Information Admin Access,model_g2p_crop_informat
 g2p_land_information_admin,Land Information Admin Access,model_g2p_land_information,g2p_registry_base.group_g2p_admin,1,1,1,1
 g2p_livestock_information_admin,Livestock Information Admin Access,model_g2p_livestock_information,g2p_registry_base.group_g2p_admin,1,1,1,1
 g2p_livestock_type_admin,Livestock Type Access,model_g2p_livestock_type,g2p_registry_base.group_g2p_admin,1,1,1,1
+access_g2p_season,g2p_season,model_g2p_season,g2p_registry_base.group_g2p_admin,1,1,1,1
 access_g2p_cooperative_union,g2p_cooperative_union_access,model_g2p_cooperative_union,g2p_registry_base.group_g2p_admin,1,1,1,1
 access_g2p_primary_commodity,g2p_primary_commodity_access,model_g2p_primary_commodity,g2p_registry_base.group_g2p_admin,1,1,1,1
 access_g2p_lang,g2p_lang_access,model_g2p_lang,g2p_registry_base.group_g2p_admin,1,1,1,1

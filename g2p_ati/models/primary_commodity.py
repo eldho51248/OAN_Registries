@@ -1,4 +1,5 @@
-from odoo import fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class G2PPrimaryCommodity(models.Model):
@@ -10,4 +11,22 @@ class G2PPrimaryCommodity(models.Model):
 
     name = fields.Char(required=True)
     code = fields.Char(required=True)
-    _sql_constraints = [("code_unique", "unique(code)", "The code must be unique!")]
+
+    @api.constrains("name")
+    def _check_name(self):
+        for record in self:
+            if not record.name:
+                error_message = _("name should not empty.")
+                raise ValidationError(error_message)
+
+    @api.constrains("code")
+    def _check_code(self):
+        records = self.search([])
+        for record in self:
+            if not record.code:
+                error_message = _("Code should not empty.")
+                raise ValidationError(error_message)
+
+        for rec in records:
+            if self.code.lower() == rec.code.lower() and self.id != rec.id:
+                raise ValidationError(_("The code must be unique!"))

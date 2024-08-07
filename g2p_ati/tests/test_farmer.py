@@ -1,124 +1,172 @@
-from odoo.exceptions import UserError, ValidationError
+import datetime
+
 from odoo.tests.common import TransactionCase
 
 
 class TestG2PFarmer(TransactionCase):
     def setUp(self):
         super().setUp()
-
-        self.FarmerModel = self.env["g2p.farmer"]
-        self.RegionModel = self.env["g2p.region"]
-        self.ZoneModel = self.env["g2p.zone"]
-        self.WoredaModel = self.env["g2p.woreda"]
-        self.KebeleModel = self.env["g2p.kebele"]
-
-        # Setup test data
-        self.test_region = self.RegionModel.create({"name": "Test Region", "code": "TR"})
-        self.test_zone = self.ZoneModel.create(
-            {"name": "Test Zone", "region": self.test_region.id, "code": "TZ"}
-        )
-        self.test_woreda = self.WoredaModel.create(
-            {"name": "Test Woreda", "zone": self.test_zone.id, "code": "TW"}
-        )
-        self.test_kebele = self.KebeleModel.create(
-            {"name": "Test Kebele", "woreda": self.test_woreda.id, "code": "TK"}
+        self.farmer = self.env["res.partner"].create(
+            {
+                "name": "Initial Name",
+                "family_name": "Smith",
+                "given_name": "John",
+                "is_group": False,
+                "is_registrant": True,
+            }
         )
 
-    def test_01_create_farmer_profile(self):
-        """Test creating a farmer profile."""
-        farmer_data = {
-            "given_name": "John",
-            "family_name": "Doe",
-            "regionn": self.test_region.id,
-            "zone": self.test_zone.id,
-            "woreda": self.test_woreda.id,
-            "kebele": self.test_kebele.id,
-            "birthdate": "1990-01-01",
-            "has_personal_phone": "yes",
-            "is_farmer": "yes",
-            "education": "basic",
-            "state": "draft",
-        }
-        farmer = self.FarmerModel.create(farmer_data)
-
-        # Check if the farmer profile was created successfully
-        self.assertEqual(farmer.given_name, "John", "Farmer's given name is incorrect")
-        self.assertEqual(farmer.family_name, "Doe", "Farmer's family name is incorrect")
-        self.assertEqual(farmer.regionn.id, self.test_region.id, "Farmer's region is incorrect")
-
-    def test_02_update_farmer_profile(self):
-        """Test updating a farmer profile."""
-        farmer_data = {
-            "given_name": "Jane",
-            "family_name": "Doe",
-            "regionn": self.test_region.id,
-            "zone": self.test_zone.id,
-            "woreda": self.test_woreda.id,
-            "kebele": self.test_kebele.id,
-            "birthdate": "1995-01-01",
-            "has_personal_phone": "no",
-            "is_farmer": "yes",
-            "education": "intermediary",
-            "state": "approved",
-        }
-        farmer = self.FarmerModel.create(farmer_data)
-
-        # Update the farmer profile
-        farmer.write({"given_name": "Updated Name"})
-
-        # Check if the update was successful
+    def test_01_name_change_farmer(self):
+        self.farmer.write(
+            {
+                "family_name": "Doe",
+                "given_name": "Jane",
+                "gf_name_eng": "",
+            }
+        )
+        self.farmer.name_change_farmer()
         self.assertEqual(
-            farmer.given_name, "Updated Name", "Farmer's given name was not updated successfully"
+            self.farmer.name,
+            "JANE DOE ",
+            "Name did not update correctly when all fields are filled except gf_name_eng.",
+        )
+        # Test when gf_name_eng is also filled
+        self.farmer.write(
+            {
+                "family_name": "Doe",
+                "given_name": "Jane",
+                "gf_name_eng": "English Name",
+            }
+        )
+        self.farmer.name_change_farmer()
+        self.assertEqual(
+            self.farmer.name,
+            "JANE DOE ENGLISH NAME",
+            "Name did not update correctly when gf_name_eng is filled.",
+        )
+        # Test when is_group is True
+        self.farmer.write(
+            {
+                "is_group": True,
+                "family_name": "Doe",
+                "given_name": "Jane",
+                "gf_name_eng": "English Name",
+            }
+        )
+        self.farmer.name_change_farmer()
+        self.assertEqual(
+            self.farmer.name, "JANE DOE ENGLISH NAME", "Name did not update correctly when is_group is True."
+        )
+        # Test when is_group is False but no personal names are provided
+        self.farmer.write(
+            {
+                "is_group": False,
+                "family_name": "",
+                "given_name": "",
+                "gf_name_eng": "",
+            }
+        )
+        self.farmer.name_change_farmer()
+        self.assertEqual(
+            self.farmer.name, "", "Name did not update correctly when no personal names are provided."
+        )
+        # Test when is_group is False and only personal names are provided
+        self.farmer.write(
+            {
+                "is_group": False,
+                "family_name": "Doe",
+                "given_name": "Jane",
+                "gf_name_eng": "BE",
+            }
+        )
+        self.farmer.name_change_farmer()
+        self.assertEqual(
+            self.farmer.name,
+            "JANE DOE BE",
+            "Name did not update correctly when only personal names are provided.",
         )
 
-    def test_03_compute_age_int(self):
-        """Test computed age_int field."""
-        farmer_data = {
-            "given_name": "John",
-            "family_name": "Doe",
-            "regionn": self.test_region.id,
-            "zone": self.test_zone.id,
-            "woreda": self.test_woreda.id,
-            "kebele": self.test_kebele.id,
-            "birthdate": "1990-01-01",
-            "has_personal_phone": "yes",
-            "is_farmer": "yes",
-            "education": "basic",
-            "state": "draft",
-        }
-        farmer = self.FarmerModel.create(farmer_data)
+    def test_04_onchange_birthdate_ec_updates_birthdate(self):
+        """Test onchange method for birthdate_ec updates birthdate correctly."""
+        self.farmer.write(
+            {
+                "birthdate_ec": "2016-11-28",
+            }
+        )
+        self.farmer._onchange_birthdate_ec()
+        self.assertEqual(
+            self.farmer.birthdate,
+            datetime.date(2024, 8, 4),
+            "birthdate not updated correctly based on birthdate_ec",
+        )
 
-        # Check computed age_int field
-        self.assertEqual(farmer.age_int, "34", "Computed age_int field is incorrect")
+    def test_05_onchange_birthdate_updates_birthdate_ec(self):
+        """Test onchange method for birthdate_ec updates birthdate correctly."""
+        self.farmer.write(
+            {
+                "birthdate": "2024-8-4",
+            }
+        )
+        self.farmer._onchange_birthdate()
+        self.assertEqual(
+            self.farmer.birthdate_ec, "2016/11/28", "birthdate_ec not updated correctly based on birthdate"
+        )
 
-    def test_04_validation_error_on_create(self):
-        """Test validation error when creating a farmer without phone numbers."""
-        farmer_data = {
-            "given_name": "John",
-            "family_name": "Doe",
-            "regionn": self.test_region.id,
-            "zone": self.test_zone.id,
-            "woreda": self.test_woreda.id,
-            "kebele": self.test_kebele.id,
-            "birthdate": "1990-01-01",
-            "has_personal_phone": "no",
-            "is_farmer": "yes",
-            "education": "basic",
-            "state": "draft",
-            "phone_number_ids": False,  # Trigger validation error
-        }
+    def test_06_state_approve_and_reject(self):
+        self.farmer.state_approve()
+        self.assertEqual(self.farmer.state, "approved", "State approval failed")
+        self.farmer.state_reject()
+        self.assertEqual(self.farmer.state, "rejected", "State rejection failed")
 
-        with self.assertRaises(ValidationError):
-            self.FarmerModel.create(farmer_data)
+    def test_compute_total_land_area(self):
+        self.env["g2p.land.information"].create(
+            {
+                "partner_id": self.farmer.id,
+                "total_land_area": 50,
+                "land_id": 8989,
+                "ownership_type": "owner",
+            }
+        )
+        self.env["g2p.land.information"].create(
+            {
+                "partner_id": self.farmer.id,
+                "total_land_area": 30,
+                "land_id": 8990,
+                "ownership_type": "owner",
+            }
+        )
+        self.farmer._invalidate_cache()
+        self.assertEqual(self.farmer.total_land_area, 80.00, "Total land area computation failed")
 
-    def test_05_check_user_group_permission(self):
-        """Test user group permission."""
-        farmer = self.FarmerModel.create({"given_name": "John"})
-
-        # Simulate a user who does not belong to the required group
-        self.env.user = self.env["res.users"].browse(self.env.uid)
-        self.env.user.groups_id = [(3, self.env.ref("g2p_ati.group_data_enumerator").id)]
-
-        # Attempt to edit the record
-        with self.assertRaises(UserError):
-            farmer.write({"given_name": "Updated Name"})
+    def test_compute_land_ownership(self):
+        land_info_owner = self.env["g2p.land.information"].create(
+            {
+                "partner_id": self.farmer.id,
+                "total_land_area": 100,
+                "land_id": 8989,
+                "ownership_type": "owner",
+            }
+        )
+        self.farmer._invalidate_cache()
+        self.assertEqual(
+            self.farmer.land_ownership, "owner", "Land ownership computation failed for owner-only scenario"
+        )
+        # Test tenant-only scenario
+        land_info_owner.write({"ownership_type": "tenant"})
+        self.farmer._invalidate_cache()
+        self.assertEqual(
+            self.farmer.land_ownership, "tenant", "Land ownership computation failed for tenant-only scenario"
+        )
+        # Test hybrid scenario
+        self.env["g2p.land.information"].create(
+            {
+                "partner_id": self.farmer.id,
+                "total_land_area": 50,
+                "land_id": 8991,
+                "ownership_type": "owner",
+            }
+        )
+        self.farmer._invalidate_cache()
+        self.assertEqual(
+            self.farmer.land_ownership, "hybrid", "Land ownership computation failed for hybrid scenario"
+        )
