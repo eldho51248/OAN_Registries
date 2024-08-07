@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<odoo>
-    <record model="ir.ui.menu" id="g2p_registry_base.g2p_main_menu_root">
-        <field name="name">Farmer Profile</field>
-    </record>
-</odoo>

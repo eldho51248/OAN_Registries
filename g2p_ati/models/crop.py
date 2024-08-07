@@ -1,22 +1,56 @@
-from odoo import fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class G2PCropCategory(models.Model):
     _name = "g2p.crop.category"
 
-    name = fields.Char()
+    name = fields.Char(required=True)
+    code = fields.Char(required=True)
+
+    @api.constrains("name")
+    def _check_name(self):
+        for record in self:
+            if not record.name:
+                error_message = _("name should not empty.")
+                raise ValidationError(error_message)
+
+    @api.constrains("code")
+    def _check_code(self):
+        records = self.search([])
+        for record in self:
+            if not record.code:
+                error_message = _("Code should not empty.")
+                raise ValidationError(error_message)
+
+        for rec in records:
+            if self.code.lower() == rec.code.lower() and self.id != rec.id:
+                raise ValidationError(_("The code must be unique!"))
 
 
 class G2PCrop(models.Model):
     _name = "g2p.crop"
     _description = "Crop Information Model"
-    _inherit = ["mail.thread", "mail.activity.mixin"]
 
-    category = fields.Many2one("g2p.crop.category")
-    name = fields.Char(string="Crop")
+    category = fields.Many2one("g2p.crop.category", required=True)
+    name = fields.Char(required=True)
+    code = fields.Char(required=True)
 
+    @api.constrains("name")
+    def _check_name(self):
+        for record in self:
+            if not record.name:
+                error_message = _("name should not empty.")
+                raise ValidationError(error_message)
 
-class G2PCropVariety(models.Model):
-    _name = "g2p.crop.variety"
+    @api.constrains("code")
+    def _check_code(self):
+        records = self.search([])
+        for record in self:
+            if not record.code:
+                error_message = _("Code should not empty.")
+                raise ValidationError(error_message)
 
-    name = fields.Char()
+        for rec in records:
+            if self.code.lower() == rec.code.lower() and self.id != rec.id:
+                raise ValidationError(_("The code must be unique!"))

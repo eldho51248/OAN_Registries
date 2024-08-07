@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+    <record id="region_tigray" model="g2p.region">
+        <field name="code">1</field>
+        <field name="name">Tigray</field>
+        <field name="int_code">ET-TI</field>
+    </record>
+    <record id="region_afar" model="g2p.region">
+        <field name="code">2</field>
+        <field name="name">Afar</field>
+        <field name="int_code">ET-AF</field>
+    </record>
+    <record id="region_amhara" model="g2p.region">
+        <field name="code">3</field>
+        <field name="name">Amhara</field>
+        <field name="int_code">ET-AM</field>
+    </record>
+    <record id="region_oromia" model="g2p.region">
+        <field name="code">4</field>
+        <field name="name">Oromia</field>
+        <field name="int_code">ET-OR</field>
+    </record>
+    <record id="region_somali" model="g2p.region">
+        <field name="code">5</field>
+        <field name="name">Somali</field>
+        <field name="int_code">ET-SO</field>
+    </record>
+    <record id="region_benishangul_gumuz" model="g2p.region">
+        <field name="code">6</field>
+        <field name="name">Benishangul Gumuz</field>
+        <field name="int_code">ET-BE</field>
+    </record>
+
+    <!-- <record id="region_central_ethiopia" model="g2p.region">
+        <field name="code">central_ethiopia</field>
+        <field name="name">Central Ethiopia</field>
+        <field name="int_code" />
+    </record> -->
+
+    <record id="region_south_ethiopia" model="g2p.region">
+        <field name="code">7</field>
+        <field name="name">South Ethiopia</field>
+        <field name="int_code">ET-SN</field>
+    </record>
+
+    <!-- <record id="region_southwest_ethiopia" model="g2p.region">
+        <field name="code">southwest_ethiopia</field>
+        <field name="name">Southwest Ethiopia</field>
+        <field name="int_code">ET-GA</field>
+    </record> -->
+
+    <record id="region_gambela" model="g2p.region">
+        <field name="code">12</field>
+        <field name="name">Gambela</field>
+        <field name="int_code">ET-GA</field>
+    </record>
+    <record id="region_harari" model="g2p.region">
+        <field name="code">13</field>
+        <field name="name">Harari</field>
+        <field name="int_code">ET-HA</field>
+    </record>
+    <record id="region_addis_ababa" model="g2p.region">
+        <field name="code">14</field>
+        <field name="name">Addis Ababa</field>
+        <field name="int_code">ET-AA</field>
+    </record>
+    <record id="region_dire_dawa" model="g2p.region">
+        <field name="code">15</field>
+        <field name="name">Dire Dawa</field>
+        <field name="int_code">ET-DD</field>
+    </record>
+    <record id="region_sidama" model="g2p.region">
+        <field name="code">sidama</field>
+        <field name="name">Sidama</field>
+        <field name="int_code">ET-SI</field>
+    </record>
+</odoo>
