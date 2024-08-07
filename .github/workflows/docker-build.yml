@@ -1,0 +1,61 @@
+name: OpenG2P Odoo Package Dockers build
+
+on:
+  push:
+    branches:
+      - "17.0-develop"
+      # Other specific branches to be added here
+  workflow_dispatch:
+
+jobs:
+  docker-build-social-registry:
+    runs-on: ubuntu-latest
+    env:
+      NAMESPACE: ${{ secrets.docker_hub_organisation || 'openg2p' }}
+      SERVICE_NAME: openg2p-social-registry-ati
+      PACKAGE_NAME: social-registry
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Docker Login
+        run: |
+          echo "${{ secrets.docker_hub_token }}" | docker login -u ${{ secrets.docker_hub_actor }} --password-stdin || echo "::warning::Failed to Login to dockerhub"
+
+      - name: Docker build & push
+        run: |
+          cd ..
+
+          packageNameInput=${{ env.PACKAGE_NAME }}
+
+          if [ ! -f "./openg2p-ati/.github/docker_packages/${packageNameInput}.txt" ]; then
+            echo "Could not find the package specified." 1>&2;
+            exit 1;
+          fi
+
+          for package in ./openg2p-ati/.github/docker_packages/${packageNameInput}.txt; do
+            export IMAGE_ID=${{ env.NAMESPACE }}/${{ env.SERVICE_NAME }}
+            export VERSION=$(echo ${{ github.ref }} | sed -e 's,.*/\(.*\),\1,')
+            if [[ $VERSION == master || $VERSION == main ]]; then
+              export VERSION=develop
+            fi
+
+            if [[ $VERSION == 15.0* ]]; then
+              export OCA_DEPENDENCY_VERSION="15.0"
+              export DOCKER_BASE_TAG="15.0.20231010-debian-11-r1"
+            # elif [[ $VERSION == 16.0-* ]]; then
+              # TODO
+            elif [[ $VERSION == 17.0* ]]; then
+              export OCA_DEPENDENCY_VERSION="17.0"
+              export DOCKER_BASE_TAG="17.0.20240505-debian-12-r0"
+            fi
+            ./openg2p-ati/.github/docker_packaging/packaging/package.sh ${package}
+            mv tmpdir ./openg2p-ati/.github/docker_packaging/packaging
+            cd ./openg2p-ati/.github/docker_packaging/packaging
+            docker build . \
+              --build-arg BASE_VERSION=${DOCKER_BASE_TAG} \
+              --file Dockerfile \
+              --tag $IMAGE_ID:$VERSION
+            docker push $IMAGE_ID:$VERSION
+          done

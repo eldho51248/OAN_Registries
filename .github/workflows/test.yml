@@ -1,14 +1,15 @@
 name: tests
 
 on:
-  pull_request:
-    branches:
-      - "15.0*"
-      - "17.0*"
-  push:
-    branches:
-      - "15.0*"
-      - "17.0*"
+  #pull_request:
+  #  branches:
+  #    - "15.0*"
+  #    - "17.0*"
+  # push:
+  #  branches:
+  #    - "15.0*"
+  #    - "17.0*"
+  workflow_dispatch:
 env:
   OCA_GIT_USER_NAME: openg2p
   OCA_GIT_USER_EMAIL: bot@openg2p.org
