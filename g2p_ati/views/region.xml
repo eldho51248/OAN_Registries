@@ -11,7 +11,6 @@
             </tree>
         </field>
     </record>
-
     <record id="g2p_region_view_tree_action" model="ir.actions.act_window">
         <field name="name">Regions</field>
         <field name="res_model">g2p.region</field>
@@ -24,7 +23,6 @@
                 </p>
             </field>
     </record>
-
     <menuitem
         id="g2p_region_menu"
         action="g2p_region_view_tree_action"

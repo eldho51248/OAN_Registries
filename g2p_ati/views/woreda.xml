@@ -12,7 +12,6 @@
             </tree>
         </field>
     </record>
-
     <record id="g2p_woreda_view_tree_action" model="ir.actions.act_window">
         <field name="name">Woredas</field>
         <field name="res_model">g2p.woreda</field>
@@ -25,7 +24,6 @@
                 </p>
             </field>
     </record>
-
     <menuitem
         id="g2p_woreda_menu"
         action="g2p_woreda_view_tree_action"
@@ -33,8 +31,4 @@
         sequence="500"
         parent="g2p_registry_base.g2p_configuration_menu_root"
     />
-
-
-
-
 </odoo>

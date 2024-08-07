@@ -75,13 +75,11 @@
 						<field name="family_name_amh" placecholder="የአባት ስም" />
 						<field name="gf_name_amh" placecholder="የአያት ስም" />
 					</group>
-
 					<group colspan="3" name="other_lang" string="Other">
 						<field name="first_name_other" placecholder="Maqaa" />
 						<field name="family_name_other" placecholder="Maqaa Giddu Galeessaa" />
 						<field name="gf_name_other" placecholder="Maqaa Akaakayyuu" />
 					</group>
-
 				</group>
 			</xpath>
 			<xpath expr="//div[contains(@class, 'o_row')]" position="attributes">
@@ -193,13 +191,10 @@
 						<group name="name" string="Agricultural Input">
 							<field name="do_you_use_fertilizer" />
 							<field name="amount_fertilizer_utilized" />
-
 							<field name="do_you_use_pesticide" />
 							<field name="amount_pesticide_utilized" />
-
 							<field name="do_you_use_insecticide" />
 							<field name="amount_insecticide_utilized" />
-
 							<field name="do_you_use_improved_seed" />
 							<field name="amount_improved_seed_utilized" />
 						</group>
@@ -221,7 +216,6 @@
 							<field name="total_land_area" readonly="True" />
 						</group>
 						<group>
-
 							<field name="land_ownership" readonly="True" />
 						</group>
 					</group>
@@ -235,11 +229,9 @@
 					</field>
 				</page>
 				<page string="Crop Information" name="crops">
-
 					<group>
 						<field name="crop_water_sources" colspan="2" create="False" widget="many2many_tags" />
 					</group>
-
 					<field name="crop_information_ids">
 						<tree editable="bottom">
 							<field name="crop" />
@@ -251,7 +243,6 @@
 						</tree>
 					</field>
 				</page>
-
 				<page string="Livestock Information" name="livestocks">
 					<group>
 						<field name="livestock_water_sources" create="False" widget="many2many_tags" />
@@ -278,7 +269,6 @@
 			</xpath>
 		</field>
 	</record>
-
 	<record id="g2p_registry_individual_tree_view_inherit" model="ir.ui.view">
 		<field name="name">view_individuals_tree.inherited</field>
 		<field name="model">res.partner</field>
@@ -295,13 +285,10 @@
 				<field name="zone" />
 				<field name="woreda" />
 				<field name="kebele" />
-
 			</xpath>
-
 			<xpath expr="//field[@name='registration_date']" position="after">
 				<field name="data_enumerator_name" />
 				<field name="state" />
-
 				<button
                     title="Approve"
                     icon="fa-check"
@@ -321,13 +308,8 @@
                     groups="g2p_ati.group_data_validator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
                 />
 			</xpath>
-
 		</field>
 	</record>
-
-
-
-
 	<record id="g2p_registry_group_form_view_inherit" model="ir.ui.view">
 		<field name="name">view_group_form.inherited</field>
 		<field name="model">res.partner</field>
@@ -369,19 +351,17 @@
 			<xpath expr="//div[contains(@class,'o_row')]" position="attributes">
 				<attribute name="invisible">1</attribute>
 			</xpath>
-
 			<xpath expr="//field[@name='region']" position="attributes">
 				<attribute name="invisible">1</attribute>
 			</xpath>
-
+			<xpath expr="//field[@name='address']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
 			<xpath expr="//field[@name='region']" position="after">
 				<field name="regionn" />
-
 				<field name="zone" domain="[('region', '=', regionn)]" />
 				<field name="woreda" domain="[('zone', '=', zone)]" />
 				<field name="kebele" domain="[('woreda', '=', woreda)]" />
-
-
 			</xpath>
 			<xpath expr="//div[contains(@class, 'o_row')]" position="attributes">
 				<attribute name="invisible">1</attribute>
@@ -401,12 +381,9 @@
 			</xpath>
 		</field>
 	</record>
-
-
 	<record id="g2p_registry_group_tree_view_inherit" model="ir.ui.view">
 		<field name="name">view_group_tree.inherited</field>
 		<field name="model">res.partner</field>
-
 		<field name="inherit_id" ref="g2p_registry_group.view_groups_list_tree" />
 		<field name="arch" type="xml">
 			<xpath expr="//field[@name='registration_date']" position="after">
@@ -433,8 +410,6 @@
 			</xpath>
 		</field>
 	</record>
-
-
 	<record id="view_individuals_action_inherit" model="ir.actions.act_window.view">
 		<field name="sequence" eval="10" />
 		<field name="view_mode">graph</field>

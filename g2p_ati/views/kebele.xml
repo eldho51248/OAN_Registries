@@ -12,7 +12,6 @@
             </tree>
         </field>
     </record>
-
     <record id="g2p_kebele_view_tree_action" model="ir.actions.act_window">
         <field name="name">kebeles</field>
         <field name="res_model">g2p.kebele</field>
@@ -25,7 +24,6 @@
                 </p>
             </field>
     </record>
-
     <menuitem
         id="g2p_kebele_menu"
         action="g2p_kebele_view_tree_action"

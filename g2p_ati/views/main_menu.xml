@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <!-- Farmer -->
-
     <record id="g2p_registry_farmer_form_view_inherit_no_create" model="ir.ui.view">
         <field name="name">res.partner.form.inherit.no.create</field>
         <field name="model">res.partner</field>
@@ -12,11 +10,8 @@
             <xpath expr="//form" position="attributes">
                 <attribute name="create">False</attribute>
             </xpath>
-
-
         </field>
     </record>
-
     <record id="g2p_registry_farmer_tree_view_inherit_no_create" model="ir.ui.view">
         <field name="name">res.partner.tree.inherit.no.create</field>
         <field name="model">res.partner</field>
@@ -26,11 +21,8 @@
             <xpath expr="//tree" position="attributes">
                 <attribute name="create">False</attribute>
             </xpath>
-
-
         </field>
     </record>
-
     <record id="action_farmers_view" model="ir.actions.act_window">
         <field name="name">Farmer</field>
         <field name="res_model">res.partner</field>
@@ -45,9 +37,7 @@
     (0,0,{'view_mode': 'tree', 'view_id': ref('g2p_registry_farmer_tree_view_inherit_no_create')}),
     (0,0,{'view_mode': 'form', 'view_id': ref('g2p_registry_farmer_form_view_inherit_no_create')})]"
         />
-
     </record>
-
     <menuitem
         id="menu_action_farmer"
         name="Farmers"
@@ -55,8 +45,6 @@
         web_icon="g2p_ati,static/description/farmer.png"
         sequence="2"
     />
-
-
     <!-- Households -->
     <record id="g2p_registry_household_form_view_inherit_no_create" model="ir.ui.view">
         <field name="name">res.partner.form.household.inherit.no.create</field>
@@ -67,11 +55,8 @@
             <xpath expr="//form" position="attributes">
                 <attribute name="create">False</attribute>
             </xpath>
-
-
         </field>
     </record>
-
     <record id="g2p_registry_household_tree_view_inherit_no_create" model="ir.ui.view">
         <field name="name">res.partner.tree.household.inherit.no.create</field>
         <field name="model">res.partner</field>
@@ -81,11 +66,8 @@
             <xpath expr="//tree" position="attributes">
                 <attribute name="create">False</attribute>
             </xpath>
-
         </field>
     </record>
-
-
     <record id="action_household_view" model="ir.actions.act_window">
         <field name="name">Households</field>
         <field name="res_model">res.partner</field>
@@ -99,9 +81,7 @@
     (0,0,{'view_mode': 'tree', 'view_id': ref('g2p_registry_household_tree_view_inherit_no_create')}),
     (0,0,{'view_mode': 'form', 'view_id': ref('g2p_registry_household_form_view_inherit_no_create')})]"
         />
-
     </record>
-
     <menuitem
         id="menu_action_household"
         name="Households"
@@ -109,10 +89,7 @@
         web_icon="g2p_ati,static/description/home.png"
         sequence="2"
     />
-
-
     <!-- individuals -->
-
     <record id="g2p_registry_individual_form_view_inherit_no_create" model="ir.ui.view">
         <field name="name">res.partner.form.inherit.no.create</field>
         <field name="model">res.partner</field>
@@ -122,11 +99,8 @@
             <xpath expr="//form" position="attributes">
                 <attribute name="create">False</attribute>
             </xpath>
-
-
         </field>
     </record>
-
     <record id="g2p_registry_individual_tree_view_inherit_no_create" model="ir.ui.view">
         <field name="name">res.partner.tree.inherit.no.create</field>
         <field name="model">res.partner</field>
@@ -136,11 +110,8 @@
             <xpath expr="//tree" position="attributes">
                 <attribute name="create">False</attribute>
             </xpath>
-
-
         </field>
     </record>
-
     <record id="action_individual_view" model="ir.actions.act_window">
         <field name="name">Individuals</field>
         <field name="res_model">res.partner</field>
@@ -155,16 +126,12 @@
     (0,0,{'view_mode': 'tree', 'view_id': ref('g2p_registry_individual_tree_view_inherit_no_create')}),
     (0,0,{'view_mode': 'form', 'view_id': ref('g2p_registry_individual_form_view_inherit_no_create')})]"
         />
-
     </record>
-
     <record id="menu_action_individual" model="ir.ui.menu">
         <field name="name">Individuals</field>
         <field name="sequence" eval="10" />
         <field name="action" ref="action_individual_view" />
     </record>
-
-
     <menuitem
         id="menu_action_individual"
         name="Individuals"
@@ -172,8 +139,6 @@
         web_icon="g2p_ati,static/description/people.png"
         sequence="2"
     />
-
-
     <menuitem
         id="menu_action_crop_info"
         name="Crop Information"
@@ -181,8 +146,6 @@
         web_icon="g2p_ati,static/description/wheat.png"
         sequence="2"
     />
-
-
     <menuitem
         id="menu_action_livestock"
         name="Livestock Information"
@@ -190,8 +153,6 @@
         web_icon="g2p_ati,static/description/livestock.png"
         sequence="2"
     />
-
-
     <menuitem
         id="menu_action_land_info"
         name="Land Information"
@@ -199,8 +160,6 @@
         web_icon="g2p_ati,static/description/land.png"
         sequence="2"
     />
-
-
     <!-- Configuration -->
     <menuitem
         id="g2p_configuration_menu_root_main"
@@ -210,8 +169,6 @@
         web_icon="g2p_ati,static/description/gear.png"
         sequence="3"
     />
-
-
     <menuitem
         id="g2p_region_menu_main"
         action="g2p_ati.g2p_region_view_tree_action"
@@ -219,8 +176,6 @@
         sequence="500"
         parent="g2p_configuration_menu_root_main"
     />
-
-
     <menuitem
         id="g2p_primary_coomodity_menu_main"
         action="g2p_ati.g2p_primary_commodity_action"
@@ -228,7 +183,6 @@
         sequence="620"
         parent="g2p_configuration_menu_root_main"
     />
-
     <menuitem
         id="g2p_primary_cooperative_menu_main"
         action="g2p_ati.g2_primary_cooperative_action"
@@ -243,7 +197,6 @@
         sequence="620"
         parent="g2p_configuration_menu_root_main"
     />
-
     <menuitem
         id="g2p_crop_category_menu_main"
         action="g2p_ati.g2p_crop_category_tree_action"
@@ -251,7 +204,6 @@
         sequence="610"
         parent="g2p_configuration_menu_root_main"
     />
-
     <menuitem
         id="g2p_crop_menu_main"
         action="g2p_ati.g2p_crop_view_tree_action"
@@ -259,7 +211,6 @@
         sequence="610"
         parent="g2p_configuration_menu_root_main"
     />
-
     <menuitem
         id="g2p_hh_invcome_menu_main"
         action="g2p_ati.g2p_hh_income_action"
@@ -267,7 +218,6 @@
         sequence="620"
         parent="g2p_configuration_menu_root_main"
     />
-
     <menuitem
         id="g2p_ilness_menu_main"
         action="g2p_ati.g2p_illness_action"
@@ -275,7 +225,6 @@
         sequence="620"
         parent="g2p_configuration_menu_root_main"
     />
-
     <menuitem
         id="g2p_kebele_menu_main"
         action="g2p_ati.g2p_kebele_view_tree_action"
@@ -283,7 +232,6 @@
         sequence="500"
         parent="g2p_configuration_menu_root_main"
     />
-
     <menuitem
         id="menu_g2p_land_info_main"
         action="g2p_ati.action_g2p_land_information_act_window"
@@ -291,7 +239,6 @@
         sequence="500"
         parent="g2p_configuration_menu_root_main"
     />
-
     <menuitem
         id="g2p_water_menu_main"
         action="g2p_ati.g2p_water_source_action"
@@ -299,8 +246,6 @@
         sequence="620"
         parent="g2p_configuration_menu_root_main"
     />
-
-
     <menuitem
         id="g2p_woreda_menu_main"
         action="g2p_ati.g2p_woreda_view_tree_action"
@@ -308,8 +253,6 @@
         sequence="500"
         parent="g2p_configuration_menu_root_main"
     />
-
-
     <menuitem
         id="g2p_zone_menu_main"
         action="g2p_ati.g2p_zone_view_tree_action"
@@ -317,8 +260,6 @@
         sequence="500"
         parent="g2p_configuration_menu_root_main"
     />
-
-
     <menuitem
         id="menu_gender_type_main"
         name="Gender Types"
@@ -326,8 +267,6 @@
         parent="g2p_configuration_menu_root_main"
         sequence="10"
     />
-
-
     <menuitem
         id="menu_group_kind_main"
         name="Group types"
@@ -335,8 +274,6 @@
         parent="g2p_configuration_menu_root_main"
         sequence="30"
     />
-
-
     <menuitem
         id="g2p_lang_menu_main"
         action="g2p_ati.g2p_lang_action"
@@ -344,7 +281,6 @@
         sequence="620"
         parent="g2p_configuration_menu_root_main"
     />
-
     <menuitem
         id="g2p_livestock_type_menu_main"
         action="g2p_ati.g2p_livestock_type_view_tree_action"
@@ -352,7 +288,6 @@
         sequence="600"
         parent="g2p_configuration_menu_root_main"
     />
-
     <menuitem
         id="menu_id_type_main"
         name="ID Types"
