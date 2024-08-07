@@ -101,15 +101,15 @@ class G2PFarmer(models.Model):
         string="Do you use fertilizer? ", selection=[("yes", "Yes"), ("no", "No")]
     )
     amount_fertilizer_utilized = fields.Float(string="What is The amount Of fertilizer you have(qt)? ")
-    do_you_use_pesticide = fields.Float(
+    do_you_use_pesticide = fields.Selection(
         string="Do you use pesticide? ", selection=[("yes", "Yes"), ("no", "No")]
     )
     amount_pesticide_utilized = fields.Float(string="What is The amount Of pesticide you have(L)? ")
-    do_you_use_insecticide = fields.Float(
+    do_you_use_insecticide = fields.Selection(
         string="Do you use insecticide? ", selection=[("yes", "Yes"), ("no", "No")]
     )
     amount_insecticide_utilized = fields.Float(string="What is The amount Of insecticide you have in(L)? ")
-    do_you_use_improved_seed = fields.Float(
+    do_you_use_improved_seed = fields.Selection(
         string="Do you use improved_seed? ", selection=[("yes", "Yes"), ("no", "No")]
     )
     amount_improved_seed_utilized = fields.Float(
