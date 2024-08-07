@@ -243,12 +243,6 @@ class G2PFarmer(models.Model):
             if not record.phone_number_ids:
                 raise ValidationError(_("At least one phone number must be present."))
 
-    @api.onchange("phone_number_ids")
-    def _onchange_phone_number_presence(self):
-        for record in self:
-            if not record.phone_number_ids:
-                raise ValidationError(_("At least one phone number must be present."))
-
     @api.onchange("has_finance_access")
     def _onchange_has_finance_access(self):
         if self.has_finance_access == "no":
