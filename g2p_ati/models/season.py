@@ -1,11 +1,8 @@
 import re
 from datetime import date
-
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
-
-from . import eth_date
-
+from .utils import eth_date
 
 class G2PSeason(models.Model):
     _name = "g2p.season"

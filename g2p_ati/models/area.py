@@ -3,10 +3,8 @@ from odoo.exceptions import ValidationError
 
 
 class Region(models.Model):
-    _name = "g2p.region"
+    _inherit = "g2p.region"
 
-    name = fields.Char(required=True)
-    code = fields.Char(required=True)
     int_code = fields.Char(required=True)
 
     @api.constrains("name")

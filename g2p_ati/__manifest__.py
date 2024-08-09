@@ -50,7 +50,11 @@
         "views/land_info.xml",
         "views/main_menu.xml",
     ],
-    "assets": {"web.assets_backend": []},
+    "assets": {
+        "web.assets_backend": [
+        'g2p_ati/static/src/components/**/*.xml', 
+        'g2p_ati/static/src/components/**/*.css', 
+        'g2p_ati/static/src/components/**/*.js'  ]},
     "demo": [],
     "images": [],
     "application": True,

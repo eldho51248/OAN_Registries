@@ -35,7 +35,6 @@ class G2PWaterSource(models.Model):
             if self.code.lower() == rec.code.lower() and self.id != rec.id:
                 raise ValidationError(_("The code must be unique!"))
 
-
 class G2PHHIncome(models.Model):
     _name = "g2p.hh.income"
     _description = "House Hold Income"
@@ -69,7 +68,6 @@ class G2PHHIncome(models.Model):
             if self.code.lower() == rec.code.lower() and self.id != rec.id:
                 raise ValidationError(_("The code must be unique!"))
 
-
 class G2PFinanceAccess(models.Model):
     _name = "g2p.finance.access"
     _description = "Finance Access"
@@ -102,7 +100,6 @@ class G2PFinanceAccess(models.Model):
         for rec in records:
             if self.code.lower() == rec.code.lower() and self.id != rec.id:
                 raise ValidationError(_("The code must be unique!"))
-
 
 class G2PMachinery(models.Model):
     _name = "g2p.machinery"

@@ -127,8 +127,8 @@
 			<xpath expr="//field[@name='region']" position="before">
 				<group colspan="2">
 					<group>
-						<field name="regionn" />
-						<field name="zone" domain="[('region', '=', regionn)]" />
+						<field name="region" />
+						<field name="zone" domain="[('region', '=', region)]" />
 					</group>
 					<group>
 						<field name="woreda" domain="[('zone', '=', zone)]" />
@@ -269,6 +269,7 @@
 			</xpath>
 		</field>
 	</record>
+
 	<record id="g2p_registry_individual_tree_view_inherit" model="ir.ui.view">
 		<field name="name">view_individuals_tree.inherited</field>
 		<field name="model">res.partner</field>
@@ -281,7 +282,7 @@
 				<attribute name="invisible">1</attribute>
 			</xpath>
 			<xpath expr="//field[@name='name']" position="after">
-				<field name="regionn" />
+				<field name="region" />
 				<field name="zone" />
 				<field name="woreda" />
 				<field name="kebele" />
@@ -310,6 +311,7 @@
 			</xpath>
 		</field>
 	</record>
+
 	<record id="g2p_registry_group_form_view_inherit" model="ir.ui.view">
 		<field name="name">view_group_form.inherited</field>
 		<field name="model">res.partner</field>
@@ -358,8 +360,8 @@
 				<attribute name="invisible">1</attribute>
 			</xpath>
 			<xpath expr="//field[@name='region']" position="after">
-				<field name="regionn" />
-				<field name="zone" domain="[('region', '=', regionn)]" />
+				<field name="region" />
+				<field name="zone" domain="[('region', '=', region)]" />
 				<field name="woreda" domain="[('zone', '=', zone)]" />
 				<field name="kebele" domain="[('woreda', '=', woreda)]" />
 			</xpath>
@@ -381,6 +383,7 @@
 			</xpath>
 		</field>
 	</record>
+
 	<record id="g2p_registry_group_tree_view_inherit" model="ir.ui.view">
 		<field name="name">view_group_tree.inherited</field>
 		<field name="model">res.partner</field>
@@ -410,17 +413,21 @@
 			</xpath>
 		</field>
 	</record>
+
 	<record id="view_individuals_action_inherit" model="ir.actions.act_window.view">
 		<field name="sequence" eval="10" />
 		<field name="view_mode">graph</field>
 		<field name="act_window_id" ref="g2p_registry_individual.action_individuals_list" />
 	</record>
+
 	<record model="ir.ui.menu" id="g2p_registry_base.menu_registrant_tags">
 		<field name="action" eval="False" />
 	</record>
+
 	<record model="ir.ui.menu" id="g2p_registry_base.menu_district_config">
 		<field name="action" eval="False" />
 	</record>
+
 	<record model="ir.ui.menu" id="g2p_registry_base.menu_relationship">
 		<field name="action" eval="False" />
 	</record>
