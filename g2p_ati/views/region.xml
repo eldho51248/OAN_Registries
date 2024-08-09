@@ -8,6 +8,7 @@
          <tree create="true" delete="true" edit="true" editable="bottom">
                 <field name="name" required="1" />
                 <field name="code" required="1" />
+                <field name="iso_code" required="1" />
             </tree>
         </field>
     </record>

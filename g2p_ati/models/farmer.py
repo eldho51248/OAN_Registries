@@ -1,9 +1,12 @@
 import logging
 import re
 from datetime import date, datetime
+
 from dateutil.relativedelta import relativedelta
+
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
+
 from .utils import eth_date
 
 _logger = logging.getLogger(__name__)
@@ -59,7 +62,7 @@ class G2PFarmer(models.Model):
         ]
     )
     is_disabled = fields.Selection(string="Are you disabled? ", selection=[("yes", "Yes"), ("no", "No")])
-    
+
     # MEMEBERSHIP
     is_member_of_primary_cooperative = fields.Selection(
         string="Is Member Of Primary Cooperative? ", selection=[("yes", "Yes"), ("no", "No")]
@@ -92,7 +95,7 @@ class G2PFarmer(models.Model):
         ],
         default="draft",
     )
-    
+
     # AGRICULTURAL RESOURCES
     do_you_use_fertilizer = fields.Selection(
         string="Do you use fertilizer? ", selection=[("yes", "Yes"), ("no", "No")]
@@ -112,7 +115,7 @@ class G2PFarmer(models.Model):
     amount_improved_seed_utilized = fields.Float(
         string="What is The amount Of improved seed you have used(qt)? "
     )
-    
+
     # ACCESS TO RESOURCES
     crop_water_sources = fields.Many2many(
         "g2p.water.source",
@@ -164,7 +167,7 @@ class G2PFarmer(models.Model):
         string="Are You a household head? ", selection=[("yes", "Yes"), ("no", "No")]
     )
     hh_income_type = fields.Many2many(comodel_name="g2p.hh.income", string="House Hold Income")
-    
+
     # Land INFORMATIONS
     land_information_ids = fields.One2many("g2p.land.information", "partner_id", string="Land Information")
     crop_information_ids = fields.One2many("g2p.crop.information", "partner_id", string="Crop Information")

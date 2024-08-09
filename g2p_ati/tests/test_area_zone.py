@@ -12,7 +12,7 @@ class TestZone(TransactionCase):
         existing_region = cls.env["g2p.region"].search([("code", "=", "NA")], limit=1)
         if not existing_region:
             cls.region = cls.env["g2p.region"].create(
-                {"name": "Test Region", "code": "NA", "int_code": "001"}
+                {"name": "Test Region", "code": "NA", "iso_code": "001"}
             )
         else:
             cls.region = existing_region

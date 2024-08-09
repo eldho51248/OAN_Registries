@@ -1,8 +1,10 @@
 import datetime
 
+
 def convert_tuple_to_string_with_separator(tup: tuple, separator="/"):
     result_string = separator.join(map(str, tup))
     return result_string
+
 
 def start_day_of_ethiopian(year) -> int:
     """returns first day of that Ethiopian year
@@ -18,6 +20,7 @@ def start_day_of_ethiopian(year) -> int:
         new_year_day += 1
 
     return new_year_day
+
 
 def to_ethiopian(year, month, date) -> tuple:
     """Ethiopian date string representation of provided Gregorian date
@@ -106,6 +109,7 @@ def to_ethiopian(year, month, date) -> tuple:
     ethiopian_month = order[m]
 
     return ethiopian_year, ethiopian_month, ethiopian_date
+
 
 def to_gregorian(year, month, date) -> datetime.date:
     """Gregorian date object representation of provided Ethiopian date
