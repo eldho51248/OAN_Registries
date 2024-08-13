@@ -13,9 +13,9 @@ OpenG2P Country Config: ATI
 .. |badge1| image:: https://img.shields.io/badge/maturity-Alpha-red.png
     :target: https://odoo-community.org/page/development-status
     :alt: Alpha
-.. |badge2| image:: https://img.shields.io/badge/github-OpenG2P%2Fopeng2p--edrmc-lightgray.png?logo=github
-    :target: https://github.com/OpenG2P/openg2p-edrmc/tree/17.0-develop/g2p_ati
-    :alt: OpenG2P/openg2p-edrmc
+.. |badge2| image:: https://img.shields.io/badge/github-OpenG2P%2Fopeng2p--ati-lightgray.png?logo=github
+    :target: https://github.com/OpenG2P/openg2p-ati/tree/17.0-develop/g2p_ati
+    :alt: OpenG2P/openg2p-ati
 
 |badge1| |badge2|
 
@@ -34,10 +34,10 @@ OpenG2P Country Config: ATI
 Bug Tracker
 ===========
 
-Bugs are tracked on `GitHub Issues <https://github.com/OpenG2P/openg2p-edrmc/issues>`_.
+Bugs are tracked on `GitHub Issues <https://github.com/OpenG2P/openg2p-ati/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-`feedback <https://github.com/OpenG2P/openg2p-edrmc/issues/new?body=module:%20g2p_ati%0Aversion:%2017.0-develop%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/OpenG2P/openg2p-ati/issues/new?body=module:%20g2p_ati%0Aversion:%2017.0-develop%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -52,6 +52,6 @@ Authors
 Maintainers
 ~~~~~~~~~~~
 
-This module is part of the `OpenG2P/openg2p-edrmc <https://github.com/OpenG2P/openg2p-edrmc/tree/17.0-develop/g2p_ati>`_ project on GitHub.
+This module is part of the `OpenG2P/openg2p-ati <https://github.com/OpenG2P/openg2p-ati/tree/17.0-develop/g2p_ati>`_ project on GitHub.
 
 You are welcome to contribute.
