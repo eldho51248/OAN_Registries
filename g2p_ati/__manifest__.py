@@ -36,7 +36,7 @@
         "views/livestock.xml",
         "views/commodity.xml",
         "views/cooperations.xml",
-        "views/region.xml",
+        # "views/region.xml",
         "views/zone.xml",
         "views/woreda.xml",
         "views/kebele.xml",

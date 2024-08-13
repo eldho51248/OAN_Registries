@@ -5,7 +5,6 @@ from odoo.exceptions import ValidationError
 class Region(models.Model):
     _inherit = "g2p.region"
 
-    iso_code = fields.Char(required=True)
 
     @api.constrains("name")
     def _check_name(self):
