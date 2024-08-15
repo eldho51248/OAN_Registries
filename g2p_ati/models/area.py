@@ -3,11 +3,8 @@ from odoo.exceptions import ValidationError
 
 
 class Region(models.Model):
-    _name = "g2p.region"
+    _inherit = "g2p.region"
 
-    name = fields.Char(required=True)
-    code = fields.Char(required=True)
-    int_code = fields.Char(required=True)
 
     @api.constrains("name")
     def _check_name(self):
@@ -27,16 +24,17 @@ class Region(models.Model):
             if self.code.lower() == region.code.lower() and self.id != region.id:
                 raise ValidationError(_("The code must be unique!"))
 
-    @api.constrains("int_code")
-    def _check_int_code(self):
+    @api.constrains("iso_code")
+    def _check_iso_code(self):
         regions = self.search([])
         for record in self:
-            if not record.int_code:
+            if not record.iso_code:
                 error_message = _("Region International Code should not empty.")
                 raise ValidationError(error_message)
         for region in regions:
-            if self.int_code.lower() == region.int_code.lower() and self.id != region.id:
-                raise ValidationError(_("The International code must be unique!"))
+            if record.iso_code:
+                if self.iso_code.lower() == region.iso_code.lower() and self.id != region.id:
+                    raise ValidationError(_("The International code must be unique!"))
 
 
 class Zone(models.Model):

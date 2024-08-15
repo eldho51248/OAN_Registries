@@ -125,22 +125,26 @@
 				<attribute name="invisible">1</attribute>
 			</xpath>
 			<xpath expr="//field[@name='region']" position="before">
-				<group colspan="2">
+				<group name="area" colspan="2">
 					<group>
-						<field name="regionn" />
-						<field name="zone" domain="[('region', '=', regionn)]" />
+						<field name="region" />
+						<field name="zone" domain="[('region', '=', region)]" />
 					</group>
 					<group>
 						<field name="woreda" domain="[('zone', '=', zone)]" />
 						<field name="kebele" domain="[('woreda', '=', woreda)]" />
 					</group>
 				</group>
-				<group>
-					<field name="is_disabled" />
+
+				<group colspan="1" name="location_on_map" string="Location">
+					<field name="farmer_location_longitude"/>
+					<field name="farmer_location_latitude"/>
 				</group>
+			
 			</xpath>
 			<xpath expr="//sheet/notebook[@name='individual_detail']/page[@name='basic_info']" position="inside">
-				<group cols="2" colspan="2">
+				
+				<group name="primary_personal_info" cols="2" colspan="2">
 					<group>
 						<field name="birthdate" string="Date Of Birth(GC)" />
 						<field name="birthdate_ec" />
@@ -150,15 +154,21 @@
 					<group>
 						<field name="email" />
 						<field name="martial_status" />
+
+						<group name="disability" string="Disablity">
+							<field name="is_disabled" />
+						</group>
 					</group>
 				</group>
-				<group colspan="2">
+
+				<group name="farmer_socio_economic_data" colspan="2">
 					<group string="Farmer Data">
 						<field name="is_farmer" />
 						<field name="primary_Language" />
 						<field name="farming_type" />
 					</group>
-					<group string="Social Economic Data">
+
+					<group name="socio_economic_data" string="Social Economic Data">
 						<field name="hh_is_household_head" />
 						<field name="hh_income_type" create="False" widget="many2many_tags" />
 						<field name="education" />
@@ -269,6 +279,7 @@
 			</xpath>
 		</field>
 	</record>
+
 	<record id="g2p_registry_individual_tree_view_inherit" model="ir.ui.view">
 		<field name="name">view_individuals_tree.inherited</field>
 		<field name="model">res.partner</field>
@@ -281,7 +292,7 @@
 				<attribute name="invisible">1</attribute>
 			</xpath>
 			<xpath expr="//field[@name='name']" position="after">
-				<field name="regionn" />
+				<field name="region" />
 				<field name="zone" />
 				<field name="woreda" />
 				<field name="kebele" />
@@ -310,6 +321,7 @@
 			</xpath>
 		</field>
 	</record>
+
 	<record id="g2p_registry_group_form_view_inherit" model="ir.ui.view">
 		<field name="name">view_group_form.inherited</field>
 		<field name="model">res.partner</field>
@@ -358,8 +370,8 @@
 				<attribute name="invisible">1</attribute>
 			</xpath>
 			<xpath expr="//field[@name='region']" position="after">
-				<field name="regionn" />
-				<field name="zone" domain="[('region', '=', regionn)]" />
+				<field name="region" />
+				<field name="zone" domain="[('region', '=', region)]" />
 				<field name="woreda" domain="[('zone', '=', zone)]" />
 				<field name="kebele" domain="[('woreda', '=', woreda)]" />
 			</xpath>
@@ -381,6 +393,7 @@
 			</xpath>
 		</field>
 	</record>
+
 	<record id="g2p_registry_group_tree_view_inherit" model="ir.ui.view">
 		<field name="name">view_group_tree.inherited</field>
 		<field name="model">res.partner</field>
@@ -410,17 +423,21 @@
 			</xpath>
 		</field>
 	</record>
+
 	<record id="view_individuals_action_inherit" model="ir.actions.act_window.view">
 		<field name="sequence" eval="10" />
 		<field name="view_mode">graph</field>
 		<field name="act_window_id" ref="g2p_registry_individual.action_individuals_list" />
 	</record>
+
 	<record model="ir.ui.menu" id="g2p_registry_base.menu_registrant_tags">
 		<field name="action" eval="False" />
 	</record>
+
 	<record model="ir.ui.menu" id="g2p_registry_base.menu_district_config">
 		<field name="action" eval="False" />
 	</record>
+
 	<record model="ir.ui.menu" id="g2p_registry_base.menu_relationship">
 		<field name="action" eval="False" />
 	</record>

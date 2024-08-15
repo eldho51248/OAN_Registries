@@ -22,7 +22,7 @@ class TestKebele(TransactionCase):
                             "name": "Test Zone",
                             "code": "TZ",
                             "region": cls.env["g2p.region"]
-                            .create({"name": "Test Region", "code": "NA", "int_code": "001"})
+                            .create({"name": "Test Region", "code": "NA", "iso_code": "001"})
                             .id,
                         }
                     )

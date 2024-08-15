@@ -171,11 +171,12 @@
     />
     <menuitem
         id="g2p_region_menu_main"
-        action="g2p_ati.g2p_region_view_tree_action"
+        action="g2p_social_registry.action_region"
         name="Regions"
         sequence="500"
         parent="g2p_configuration_menu_root_main"
     />
+
     <menuitem
         id="g2p_primary_coomodity_menu_main"
         action="g2p_ati.g2p_primary_commodity_action"
