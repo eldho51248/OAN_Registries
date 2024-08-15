@@ -257,7 +257,15 @@ class G2PFarmer(models.Model):
         self.state = "approved"
 
     def state_reject(self):
-        self.state = "rejected"
+            return {
+                'name': _('Enter Rejection Reason'),
+                'type': 'ir.actions.act_window',
+                'res_model': 'g2p.rejection.reason.wizard',
+                'view_mode': 'form',
+                'target': 'new'
+            }
+    
+
 
     @api.depends("birthdate")
     def _compute_calc_age_int(self):
