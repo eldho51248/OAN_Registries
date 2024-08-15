@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo noupdate="1">
     <record id="cooperative_union_Hadnet_raya_Hadnet_raya" model="g2p.cooperative.union">
         <field name="code">Hadnet raya</field>
@@ -176,11 +176,17 @@
         <field name="code">Debark union</field>
         <field name="name">Debark union</field>
     </record>
-    <record id="cooperative_union_Jenber_hulegeb_yegenezeb_hiberet_sera_union_Jenber_hulegeb_yegenezeb_hiberet_sera_union" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Jenber_hulegeb_yegenezeb_hiberet_sera_union_Jenber_hulegeb_yegenezeb_hiberet_sera_union"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Jenber hulegeb yegenezeb hiberet sera union</field>
         <field name="name">Jenber hulegeb yegenezeb hiberet sera union</field>
     </record>
-    <record id="cooperative_union_Fana_hulegeb_yegenezeb_hiberet_sera_union_Fana_hulegeb_yegenezeb_hiberet_sera_union" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Fana_hulegeb_yegenezeb_hiberet_sera_union_Fana_hulegeb_yegenezeb_hiberet_sera_union"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Fana hulegeb yegenezeb hiberet sera union</field>
         <field name="name">Fana hulegeb yegenezeb hiberet sera union</field>
     </record>
@@ -220,7 +226,10 @@
         <field name="code">Menz</field>
         <field name="name">Menz</field>
     </record>
-    <record id="cooperative_union_Metema_hulegeb_yegenezeb_hibret_sera_mahiber_Metema_hulegeb_yegenezeb_hibret_sera_mahiber" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Metema_hulegeb_yegenezeb_hibret_sera_mahiber_Metema_hulegeb_yegenezeb_hibret_sera_mahiber"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Metema hulegeb yegenezeb hibret sera mahiber</field>
         <field name="name">Metema hulegeb yegenezeb hibret sera mahiber</field>
     </record>
@@ -240,7 +249,10 @@
         <field name="code">Zenbaba</field>
         <field name="name">Zenbaba</field>
     </record>
-    <record id="cooperative_union_Semen_wegagen_atikiltina_firafre_gibyit_sira_union_Semen_wegagen_atikiltina_firafre_gibyit_sira_union" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Semen_wegagen_atikiltina_firafre_gibyit_sira_union_Semen_wegagen_atikiltina_firafre_gibyit_sira_union"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Semen wegagen atikiltina firafre gibyit sira union</field>
         <field name="name">Semen wegagen atikiltina firafre gibyit sira union</field>
     </record>
@@ -260,7 +272,10 @@
         <field name="code">Hiwot</field>
         <field name="name">Hiwot</field>
     </record>
-    <record id="cooperative_union_Amhara_amrachochi_buna_hibret_sira_mahiber_union_Amhara_amrachochi_buna_hibret_sira_mahiber_union" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Amhara_amrachochi_buna_hibret_sira_mahiber_union_Amhara_amrachochi_buna_hibret_sira_mahiber_union"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Amhara amrachochi buna hibret sira mahiber union</field>
         <field name="name">Amhara amrachochi buna hibret sira mahiber union</field>
     </record>
@@ -276,21 +291,41 @@
         <field name="code">Tiwodros</field>
         <field name="name">Tiwodros</field>
     </record>
-    <record id="cooperative_union_Damota_wolita_farmers_cooperative_union_Damota_wolita_farmers_cooperative_union" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Damota_wolita_farmers_cooperative_union_Damota_wolita_farmers_cooperative_union"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Damota wolita farmers cooperative union</field>
         <field name="name">Damota wolita farmers cooperative union</field>
     </record>
-    <record id="cooperative_union_Yirgachefa_coffee_farmers_with_limited_responsibility_cooperative_union_Yirgachefa_coffee_farmers_with_limited_responsibility_cooperative_union" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Yirgachefa_coffee_farmers_with_limited_responsibility_cooperative_union_Yirgachefa_coffee_farmers_with_limited_responsibility_cooperative_union"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Yirgachefa coffee farmers with limited responsibility cooperative union</field>
         <field name="name">Yirgachefa coffee farmers with limited responsibility cooperative union</field>
     </record>
-    <record id="cooperative_union_Bench_maji_united_farmers_all_round_with_limited_responsibility_cooperative_union_Bench_maji_united_farmers_all_round_with_limited_responsibility_cooperative_union" model="g2p.cooperative.union">
-        <field name="code">Bench maji united farmers all-round with limited responsibility cooperative union</field>
-        <field name="name">Bench maji united farmers all-round with limited responsibility cooperative union</field>
+    <record
+        id="cooperative_union_Bench_maji_united_farmers_all_round_with_limited_responsibility_cooperative_union_Bench_maji_united_farmers_all_round_with_limited_responsibility_cooperative_union"
+        model="g2p.cooperative.union"
+    >
+        <field
+            name="code"
+        >Bench maji united farmers all-round with limited responsibility cooperative union</field>
+        <field
+            name="name"
+        >Bench maji united farmers all-round with limited responsibility cooperative union</field>
     </record>
-    <record id="cooperative_union_Bench_maji_coffee_producer_farmers_with_limited_responsibility_cooperative_union_Bench_maji_coffee_producer_farmers_with_limited_responsibility_cooperative_union" model="g2p.cooperative.union">
-        <field name="code">Bench maji coffee producer farmers with limited responsibility cooperative union</field>
-        <field name="name">Bench maji coffee producer farmers with limited responsibility cooperative union</field>
+    <record
+        id="cooperative_union_Bench_maji_coffee_producer_farmers_with_limited_responsibility_cooperative_union_Bench_maji_coffee_producer_farmers_with_limited_responsibility_cooperative_union"
+        model="g2p.cooperative.union"
+    >
+        <field
+            name="code"
+        >Bench maji coffee producer farmers with limited responsibility cooperative union</field>
+        <field
+            name="name"
+        >Bench maji coffee producer farmers with limited responsibility cooperative union</field>
     </record>
     <record id="cooperative_union_Woisa_dawro_all_round_Woisa_dawro_all_round" model="g2p.cooperative.union">
         <field name="code">Woisa dawro all-round</field>
@@ -304,27 +339,45 @@
         <field name="code">Hedota</field>
         <field name="name">Hedota</field>
     </record>
-    <record id="cooperative_union_Yehbret_fira_best_seed_production_and_marketing_Yehbret_fira_best_seed_production_and_marketing" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Yehbret_fira_best_seed_production_and_marketing_Yehbret_fira_best_seed_production_and_marketing"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Yehbret fira best seed production and marketing</field>
         <field name="name">Yehbret fira best seed production and marketing</field>
     </record>
-    <record id="cooperative_union_Gamo_zone_vegetable_and_fruits_marketing_all_round_Gamo_zone_vegetable_and_fruits_marketing_all_round" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Gamo_zone_vegetable_and_fruits_marketing_all_round_Gamo_zone_vegetable_and_fruits_marketing_all_round"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Gamo zone vegetable and fruits marketing all-round</field>
         <field name="name">Gamo zone vegetable and fruits marketing all-round</field>
     </record>
-    <record id="cooperative_union_Esfe_dicha_farmers_cooperative_union_Esfe_dicha_farmers_cooperative_union" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Esfe_dicha_farmers_cooperative_union_Esfe_dicha_farmers_cooperative_union"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Esfe dicha farmers cooperative union</field>
         <field name="name">Esfe dicha farmers cooperative union</field>
     </record>
-    <record id="cooperative_union_Licha_hadiya_farmers_cooperative_union_Licha_hadiya_farmers_cooperative_union" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Licha_hadiya_farmers_cooperative_union_Licha_hadiya_farmers_cooperative_union"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Licha hadiya farmers cooperative union</field>
         <field name="name">Licha hadiya farmers cooperative union</field>
     </record>
-    <record id="cooperative_union_Metayoma_badewacho_farmers_cooperative_union_Metayoma_badewacho_farmers_cooperative_union" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Metayoma_badewacho_farmers_cooperative_union_Metayoma_badewacho_farmers_cooperative_union"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Metayoma badewacho farmers cooperative union</field>
         <field name="name">Metayoma badewacho farmers cooperative union</field>
     </record>
-    <record id="cooperative_union_Boyo_dembla_cooperative_union_Boyo_dembla_cooperative_union" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Boyo_dembla_cooperative_union_Boyo_dembla_cooperative_union"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Boyo dembla cooperative union</field>
         <field name="name">Boyo dembla cooperative union</field>
     </record>
@@ -332,23 +385,38 @@
         <field name="code">Halabi horisenka</field>
         <field name="name">Halabi horisenka</field>
     </record>
-    <record id="cooperative_union_Mencheno_halaba_farmers_Mencheno_halaba_farmers" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Mencheno_halaba_farmers_Mencheno_halaba_farmers"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Mencheno halaba farmers</field>
         <field name="name">Mencheno halaba farmers</field>
     </record>
-    <record id="cooperative_union_Kaffa_all_round_cooperative_union_Kaffa_all_round_cooperative_union" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Kaffa_all_round_cooperative_union_Kaffa_all_round_cooperative_union"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Kaffa all-round cooperative union</field>
         <field name="name">Kaffa all-round cooperative union</field>
     </record>
-    <record id="cooperative_union_Kaffa_forest_honey_chaka_mar_union_Kaffa_forest_honey_chaka_mar_union" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Kaffa_forest_honey_chaka_mar_union_Kaffa_forest_honey_chaka_mar_union"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Kaffa forest honey/chaka mar union</field>
         <field name="name">Kaffa forest honey/chaka mar union</field>
     </record>
-    <record id="cooperative_union_Kaffa_chaka_buna_forest_coffee_farmers_cooperative_union_Kaffa_chaka_buna_forest_coffee_farmers_cooperative_union" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Kaffa_chaka_buna_forest_coffee_farmers_cooperative_union_Kaffa_chaka_buna_forest_coffee_farmers_cooperative_union"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Kaffa chaka buna/forest coffee farmers cooperative union</field>
         <field name="name">Kaffa chaka buna/forest coffee farmers cooperative union</field>
     </record>
-    <record id="cooperative_union_Zerita_kembata_seed_production_and_marketing_Zerita_kembata_seed_production_and_marketing" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Zerita_kembata_seed_production_and_marketing_Zerita_kembata_seed_production_and_marketing"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Zerita kembata seed production and marketing</field>
         <field name="name">Zerita kembata seed production and marketing</field>
     </record>
@@ -360,11 +428,17 @@
         <field name="code">Ambericho</field>
         <field name="name">Ambericho</field>
     </record>
-    <record id="cooperative_union_Milatan_kutisana_irregation_water_Milatan_kutisana_irregation_water" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Milatan_kutisana_irregation_water_Milatan_kutisana_irregation_water"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Milatan kutisana irregation water</field>
         <field name="name">Milatan kutisana irregation water</field>
     </record>
-    <record id="cooperative_union_Tetekamiwoch_users_all_round_cooperative_union_Tetekamiwoch_users_all_round_cooperative_union" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Tetekamiwoch_users_all_round_cooperative_union_Tetekamiwoch_users_all_round_cooperative_union"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Tetekamiwoch/users all-round cooperative union</field>
         <field name="name">Tetekamiwoch/users all-round cooperative union</field>
     </record>
@@ -376,15 +450,24 @@
         <field name="code">Pastoralist union</field>
         <field name="name">Pastoralist union</field>
     </record>
-    <record id="cooperative_union_Tapi_coffee_farmers_cooperative_union_Tapi_coffee_farmers_cooperative_union" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Tapi_coffee_farmers_cooperative_union_Tapi_coffee_farmers_cooperative_union"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Tapi coffee farmers cooperative union</field>
         <field name="name">Tapi coffee farmers cooperative union</field>
     </record>
-    <record id="cooperative_union_Sheka_bee_producta_and_forestry_marketing_Sheka_bee_producta_and_forestry_marketing" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Sheka_bee_producta_and_forestry_marketing_Sheka_bee_producta_and_forestry_marketing"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Sheka bee producta and forestry marketing</field>
         <field name="name">Sheka bee producta and forestry marketing</field>
     </record>
-    <record id="cooperative_union_Sidama_coffee_producing_farmers_cooperative_Sidama_coffee_producing_farmers_cooperative" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Sidama_coffee_producing_farmers_cooperative_Sidama_coffee_producing_farmers_cooperative"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Sidama coffee producing farmers cooperative</field>
         <field name="name">Sidama coffee producing farmers cooperative</field>
     </record>
@@ -392,7 +475,10 @@
         <field name="code">Sidama elto</field>
         <field name="name">Sidama elto</field>
     </record>
-    <record id="cooperative_union_Dona_vegetable_and_fruit_cooperative_union_Dona_vegetable_and_fruit_cooperative_union" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Dona_vegetable_and_fruit_cooperative_union_Dona_vegetable_and_fruit_cooperative_union"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Dona vegetable and fruit cooperative union</field>
         <field name="name">Dona vegetable and fruit cooperative union</field>
     </record>
@@ -400,35 +486,59 @@
         <field name="code">Melik silte farmers</field>
         <field name="name">Melik silte farmers</field>
     </record>
-    <record id="cooperative_union_Basketo_dechesto_farmers_all_round_cooperative_union_Basketo_dechesto_farmers_all_round_cooperative_union" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Basketo_dechesto_farmers_all_round_cooperative_union_Basketo_dechesto_farmers_all_round_cooperative_union"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Basketo dechesto farmers all-round cooperative union</field>
         <field name="name">Basketo dechesto farmers all-round cooperative union</field>
     </record>
-    <record id="cooperative_union_Gardula_all_round_cooperative_union_Gardula_all_round_cooperative_union" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Gardula_all_round_cooperative_union_Gardula_all_round_cooperative_union"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Gardula all-round cooperative union</field>
         <field name="name">Gardula all-round cooperative union</field>
     </record>
-    <record id="cooperative_union_Konta_farmers_all_round__cooperative_union_Konta_farmers_all_round__cooperative_union" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Konta_farmers_all_round__cooperative_union_Konta_farmers_all_round__cooperative_union"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Konta farmers all-round  cooperative union</field>
         <field name="name">Konta farmers all-round  cooperative union</field>
     </record>
-    <record id="cooperative_union_Yem_tebaber_farmers_ciooperative_with_limited_responsibility_union_Yem_tebaber_farmers_ciooperative_with_limited_responsibility_union" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Yem_tebaber_farmers_ciooperative_with_limited_responsibility_union_Yem_tebaber_farmers_ciooperative_with_limited_responsibility_union"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Yem tebaber farmers ciooperative with limited responsibility union</field>
         <field name="name">Yem tebaber farmers ciooperative with limited responsibility union</field>
     </record>
-    <record id="cooperative_union_Admas_farmers_cooperatives_association_union_Admas_farmers_cooperatives_association_union" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Admas_farmers_cooperatives_association_union_Admas_farmers_cooperatives_association_union"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Admas farmers cooperatives association union</field>
         <field name="name">Admas farmers cooperatives association union</field>
     </record>
-    <record id="cooperative_union_Walta_farmers_cooperatives_association_union_Walta_farmers_cooperatives_association_union" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Walta_farmers_cooperatives_association_union_Walta_farmers_cooperatives_association_union"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Walta farmers cooperatives association union</field>
         <field name="name">Walta farmers cooperatives association union</field>
     </record>
-    <record id="cooperative_union_Timret_irregation_development_agriculture_cooperatives_association_union_Timret_irregation_development_agriculture_cooperatives_association_union" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Timret_irregation_development_agriculture_cooperatives_association_union_Timret_irregation_development_agriculture_cooperatives_association_union"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Timret irregation development agriculture cooperatives association union</field>
         <field name="name">Timret irregation development agriculture cooperatives association union</field>
     </record>
-    <record id="cooperative_union_Edget_seed_production_cooperatives_association_union_Edget_seed_production_cooperatives_association_union" model="g2p.cooperative.union">
+    <record
+        id="cooperative_union_Edget_seed_production_cooperatives_association_union_Edget_seed_production_cooperatives_association_union"
+        model="g2p.cooperative.union"
+    >
         <field name="code">Edget seed production cooperatives association union</field>
         <field name="name">Edget seed production cooperatives association union</field>
     </record>

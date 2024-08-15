@@ -24,6 +24,7 @@
 
     <record id="group_data_admin" model="res.groups">
         <field name="name">Data Admin</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_system'))]" />
          <field name="category_id" ref="g2p_registry_base.openg2p_module" />
 
     </record>

@@ -11,8 +11,8 @@ class G2PCropInformation(models.Model):
     _name = "g2p.crop.information"
     _rec_name = "partner_id"
 
-    partner_id = fields.Many2one("res.partner", string="Farmer", required=True)
-    crop = fields.Many2one("g2p.crop", required=True)
+    partner_id = fields.Many2one("res.partner", string="Farmer", required=True, index=True)
+    crop = fields.Many2one("g2p.crop", required=True, index=True)
     is_diseased = fields.Selection(
         string="Has this crop been affected by illness?", selection=[("yes", "Yes"), ("no", "No")]
     )

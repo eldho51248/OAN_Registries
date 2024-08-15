@@ -9,7 +9,6 @@ from odoo.exceptions import ValidationError
 
 from .utils import eth_date
 
-
 _logger = logging.getLogger(__name__)
 
 ETHIOPIAN_MONTH_ORDER = {
@@ -54,7 +53,9 @@ class G2PFarmer(models.Model):
     )
     birthdate_ec = fields.Char(string="Date Of Birth (EC)", help="YYYY-MM-DD")
     primary_Language = fields.Many2one("g2p.lang")
-    is_farmer = fields.Selection(string="Are you a Farmer? ", selection=[("yes", "Yes"), ("no", "No")])
+    is_farmer = fields.Selection(
+        string="Are you a Farmer? ", index=True, selection=[("yes", "Yes"), ("no", "No")]
+    )
     farming_type = fields.Selection(
         selection=[
             ("crop_farming", "Crop Farming"),
@@ -94,6 +95,7 @@ class G2PFarmer(models.Model):
             ("update_requested", "Update Requested"),
             ("approved", "Approved"),
         ],
+        index=True,
         default="draft",
     )
 
@@ -187,7 +189,7 @@ class G2PFarmer(models.Model):
     data_collection_date = fields.Date()
     odk_reference_id = fields.Char()
     rejection_reason = fields.Text()
-    
+
     @api.onchange("is_group", "family_name", "given_name", "gf_name_eng")
     def name_change_farmer(self):
         vals = {}
@@ -242,12 +244,6 @@ class G2PFarmer(models.Model):
                 raise ValidationError(_("You can't select a date of birth greater than today"))
             self.birthdate = gc_date
 
-    # @api.constrains("phone_number_ids")
-    # def _check_phone_number_presence(self):
-    #     for record in self:
-    #         if not record.phone_number_ids:
-    #             raise ValidationError(_("At least one phone number must be present."))
-
     @api.onchange("has_finance_access")
     def _onchange_has_finance_access(self):
         if self.has_finance_access == "no":
@@ -257,15 +253,13 @@ class G2PFarmer(models.Model):
         self.state = "approved"
 
     def state_reject(self):
-            return {
-                'name': _('Enter Rejection Reason'),
-                'type': 'ir.actions.act_window',
-                'res_model': 'g2p.rejection.reason.wizard',
-                'view_mode': 'form',
-                'target': 'new'
-            }
-    
-
+        return {
+            "name": _("Enter Rejection Reason"),
+            "type": "ir.actions.act_window",
+            "res_model": "g2p.rejection.reason.wizard",
+            "view_mode": "form",
+            "target": "new",
+        }
 
     @api.depends("birthdate")
     def _compute_calc_age_int(self):

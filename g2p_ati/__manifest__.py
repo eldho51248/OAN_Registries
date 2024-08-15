@@ -14,6 +14,7 @@
         "security/groups.xml",
         "security/rule.xml",
         "security/ir.model.access.csv",
+        "data/group_membership_kind.xml",
         "data/id_types.xml",
         "data/regions.xml",
         "data/zones.xml",
@@ -47,7 +48,7 @@
         "views/crop.xml",
         "views/land_info.xml",
         "views/main_menu.xml",
-        "wizard/rejection_reason_wizard.xml"
+        "wizard/rejection_reason_wizard.xml",
     ],
     "assets": {
         "web.assets_backend": [

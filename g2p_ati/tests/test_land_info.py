@@ -1,5 +1,3 @@
-from psycopg2.errors import NotNullViolation
-
 from odoo.exceptions import ValidationError
 from odoo.tests.common import TransactionCase
 
@@ -22,7 +20,6 @@ class TestG2PLandInformation(TransactionCase):
         self.assertEqual(land_info.land_id, "125", "Incorrect land id assigned")
         self.assertEqual(land_info.total_land_area, 2000, "Area not set correctly")
         self.assertEqual(land_info.ownership_type, "owner", "Ownership Type not set correctly")
-
 
     def test_05_check_area_must_be_positive(self):
         """Test that the area must be a positive number."""

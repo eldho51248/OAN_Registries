@@ -1,7 +1,9 @@
 import datetime
 import re
-from odoo.exceptions import ValidationError
+
 from odoo import _
+from odoo.exceptions import ValidationError
+
 
 def convert_tuple_to_string_with_separator(tup: tuple, separator="/"):
     result_string = separator.join(map(str, tup))
@@ -110,7 +112,11 @@ def to_ethiopian(year, month, date) -> tuple:
     order = [0, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1, 2, 3, 4]
     ethiopian_month = order[m]
 
-    return  ethiopian_date, ethiopian_month,  ethiopian_year,
+    return (
+        ethiopian_date,
+        ethiopian_month,
+        ethiopian_year,
+    )
 
 
 def to_gregorian(year, month, date) -> datetime.date:
@@ -176,39 +182,12 @@ def to_gregorian(year, month, date) -> datetime.date:
     return datetime.date(gregorian_year, gregorian_month, gregorian_date)
 
 
-
-
-
-
-
-
-
-    @api.onchange("birthdate_ec")
-    def _onchange_birthdate_ec(self):
-        for record in self:
-            # Validate the format of birthdate_ec
-            if record.birthdate_ec:
-                # Call the validation function with the birthdate_ec string
-                if self._validate_date_components(record.birthdate_ec):
-                    # Proceed with further processing if the format and values are valid
-                    # Example: You can set a computed field or perform other actions
-                    pass
-                else:
-                    # Handle cases where the date components do not meet the criteria
-                    error_msg = "Invalid date components. Day must be between 1 and 30, Month must be between 1 and 13."
-                    raise exceptions.ValidationError(error_msg)
-            else:
-                # Optionally handle cases where birthdate_ec is empty
-                # For example, you might want to clear a related computed field
-                pass
-
-
 def check_ethipian_date_str(eth_date_str):
     date_list = re.split("[-/,]", eth_date_str)
 
     if len(date_list) != 3:
         raise ValidationError(_("Select a valid Ethiopian date with day,month and year (dd-mm-yyyy)"))
-        
+
     day = int(date_list[0])
     month = int(date_list[1])
     if day < 1 or day > 30 or month < 1 or month > 13:

@@ -5,7 +5,6 @@ from odoo.exceptions import ValidationError
 class Region(models.Model):
     _inherit = "g2p.region"
 
-
     @api.constrains("name")
     def _check_name(self):
         for record in self:
@@ -36,12 +35,18 @@ class Region(models.Model):
                 if self.iso_code.lower() == region.iso_code.lower() and self.id != region.id:
                     raise ValidationError(_("The International code must be unique!"))
 
+    @api.model
+    def name_search(self, name, args=None, operator='ilike', limit=100):
+        args = args or []
+        domain = ['|', ('code', operator, name), ('name', operator, name)] + args
+        return self.search(domain, limit=limit).name_get()
+
 
 class Zone(models.Model):
     _name = "g2p.zone"
 
     region = fields.Many2one("g2p.region", required=True)
-    code = fields.Char(required=True)
+    code = fields.Char(required=True, index=True)
     name = fields.Char(required=True)
 
     @api.constrains("region")
@@ -69,15 +74,28 @@ class Zone(models.Model):
         for zone in zones:
             if self.code.lower() == zone.code.lower() and self.id != zone.id:
                 raise ValidationError(_("The code must be unique!"))
+    
+    
+    @api.model
+    def name_search(self, name, args=None, operator='ilike', limit=100):
+        args = args or []
+        domain = ['|', ('code', operator, name), ('name', operator, name)] + args
+        return self.search(domain, limit=limit).name_get()
 
 
 class Woreda(models.Model):
     _name = "g2p.woreda"
 
     zone = fields.Many2one("g2p.zone", required=True)
-    code = fields.Char(required=True)
+    code = fields.Char(required=True, index=True)
     name = fields.Char(required=True)
-
+    
+    @api.model
+    def name_search(self, name, args=None, operator='ilike', limit=100):
+        args = args or []
+        domain = ['|', ('code', operator, name), ('name', operator, name)] + args
+        return self.search(domain, limit=limit).name_get()
+    
     @api.constrains("zone")
     def _check_woreda(self):
         for record in self:
@@ -109,7 +127,7 @@ class Kebele(models.Model):
     _name = "g2p.kebele"
 
     woreda = fields.Many2one("g2p.woreda", required=True)
-    code = fields.Char(required=True)
+    code = fields.Char(required=True, index=True)
     name = fields.Char(required=True)
 
     @api.constrains("woreda")
