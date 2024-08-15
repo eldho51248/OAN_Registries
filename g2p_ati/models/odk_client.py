@@ -1,7 +1,7 @@
 import odoo.addons.g2p_odk_importer.models.odk_client as base_odk_client
 import base64
 from pathlib import Path
-
+import json
 
 def get_value_ids(self, model, value_list):
     ids = []
@@ -265,7 +265,7 @@ def get_individual_data(self, individual, is_member):
         vals["livestock_water_sources"] = [(6, 0, livestock_water_sources_ids)]
 
     # AGRICULTURAL INPUT
-    # vals["do_you_use_fertilizer"] = individual.get("do_you_use_fertilizer")
+    vals["do_you_use_fertilizer"] = individual.get("do_you_use_fertilizer")
     vals["do_you_use_pesticide"] = individual.get("do_you_use_pesticide")
     vals["do_you_use_insecticide"] = individual.get("do_you_use_insecticide")
     vals["do_you_use_improved_seed"] = individual.get("do_you_use_improved_seed")
@@ -287,8 +287,6 @@ def get_individual_data(self, individual, is_member):
             if "other" in finance_accesses_ids:
                 finance_accesses_ids.remove("other")
             vals["finance_accesses"] = [(6, 0, finance_accesses_ids)]
-
-    vals["odk_reference_id"] = individual.get("odk_reference_id")
     
     individual = process_reg_ids(self, individual, "Farmer ODK ACK ID", "odk_reference_id")
     vals["reg_ids"] = individual.get("reg_ids")
@@ -296,11 +294,9 @@ def get_individual_data(self, individual, is_member):
     if individual.get("member_registered") and individual.get("member_registered") == "yes":
         individual = process_reg_ids(self, individual, "Member ODK ACK ID", "member_reference_id")
         vals["reg_ids"] = individual.get("reg_ids")
-    
-    vals["additional_g2p_info"] = {
-        "other": other_json,
-    }
-    # print(vals["additional_g2p_info"])
+
+    if other_json:
+        vals["additional_g2p_info"] = json.dumps(other_json)
 
     if individual.get("farmer_location") is not None:
         vals["farmer_location_longitude"] = individual.get("farmer_location")['coordinates'][0]
@@ -501,6 +497,7 @@ def patched_addl_data(self, mapped_json):
         
 
 def handle_media_import_ati(self, member, mapped_json):
+    return
     meta = member.get("meta")
     if not meta:
         return
