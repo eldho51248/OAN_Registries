@@ -9,6 +9,7 @@ from odoo.exceptions import ValidationError
 
 from .utils import eth_date
 
+
 _logger = logging.getLogger(__name__)
 
 ETHIOPIAN_MONTH_ORDER = {
@@ -171,7 +172,7 @@ class G2PFarmer(models.Model):
     # Land INFORMATIONS
     land_information_ids = fields.One2many("g2p.land.information", "partner_id", string="Land Information")
     crop_information_ids = fields.One2many("g2p.crop.information", "partner_id", string="Crop Information")
-    total_land_area = fields.Float(default=0.0, readonly=True, compute="_compute_total_land_area")
+    total_land_area = fields.Float(default=0.0, readonly=True, compute="_compute_total_land_area", store=True)
     age_int = fields.Integer(compute="_compute_calc_age_int", store=True)
     land_ownership = fields.Selection(
         selection=[("owner", "Owner"), ("tenant", "Tenant"), ("hybrid", "Hybrid")],
@@ -185,7 +186,8 @@ class G2PFarmer(models.Model):
     data_enumerator_name = fields.Char(string="Data Enumerator")
     data_collection_date = fields.Date()
     odk_reference_id = fields.Char()
-
+    rejection_reason = fields.Text()
+    
     @api.onchange("is_group", "family_name", "given_name", "gf_name_eng")
     def name_change_farmer(self):
         vals = {}
@@ -233,17 +235,18 @@ class G2PFarmer(models.Model):
     @api.onchange("birthdate_ec")
     def _onchange_birthdate_ec(self):
         if self.birthdate_ec:
+            eth_date.check_ethipian_date_str(self.birthdate_ec)
             date_list = re.split("[-/,]", self.birthdate_ec)
-            gc_date = eth_date.to_gregorian(int(date_list[0]), int(date_list[1]), int(date_list[2]))
+            gc_date = eth_date.to_gregorian(int(date_list[2]), int(date_list[1]), int(date_list[0]))
             if gc_date > fields.date.today():
                 raise ValidationError(_("You can't select a date of birth greater than today"))
             self.birthdate = gc_date
 
-    @api.constrains("phone_number_ids")
-    def _check_phone_number_presence(self):
-        for record in self:
-            if not record.phone_number_ids:
-                raise ValidationError(_("At least one phone number must be present."))
+    # @api.constrains("phone_number_ids")
+    # def _check_phone_number_presence(self):
+    #     for record in self:
+    #         if not record.phone_number_ids:
+    #             raise ValidationError(_("At least one phone number must be present."))
 
     @api.onchange("has_finance_access")
     def _onchange_has_finance_access(self):

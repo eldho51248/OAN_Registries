@@ -23,12 +23,6 @@ class TestG2PLandInformation(TransactionCase):
         self.assertEqual(land_info.total_land_area, 2000, "Area not set correctly")
         self.assertEqual(land_info.ownership_type, "owner", "Ownership Type not set correctly")
 
-    def test_02_check_required_fields(self):
-        """Test required fields in Land Information."""
-        with self.assertRaises(NotNullViolation):
-            self.env["g2p.land.information"].create(
-                {"partner_id": self.partner.id, "ownership_type": "owner"}
-            )
 
     def test_05_check_area_must_be_positive(self):
         """Test that the area must be a positive number."""

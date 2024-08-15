@@ -125,7 +125,7 @@
 				<attribute name="invisible">1</attribute>
 			</xpath>
 			<xpath expr="//field[@name='region']" position="before">
-				<group colspan="2">
+				<group name="area" colspan="2">
 					<group>
 						<field name="region" />
 						<field name="zone" domain="[('region', '=', region)]" />
@@ -135,12 +135,16 @@
 						<field name="kebele" domain="[('woreda', '=', woreda)]" />
 					</group>
 				</group>
-				<group>
-					<field name="is_disabled" />
+
+				<group colspan="1" name="location_on_map" string="Location">
+					<field name="farmer_location_longitude"/>
+					<field name="farmer_location_latitude"/>
 				</group>
+			
 			</xpath>
 			<xpath expr="//sheet/notebook[@name='individual_detail']/page[@name='basic_info']" position="inside">
-				<group cols="2" colspan="2">
+				
+				<group name="primary_personal_info" cols="2" colspan="2">
 					<group>
 						<field name="birthdate" string="Date Of Birth(GC)" />
 						<field name="birthdate_ec" />
@@ -150,15 +154,21 @@
 					<group>
 						<field name="email" />
 						<field name="martial_status" />
+
+						<group name="disability" string="Disablity">
+							<field name="is_disabled" />
+						</group>
 					</group>
 				</group>
-				<group colspan="2">
+
+				<group name="farmer_socio_economic_data" colspan="2">
 					<group string="Farmer Data">
 						<field name="is_farmer" />
 						<field name="primary_Language" />
 						<field name="farming_type" />
 					</group>
-					<group string="Social Economic Data">
+
+					<group name="socio_economic_data" string="Social Economic Data">
 						<field name="hh_is_household_head" />
 						<field name="hh_income_type" create="False" widget="many2many_tags" />
 						<field name="education" />

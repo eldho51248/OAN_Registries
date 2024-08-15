@@ -45,7 +45,7 @@
         <field name="code">Gamo</field>
     </record>
     <record id="lang_silte" model="g2p.lang">
-        <field name="name">Silt'e</field>
+        <field name="name">Silte</field>
         <field name="code">Silte</field>
     </record>
     <record id="lang_kafa" model="g2p.lang">
