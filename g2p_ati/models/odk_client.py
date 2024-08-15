@@ -57,6 +57,9 @@ def process_land_ids(self, json_data, is_member):
     land_information_ids = []
     if json_data["land_information_ids"] is not None:
         for land_info in json_data["land_information_ids"]:
+            ownership_type = land_info.get("hh_member_land_ownership" if is_member else "land_ownership", None)
+            if not ownership_type:
+                continue
             land_certificate = land_info.get("hh_member_land_certificate" if is_member else "land_certificate", None)
             land_certificate_name = None
             if land_certificate:
@@ -67,7 +70,7 @@ def process_land_ids(self, json_data, is_member):
                     0,
                     0,
                     {
-                        "ownership_type": land_info.get("hh_member_land_ownership" if is_member else "land_ownership", None),
+                        "ownership_type": ownership_type,
                         "total_land_area": land_info.get("hh_member_total_land_area" if is_member else "total_land_area", None),
                         "land_id": land_info.get("hh_member_land_id" if is_member else "land_id", None),
                         # "land_certificate_name": land_certificate_name
@@ -95,7 +98,10 @@ def process_livestock_ids(self, json_data, is_member):
     livestock_information_ids = []
     if json_data["livestock_information_ids"] is not None:
         for livestock_info in json_data["livestock_information_ids"]:
-            livestock_type = get_value_many2one(self, "g2p.livestock.type", livestock_info.get("hh_member_animal" if is_member else "animal", None))
+            live_type = livestock_info.get("hh_member_animal" if is_member else "animal", None)
+            if not live_type:
+                continue
+            livestock_type = get_value_many2one(self, "g2p.livestock.type", live_type)
             livestock_info_dict = {
                 "livestock_type": livestock_type,
                 "number_of_livestock": livestock_info.get("hh_member_num_animals" if is_member else "num_animals", None),
@@ -155,12 +161,12 @@ def get_individual_data(self, individual, is_member):
     vals["reg_ids"] = individual.get("reg_ids")
 
     # BASIC INFORMATION
-    region_id = process_many2one_field(self, "g2p.region", individual.get("regionn"))
+    region_id = process_many2one_field(self, "g2p.region", individual.get("region"))
     if region_id:
         if region_id == "other":
-            other_json["regionn"] = individual.get("other_region")
+            other_json["region"] = individual.get("other_region")
         else:
-            vals["regionn"] = region_id
+            vals["region"] = region_id
 
     zone_id = process_many2one_field(self, "g2p.zone", individual.get("zone"))
     if zone_id:
@@ -243,7 +249,7 @@ def get_individual_data(self, individual, is_member):
     vals["role_in_farmer_cluster"] = individual.get("role_in_farmer_cluster")
 
     # LAND INFORMATION
-    if "land_information_ids" in individual:
+    if "land_information_ids" in individual:        
         vals["land_information_ids"] = process_land_ids(self, individual, is_member)
 
     # CROP INFORMATION
@@ -330,10 +336,10 @@ def get_member_data(self, member, head):
     vals["gender"] = member.get("gender")
     vals["birthdate"] = member.get("birthdate")
 
-    region_id = process_many2one_field(self, "g2p.region", head.get("regionn"))
+    region_id = process_many2one_field(self, "g2p.region", head.get("region"))
     if region_id:
         if region_id != "other":
-            vals["regionn"] = region_id
+            vals["region"] = region_id
 
     zone_id = process_many2one_field(self, "g2p.zone", head.get("zone"))
     if zone_id:
@@ -362,9 +368,6 @@ def get_membership_kind(self, relationship):
     return membership_kind.id
 
 def patched_addl_data(self, mapped_json):
-    # TODO:
-    # sort data coming from ODK central based on timestamp
-
     # Process flow
     """
     hhh = household head
@@ -449,7 +452,7 @@ def patched_addl_data(self, mapped_json):
 
         group["name"] = "Household - " + household_head_name
         group["kind"] = group_kind.id
-        group["regionn"] = household_head.regionn.id
+        group["region"] = household_head.region.id
         group["zone"] = household_head.zone.id
         group["woreda"] = household_head.woreda.id
         group["kebele"] = household_head.kebele.id
@@ -497,7 +500,7 @@ def patched_addl_data(self, mapped_json):
         
 
 def handle_media_import_ati(self, member, mapped_json):
-    return
+    # return
     meta = member.get("meta")
     if not meta:
         return
