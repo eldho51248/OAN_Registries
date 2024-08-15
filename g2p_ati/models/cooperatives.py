@@ -43,12 +43,8 @@ class G2PCooperativeUnion(models.Model):
     _rec_name = "name"
     _order = "name ASC"
 
-    name = fields.Char(
-        required=True,
-    )
-    code = fields.Char(
-        required=True,
-    )
+    name = fields.Char(required=True)
+    code = fields.Char(required=True, index=True)
 
     @api.constrains("name")
     def _check_name(self):

@@ -5,11 +5,11 @@
         <field name="arch" type="xml">
             <form string="Enter Rejection Reason">
                 <group>
-                    <field name="reason"/>
+                    <field name="reason" />
                 </group>
                 <footer>
                     <button string="Confirm" class="btn-primary" type="object" name="confirm_rejection" />
-                    <button string="Cancel" class="btn-danger" special="cancel"/>
+                    <button string="Cancel" class="btn-danger" special="cancel" />
                 </footer>
             </form>
         </field>

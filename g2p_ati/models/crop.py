@@ -6,7 +6,7 @@ class G2PCropCategory(models.Model):
     _name = "g2p.crop.category"
 
     name = fields.Char(required=True)
-    code = fields.Char(required=True)
+    code = fields.Char(required=True, index=True)
 
     @api.constrains("name")
     def _check_name(self):
@@ -32,9 +32,9 @@ class G2PCrop(models.Model):
     _name = "g2p.crop"
     _description = "Crop Information Model"
 
-    category = fields.Many2one("g2p.crop.category", required=True)
+    category = fields.Many2one("g2p.crop.category", required=True, index=True)
     name = fields.Char(required=True)
-    code = fields.Char(required=True)
+    code = fields.Char(required=True, index=True)
 
     @api.constrains("name")
     def _check_name(self):

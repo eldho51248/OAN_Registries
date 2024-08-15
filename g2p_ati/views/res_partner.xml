@@ -137,13 +137,13 @@
 				</group>
 
 				<group colspan="1" name="location_on_map" string="Location">
-					<field name="farmer_location_longitude"/>
-					<field name="farmer_location_latitude"/>
+					<field name="farmer_location_longitude" />
+					<field name="farmer_location_latitude" />
 				</group>
-			
+
 			</xpath>
 			<xpath expr="//sheet/notebook[@name='individual_detail']/page[@name='basic_info']" position="inside">
-				
+
 				<group name="primary_personal_info" cols="2" colspan="2">
 					<group>
 						<field name="birthdate" string="Date Of Birth(GC)" />
@@ -288,15 +288,26 @@
 			<xpath expr="//field[@name='tags_ids']" position="attributes">
 				<attribute name="invisible">1</attribute>
 			</xpath>
+
+			<xpath expr="//field[@name='phone']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+
+		<xpath expr="//field[@name='address']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+
 			<xpath expr="//field[@name='birthdate']" position="attributes">
 				<attribute name="invisible">1</attribute>
 			</xpath>
+
 			<xpath expr="//field[@name='name']" position="after">
 				<field name="region" />
 				<field name="zone" />
 				<field name="woreda" />
 				<field name="kebele" />
 			</xpath>
+
 			<xpath expr="//field[@name='registration_date']" position="after">
 				<field name="data_enumerator_name" />
 				<field name="state" />

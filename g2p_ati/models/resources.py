@@ -9,12 +9,8 @@ class G2PWaterSource(models.Model):
     _rec_name = "name"
     _order = "name ASC"
 
-    name = fields.Char(
-        required=True,
-    )
-    code = fields.Char(
-        required=True,
-    )
+    name = fields.Char(required=True)
+    code = fields.Char(required=True, index=True)
 
     @api.constrains("name")
     def _check_name(self):
@@ -43,12 +39,8 @@ class G2PHHIncome(models.Model):
     _rec_name = "name"
     _order = "name ASC"
 
-    name = fields.Char(
-        required=True,
-    )
-    code = fields.Char(
-        required=True,
-    )
+    name = fields.Char(required=True)
+    code = fields.Char(required=True, index=True)
 
     @api.constrains("name")
     def _check_name(self):
@@ -77,12 +69,8 @@ class G2PFinanceAccess(models.Model):
     _rec_name = "name"
     _order = "name ASC"
 
-    name = fields.Char(
-        required=True,
-    )
-    code = fields.Char(
-        required=True,
-    )
+    name = fields.Char(required=True)
+    code = fields.Char(required=True, index=True)
 
     @api.constrains("name")
     def _check_name(self):
@@ -111,12 +99,8 @@ class G2PMachinery(models.Model):
     _rec_name = "name"
     _order = "name ASC"
 
-    name = fields.Char(
-        required=True,
-    )
-    code = fields.Char(
-        required=True,
-    )
+    name = fields.Char(required=True)
+    code = fields.Char(required=True, index=True)
 
     @api.constrains("name")
     def _check_name(self):

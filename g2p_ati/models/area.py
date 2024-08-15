@@ -5,7 +5,6 @@ from odoo.exceptions import ValidationError
 class Region(models.Model):
     _inherit = "g2p.region"
 
-
     @api.constrains("name")
     def _check_name(self):
         for record in self:
@@ -41,7 +40,7 @@ class Zone(models.Model):
     _name = "g2p.zone"
 
     region = fields.Many2one("g2p.region", required=True)
-    code = fields.Char(required=True)
+    code = fields.Char(required=True, index=True)
     name = fields.Char(required=True)
 
     @api.constrains("region")
@@ -75,7 +74,7 @@ class Woreda(models.Model):
     _name = "g2p.woreda"
 
     zone = fields.Many2one("g2p.zone", required=True)
-    code = fields.Char(required=True)
+    code = fields.Char(required=True, index=True)
     name = fields.Char(required=True)
 
     @api.constrains("zone")
@@ -109,7 +108,7 @@ class Kebele(models.Model):
     _name = "g2p.kebele"
 
     woreda = fields.Many2one("g2p.woreda", required=True)
-    code = fields.Char(required=True)
+    code = fields.Char(required=True, index=True)
     name = fields.Char(required=True)
 
     @api.constrains("woreda")

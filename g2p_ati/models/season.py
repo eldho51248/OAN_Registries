@@ -12,11 +12,11 @@ class G2PSeason(models.Model):
     _description = "Season"
 
     name = fields.Char(required=True)
-    start_gc = fields.Date()
+    start_gc = fields.Date(index=True)
     start_ec = fields.Char()
     end_gc = fields.Date()
     end_ec = fields.Char()
-    year_gc = fields.Integer()
+    year_gc = fields.Integer(index=True)
     year_ec = fields.Integer()
 
     @api.onchange("start_gc")
