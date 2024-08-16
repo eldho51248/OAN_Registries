@@ -61,37 +61,40 @@ def process_land_ids(self, json_data, is_member):
             if not ownership_type:
                 continue
             land_certificate = land_info.get("hh_member_land_certificate" if is_member else "land_certificate", None)
-            land_certificate_name = None
+            land_certificate_id = None
             if land_certificate:
-                # path = Path(land_certificate)
-                land_certificate_name = land_certificate
-            land_information_ids.append(
-                (
-                    0,
-                    0,
-                    {
-                        "ownership_type": ownership_type,
-                        "total_land_area": land_info.get("hh_member_total_land_area" if is_member else "total_land_area", None),
-                        "land_id": land_info.get("hh_member_land_id" if is_member else "land_id", None),
-                        # "land_certificate_name": land_certificate_name
-                    },
-                )
-            )
+                # link the uploaded storage.file id to the land_certificate of this entry using the name of the file
+                for file_id in json_data["file_ids"]:
+                    if land_certificate == file_id[0]:
+                        land_certificate_id = file_id[1]
+
+            land_info_dict = {
+                "ownership_type": ownership_type,
+                "total_land_area": land_info.get("hh_member_total_land_area" if is_member else "total_land_area", 0),
+                "land_id": land_info.get("hh_member_land_id" if is_member else "land_id", 0),
+            }
+            if land_certificate_id:
+                land_info_dict["land_certificate"] = land_certificate_id
+            land_information_ids.append((0, 0, land_info_dict))
+
     return land_information_ids
 
 def process_crop_ids(self, json_data, is_member):
     crop_information_ids = []
     if json_data["crop_information_ids"] is not None:
         for crop_info in json_data["crop_information_ids"]:
+            crop = crop_info.get("hh_member_crop_name" if is_member else "crop_name", None)
+            if not crop:
+                continue
             crop_id = get_value_many2one(self, "g2p.crop", crop_info.get("hh_member_crop_name" if is_member else "crop_name", None))
             crop_date = crop_info.get("hh_member_crop_date" if is_member else "crop_date", None)
-            crop_info_dict = {
-                "crop": crop_id,
-            }
-            if crop_date:
-                crop_info_dict["collected_gc"] = crop_date
-
-            crop_information_ids.append((0, 0, crop_info_dict))
+            if crop_id:
+                crop_info_dict = {
+                    "crop": crop_id,
+                    "collected_gc": crop_date
+                }
+            
+                crop_information_ids.append((0, 0, crop_info_dict))
     return crop_information_ids
 
 def process_livestock_ids(self, json_data, is_member):
@@ -102,12 +105,13 @@ def process_livestock_ids(self, json_data, is_member):
             if not live_type:
                 continue
             livestock_type = get_value_many2one(self, "g2p.livestock.type", live_type)
-            livestock_info_dict = {
-                "livestock_type": livestock_type,
-                "number_of_livestock": livestock_info.get("hh_member_num_animals" if is_member else "num_animals", None),
-            }
+            if livestock_type:
+                livestock_info_dict = {
+                    "livestock_type": livestock_type,
+                    "number_of_livestock": livestock_info.get("hh_member_num_animals" if is_member else "num_animals", None),
+                }
 
-            livestock_information_ids.append((0, 0, livestock_info_dict))
+                livestock_information_ids.append((0, 0, livestock_info_dict))
     return livestock_information_ids
 
 def process_reg_ids(self, json_data, id_type_name, id_value_key):
@@ -300,13 +304,16 @@ def get_individual_data(self, individual, is_member):
     if individual.get("member_registered") and individual.get("member_registered") == "yes":
         individual = process_reg_ids(self, individual, "Member ODK ACK ID", "member_reference_id")
         vals["reg_ids"] = individual.get("reg_ids")
-
+    
     if other_json:
         vals["additional_g2p_info"] = json.dumps(other_json)
 
     if individual.get("farmer_location") is not None:
         vals["farmer_location_longitude"] = individual.get("farmer_location")['coordinates'][0]
         vals["farmer_location_latitude"] = individual.get("farmer_location")['coordinates'][1]
+
+    if individual.get("supporting_documents_ids") is not None:
+        vals["supporting_documents_ids"] = individual.get("supporting_documents_ids")
 
     return vals
 
@@ -359,8 +366,10 @@ def get_member_data(self, member, head):
     return vals
 
 def get_membership_kind(self, relationship):
-    if relationship == "wife":
+    if relationship == "Wife":
         relationship = "Head - Wife"
+    if relationship == "Husband":
+        relationship = "Head - Husband"
     
     membership_kind = self.env["g2p.group.membership.kind"].sudo().search([("name", "=", relationship)], limit=1)
     if not membership_kind:
@@ -368,7 +377,8 @@ def get_membership_kind(self, relationship):
     return membership_kind.id
 
 def patched_addl_data(self, mapped_json):
-    # Process flow
+    # return []
+    # PROCESS FLOW
     """
     hhh = household head
     1. if hhh is coming:
@@ -520,6 +530,10 @@ def handle_media_import_ati(self, member, mapped_json):
         doc_tag = self.env["g2p.document.tag"].create({"name": "Land Certificate"})
 
     first_image_stored = False
+    supporting_documents_ids = []
+
+    # file ids to keep track of which document id is for which land certificate (to map to land certificate in land information later)
+    file_ids = []
     for attachment in exit_attachment:
         filename = attachment["name"]
         get_attachment = self.download_attachment(
@@ -532,24 +546,23 @@ def handle_media_import_ati(self, member, mapped_json):
             mapped_json["image_1920"] = attachment_base64
             first_image_stored = True
         else:
-            if mapped_json.get("supporting_documents_ids") is None:
-                mapped_json["supporting_documents_ids"] = []
             backend_id = (
                 self.env.ref("storage_backend.default_storage_backend").id
                 or self.env["storage.backend"].search([], limit=1).id
             )
-            mapped_json["supporting_documents_ids"].append(
-                (
-                    0,
-                    0,  
-                    {
-                        "backend_id": backend_id,
-                        "name": attachment["name"],
-                        "data": attachment_base64,
-                        "tags_ids": [(4, doc_tag.id)]
-                    },
-                )
-            )
+            storage_file = self.env["storage.file"].sudo().create({
+                "name": filename,
+                "backend_id": backend_id,
+                "data": attachment_base64,
+                "tags_ids": [(4, doc_tag.id)]
+            })
+            if storage_file:
+                supporting_documents_ids.append((4, storage_file.id))
+                file_ids.append([filename, storage_file.id])
+       
+    if supporting_documents_ids:
+        mapped_json["supporting_documents_ids"] = supporting_documents_ids
+    mapped_json["file_ids"] = file_ids
 
 base_odk_client.ODKClient.handle_media_import = handle_media_import_ati
 base_odk_client.ODKClient.get_addl_data = patched_addl_data
