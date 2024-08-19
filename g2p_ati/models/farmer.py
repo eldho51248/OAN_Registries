@@ -30,6 +30,7 @@ ETHIOPIAN_MONTH_ORDER = {
 
 class G2PFarmer(models.Model):
     _inherit = "res.partner"
+    _order = "registration_date desc"
 
     zone = fields.Many2one("g2p.zone", domain="[('region', '=', region)]")
     woreda = fields.Many2one("g2p.woreda", domain="[('zone', '=', zone)]")
@@ -43,8 +44,8 @@ class G2PFarmer(models.Model):
     first_name_other = fields.Char(string="First Name", translate=False)
     family_name_other = fields.Char(string="Father Name", translate=False)
     gf_name_other = fields.Char(string="Grand Father Name", translate=False)
-    farmer_location_longitude = fields.Float(string="Longitude")
-    farmer_location_latitude = fields.Float(string="Latitude")
+    farmer_location_longitude = fields.Char(string="Longitude")
+    farmer_location_latitude = fields.Char(string="Latitude")
     has_personal_phone = fields.Selection(
         string="Do you have a personal phone number? ", selection=[("yes", "Yes"), ("no", "No")]
     )
@@ -91,7 +92,7 @@ class G2PFarmer(models.Model):
         tracking=True,
         selection=[
             ("draft", "Draft"),
-            ("rejected", "rejected"),
+            ("rejected", "Rejected"),
             ("update_requested", "Update Requested"),
             ("approved", "Approved"),
         ],
