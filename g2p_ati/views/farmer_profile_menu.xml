@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
+
 <menuitem
         id="g2p_registry_base.g2p_main_menu_root"
         name="Farmer Profile"
@@ -7,6 +8,9 @@
         groups="group_data_enumerator,g2p_registry_base.group_g2p_admin,group_data_admin,g2p_registry_base.group_g2p_registrar"
         web_icon="g2p_ati,static/description/profile.png"
     />
+
+
+
 
     <record model="ir.ui.menu" id="g2p_registry_group.menu_groups_list">
         <field

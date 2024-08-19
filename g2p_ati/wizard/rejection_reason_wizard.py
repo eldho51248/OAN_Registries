@@ -13,6 +13,6 @@ class G2PRejectionReasonWizard(models.TransientModel):
 
         # Iterate over each partner and update the rejection_reason field
         for partner in partners_to_update:
-            partner.write({"rejection_reason": self.reason})
+            partner.write({"state": "rejected", "rejection_reason": self.reason})
 
         return {"type": "ir.actions.act_window_close"}

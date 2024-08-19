@@ -161,6 +161,7 @@
         web_icon="g2p_ati,static/description/livestock.png"
         sequence="2"
     />
+
     <menuitem
         id="menu_action_land_info"
         name="Land Information"
@@ -168,15 +169,16 @@
         web_icon="g2p_ati,static/description/land.png"
         sequence="2"
     />
+
     <!-- Configuration -->
     <menuitem
         id="g2p_configuration_menu_root_main"
         name="Configuration"
-        action="action_g2p_land_information_act_window"
-        groups="g2p_registry_base.group_g2p_admin"
+        groups="g2p_registry_base.group_g2p_admin,group_data_validator"
         web_icon="g2p_ati,static/description/gear.png"
         sequence="3"
     />
+
     <menuitem
         id="g2p_region_menu_main"
         action="g2p_social_registry.action_region"
@@ -241,13 +243,7 @@
         sequence="500"
         parent="g2p_configuration_menu_root_main"
     />
-    <menuitem
-        id="menu_g2p_land_info_main"
-        action="g2p_ati.action_g2p_land_information_act_window"
-        name="Land Information"
-        sequence="500"
-        parent="g2p_configuration_menu_root_main"
-    />
+
     <menuitem
         id="g2p_water_menu_main"
         action="g2p_ati.g2p_water_source_action"
