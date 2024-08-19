@@ -72,7 +72,7 @@ def process_land_ids(self, json_data, is_member):
                 "hh_member_land_certificate" if is_member else "land_certificate", None
             )
             land_certificate_id = None
-            if land_certificate:
+            if land_certificate and json_data.get("file_ids"):
                 # link the uploaded storage.file id to the land_certificate
                 # of this entry using the name of the file
                 for file_id in json_data["file_ids"]:
@@ -164,14 +164,7 @@ def patched_handle_one2many_fields(self, mapped_json):
     return
 
 
-def get_individual_data(self, individual, is_member):
-    vals = {
-        "is_registrant": True,
-        "is_group": False,
-        "is_farmer": "yes",
-    }
-    other_json = {}
-
+def process_basic_information(self, individual, vals, other_json):
     if individual.get("hh_is_household_head").strip():
         vals["hh_is_household_head"] = individual.get("hh_is_household_head")
 
@@ -247,6 +240,8 @@ def get_individual_data(self, individual, is_member):
             source_of_income_ids.remove("other")
         vals["hh_income_type"] = [(6, 0, source_of_income_ids)]
 
+
+def process_membership(self, individual, vals, other_json):
     # MEMBERSHIP
     vals["is_member_of_primary_cooperative"] = individual.get("is_member_of_primary_cooperative")
     vals["is_member_of_cooperative_union"] = individual.get("is_member_of_cooperative_union")
@@ -277,6 +272,8 @@ def get_individual_data(self, individual, is_member):
 
     vals["role_in_farmer_cluster"] = individual.get("role_in_farmer_cluster")
 
+
+def process_land_crop_livestock_information(self, individual, vals, is_member):
     # LAND INFORMATION
     if "land_information_ids" in individual:
         vals["land_information_ids"] = process_land_ids(self, individual, is_member)
@@ -303,6 +300,8 @@ def get_individual_data(self, individual, is_member):
             livestock_water_sources_ids.remove("other")
         vals["livestock_water_sources"] = [(6, 0, livestock_water_sources_ids)]
 
+
+def process_agriculture_resource_finance(self, individual, vals):
     # AGRICULTURAL INPUT
     vals["do_you_use_fertilizer"] = individual.get("do_you_use_fertilizer")
     vals["do_you_use_pesticide"] = individual.get("do_you_use_pesticide")
@@ -330,6 +329,20 @@ def get_individual_data(self, individual, is_member):
             if "other" in finance_accesses_ids:
                 finance_accesses_ids.remove("other")
             vals["finance_accesses"] = [(6, 0, finance_accesses_ids)]
+
+
+def get_individual_data(self, individual, is_member):
+    vals = {
+        "is_registrant": True,
+        "is_group": False,
+        "is_farmer": "yes",
+    }
+    other_json = {}
+
+    process_basic_information(self, individual, vals, other_json)
+    process_membership(self, individual, vals, other_json)
+    process_land_crop_livestock_information(self, individual, vals, is_member)
+    process_agriculture_resource_finance(self, individual, vals)
 
     individual = process_reg_ids(self, individual, "Farmer ODK ACK ID", "odk_reference_id")
     vals["reg_ids"] = individual.get("reg_ids")
