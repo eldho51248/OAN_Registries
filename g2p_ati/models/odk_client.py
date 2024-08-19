@@ -397,9 +397,9 @@ def get_member_data(self, member, head):
 
 def get_membership_kind(self, relationship):
     if relationship == "Wife":
-        relationship = "Head - Wife"
+        relationship = "Wife - Head"
     if relationship == "Husband":
-        relationship = "Head - Husband"
+        relationship = "Husband - Head"
 
     membership_kind = (
         self.env["g2p.group.membership.kind"].sudo().search([("name", "=", relationship)], limit=1)
