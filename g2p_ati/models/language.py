@@ -6,7 +6,7 @@ class G2pLang(models.Model):
     _name = "g2p.lang"
 
     name = fields.Char(string="Language", required=True)
-    code = fields.Char(required=True)
+    code = fields.Char(required=True, index=True)
 
     @api.constrains("name")
     def _check_name(self):

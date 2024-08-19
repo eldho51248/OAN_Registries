@@ -11,8 +11,8 @@ class G2PCropInformation(models.Model):
     _name = "g2p.crop.information"
     _rec_name = "partner_id"
 
-    partner_id = fields.Many2one("res.partner", string="Farmer", required=True)
-    crop = fields.Many2one("g2p.crop", required=True)
+    partner_id = fields.Many2one("res.partner", string="Farmer", required=True, index=True)
+    crop = fields.Many2one("g2p.crop", required=True, index=True)
     is_diseased = fields.Selection(
         string="Has this crop been affected by illness?", selection=[("yes", "Yes"), ("no", "No")]
     )
@@ -21,11 +21,11 @@ class G2PCropInformation(models.Model):
     collected_ec = fields.Char(string="Collected EC")
     season = fields.Many2one("g2p.season", store=True)
 
-    @api.constrains("collected_gc", "collected_ec")
-    def _check_collected_dates(self):
-        for record in self:
-            if not record.collected_gc and not record.collected_ec:
-                raise ValidationError(_("Either Collected GC or Collected EC must be filled."))
+    # @api.constrains("collected_gc", "collected_ec")
+    # def _check_collected_dates(self):
+    #     for record in self:
+    #         if not record.collected_gc and not record.collected_ec:
+    #             raise ValidationError(_("Either Collected GC or Collected EC must be filled."))
 
     @api.constrains("is_diseased", "illness_type")
     def _check_illness_type_required(self):
@@ -52,6 +52,7 @@ class G2PCropInformation(models.Model):
     @api.onchange("collected_ec")
     def _onchange_collected_ec(self):
         if self.collected_ec:
+            eth_date.check_ethipian_date_str(self.collected_ec)
             date_list = re.split("[-/,]", self.collected_ec)
-            gc_date = eth_date.to_gregorian(int(date_list[0]), int(date_list[1]), int(date_list[2]))
+            gc_date = eth_date.to_gregorian(int(date_list[2]), int(date_list[1]), int(date_list[0]))
             self.collected_gc = gc_date

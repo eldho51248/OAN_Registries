@@ -10,7 +10,7 @@ class G2PPrimaryCommodity(models.Model):
     _order = "name ASC"
 
     name = fields.Char(required=True)
-    code = fields.Char(required=True)
+    code = fields.Char(required=True, index=True)
 
     @api.constrains("name")
     def _check_name(self):

@@ -1,4 +1,8 @@
 import datetime
+import re
+
+from odoo import _
+from odoo.exceptions import ValidationError
 
 
 def convert_tuple_to_string_with_separator(tup: tuple, separator="/"):
@@ -108,7 +112,11 @@ def to_ethiopian(year, month, date) -> tuple:
     order = [0, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1, 2, 3, 4]
     ethiopian_month = order[m]
 
-    return ethiopian_year, ethiopian_month, ethiopian_date
+    return (
+        ethiopian_date,
+        ethiopian_month,
+        ethiopian_year,
+    )
 
 
 def to_gregorian(year, month, date) -> datetime.date:
@@ -172,3 +180,15 @@ def to_gregorian(year, month, date) -> datetime.date:
     gregorian_month = order[m]
 
     return datetime.date(gregorian_year, gregorian_month, gregorian_date)
+
+
+def check_ethipian_date_str(eth_date_str):
+    date_list = re.split("[-/,]", eth_date_str)
+
+    if len(date_list) != 3:
+        raise ValidationError(_("Select a valid Ethiopian date with day,month and year (dd-mm-yyyy)"))
+
+    day = int(date_list[0])
+    month = int(date_list[1])
+    if day < 1 or day > 30 or month < 1 or month > 13:
+        raise ValidationError(_("Select a valid Ethiopian date with day,month and year (dd-mm-yyyy)"))

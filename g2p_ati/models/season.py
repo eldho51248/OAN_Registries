@@ -12,11 +12,11 @@ class G2PSeason(models.Model):
     _description = "Season"
 
     name = fields.Char(required=True)
-    start_gc = fields.Date()
+    start_gc = fields.Date(index=True)
     start_ec = fields.Char()
     end_gc = fields.Date()
     end_ec = fields.Char()
-    year_gc = fields.Integer()
+    year_gc = fields.Integer(index=True)
     year_ec = fields.Integer()
 
     @api.onchange("start_gc")
@@ -38,10 +38,11 @@ class G2PSeason(models.Model):
     def _compute_start_gc_from_start_ec(self):
         for record in self:
             if record.start_ec:
+                eth_date.check_ethipian_date_str(record.start_ec)
                 date_list = re.split("[-/,]", self.start_ec)
-                gc_date = eth_date.to_gregorian(int(date_list[0]), int(date_list[1]), int(date_list[2]))
+                gc_date = eth_date.to_gregorian(int(date_list[2]), int(date_list[1]), int(date_list[0]))
                 self.start_gc = gc_date
-                self.year_ec = int(date_list[0])
+                self.year_ec = int(date_list[2])
             else:
                 record.start_gc = False
 
@@ -61,14 +62,13 @@ class G2PSeason(models.Model):
     def _compute_end_gc_from_end_ec(self):
         for record in self:
             if record.end_ec:
+                eth_date.check_ethipian_date_str(record.end_ec)
                 date_list = re.split("[-/,]", self.end_ec)
-                gc_date = eth_date.to_gregorian(int(date_list[0]), int(date_list[1]), int(date_list[2]))
-
+                gc_date = eth_date.to_gregorian(int(date_list[2]), int(date_list[1]), int(date_list[0]))
                 if gc_date and self.start_gc:
                     if gc_date < self.start_gc:
                         error_msg = "Season end must be greater than or equal to season start"
                         raise ValidationError(error_msg)
-
                 self.end_gc = gc_date
 
     @api.constrains("start_gc", "start_ec")

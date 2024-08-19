@@ -10,9 +10,7 @@
     "development_status": "Alpha",
     "depends": ["g2p_odk_importer"],
     "external_dependencies": {},
-    "data": [
-        "security/ir.model.access.csv",
-    ],
+    "data": ["security/ir.model.access.csv", "views/views.xml"],
     "assets": {"web.assets_backend": []},
     "demo": [],
     "images": [],

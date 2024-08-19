@@ -30,6 +30,7 @@ ETHIOPIAN_MONTH_ORDER = {
 
 class G2PFarmer(models.Model):
     _inherit = "res.partner"
+    _order = "registration_date desc"
 
     zone = fields.Many2one("g2p.zone", domain="[('region', '=', region)]")
     woreda = fields.Many2one("g2p.woreda", domain="[('zone', '=', zone)]")
@@ -43,8 +44,7 @@ class G2PFarmer(models.Model):
     first_name_other = fields.Char(string="First Name", translate=False)
     family_name_other = fields.Char(string="Father Name", translate=False)
     gf_name_other = fields.Char(string="Grand Father Name", translate=False)
-    farmer_location_longitude = fields.Float(string="Longitude")
-    farmer_location_latitude = fields.Float(string="Latitude")
+
     has_personal_phone = fields.Selection(
         string="Do you have a personal phone number? ", selection=[("yes", "Yes"), ("no", "No")]
     )
@@ -53,7 +53,9 @@ class G2PFarmer(models.Model):
     )
     birthdate_ec = fields.Char(string="Date Of Birth (EC)", help="YYYY-MM-DD")
     primary_Language = fields.Many2one("g2p.lang")
-    is_farmer = fields.Selection(string="Are you a Farmer? ", selection=[("yes", "Yes"), ("no", "No")])
+    is_farmer = fields.Selection(
+        string="Are you a Farmer? ", index=True, selection=[("yes", "Yes"), ("no", "No")]
+    )
     farming_type = fields.Selection(
         selection=[
             ("crop_farming", "Crop Farming"),
@@ -89,10 +91,11 @@ class G2PFarmer(models.Model):
         tracking=True,
         selection=[
             ("draft", "Draft"),
-            ("rejected", "rejected"),
+            ("rejected", "Rejected"),
             ("update_requested", "Update Requested"),
             ("approved", "Approved"),
         ],
+        index=True,
         default="draft",
     )
 
@@ -171,7 +174,7 @@ class G2PFarmer(models.Model):
     # Land INFORMATIONS
     land_information_ids = fields.One2many("g2p.land.information", "partner_id", string="Land Information")
     crop_information_ids = fields.One2many("g2p.crop.information", "partner_id", string="Crop Information")
-    total_land_area = fields.Float(default=0.0, readonly=True, compute="_compute_total_land_area")
+    total_land_area = fields.Float(default=0.0, readonly=True, compute="_compute_total_land_area", store=True)
     age_int = fields.Integer(compute="_compute_calc_age_int", store=True)
     land_ownership = fields.Selection(
         selection=[("owner", "Owner"), ("tenant", "Tenant"), ("hybrid", "Hybrid")],
@@ -185,6 +188,7 @@ class G2PFarmer(models.Model):
     data_enumerator_name = fields.Char(string="Data Enumerator")
     data_collection_date = fields.Date()
     odk_reference_id = fields.Char()
+    rejection_reason = fields.Text()
 
     @api.onchange("is_group", "family_name", "given_name", "gf_name_eng")
     def name_change_farmer(self):
@@ -233,17 +237,12 @@ class G2PFarmer(models.Model):
     @api.onchange("birthdate_ec")
     def _onchange_birthdate_ec(self):
         if self.birthdate_ec:
+            eth_date.check_ethipian_date_str(self.birthdate_ec)
             date_list = re.split("[-/,]", self.birthdate_ec)
-            gc_date = eth_date.to_gregorian(int(date_list[0]), int(date_list[1]), int(date_list[2]))
+            gc_date = eth_date.to_gregorian(int(date_list[2]), int(date_list[1]), int(date_list[0]))
             if gc_date > fields.date.today():
                 raise ValidationError(_("You can't select a date of birth greater than today"))
             self.birthdate = gc_date
-
-    @api.constrains("phone_number_ids")
-    def _check_phone_number_presence(self):
-        for record in self:
-            if not record.phone_number_ids:
-                raise ValidationError(_("At least one phone number must be present."))
 
     @api.onchange("has_finance_access")
     def _onchange_has_finance_access(self):
@@ -254,7 +253,13 @@ class G2PFarmer(models.Model):
         self.state = "approved"
 
     def state_reject(self):
-        self.state = "rejected"
+        return {
+            "name": _("Enter Rejection Reason"),
+            "type": "ir.actions.act_window",
+            "res_model": "g2p.rejection.reason.wizard",
+            "view_mode": "form",
+            "target": "new",
+        }
 
     @api.depends("birthdate")
     def _compute_calc_age_int(self):
