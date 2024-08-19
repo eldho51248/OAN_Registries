@@ -44,8 +44,7 @@ class G2PFarmer(models.Model):
     first_name_other = fields.Char(string="First Name", translate=False)
     family_name_other = fields.Char(string="Father Name", translate=False)
     gf_name_other = fields.Char(string="Grand Father Name", translate=False)
-    farmer_location_longitude = fields.Char(string="Longitude")
-    farmer_location_latitude = fields.Char(string="Latitude")
+
     has_personal_phone = fields.Selection(
         string="Do you have a personal phone number? ", selection=[("yes", "Yes"), ("no", "No")]
     )

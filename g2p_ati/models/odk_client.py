@@ -355,8 +355,8 @@ def get_individual_data(self, individual, is_member):
         vals["additional_g2p_info"] = json.dumps(other_json)
 
     if individual.get("farmer_location") is not None:
-        vals["farmer_location_longitude"] = individual.get("farmer_location")["coordinates"][0]
-        vals["farmer_location_latitude"] = individual.get("farmer_location")["coordinates"][1]
+        vals["partner_longitude"] = individual.get("farmer_location")["coordinates"][0]
+        vals["partner_latitude"] = individual.get("farmer_location")["coordinates"][1]
 
     if individual.get("supporting_documents_ids") is not None:
         vals["supporting_documents_ids"] = individual.get("supporting_documents_ids")

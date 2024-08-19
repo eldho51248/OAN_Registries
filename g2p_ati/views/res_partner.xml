@@ -141,8 +141,8 @@
 				</group>
 
 				<group colspan="1" name="location_on_map" string="Location">
-					<field name="farmer_location_longitude" />
-					<field name="farmer_location_latitude" />
+					<field name="partner_longitude" />
+					<field name="partner_latitude" />
 				</group>
 
 			</xpath>
