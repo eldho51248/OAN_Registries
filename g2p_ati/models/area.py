@@ -36,9 +36,9 @@ class Region(models.Model):
                     raise ValidationError(_("The International code must be unique!"))
 
     @api.model
-    def name_search(self, name, args=None, operator='ilike', limit=100):
+    def name_search(self, name, args=None, operator="ilike", limit=100):
         args = args or []
-        domain = ['|', ('code', operator, name), ('name', operator, name)] + args
+        domain = ["|", ("code", operator, name), ("name", operator, name)] + args
         return self.search(domain, limit=limit).name_get()
 
 
@@ -74,12 +74,11 @@ class Zone(models.Model):
         for zone in zones:
             if self.code.lower() == zone.code.lower() and self.id != zone.id:
                 raise ValidationError(_("The code must be unique!"))
-    
-    
+
     @api.model
-    def name_search(self, name, args=None, operator='ilike', limit=100):
+    def name_search(self, name, args=None, operator="ilike", limit=100):
         args = args or []
-        domain = ['|', ('code', operator, name), ('name', operator, name)] + args
+        domain = ["|", ("code", operator, name), ("name", operator, name)] + args
         return self.search(domain, limit=limit).name_get()
 
 
@@ -89,13 +88,13 @@ class Woreda(models.Model):
     zone = fields.Many2one("g2p.zone", required=True)
     code = fields.Char(required=True, index=True)
     name = fields.Char(required=True)
-    
+
     @api.model
-    def name_search(self, name, args=None, operator='ilike', limit=100):
+    def name_search(self, name, args=None, operator="ilike", limit=100):
         args = args or []
-        domain = ['|', ('code', operator, name), ('name', operator, name)] + args
+        domain = ["|", ("code", operator, name), ("name", operator, name)] + args
         return self.search(domain, limit=limit).name_get()
-    
+
     @api.constrains("zone")
     def _check_woreda(self):
         for record in self:
