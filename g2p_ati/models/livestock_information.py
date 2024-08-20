@@ -25,8 +25,8 @@ class G2PLiveStockInformation(models.Model):
     @api.constrains("number_of_livestock")
     def _check_number_of_livestock_positive(self):
         for record in self:
-            if record.number_of_livestock <= 0:
-                raise ValidationError(_("Number of livestock must be greater than 0."))
+            if record.number_of_livestock < 0:
+                raise ValidationError(_("Number of livestock must be greater than or equal to 0."))
 
     # @api.constrains("collected_gc", "collected_ec")
     # def _check_collected_dates(self):
