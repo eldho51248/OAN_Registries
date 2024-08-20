@@ -120,10 +120,12 @@ def process_livestock_ids(self, json_data, is_member):
                 continue
             livestock_type = get_value_many2one(self, "g2p.livestock.type", live_type)
             no_of_livestock = livestock_info.get("hh_member_num_animals" if is_member else "num_animals", 0)
+            if no_of_livestock is None:
+                no_of_livestock = 0
             if livestock_type:
                 livestock_info_dict = {
                     "livestock_type": livestock_type,
-                    "number_of_livestock": no_of_livestock if no_of_livestock > 0 else 0,
+                    "number_of_livestock": no_of_livestock,
                 }
 
                 livestock_information_ids.append((0, 0, livestock_info_dict))
