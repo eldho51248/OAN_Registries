@@ -8,7 +8,7 @@
     "website": "https://openg2p.org",
     "license": "Other OSI approved licence",
     "development_status": "Alpha",
-    "depends": ["g2p_social_registry", "storage_file"],
+    "depends": ["g2p_social_registry", "g2p_registry_documents"],
     "external_dependencies": {},
     "data": [
         "security/groups.xml",
