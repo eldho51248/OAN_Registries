@@ -6,7 +6,7 @@ class G2PLivestockType(models.Model):
     _name = "g2p.livestock.type"
 
     name = fields.Char()
-    code = fields.Char()
+    code = fields.Char(required=True, index=True)
 
     @api.constrains("name")
     def _check_name(self):
