@@ -4,6 +4,11 @@
 		<field name="model">res.partner</field>
 		<field name="inherit_id" ref="g2p_registry_individual.view_individuals_form" />
 		<field name="arch" type="xml">
+
+		<xpath expr="//form" position="attributes">
+		 <attribute name="js_class">res_partner_other_group_string</attribute>
+		</xpath>
+
 			<xpath expr="//form/sheet" position="before">
 				<header>
 					<button
@@ -44,7 +49,7 @@
 
 			<xpath expr="//field[@name='registration_date']" position="before">
 				<field name="has_national_id" />
-				<field name="registration_date" readonly="1" />
+				<!-- <field name="registration_date" readonly="1" /> -->
 				<field name="rejection_reason" invisible="state!='rejected'" />
 			</xpath>
 
@@ -74,16 +79,20 @@
 						<field name="family_name" placecholder="Last Name(ENG)" />
 						<field name="gf_name_eng" placecholder="G.Father Name(ENG)" />
 					</group>
-					<group colspan="3" name="amharic" string="አማርኛ">
+
+					<group colspan="3" name="amharic" string="Amharic">
 						<field name="first_name_amh" placecholder="ስም" />
 						<field name="family_name_amh" placecholder="የአባት ስም" />
 						<field name="gf_name_amh" placecholder="የአያት ስም" />
 					</group>
-					<group colspan="3" name="other_lang" string="Other">
+
+
+					<group colspan="3" name="other_lang" string="other">
 						<field name="first_name_other" placecholder="Maqaa" />
 						<field name="family_name_other" placecholder="Maqaa Giddu Galeessaa" />
 						<field name="gf_name_other" placecholder="Maqaa Akaakayyuu" />
 					</group>
+
 				</group>
 			</xpath>
 			<xpath expr="//div[contains(@class, 'o_row')]" position="attributes">
@@ -119,9 +128,8 @@
 			<xpath expr="//field[@name='district']" position="attributes">
 				<attribute name="invisible">1</attribute>
 			</xpath>
-			<xpath expr="//field[@name='email']" position="attributes">
-				<attribute name="invisible">1</attribute>
-			</xpath>
+
+
 			<xpath expr="//field[@name='birth_place']" position="attributes">
 				<attribute name="invisible">1</attribute>
 			</xpath>
@@ -251,6 +259,7 @@
 						</tree>
 					</field>
 				</page>
+
 				<page string="Crop Information" name="crops">
 					<group name="crop_water_source">
 						<field name="crop_water_sources" colspan="2" create="False" widget="many2many_tags" />
@@ -266,6 +275,7 @@
 						</tree>
 					</field>
 				</page>
+
 				<page string="Livestock Information" name="livestocks">
 					<group name="livestock_water">
 						<field name="livestock_water_sources" create="False" widget="many2many_tags" />
@@ -274,6 +284,7 @@
 						<tree editable="bottom">
 							<field name="livestock_type" />
 							<field name="number_of_livestock" />
+							<!-- <field name="undisclosed"/> -->
 							<field name="is_diseased" />
 							<field name="illness_type" widget="many2many_tags" required="is_diseased=='yes'" />
 							<field name="collected_gc" />
@@ -282,12 +293,12 @@
 						</tree>
 					</field>
 				</page>
+
 			</xpath>
 			<xpath expr="//page[@name='other']" position="inside">
 				<group name="odk_info">
 					<field name="data_enumerator_name" readonly="True" />
 					<field name="data_collection_date" readonly="True" />
-					<field name="odk_reference_id" readonly="True" />
 				</group>
 			</xpath>
 		</field>
@@ -299,19 +310,19 @@
 		<field name="inherit_id" ref="g2p_registry_individual.view_individuals_list_tree" />
 		<field name="arch" type="xml">
 			<xpath expr="//field[@name='tags_ids']" position="attributes">
-				<attribute name="invisible">1</attribute>
+				<attribute name="column_invisible">1</attribute>
 			</xpath>
 
 			<xpath expr="//field[@name='phone']" position="attributes">
-				<attribute name="invisible">1</attribute>
+				<attribute name="column_invisible">1</attribute>
 			</xpath>
 
 			<xpath expr="//field[@name='address']" position="attributes">
-				<attribute name="invisible">1</attribute>
+				<attribute name="column_invisible">1</attribute>
 			</xpath>
 
 			<xpath expr="//field[@name='birthdate']" position="attributes">
-				<attribute name="invisible">1</attribute>
+				<attribute name="column_invisible">1</attribute>
 			</xpath>
 
 			<xpath expr="//field[@name='name']" position="after">
@@ -319,29 +330,8 @@
 				<field name="zone" />
 				<field name="woreda" />
 				<field name="kebele" />
-			</xpath>
-
-
-			<xpath expr="//tree" position="attributes">
-				<attribute name="decoration-success">state == 'approved'</attribute>
-				<attribute name="decoration-danger">state == 'rejected'</attribute>
-				<attribute name="decoration-muted">state == 'draft'</attribute>
-				<attribute name="decoration-info">state == 'update_requested'</attribute>
-			</xpath>
-
-
-
-
-
-
-
-
-
-
-
-
-		<xpath expr="//field[@name='registration_date']" position="after">
-			<field name="data_enumerator_name" />
+				<field name="data_enumerator_name" />
+				<field name="data_collection_date" />
 			<field
                     name="state"
                     widget="badge"
@@ -369,7 +359,27 @@
                     invisible="state != 'draft'"
                     groups="g2p_ati.group_data_validator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
                 />
-		</xpath>
+			</xpath>
+
+
+			<xpath expr="//tree" position="attributes">
+				<attribute name="decoration-success">state == 'approved'</attribute>
+				<attribute name="decoration-danger">state == 'rejected'</attribute>
+				<attribute name="decoration-muted">state == 'draft'</attribute>
+				<attribute name="decoration-info">state == 'update_requested'</attribute>
+			</xpath>
+
+
+
+
+		<xpath expr="//field[@name='registration_date']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+
+
+
+
+
 	</field>
 </record>
 
@@ -408,6 +418,23 @@
 		<xpath expr="//page[@name='ids']" position="attributes">
 			<attribute name="invisible">1</attribute>
 		</xpath>
+
+	<xpath expr="//field[@name='email']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+
+<xpath expr="//field[@name='phone_number_ids']" position="attributes">
+	<attribute name="invisible">1</attribute>
+</xpath>
+
+
+
+		<xpath expr="//field[@name='registration_date']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+
+
+
 		<xpath expr="//page[@name='relationships']" position="attributes">
 			<attribute name="invisible">1</attribute>
 		</xpath>
@@ -434,12 +461,12 @@
 			<group>
 				<field name="data_enumerator_name" readonly="True" />
 				<field name="data_collection_date" readonly="True" />
-				<field name="odk_reference_id" readonly="True" />
 			</group>
 		</xpath>
 		<xpath expr="//field[@name='phone_number_ids']/tree" position="attributes">
 			<attribute name="editable">bottom</attribute>
 		</xpath>
+
 		<xpath expr="//field[@name='phone_number_ids']/tree/field[@name='phone_no']" position="after">
 			<field name="phone_type" />
 		</xpath>
@@ -452,17 +479,26 @@
 	<field name="inherit_id" ref="g2p_registry_group.view_groups_list_tree" />
 	<field name="arch" type="xml">
 
-				<xpath expr="//tree" position="attributes">
-				<attribute name="decoration-success">state == 'approved'</attribute>
-				<attribute name="decoration-danger">state == 'rejected'</attribute>
-				<attribute name="decoration-muted">state == 'draft'</attribute>
-				<attribute name="decoration-info">state == 'update_requested'</attribute>
+
+		<xpath expr="//field[@name='tags_ids']" position="attributes">
+				<attribute name="column_invisible">1</attribute>
 			</xpath>
 
+			<xpath expr="//field[@name='phone']" position="attributes">
+				<attribute name="column_invisible">1</attribute>
+			</xpath>
 
+			<xpath expr="//field[@name='address']" position="attributes">
+				<attribute name="column_invisible">1</attribute>
+			</xpath>
 
-		<xpath expr="//field[@name='registration_date']" position="after">
-			<field name="data_enumerator_name" />
+			<xpath expr="//field[@name='name']" position="after">
+				<field name="region" />
+				<field name="zone" />
+				<field name="woreda" />
+				<field name="kebele" />
+				<field name="data_enumerator_name" />
+				<field name="data_collection_date" />
 					<field
                     name="state"
                     widget="badge"
@@ -489,7 +525,20 @@
                     invisible="state != 'draft'"
                     groups="g2p_ati.group_data_validator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
                 />
-		</xpath>
+
+
+			</xpath>
+
+
+
+
+			<xpath expr="//tree" position="attributes">
+				<attribute name="decoration-success">state == 'approved'</attribute>
+				<attribute name="decoration-danger">state == 'rejected'</attribute>
+				<attribute name="decoration-muted">state == 'draft'</attribute>
+				<attribute name="decoration-info">state == 'update_requested'</attribute>
+			</xpath>
+
 	</field>
 </record>
 
@@ -510,4 +559,9 @@
 <record model="ir.ui.menu" id="g2p_registry_base.menu_relationship">
 	<field name="action" eval="False" />
 </record>
+
+
+    <record id="g2p_registry_group.action_groups_list" model="ir.actions.act_window">
+        <field name="name">Households</field>
+		</record>
 </odoo>
