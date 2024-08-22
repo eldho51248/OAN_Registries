@@ -11,11 +11,13 @@
             </tree>
         </field>
     </record>
+
     <record id="g2p_crop_category_tree_action" model="ir.actions.act_window">
         <field name="name">Crop Category</field>
         <field name="res_model">g2p.crop.category</field>
         <field name="view_mode">tree,form,graph</field>
     </record>
+
     <menuitem
         id="g2p_crop_categorymenu"
         action="g2p_crop_category_tree_action"
