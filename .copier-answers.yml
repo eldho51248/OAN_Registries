@@ -21,7 +21,7 @@ repo_description: OpenG2P Registry is an open source project that provides a soc
     registry that can be used on top of Odoo.
 repo_name: OpenG2P Registry
 repo_slug: openg2p-registry
-repo_website: https://github.com/OpenG2P/openg2p-edrmc
+repo_website: https://github.com/OpenG2P/openg2p-ati
 use_pyproject_toml: true
 use_ruff: true
 
