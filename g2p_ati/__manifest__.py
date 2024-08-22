@@ -40,10 +40,12 @@
         "views/woreda.xml",
         "views/kebele.xml",
         "views/lang.xml",
+        "views/machinery.xml",
         "views/illness.xml",
         "views/water_sources.xml",
         "views/hh_income_type.xml",
         "views/res_partner.xml",
+        "views/group_membership.xml",
         "views/crop_category.xml",
         "views/crop.xml",
         "views/land_info.xml",
@@ -52,10 +54,12 @@
     ],
     "assets": {
         "web.assets_backend": [
-            "g2p_ati/static/src/components/**/*.xml",
-            "g2p_ati/static/src/components/**/*.css",
+            "g2p_ati/static/src/components/*",
             "g2p_ati/static/src/components/**/*.js",
-        ]
+            "g2p_ati/static/src/components/**/*.css",
+            "g2p_ati/static/src/components/**/*.scss",
+            "g2p_ati/static/src/components/**/*.xml",
+        ],
     },
     "demo": [],
     "images": [],

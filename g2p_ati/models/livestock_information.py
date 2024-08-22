@@ -17,6 +17,7 @@ class G2PLiveStockInformation(models.Model):
     )
     livestock_type = fields.Many2one("g2p.livestock.type", required=True, index=True)
     number_of_livestock = fields.Integer(string="Number", required=True)
+    # undisclosed = fields.Boolean(string="Number Undisclosed", readonly=True, default=False)
     illness_type = fields.Many2many("g2p.illness.type", string="Disease")
     collected_gc = fields.Date(string="Collected GC")
     collected_ec = fields.Char(string="Collected EC")
@@ -27,6 +28,9 @@ class G2PLiveStockInformation(models.Model):
         for record in self:
             if record.number_of_livestock < 0:
                 raise ValidationError(_("Number of livestock must be greater than or equal to 0."))
+
+            # if record.number_of_livestock == 0:
+            #     record.undisclosed = True
 
     # @api.constrains("collected_gc", "collected_ec")
     # def _check_collected_dates(self):
@@ -44,6 +48,20 @@ class G2PLiveStockInformation(models.Model):
 
     @api.onchange("collected_gc")
     def _onchange_collected_gc(self):
+        self._update_ec()
+
+    @api.constrains("collected_gc")
+    def _add_collected_gc(self):
+        self._update_ec()
+
+    @api.onchange("collected_ec")
+    def _onchange_collected_ec(self):
+        if self.collected_ec:
+            date_list = re.split("[-/,]", self.collected_ec)
+            gc_date = eth_date.to_gregorian(int(date_list[2]), int(date_list[1]), int(date_list[0]))
+            self.collected_gc = gc_date
+
+    def _update_ec(self):
         if self.collected_gc:
             cdate = date(self.collected_gc.year, self.collected_gc.month, self.collected_gc.day)
             ethiopian_date_str = eth_date.to_ethiopian(cdate.year, cdate.month, cdate.day)
@@ -55,13 +73,6 @@ class G2PLiveStockInformation(models.Model):
                 self.season = season.id
             else:
                 self.season = False
-
-    @api.onchange("collected_ec")
-    def _onchange_collected_ec(self):
-        if self.collected_ec:
-            date_list = re.split("[-/,]", self.collected_ec)
-            gc_date = eth_date.to_gregorian(int(date_list[2]), int(date_list[1]), int(date_list[0]))
-            self.collected_gc = gc_date
 
 
 class G2PIllnessType(models.Model):
