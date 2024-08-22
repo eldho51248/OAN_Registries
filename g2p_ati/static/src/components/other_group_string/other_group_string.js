@@ -10,13 +10,13 @@ class ResPartnerFormOtherGroupController extends FormController {
 
         useEffect(() => {
             if (!this.model.root.data.is_group && this.model.root.data.primary_Language) {
-                console.log("in here");
-
                 const containers = document.querySelectorAll(".o_horizontal_separator");
 
                 for (const container of containers) {
-                    if (container.innerText.trim().toLowerCase() === "other".toLowerCase()) {
-                        console.log("in here");
+                    if (
+                        container.innerText.trim().toLowerCase() === "other".toLowerCase() &&
+                        this.model.root.data.primary_Language["1"] !== "Amharic"
+                    ) {
                         container.innerText = this.model.root.data.primary_Language["1"];
                         break;
                     }

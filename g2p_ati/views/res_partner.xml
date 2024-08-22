@@ -36,6 +36,11 @@
 			<xpath expr="//field[@name='family_name']" position="attributes">
 				<attribute name="invisible">1</attribute>
 			</xpath>
+
+			<xpath expr="//field[@name='name']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+
 			<xpath expr="//field[@name='image_1920']" position="after">
 				<div class="mt24 w-full">
 					<h1>
@@ -43,6 +48,7 @@
 					</h1>
 				</div>
 			</xpath>
+
 			<xpath expr="//field[@name='registration_date']" position="attributes">
 				<attribute name="invisible">1</attribute>
 			</xpath>
@@ -73,27 +79,29 @@
 			</xpath>
 
 			<xpath expr="//div[@class='o_row']" position="before">
-				<group col="9" colspan="9">
-					<group colspan="3" name="english" string="English">
+					<group name="english" string="English">
 						<field name="given_name" placecholder="First Name(ENG)" />
 						<field name="family_name" placecholder="Last Name(ENG)" />
 						<field name="gf_name_eng" placecholder="G.Father Name(ENG)" />
 					</group>
 
-					<group colspan="3" name="amharic" string="Amharic">
+					<group name="amharic" string="Amharic">
 						<field name="first_name_amh" placecholder="ስም" />
 						<field name="family_name_amh" placecholder="የአባት ስም" />
 						<field name="gf_name_amh" placecholder="የአያት ስም" />
 					</group>
 
-
-					<group colspan="3" name="other_lang" string="other">
-						<field name="first_name_other" placecholder="Maqaa" />
-						<field name="family_name_other" placecholder="Maqaa Giddu Galeessaa" />
-						<field name="gf_name_other" placecholder="Maqaa Akaakayyuu" />
+					<group name="other_lang" string="other" invisible="primary_Language == 1">
+						<field name="first_name_other" />
+						<field name="family_name_other" />
+						<field name="gf_name_other" />
 					</group>
 
-				</group>
+
+
+
+
+
 			</xpath>
 			<xpath expr="//div[contains(@class, 'o_row')]" position="attributes">
 				<attribute name="invisible">1</attribute>
