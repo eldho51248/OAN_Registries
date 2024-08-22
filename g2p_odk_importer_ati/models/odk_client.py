@@ -95,7 +95,7 @@ def process_land_ids(self, json_data, is_member):
 
 
 def process_crop_ids(self, json_data, is_member):
-    crop_information_ids = []
+    unique_crops = {}
     if json_data["crop_information_ids"] is not None:
         for crop_info in json_data["crop_information_ids"]:
             crop = crop_info.get("hh_member_crop_name" if is_member else "crop_name", None)
@@ -106,14 +106,19 @@ def process_crop_ids(self, json_data, is_member):
             )
             crop_date = crop_info.get("hh_member_crop_date" if is_member else "crop_date", None)
             if crop_id:
-                crop_info_dict = {"crop": crop_id, "collected_gc": crop_date}
+                if crop_id in unique_crops:
+                    unique_crops[crop_id]["collected_gc"] = crop_date
+                else:
+                    unique_crops[crop_id] = {"crop": crop_id, "collected_gc": crop_date}
 
-                crop_information_ids.append((0, 0, crop_info_dict))
+    # Convert the dictionary values back to a list of tuples
+    crop_information_ids = [(0, 0, info) for info in unique_crops.values()]
+
     return crop_information_ids
 
 
 def process_livestock_ids(self, json_data, is_member):
-    livestock_information_ids = []
+    unique_livestock = {}
     if json_data["livestock_information_ids"] is not None:
         for livestock_info in json_data["livestock_information_ids"]:
             live_type = livestock_info.get("hh_member_animal" if is_member else "animal", None)
@@ -124,12 +129,18 @@ def process_livestock_ids(self, json_data, is_member):
             if no_of_livestock is None:
                 no_of_livestock = 0
             if livestock_type:
-                livestock_info_dict = {
-                    "livestock_type": livestock_type,
-                    "number_of_livestock": no_of_livestock,
-                }
+                # Store or update the livestock information in the dictionary
+                if livestock_type in unique_livestock:
+                    unique_livestock[livestock_type]["number_of_livestock"] += no_of_livestock
+                else:
+                    unique_livestock[livestock_type] = {
+                        "livestock_type": livestock_type,
+                        "number_of_livestock": no_of_livestock,
+                    }
 
-                livestock_information_ids.append((0, 0, livestock_info_dict))
+    # Convert the dictionary values back to a list of tuples
+    livestock_information_ids = [(0, 0, info) for info in unique_livestock.values()]
+
     return livestock_information_ids
 
 
