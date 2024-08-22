@@ -11,9 +11,25 @@ class G2PLandInformation(models.Model):
     land_certificate = fields.Many2one("storage.file")
     land_id = fields.Char(string="Land ID", index=True)
     ownership_type = fields.Selection(selection=[("owner", "Owner"), ("tenant", "Tenant")], required=True)
+    slug = fields.Char()
 
     @api.onchange("total_land_area")
     def _onchange_total_land_area(self):
         if self.total_land_area < 0.0:
             error_msg = "Area should not be negative"
             raise ValidationError(error_msg)
+
+    @api.model
+    def create(self, vals):
+        if "land_certificate" in vals:
+            storage_file = self.env["storage.file"].browse(vals["land_certificate"])
+            if storage_file:
+                vals["slug"] = storage_file.slug
+        return super().create(vals)
+
+    def write(self, vals):
+        if "land_certificate" in vals:
+            storage_file = self.env["storage.file"].browse(vals["land_certificate"])
+            if storage_file:
+                vals["slug"] = storage_file.slug
+        return super().write(vals)

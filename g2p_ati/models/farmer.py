@@ -187,7 +187,6 @@ class G2PFarmer(models.Model):
     )
     data_enumerator_name = fields.Char(string="Data Enumerator")
     data_collection_date = fields.Date()
-    odk_reference_id = fields.Char()
     rejection_reason = fields.Text()
 
     farmer_id = fields.Char(string="Farmer ID", compute="_compute_farmer_id", store=True, index=True)
@@ -231,6 +230,13 @@ class G2PFarmer(models.Model):
 
     @api.onchange("birthdate")
     def _onchange_birthdate(self):
+        if self.birthdate:
+            bday = date(self.birthdate.year, self.birthdate.month, self.birthdate.day)
+            ethiopian_date_str = eth_date.to_ethiopian(bday.year, bday.month, bday.day)
+            self.birthdate_ec = eth_date.convert_tuple_to_string_with_separator(ethiopian_date_str)
+
+    @api.constrains("birthdate")
+    def _add_birthdate_ec(self):
         if self.birthdate:
             bday = date(self.birthdate.year, self.birthdate.month, self.birthdate.day)
             ethiopian_date_str = eth_date.to_ethiopian(bday.year, bday.month, bday.day)
