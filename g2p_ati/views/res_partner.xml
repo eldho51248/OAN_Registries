@@ -254,6 +254,8 @@
 							<field name="total_land_area" />
 							<field name="land_id" />
 							<field name="land_certificate" />
+							<field name="slug" />
+							<widget name="action_preview_res_partner" />
 						</tree>
 					</field>
 				</page>
