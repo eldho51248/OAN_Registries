@@ -52,7 +52,9 @@ class G2PLiveStockInformation(models.Model):
 
     @api.constrains("collected_gc")
     def _add_collected_gc(self):
-        self._update_ec()
+        for record in self:
+            if record.collected_gc:
+                record._update_ec()
 
     @api.onchange("collected_ec")
     def _onchange_collected_ec(self):
