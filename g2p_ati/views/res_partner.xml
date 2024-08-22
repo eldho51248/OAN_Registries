@@ -278,7 +278,7 @@
 							<field name="is_diseased" />
 							<field name="illness_type" widget="many2many_tags" required="is_diseased=='yes'" />
 							<field name="collected_gc" />
-							<field name="collected_ec" />
+							<field name="collected_ec" placeholder="dd/mm/yyyy" />
 							<field name="season" />
 						</tree>
 					</field>
@@ -296,7 +296,7 @@
 							<field name="is_diseased" />
 							<field name="illness_type" widget="many2many_tags" required="is_diseased=='yes'" />
 							<field name="collected_gc" />
-							<field name="collected_ec" />
+							<field name="collected_ec" placeholder="dd/mm/yyyy" />
 							<field name="season" />
 						</tree>
 					</field>

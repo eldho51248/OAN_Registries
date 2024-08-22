@@ -35,15 +35,11 @@ class G2PCropInformation(models.Model):
                 error_message = _("Illness type is required when the crop is diseased.")
                 raise ValidationError(error_message)
 
-    @api.onchange("collected_gc")
-    def _onchange_collected_gc(self):
-        if self.collected_gc:
-            self._update_date_ec()
-
     @api.constrains("collected_gc")
     def _add_collected_gc(self):
-        if self.collected_gc:
-            self._update_date_ec()
+        for record in self:
+            if record.collected_gc:
+                record._update_date_ec()
 
     @api.onchange("collected_ec")
     def _onchange_collected_ec(self):
