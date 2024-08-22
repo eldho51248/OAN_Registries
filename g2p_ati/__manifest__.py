@@ -19,7 +19,7 @@
         "data/regions.xml",
         "data/zones.xml",
         "data/woredas.xml",
-        # "data/genders.xml",
+        "data/genders.xml",
         "data/crop.xml",
         "data/cooperative_union.xml",
         "data/finance_access.xml",
