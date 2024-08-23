@@ -77,7 +77,10 @@
 			<xpath expr="//field[@name='phone_number_ids']" position="before">
 				<field name="has_personal_phone" />
 			</xpath>
-
+			<xpath expr="//field[@name='registration_date']" position="after">
+                <field name="ref_id" readonly="1" />
+				<field name="farmer_id" readonly="1" />
+            </xpath>
 			<xpath expr="//div[@class='o_row']" position="before">
 					<group name="english" string="English">
 						<field name="given_name" placecholder="First Name(ENG)" />
@@ -349,7 +352,7 @@
                     decoration-success="state == 'approved'"
                 />
 
-			<button
+				<button
                     title="Approve"
                     icon="fa-check"
                     name="state_approve"
@@ -358,7 +361,7 @@
                     invisible="state != 'draft'"
                     groups="g2p_ati.group_data_validator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
                 />
-			<button
+				<button
                     title="Reject"
                     icon="fa-times"
                     name="state_reject"
@@ -391,14 +394,14 @@
 	</field>
 </record>
 
-<record id="g2p_registry_group_form_view_inherit" model="ir.ui.view">
-	<field name="name">view_group_form.inherited</field>
-	<field name="model">res.partner</field>
-	<field name="inherit_id" ref="g2p_registry_group.view_groups_form" />
-	<field name="arch" type="xml">
-		<xpath expr="//form/sheet" position="before">
-			<header>
-				<button
+	<record id="g2p_registry_group_form_view_inherit" model="ir.ui.view">
+		<field name="name">view_group_form.inherited</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="g2p_registry_group.view_groups_form" />
+		<field name="arch" type="xml">
+			<xpath expr="//form/sheet" position="before">
+				<header>
+					<button
                         name="state_approve"
                         invisible="state!='draft'"
                         string="Approve"
@@ -406,7 +409,7 @@
                         class="btn-success"
                         groups="g2p_ati.group_data_validator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
                     />
-				<button
+					<button
                         name="state_reject"
                         invisible="state!='draft'"
                         string="Reject"
@@ -414,7 +417,7 @@
                         class="btn-danger"
                         groups="g2p_ati.group_data_validator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
                     />
-				<field
+					<field
                         name="state"
                         widget="statusbar"
                         readonly="1"
@@ -423,6 +426,9 @@
                     />
 			</header>
 		</xpath>
+		<xpath expr="//field[@name='registration_date']" position="after">
+				<field name="ref_id" readonly="1" />
+			</xpath>
 		<xpath expr="//page[@name='ids']" position="attributes">
 			<attribute name="invisible">1</attribute>
 		</xpath>
@@ -515,7 +521,7 @@
                     decoration-info="state  == 'update_requested'"
                     decoration-success="state == 'approved'"
                 />
-			<button
+				<button
                     title="Approve"
                     icon="fa-check"
                     name="state_approve"
@@ -524,7 +530,7 @@
                     invisible="state != 'draft'"
                     groups="g2p_ati.group_data_validator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
                 />
-			<button
+				<button
                     title="Reject"
                     icon="fa-times"
                     name="state_reject"
@@ -550,19 +556,19 @@
 	</field>
 </record>
 
-<record id="view_individuals_action_inherit" model="ir.actions.act_window.view">
-	<field name="sequence" eval="10" />
-	<field name="view_mode">graph</field>
-	<field name="act_window_id" ref="g2p_registry_individual.action_individuals_list" />
-</record>
+	<record id="view_individuals_action_inherit" model="ir.actions.act_window.view">
+		<field name="sequence" eval="10" />
+		<field name="view_mode">graph</field>
+		<field name="act_window_id" ref="g2p_registry_individual.action_individuals_list" />
+	</record>
 
-<record model="ir.ui.menu" id="g2p_registry_base.menu_registrant_tags">
-	<field name="action" eval="False" />
-</record>
+	<record model="ir.ui.menu" id="g2p_registry_base.menu_registrant_tags">
+		<field name="action" eval="False" />
+	</record>
 
-<record model="ir.ui.menu" id="g2p_registry_base.menu_district_config">
-	<field name="action" eval="False" />
-</record>
+	<record model="ir.ui.menu" id="g2p_registry_base.menu_district_config">
+		<field name="action" eval="False" />
+	</record>
 
 <record model="ir.ui.menu" id="g2p_registry_base.menu_relationship">
 	<field name="action" eval="False" />

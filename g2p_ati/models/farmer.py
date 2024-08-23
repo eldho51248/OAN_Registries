@@ -189,6 +189,8 @@ class G2PFarmer(models.Model):
     data_collection_date = fields.Date()
     rejection_reason = fields.Text()
 
+    farmer_id = fields.Char(string="Farmer ID", compute="_compute_farmer_id", store=True, index=True)
+
     @api.onchange("is_group", "family_name", "given_name", "gf_name_eng")
     def name_change_farmer(self):
         vals = {}
@@ -280,3 +282,11 @@ class G2PFarmer(models.Model):
             delta = relativedelta(now, dob)
             years_months_days = str(delta.years)
         return years_months_days
+
+    @api.depends("ref_id", "is_farmer")
+    def _compute_farmer_id(self):
+        for record in self:
+            if record.is_farmer == "yes" and record.ref_id:
+                record.farmer_id = f"FR-{record.ref_id}"
+            else:
+                record.farmer_id = False

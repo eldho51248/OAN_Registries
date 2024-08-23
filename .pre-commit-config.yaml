@@ -52,7 +52,7 @@ repos:
           - --addons-dir=.
           - --branch=17.0-develop
           - --org-name=OpenG2P
-          - --repo-name=openg2p-edrmc
+          - --repo-name=openg2p-ati
           - --if-source-changed
           - --keep-source-digest
       - id: oca-gen-addons-table

@@ -301,10 +301,10 @@
     />
 
 
-<menuitem id="mail.menu_root_discuss" name="Discuss" web_icon="g2p_ati,static/description/discuss.png" />
+    <menuitem id="mail.menu_root_discuss" name="Discuss" web_icon="g2p_ati,static/description/discuss.png" />
 
 
-<menuitem
+    <menuitem
         id="base.menu_management"
         name="Apps"
         groups="g2p_registry_base.group_g2p_admin"
