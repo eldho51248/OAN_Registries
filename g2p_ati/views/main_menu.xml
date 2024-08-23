@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
+
+
+<menuitem id="g2p_documents.g2p_documents_main_menu_root" sequence="15" />
+
     <!-- Farmer -->
     <record id="g2p_registry_farmer_form_view_inherit_no_create" model="ir.ui.view">
         <field name="name">res.partner.form.inherit.no.create</field>
