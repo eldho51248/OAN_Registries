@@ -298,12 +298,7 @@
 				</page>
 
 			</xpath>
-			<xpath expr="//page[@name='other']" position="inside">
-				<group name="odk_info">
-					<field name="enumerator_id" readonly="True" />
-					<field name="data_collection_date" readonly="True" />
-				</group>
-			</xpath>
+
 		</field>
 	</record>
 
