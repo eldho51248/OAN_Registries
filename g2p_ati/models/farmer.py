@@ -36,14 +36,14 @@ class G2PFarmer(models.Model):
     woreda = fields.Many2one("g2p.woreda", domain="[('zone', '=', zone)]")
     kebele = fields.Many2one("g2p.kebele", domain="[('woreda', '=', woreda)]")
     given_name = fields.Char(string="First Name(English)", translate=False)
-    family_name = fields.Char(string="Father Name(English)", translate=False)
-    gf_name_eng = fields.Char(string="Grand Father Name(English)", translate=False)
+    family_name = fields.Char(string="Father's Name(English)", translate=False)
+    gf_name_eng = fields.Char(string="Grand Father's Name(English)", translate=False)
     first_name_amh = fields.Char(string="First Name(Amharic)", translate=False)
-    family_name_amh = fields.Char(string="Father Name(Amharic)", translate=False)
-    gf_name_amh = fields.Char(string="Grand Father Name(Amharic)", translate=False)
+    family_name_amh = fields.Char(string="Father's Name(Amharic)", translate=False)
+    gf_name_amh = fields.Char(string="Grand Father's Name(Amharic)", translate=False)
     first_name_other = fields.Char(string="First Name", translate=False)
-    family_name_other = fields.Char(string="Father Name", translate=False)
-    gf_name_other = fields.Char(string="Grand Father Name", translate=False)
+    family_name_other = fields.Char(string="Father's Name", translate=False)
+    gf_name_other = fields.Char(string="Grand Father's Name", translate=False)
 
     has_personal_phone = fields.Selection(
         string="Do you have a personal phone number? ", selection=[("yes", "Yes"), ("no", "No")]
@@ -185,10 +185,9 @@ class G2PFarmer(models.Model):
     livestock_information_ids = fields.One2many(
         "g2p.livestock.information", "partner_id", string="Live Stock Information"
     )
-    data_enumerator_name = fields.Char(string="Data Enumerator")
-    data_collection_date = fields.Date()
-    odk_reference_id = fields.Char()
     rejection_reason = fields.Text()
+
+    farmer_id = fields.Char(string="Farmer ID", compute="_compute_farmer_id", store=True, index=True)
 
     @api.onchange("is_group", "family_name", "given_name", "gf_name_eng")
     def name_change_farmer(self):
@@ -234,6 +233,13 @@ class G2PFarmer(models.Model):
             ethiopian_date_str = eth_date.to_ethiopian(bday.year, bday.month, bday.day)
             self.birthdate_ec = eth_date.convert_tuple_to_string_with_separator(ethiopian_date_str)
 
+    @api.constrains("birthdate")
+    def _add_birthdate_ec(self):
+        if self.birthdate:
+            bday = date(self.birthdate.year, self.birthdate.month, self.birthdate.day)
+            ethiopian_date_str = eth_date.to_ethiopian(bday.year, bday.month, bday.day)
+            self.birthdate_ec = eth_date.convert_tuple_to_string_with_separator(ethiopian_date_str)
+
     @api.onchange("birthdate_ec")
     def _onchange_birthdate_ec(self):
         if self.birthdate_ec:
@@ -274,3 +280,17 @@ class G2PFarmer(models.Model):
             delta = relativedelta(now, dob)
             years_months_days = str(delta.years)
         return years_months_days
+
+    @api.depends("ref_id", "is_farmer")
+    def _compute_farmer_id(self):
+        for record in self:
+            if record.is_farmer == "yes" and record.ref_id:
+                record.farmer_id = f"FR-{record.ref_id}"
+            else:
+                record.farmer_id = False
+
+    def unlink(self):
+        if any(record.state == "approved" for record in self):
+            raise ValidationError(_("Cannot delete approved records."))
+
+        return super().unlink()

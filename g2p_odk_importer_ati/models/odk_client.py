@@ -61,6 +61,7 @@ def process_phone_ids(self, json_data):
 
 def process_land_ids(self, json_data, is_member):
     land_information_ids = []
+    supporting_documents_ids = []
     if json_data["land_information_ids"] is not None:
         for land_info in json_data["land_information_ids"]:
             ownership_type = land_info.get(
@@ -68,16 +69,6 @@ def process_land_ids(self, json_data, is_member):
             )
             if not ownership_type:
                 continue
-            land_certificate = land_info.get(
-                "hh_member_land_certificate" if is_member else "land_certificate", None
-            )
-            land_certificate_id = None
-            if land_certificate and json_data.get("file_ids"):
-                # link the uploaded storage.file id to the land_certificate
-                # of this entry using the name of the file
-                for file_id in json_data["file_ids"]:
-                    if land_certificate == file_id[0]:
-                        land_certificate_id = file_id[1]
 
             land_info_dict = {
                 "ownership_type": ownership_type,
@@ -86,15 +77,25 @@ def process_land_ids(self, json_data, is_member):
                 ),
                 "land_id": land_info.get("hh_member_land_id" if is_member else "land_id", 0),
             }
-            if land_certificate_id:
-                land_info_dict["land_certificate"] = land_certificate_id
+            land_certificate = land_info.get(
+                "hh_member_land_certificate" if is_member else "land_certificate", None
+            )
+            land_certificate_id = None
+            if land_certificate:
+                supporting_document_id, land_certificate_id = process_land_certificate(
+                    self, land_certificate, json_data.get("instance_id")
+                )
+                if land_certificate_id:
+                    supporting_documents_ids.append(supporting_document_id)
+                    land_info_dict["land_certificate"] = land_certificate_id
+
             land_information_ids.append((0, 0, land_info_dict))
 
-    return land_information_ids
+    return [land_information_ids, supporting_documents_ids]
 
 
 def process_crop_ids(self, json_data, is_member):
-    crop_information_ids = []
+    unique_crops = {}
     if json_data["crop_information_ids"] is not None:
         for crop_info in json_data["crop_information_ids"]:
             crop = crop_info.get("hh_member_crop_name" if is_member else "crop_name", None)
@@ -105,29 +106,41 @@ def process_crop_ids(self, json_data, is_member):
             )
             crop_date = crop_info.get("hh_member_crop_date" if is_member else "crop_date", None)
             if crop_id:
-                crop_info_dict = {"crop": crop_id, "collected_gc": crop_date}
+                if crop_id in unique_crops:
+                    unique_crops[crop_id]["collected_gc"] = crop_date
+                else:
+                    unique_crops[crop_id] = {"crop": crop_id, "collected_gc": crop_date}
 
-                crop_information_ids.append((0, 0, crop_info_dict))
+    # Convert the dictionary values back to a list of tuples
+    crop_information_ids = [(0, 0, info) for info in unique_crops.values()]
+
     return crop_information_ids
 
 
 def process_livestock_ids(self, json_data, is_member):
-    livestock_information_ids = []
+    unique_livestock = {}
     if json_data["livestock_information_ids"] is not None:
         for livestock_info in json_data["livestock_information_ids"]:
             live_type = livestock_info.get("hh_member_animal" if is_member else "animal", None)
             if not live_type:
                 continue
             livestock_type = get_value_many2one(self, "g2p.livestock.type", live_type)
+            no_of_livestock = livestock_info.get("hh_member_num_animals" if is_member else "num_animals", 0)
+            if no_of_livestock is None:
+                no_of_livestock = 0
             if livestock_type:
-                livestock_info_dict = {
-                    "livestock_type": livestock_type,
-                    "number_of_livestock": livestock_info.get(
-                        "hh_member_num_animals" if is_member else "num_animals", None
-                    ),
-                }
+                # Store or update the livestock information in the dictionary
+                if livestock_type in unique_livestock:
+                    unique_livestock[livestock_type]["number_of_livestock"] += no_of_livestock
+                else:
+                    unique_livestock[livestock_type] = {
+                        "livestock_type": livestock_type,
+                        "number_of_livestock": no_of_livestock,
+                    }
 
-                livestock_information_ids.append((0, 0, livestock_info_dict))
+    # Convert the dictionary values back to a list of tuples
+    livestock_information_ids = [(0, 0, info) for info in unique_livestock.values()]
+
     return livestock_information_ids
 
 
@@ -180,28 +193,28 @@ def process_basic_information(self, individual, vals, other_json):
     region_id = process_many2one_field(self, "g2p.region", individual.get("region"))
     if region_id:
         if region_id == "other":
-            other_json["region"] = individual.get("other_region")
+            other_json["Region"] = individual.get("other_region")
         else:
             vals["region"] = region_id
 
     zone_id = process_many2one_field(self, "g2p.zone", individual.get("zone"))
     if zone_id:
         if zone_id == "other":
-            other_json["zone"] = individual.get("other_zone")
+            other_json["Zone"] = individual.get("other_zone")
         else:
             vals["zone"] = zone_id
 
     woreda_id = process_many2one_field(self, "g2p.woreda", individual.get("woreda"))
     if woreda_id:
         if woreda_id == "other":
-            other_json["woreda"] = individual.get("other_woreda")
+            other_json["Woreda"] = individual.get("other_woreda")
         else:
             vals["woreda"] = woreda_id
 
     kebele_id = process_many2one_field(self, "g2p.kebele", individual.get("kebele"))
     if kebele_id:
         if kebele_id == "other":
-            other_json["kebele"] = individual.get("other_kebele")
+            other_json["Kebele"] = individual.get("other_kebele")
         else:
             vals["kebele"] = kebele_id
 
@@ -236,7 +249,7 @@ def process_basic_information(self, individual, vals, other_json):
     source_of_income_ids = process_many2many_field(self, "g2p.hh.income", individual.get("hh_income_type"))
     if source_of_income_ids:
         if "other" in source_of_income_ids:
-            other_json["hh_income_type"] = individual.get("other_income_type")
+            other_json["House Hold Income"] = individual.get("other_income_type")
             source_of_income_ids.remove("other")
         vals["hh_income_type"] = [(6, 0, source_of_income_ids)]
 
@@ -250,7 +263,7 @@ def process_membership(self, individual, vals, other_json):
     )
     if primary_cooperative_id:
         if primary_cooperative_id == "other":
-            other_json["primary_cooperatives"] = individual.get("other_primary_cooperative")
+            other_json["Primary Cooperative"] = individual.get("other_primary_cooperative")
         else:
             vals["primary_cooperatives"] = primary_cooperative_id
 
@@ -259,7 +272,7 @@ def process_membership(self, individual, vals, other_json):
     )
     if cooperative_union_id:
         if cooperative_union_id == "other":
-            other_json["cooperative_unions"] = individual.get("other_coop_union")
+            other_json["Cooperative Union"] = individual.get("other_coop_union")
         else:
             vals["cooperative_unions"] = cooperative_union_id
 
@@ -276,7 +289,9 @@ def process_membership(self, individual, vals, other_json):
 def process_land_crop_livestock_information(self, individual, vals, is_member):
     # LAND INFORMATION
     if "land_information_ids" in individual:
-        vals["land_information_ids"] = process_land_ids(self, individual, is_member)
+        vals["land_information_ids"], vals["supporting_documents_ids"] = process_land_ids(
+            self, individual, is_member
+        )
 
     # CROP INFORMATION
     if "crop_information_ids" in individual:
@@ -331,7 +346,22 @@ def process_agriculture_resource_finance(self, individual, vals):
             vals["finance_accesses"] = [(6, 0, finance_accesses_ids)]
 
 
-def get_individual_data(self, individual, is_member):
+def create_enumerator(self, enumerator_name, enumerator_odk_id, data_collection_date):
+    enumerator = (
+        self.env["g2p.enumerator"]
+        .sudo()
+        .create(
+            {
+                "name": enumerator_name,
+                "enumerator_user_id": enumerator_odk_id,
+                "data_collection_date": data_collection_date,
+            }
+        )
+    )
+    return enumerator
+
+
+def get_individual_data(self, individual, is_member, enumerator):
     vals = {
         "is_registrant": True,
         "is_group": False,
@@ -358,13 +388,13 @@ def get_individual_data(self, individual, is_member):
         vals["partner_longitude"] = individual.get("farmer_location")["coordinates"][0]
         vals["partner_latitude"] = individual.get("farmer_location")["coordinates"][1]
 
-    if individual.get("supporting_documents_ids") is not None:
-        vals["supporting_documents_ids"] = individual.get("supporting_documents_ids")
+    if enumerator:
+        vals["enumerator_id"] = enumerator.id
 
     return vals
 
 
-def get_member_data(self, member, head):
+def get_member_data(self, member, head, enumerator):
     vals = {"is_registrant": True, "is_group": False, "is_farmer": "no", "hh_is_household_head": "no"}
 
     first_name, family_name, gf_name_eng = member.get("name").split()
@@ -405,6 +435,9 @@ def get_member_data(self, member, head):
         if kebele_id != "other":
             vals["kebele"] = kebele_id
 
+    if enumerator:
+        vals["enumerator_id"] = enumerator.id
+
     return vals
 
 
@@ -422,25 +455,53 @@ def get_membership_kind(self, relationship):
     return membership_kind.id
 
 
+def process_land_certificate(self, land_certificate, instance_id):
+    # return [None, None]
+    if not instance_id:
+        return
+
+    doc_tag = self.env["g2p.document.tag"].get_tag_by_name("Land Certificate")
+    if not doc_tag:
+        doc_tag = self.env["g2p.document.tag"].create({"name": "Land Certificate"})
+
+    get_attachment = self.download_attachment(
+        self.base_url, self.project_id, self.form_id, instance_id, land_certificate, self.session
+    )
+    attachment_base64 = base64.b64encode(get_attachment).decode("utf-8")
+    backend_id = (
+        self.env.ref("storage_backend.default_storage_backend").id
+        or self.env["storage.backend"].search([], limit=1).id
+    )
+    storage_file = (
+        self.env["storage.file"]
+        .sudo()
+        .create(
+            {
+                "name": land_certificate,
+                "backend_id": backend_id,
+                "data": attachment_base64,
+                "tags_ids": [(4, doc_tag.id)],
+            }
+        )
+    )
+
+    return [(4, storage_file.id), storage_file.id]
+
+
 def patched_addl_data(self, mapped_json):
     # return []
-    # PROCESS FLOW
-    """
-    hhh = household head
-    1. if hhh is coming:
-        we register hhh with members and give hhh the ack id
-        we ask if a member of his household has already registered:
-            if yes:
-                take the member ack id
-                link the member to the new household that is going to be created
+    if mapped_json.get("submission_time"):
+        submission_time = mapped_json.get("submission_time")
+    else:
+        submission_time = mapped_json.get("odk_submission_date")
 
-    2. if member is coming:
-         we register member and give his ack id
-         we ask if the hhh has already registered:
-         if yes:
-             take the hhh ack id
-             link the new member to the existing household of the hhh
-    """
+    # create enumerator
+    enumerator = create_enumerator(
+        self,
+        mapped_json.get("data_enumerator_name"),
+        mapped_json.get("data_enumerator_odk_id"),
+        submission_time,
+    )
 
     if mapped_json["hh_is_household_head"] == "yes":
         group = {
@@ -448,29 +509,26 @@ def patched_addl_data(self, mapped_json):
             "is_group": True,
         }
         individual_ids = []
-        # Get head name for household name
-        household_head_name = mapped_json.get("name")
-        additional_farmers = mapped_json.get("additional_farmers")
-        other_household_members = mapped_json.get("other_household_members")
 
         # Create household head
-        individual_data = get_individual_data(self, mapped_json, False)
+        individual_data = get_individual_data(self, mapped_json, False, enumerator)
         household_head = self.env["res.partner"].sudo().create(individual_data)
         membership_kind = get_membership_kind(self, "Head")
         individual_ids.append((0, 0, {"individual": household_head.id, "kind": [(4, membership_kind)]}))
 
         # OTHER HOUSEHOLD MEMBERS WHO ARE FARMERS
-        if additional_farmers is not None:
-            for additional_farmer in additional_farmers:
-                addl_farmer_data = get_individual_data(self, additional_farmer, True)
+        if mapped_json.get("additional_farmers") is not None:
+            for additional_farmer in mapped_json.get("additional_farmers"):
+                additional_farmer["instance_id"] = mapped_json.get("instance_id")
+                addl_farmer_data = get_individual_data(self, additional_farmer, True, enumerator)
                 addl_farmer = self.env["res.partner"].sudo().create(addl_farmer_data)
-                membership_kind = get_membership_kind(self, "Member")
+                membership_kind = get_membership_kind(self, additional_farmer["household_relationship"])
                 individual_ids.append((0, 0, {"individual": addl_farmer.id, "kind": [(4, membership_kind)]}))
 
         # OTHER HOUSEHOLD MEMBERS WHO ARE NOT FARMERS
-        if other_household_members is not None:
-            for other_household_member in other_household_members:
-                other_member_data = get_member_data(self, other_household_member, mapped_json)
+        if mapped_json.get("other_household_members") is not None:
+            for other_household_member in mapped_json.get("other_household_members"):
+                other_member_data = get_member_data(self, other_household_member, mapped_json, enumerator)
                 other_member = self.env["res.partner"].sudo().create(other_member_data)
                 membership_kind = get_membership_kind(self, other_household_member["household_relationship"])
                 individual_ids.append((0, 0, {"individual": other_member.id, "kind": [(4, membership_kind)]}))
@@ -504,7 +562,10 @@ def patched_addl_data(self, mapped_json):
             )
 
             if other_farmer:
-                membership_kind = get_membership_kind(self, "Member")
+                r_ship = "Member"
+                if mapped_json.get("relationship_to_head") is not None:
+                    r_ship = mapped_json.get("relationship_to_head")
+                membership_kind = get_membership_kind(self, r_ship)
                 individual_ids.append((0, 0, {"individual": other_farmer.id, "kind": [(4, membership_kind)]}))
             else:
                 # Filter household_head.reg_ids to find the specific ID with
@@ -521,19 +582,19 @@ def patched_addl_data(self, mapped_json):
         if not group_kind:
             group_kind = self.env["g2p.group.kind"].sudo().create({"name": "Household"})
 
-        group["name"] = "Household - " + household_head_name
+        group["name"] = mapped_json.get("name")
         group["kind"] = group_kind.id
         group["region"] = household_head.region.id
         group["zone"] = household_head.zone.id
         group["woreda"] = household_head.woreda.id
         group["kebele"] = household_head.kebele.id
         group["group_membership_ids"] = individual_ids
+        group["enumerator_id"] = enumerator.id
 
         return group
     else:
-        individual_data = get_individual_data(self, mapped_json, False)
-        if mapped_json.get("member_registered") == "yes":
-            member_reference_id = mapped_json.get("member_reference_id")
+        individual_data = get_individual_data(self, mapped_json, False, enumerator)
+        if mapped_json.get("head_registered") == "yes":
             # Search for the head farmer that has this ID under "Farmer ODK ACK ID"
             odk_ack_id_type = (
                 self.env["g2p.id.type"].sudo().search([("name", "=", "Farmer ODK ACK ID")], limit=1)
@@ -549,7 +610,10 @@ def patched_addl_data(self, mapped_json):
                             self.env["g2p.reg.id"]
                             .sudo()
                             .search(
-                                [("id_type", "=", odk_ack_id_type.id), ("value", "=", member_reference_id)]
+                                [
+                                    ("id_type", "=", odk_ack_id_type.id),
+                                    ("value", "=", mapped_json.get("member_reference_id")),
+                                ]
                             )
                             .ids,
                         )
@@ -562,7 +626,10 @@ def patched_addl_data(self, mapped_json):
                 # Add the new individual farmer to the household the head belongs to
                 group_membership_ids = head.individual_membership_ids
                 household = group_membership_ids.group
-                membership_kind = get_membership_kind(self, "Member")
+                r_ship = "Member"
+                if mapped_json.get("relationship_with_head") is not None:
+                    r_ship = mapped_json.get("relationship_with_head")
+                membership_kind = get_membership_kind(self, r_ship)
                 individual_data["individual_membership_ids"] = [
                     (0, 0, {"group": household.id, "kind": [(4, membership_kind)]})
                 ]
@@ -574,10 +641,9 @@ def patched_addl_data(self, mapped_json):
                 )
                 for reg_id in reg_ids:
                     # Check if the id_type.id and value match
-                    if (
-                        reg_id[2].get("id_type") == odk_member_ack_id_type.id
-                        and reg_id[2].get("value") == member_reference_id
-                    ):
+                    if reg_id[2].get("id_type") == odk_member_ack_id_type.id and reg_id[2].get(
+                        "value"
+                    ) == mapped_json.get("member_reference_id"):
                         # Add the status and description to the matching entry
                         reg_id[2].update(
                             {"status": "invalid", "description": "Head farmer with this ACK ID not found"}
@@ -598,57 +664,8 @@ def handle_media_import_ati(self, member, mapped_json):
     if not instance_id:
         return
 
-    exit_attachment = self.list_expected_attachments(
-        self.base_url, self.project_id, self.form_id, instance_id, self.session
-    )
-    if not exit_attachment:
-        return
-
-    doc_tag = self.env["g2p.document.tag"].get_tag_by_name("Land Certificate")
-    if not doc_tag:
-        doc_tag = self.env["g2p.document.tag"].create({"name": "Land Certificate"})
-
-    first_image_stored = False
-    supporting_documents_ids = []
-
-    # file ids to keep track of which document id is for which
-    # land certificate (to map to land certificate in land information later)
-    file_ids = []
-    for attachment in exit_attachment:
-        filename = attachment["name"]
-        get_attachment = self.download_attachment(
-            self.base_url, self.project_id, self.form_id, instance_id, filename, self.session
-        )
-        attachment_base64 = base64.b64encode(get_attachment).decode("utf-8")
-        image_verify = self.is_image(filename)
-
-        if not first_image_stored and image_verify and "image_1920" in mapped_json:
-            mapped_json["image_1920"] = attachment_base64
-            first_image_stored = True
-        else:
-            backend_id = (
-                self.env.ref("storage_backend.default_storage_backend").id
-                or self.env["storage.backend"].search([], limit=1).id
-            )
-            storage_file = (
-                self.env["storage.file"]
-                .sudo()
-                .create(
-                    {
-                        "name": filename,
-                        "backend_id": backend_id,
-                        "data": attachment_base64,
-                        "tags_ids": [(4, doc_tag.id)],
-                    }
-                )
-            )
-            if storage_file:
-                supporting_documents_ids.append((4, storage_file.id))
-                file_ids.append([filename, storage_file.id])
-
-    if supporting_documents_ids:
-        mapped_json["supporting_documents_ids"] = supporting_documents_ids
-    mapped_json["file_ids"] = file_ids
+    mapped_json["instance_id"] = instance_id
+    return
 
 
 base_odk_client.ODKClient.handle_media_import = handle_media_import_ati

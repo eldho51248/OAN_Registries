@@ -35,8 +35,21 @@ class G2PCropInformation(models.Model):
                 error_message = _("Illness type is required when the crop is diseased.")
                 raise ValidationError(error_message)
 
-    @api.onchange("collected_gc")
-    def _onchange_collected_gc(self):
+    @api.constrains("collected_gc")
+    def _add_collected_gc(self):
+        for record in self:
+            if record.collected_gc:
+                record._update_date_ec()
+
+    @api.onchange("collected_ec")
+    def _onchange_collected_ec(self):
+        if self.collected_ec:
+            eth_date.check_ethipian_date_str(self.collected_ec)
+            date_list = re.split("[-/,]", self.collected_ec)
+            gc_date = eth_date.to_gregorian(int(date_list[2]), int(date_list[1]), int(date_list[0]))
+            self.collected_gc = gc_date
+
+    def _update_date_ec(self):
         if self.collected_gc:
             cdate = date(self.collected_gc.year, self.collected_gc.month, self.collected_gc.day)
             ethiopian_date_str = eth_date.to_ethiopian(cdate.year, cdate.month, cdate.day)
@@ -48,11 +61,3 @@ class G2PCropInformation(models.Model):
                 self.season = season.id
             else:
                 self.season = False
-
-    @api.onchange("collected_ec")
-    def _onchange_collected_ec(self):
-        if self.collected_ec:
-            eth_date.check_ethipian_date_str(self.collected_ec)
-            date_list = re.split("[-/,]", self.collected_ec)
-            gc_date = eth_date.to_gregorian(int(date_list[2]), int(date_list[1]), int(date_list[0]))
-            self.collected_gc = gc_date

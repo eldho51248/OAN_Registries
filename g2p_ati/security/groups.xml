@@ -37,6 +37,10 @@
 
      <record id="g2p_registry_base.group_g2p_admin" model="res.groups">
             <field name="name">Super Admin</field>
+               <field
+            name="implied_ids"
+            eval="[Command.link(ref('base.group_partner_manager')), (4, ref('base.group_system'))]"
+        />
         </record>
 
 </odoo>
