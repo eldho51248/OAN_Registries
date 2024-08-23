@@ -187,8 +187,9 @@ class G2PFarmer(models.Model):
     )
     data_enumerator_name = fields.Char(string="Data Enumerator")
     data_collection_date = fields.Date()
-    odk_reference_id = fields.Char()
     rejection_reason = fields.Text()
+
+    farmer_id = fields.Char(string="Farmer ID", compute="_compute_farmer_id", store=True, index=True)
 
     @api.onchange("is_group", "family_name", "given_name", "gf_name_eng")
     def name_change_farmer(self):
@@ -234,6 +235,13 @@ class G2PFarmer(models.Model):
             ethiopian_date_str = eth_date.to_ethiopian(bday.year, bday.month, bday.day)
             self.birthdate_ec = eth_date.convert_tuple_to_string_with_separator(ethiopian_date_str)
 
+    @api.constrains("birthdate")
+    def _add_birthdate_ec(self):
+        if self.birthdate:
+            bday = date(self.birthdate.year, self.birthdate.month, self.birthdate.day)
+            ethiopian_date_str = eth_date.to_ethiopian(bday.year, bday.month, bday.day)
+            self.birthdate_ec = eth_date.convert_tuple_to_string_with_separator(ethiopian_date_str)
+
     @api.onchange("birthdate_ec")
     def _onchange_birthdate_ec(self):
         if self.birthdate_ec:
@@ -274,3 +282,11 @@ class G2PFarmer(models.Model):
             delta = relativedelta(now, dob)
             years_months_days = str(delta.years)
         return years_months_days
+
+    @api.depends("ref_id", "is_farmer")
+    def _compute_farmer_id(self):
+        for record in self:
+            if record.is_farmer == "yes" and record.ref_id:
+                record.farmer_id = f"FR-{record.ref_id}"
+            else:
+                record.farmer_id = False

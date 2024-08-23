@@ -22,7 +22,6 @@ Available addons
 addon | version | maintainers | summary
 --- | --- | --- | ---
 [g2p_ati](g2p_ati/) | 17.0.1.2.0 |  | OpenG2P Country Config: ATI
-[g2p_lock_unlock](g2p_lock_unlock/) | 17.0.1.0.0 |  | OpenG2P Lock Unlock
 [g2p_odk_importer_ati](g2p_odk_importer_ati/) | 17.0.1.2.0 |  | OpenG2P ODK Config: ATI
 
 [//]: # (end addons)
