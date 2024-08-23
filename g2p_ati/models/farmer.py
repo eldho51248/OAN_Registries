@@ -288,3 +288,9 @@ class G2PFarmer(models.Model):
                 record.farmer_id = f"FR-{record.ref_id}"
             else:
                 record.farmer_id = False
+
+    def unlink(self):
+        if any(record.state == "approved" for record in self):
+            raise ValidationError(_("Cannot delete approved records."))
+
+        return super().unlink()
