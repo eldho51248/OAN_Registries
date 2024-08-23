@@ -346,14 +346,27 @@ def process_agriculture_resource_finance(self, individual, vals):
             vals["finance_accesses"] = [(6, 0, finance_accesses_ids)]
 
 
-def get_individual_data(self, individual, is_member):
+def create_enumerator(self, enumerator_name, enumerator_odk_id, data_collection_date):
+    enumerator = (
+        self.env["g2p.enumerator"]
+        .sudo()
+        .create(
+            {
+                "name": enumerator_name,
+                "enumerator_user_id": enumerator_odk_id,
+                "data_collection_date": data_collection_date,
+            }
+        )
+    )
+    return enumerator
+
+
+def get_individual_data(self, individual, is_member, enumerator):
     vals = {
         "is_registrant": True,
         "is_group": False,
         "is_farmer": "yes",
     }
-    if individual.get("submission_time"):
-        vals["data_collection_date"] = individual.get("submission_time")
     other_json = {}
 
     process_basic_information(self, individual, vals, other_json)
@@ -375,10 +388,13 @@ def get_individual_data(self, individual, is_member):
         vals["partner_longitude"] = individual.get("farmer_location")["coordinates"][0]
         vals["partner_latitude"] = individual.get("farmer_location")["coordinates"][1]
 
+    if enumerator:
+        vals["enumerator_id"] = enumerator.id
+
     return vals
 
 
-def get_member_data(self, member, head):
+def get_member_data(self, member, head, enumerator):
     vals = {"is_registrant": True, "is_group": False, "is_farmer": "no", "hh_is_household_head": "no"}
 
     first_name, family_name, gf_name_eng = member.get("name").split()
@@ -418,6 +434,9 @@ def get_member_data(self, member, head):
     if kebele_id:
         if kebele_id != "other":
             vals["kebele"] = kebele_id
+
+    if enumerator:
+        vals["enumerator_id"] = enumerator.id
 
     return vals
 
@@ -471,23 +490,18 @@ def process_land_certificate(self, land_certificate, instance_id):
 
 def patched_addl_data(self, mapped_json):
     # return []
-    # PROCESS FLOW
-    """
-    hhh = household head
-    1. if hhh is coming:
-        we register hhh with members and give hhh the ack id
-        we ask if a member of his household has already registered:
-            if yes:
-                take the member ack id
-                link the member to the new household that is going to be created
+    if mapped_json.get("submission_time"):
+        submission_time = mapped_json.get("submission_time")
+    else:
+        submission_time = mapped_json.get("odk_submission_date")
 
-    2. if member is coming:
-         we register member and give his ack id
-         we ask if the hhh has already registered:
-         if yes:
-             take the hhh ack id
-             link the new member to the existing household of the hhh
-    """
+    # create enumerator
+    enumerator = create_enumerator(
+        self,
+        mapped_json.get("data_enumerator_name"),
+        mapped_json.get("data_enumerator_odk_id"),
+        submission_time,
+    )
 
     if mapped_json["hh_is_household_head"] == "yes":
         group = {
@@ -495,32 +509,26 @@ def patched_addl_data(self, mapped_json):
             "is_group": True,
         }
         individual_ids = []
-        # Get head name for household name
-        household_head_name = mapped_json.get("name")
-        additional_farmers = mapped_json.get("additional_farmers")
-        other_household_members = mapped_json.get("other_household_members")
 
         # Create household head
-        individual_data = get_individual_data(self, mapped_json, False)
+        individual_data = get_individual_data(self, mapped_json, False, enumerator)
         household_head = self.env["res.partner"].sudo().create(individual_data)
         membership_kind = get_membership_kind(self, "Head")
         individual_ids.append((0, 0, {"individual": household_head.id, "kind": [(4, membership_kind)]}))
 
         # OTHER HOUSEHOLD MEMBERS WHO ARE FARMERS
-        if additional_farmers is not None:
-            for additional_farmer in additional_farmers:
+        if mapped_json.get("additional_farmers") is not None:
+            for additional_farmer in mapped_json.get("additional_farmers"):
                 additional_farmer["instance_id"] = mapped_json.get("instance_id")
-                additional_farmer["submission_time"] = mapped_json.get("submission_time")
-                addl_farmer_data = get_individual_data(self, additional_farmer, True)
+                addl_farmer_data = get_individual_data(self, additional_farmer, True, enumerator)
                 addl_farmer = self.env["res.partner"].sudo().create(addl_farmer_data)
                 membership_kind = get_membership_kind(self, additional_farmer["household_relationship"])
                 individual_ids.append((0, 0, {"individual": addl_farmer.id, "kind": [(4, membership_kind)]}))
 
         # OTHER HOUSEHOLD MEMBERS WHO ARE NOT FARMERS
-        if other_household_members is not None:
-            for other_household_member in other_household_members:
-                other_household_member["submission_time"] = mapped_json.get("submission_time")
-                other_member_data = get_member_data(self, other_household_member, mapped_json)
+        if mapped_json.get("other_household_members") is not None:
+            for other_household_member in mapped_json.get("other_household_members"):
+                other_member_data = get_member_data(self, other_household_member, mapped_json, enumerator)
                 other_member = self.env["res.partner"].sudo().create(other_member_data)
                 membership_kind = get_membership_kind(self, other_household_member["household_relationship"])
                 individual_ids.append((0, 0, {"individual": other_member.id, "kind": [(4, membership_kind)]}))
@@ -574,21 +582,19 @@ def patched_addl_data(self, mapped_json):
         if not group_kind:
             group_kind = self.env["g2p.group.kind"].sudo().create({"name": "Household"})
 
-        group["name"] = household_head_name
+        group["name"] = mapped_json.get("name")
         group["kind"] = group_kind.id
         group["region"] = household_head.region.id
         group["zone"] = household_head.zone.id
         group["woreda"] = household_head.woreda.id
         group["kebele"] = household_head.kebele.id
         group["group_membership_ids"] = individual_ids
-        if mapped_json.get("submission_time"):
-            group["data_collection_date"] = mapped_json.get("submission_time")
+        group["enumerator_id"] = enumerator.id
 
         return group
     else:
-        individual_data = get_individual_data(self, mapped_json, False)
+        individual_data = get_individual_data(self, mapped_json, False, enumerator)
         if mapped_json.get("head_registered") == "yes":
-            member_reference_id = mapped_json.get("member_reference_id")
             # Search for the head farmer that has this ID under "Farmer ODK ACK ID"
             odk_ack_id_type = (
                 self.env["g2p.id.type"].sudo().search([("name", "=", "Farmer ODK ACK ID")], limit=1)
@@ -604,7 +610,10 @@ def patched_addl_data(self, mapped_json):
                             self.env["g2p.reg.id"]
                             .sudo()
                             .search(
-                                [("id_type", "=", odk_ack_id_type.id), ("value", "=", member_reference_id)]
+                                [
+                                    ("id_type", "=", odk_ack_id_type.id),
+                                    ("value", "=", mapped_json.get("member_reference_id")),
+                                ]
                             )
                             .ids,
                         )
@@ -632,10 +641,9 @@ def patched_addl_data(self, mapped_json):
                 )
                 for reg_id in reg_ids:
                     # Check if the id_type.id and value match
-                    if (
-                        reg_id[2].get("id_type") == odk_member_ack_id_type.id
-                        and reg_id[2].get("value") == member_reference_id
-                    ):
+                    if reg_id[2].get("id_type") == odk_member_ack_id_type.id and reg_id[2].get(
+                        "value"
+                    ) == mapped_json.get("member_reference_id"):
                         # Add the status and description to the matching entry
                         reg_id[2].update(
                             {"status": "invalid", "description": "Head farmer with this ACK ID not found"}
