@@ -1,6 +1,6 @@
-===========================
-OpenG2P Country Config: ATI
-===========================
+===================
+OpenG2P Lock Unlock
+===================
 
 .. 
    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -10,21 +10,15 @@ OpenG2P Country Config: ATI
    !! source digest: sha256:535ec6f321a2d76a2612e2f66772e8be398978fdd4b42b2855582d24d3a63e83
    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-.. |badge1| image:: https://img.shields.io/badge/maturity-Alpha-red.png
+.. |badge1| image:: https://img.shields.io/badge/maturity-Beta-yellow.png
     :target: https://odoo-community.org/page/development-status
-    :alt: Alpha
+    :alt: Beta
 .. |badge2| image:: https://img.shields.io/badge/github-OpenG2P%2Fopeng2p--ati-lightgray.png?logo=github
-    :target: https://github.com/OpenG2P/openg2p-ati/tree/17.0-develop/g2p_ati
+    :target: https://github.com/OpenG2P/openg2p-ati/tree/17.0-develop/g2p_lock_unlock
     :alt: OpenG2P/openg2p-ati
 
 |badge1| |badge2|
 
-OpenG2P Country Config: ATI
-
-.. IMPORTANT::
-   This is an alpha version, the data model and design can change at any time without warning.
-   Only for development or testing purpose, do not use in production.
-   `More details on development status <https://odoo-community.org/page/development-status>`_
 
 **Table of contents**
 
@@ -37,7 +31,7 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues <https://github.com/OpenG2P/openg2p-ati/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-`feedback <https://github.com/OpenG2P/openg2p-ati/issues/new?body=module:%20g2p_ati%0Aversion:%2017.0-develop%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/OpenG2P/openg2p-ati/issues/new?body=module:%20g2p_lock_unlock%0Aversion:%2017.0-develop%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -52,6 +46,6 @@ Authors
 Maintainers
 ~~~~~~~~~~~
 
-This module is part of the `OpenG2P/openg2p-ati <https://github.com/OpenG2P/openg2p-ati/tree/17.0-develop/g2p_ati>`_ project on GitHub.
+This module is part of the `OpenG2P/openg2p-ati <https://github.com/OpenG2P/openg2p-ati/tree/17.0-develop/g2p_lock_unlock>`_ project on GitHub.
 
 You are welcome to contribute.

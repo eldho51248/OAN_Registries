@@ -36,14 +36,14 @@ class G2PFarmer(models.Model):
     woreda = fields.Many2one("g2p.woreda", domain="[('zone', '=', zone)]")
     kebele = fields.Many2one("g2p.kebele", domain="[('woreda', '=', woreda)]")
     given_name = fields.Char(string="First Name(English)", translate=False)
-    family_name = fields.Char(string="Father Name(English)", translate=False)
-    gf_name_eng = fields.Char(string="Grand Father Name(English)", translate=False)
+    family_name = fields.Char(string="Father's Name(English)", translate=False)
+    gf_name_eng = fields.Char(string="Grand Father's Name(English)", translate=False)
     first_name_amh = fields.Char(string="First Name(Amharic)", translate=False)
-    family_name_amh = fields.Char(string="Father Name(Amharic)", translate=False)
-    gf_name_amh = fields.Char(string="Grand Father Name(Amharic)", translate=False)
+    family_name_amh = fields.Char(string="Father's Name(Amharic)", translate=False)
+    gf_name_amh = fields.Char(string="Grand Father's Name(Amharic)", translate=False)
     first_name_other = fields.Char(string="First Name", translate=False)
-    family_name_other = fields.Char(string="Father Name", translate=False)
-    gf_name_other = fields.Char(string="Grand Father Name", translate=False)
+    family_name_other = fields.Char(string="Father's Name", translate=False)
+    gf_name_other = fields.Char(string="Grand Father's Name", translate=False)
 
     has_personal_phone = fields.Selection(
         string="Do you have a personal phone number? ", selection=[("yes", "Yes"), ("no", "No")]
