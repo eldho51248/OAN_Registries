@@ -2,11 +2,9 @@
 <odoo noupdate="1">
     <record id="wife_kind" model="g2p.group.membership.kind">
         <field name="name">Wife - Head</field>
-        <field name="is_unique">True</field>
     </record>
     <record id="husband_kind" model="g2p.group.membership.kind">
         <field name="name">Husband - Head</field>
-        <field name="is_unique">True</field>
     </record>
     <record id="son_kind" model="g2p.group.membership.kind">
         <field name="name">Son</field>

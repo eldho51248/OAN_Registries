@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo noupdate="1">
     <record id="water_source_rainfall" model="g2p.water.source">
-        <field name="name">Rainfall</field>
+        <field name="name">Rainfed</field>
         <field name="code">rainfall</field>
     </record>
     <record id="water_source_irrigation_ground" model="g2p.water.source">
@@ -13,7 +13,7 @@
         <field name="code">irrigation_surface</field>
     </record>
     <record id="water_source_well_water" model="g2p.water.source">
-        <field name="name">Well Water</field>
+        <field name="name">Well Water(GroundWater)</field>
         <field name="code">well_water</field>
     </record>
     <record id="water_source_water_harvesting" model="g2p.water.source">
