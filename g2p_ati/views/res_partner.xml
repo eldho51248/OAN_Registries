@@ -300,7 +300,7 @@
 			</xpath>
 			<xpath expr="//page[@name='other']" position="inside">
 				<group name="odk_info">
-					<field name="data_enumerator_name" readonly="True" />
+					<field name="enumerator_id" readonly="True" />
 					<field name="data_collection_date" readonly="True" />
 				</group>
 			</xpath>
@@ -333,7 +333,7 @@
 				<field name="zone" />
 				<field name="woreda" />
 				<field name="kebele" />
-				<field name="data_enumerator_name" />
+				<field name="enumerator_id" />
 				<field name="data_collection_date" />
 			<field
                     name="state"
@@ -465,7 +465,7 @@
 		</xpath>
 		<xpath expr="//page[@name='other']" position="inside">
 			<group>
-				<field name="data_enumerator_name" readonly="True" />
+				<field name="enumerator_id" readonly="True" />
 				<field name="data_collection_date" readonly="True" />
 			</group>
 		</xpath>
@@ -503,7 +503,7 @@
 				<field name="zone" />
 				<field name="woreda" />
 				<field name="kebele" />
-				<field name="data_enumerator_name" />
+				<field name="enumerator_id" />
 				<field name="data_collection_date" />
 					<field
                     name="state"

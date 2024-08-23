@@ -185,8 +185,6 @@ class G2PFarmer(models.Model):
     livestock_information_ids = fields.One2many(
         "g2p.livestock.information", "partner_id", string="Live Stock Information"
     )
-    data_enumerator_name = fields.Char(string="Data Enumerator")
-    data_collection_date = fields.Date()
     rejection_reason = fields.Text()
 
     farmer_id = fields.Char(string="Farmer ID", compute="_compute_farmer_id", store=True, index=True)
