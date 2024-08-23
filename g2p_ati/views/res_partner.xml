@@ -228,13 +228,9 @@
 					<group>
 						<group name="input" string="Agricultural Input">
 							<field name="do_you_use_fertilizer" />
-							<field name="amount_fertilizer_utilized" />
 							<field name="do_you_use_pesticide" />
-							<field name="amount_pesticide_utilized" />
 							<field name="do_you_use_insecticide" />
-							<field name="amount_insecticide_utilized" />
 							<field name="do_you_use_improved_seed" />
-							<field name="amount_improved_seed_utilized" />
 						</group>
 						<group name="financial services" string="Financial Services">
 							<field name="has_finance_access" />
@@ -278,8 +274,6 @@
 					<field name="crop_information_ids">
 						<tree editable="bottom">
 							<field name="crop" />
-							<field name="is_diseased" />
-							<field name="illness_type" widget="many2many_tags" required="is_diseased=='yes'" />
 							<field name="collected_gc" />
 							<field name="collected_ec" placeholder="dd/mm/yyyy" />
 							<field name="season" />
@@ -296,8 +290,6 @@
 							<field name="livestock_type" />
 							<field name="number_of_livestock" />
 							<!-- <field name="undisclosed"/> -->
-							<field name="is_diseased" />
-							<field name="illness_type" widget="many2many_tags" required="is_diseased=='yes'" />
 							<field name="collected_gc" />
 							<field name="collected_ec" placeholder="dd/mm/yyyy" />
 							<field name="season" />
