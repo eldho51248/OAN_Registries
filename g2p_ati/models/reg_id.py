@@ -18,9 +18,9 @@ class G2PRegistrantID(models.Model):
     def check_value(self):
         for record in self:
             if record.id_type.name == "UID":
-                pattern = r"^\d{12}$"
+                pattern = r"^\d{4} \d{4} \d{4}$"
                 if not re.match(pattern, record.value):
-                    raise ValidationError(_("UID should be exactly 12 digits"))
+                    raise ValidationError(_("Invalid format for UID. Correct format is '0000 0000 0000'"))
 
             elif record.id_type.name in ["Farmer ODK ACK ID", "Member ODK ACK ID"]:
                 pattern = r"^[a-zA-Z]{3}-\d{4}-\d{4}-\d{4}-\d{4}-\d{6}$"
