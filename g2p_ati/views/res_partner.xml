@@ -413,6 +413,13 @@
                     />
 			</header>
 		</xpath>
+
+
+	<xpath expr="//field[@name='name']" position="attributes">
+				<attribute name="placeholder">Enter name of household...</attribute>
+			</xpath>
+
+
 		<xpath expr="//field[@name='registration_date']" position="after">
 				<field name="ref_id" readonly="1" />
 			</xpath>
