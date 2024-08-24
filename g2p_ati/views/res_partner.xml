@@ -412,6 +412,10 @@
                     />
 			</header>
 		</xpath>
+	<xpath expr="//field[@name='name']" position="attributes">
+				<attribute name="placeholder">Enter name of household...</attribute>
+			</xpath>
+
 		<xpath expr="//page[@name='ids']" position="attributes">
 			<attribute name="invisible">1</attribute>
 		</xpath>

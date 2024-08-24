@@ -2,7 +2,7 @@
 {
     "name": "OpenG2P Country Config: ATI",
     "category": "G2P",
-    "version": "17.0.1.2.0-develop",
+    "version": "17.0.1.2.0",
     "sequence": 1,
     "author": "OpenG2P",
     "website": "https://openg2p.org",
@@ -11,7 +11,6 @@
     "external_dependencies": {},
     "data": [
         "security/groups.xml",
-        # "security/rule.xml",
         "security/ir.model.access.csv",
         "data/group_membership_kind.xml",
         "data/id_types.xml",

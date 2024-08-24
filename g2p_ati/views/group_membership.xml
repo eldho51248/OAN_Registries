@@ -36,7 +36,7 @@
                                 <field name="individual_gender" string="Sex" />
                                 <field
                                     name="kind"
-                                    string="Role"
+                                    string="Relation"
                                     widget="many2many_tags"
                                     options="{'no_open':True, 'no_create_edit':True, 'no_create':True, 'no_quick_create':True}"
                                 />
@@ -84,7 +84,7 @@
                             />
                             <field
                                 name="kind"
-                                string="Role"
+                                string="Relation"
                                 widget="many2many_tags"
                                 options="{'no_open':True, 'no_create_edit':True}"
                             />

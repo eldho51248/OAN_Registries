@@ -32,8 +32,4 @@
         <field name="name">Mule</field>
         <field name="code">mule</field>
     </record>
-    <record id="livestock_type_other" model="g2p.livestock.type">
-        <field name="name">Other</field>
-        <field name="code">other</field>
-    </record>
 </odoo>

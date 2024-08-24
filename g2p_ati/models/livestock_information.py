@@ -46,35 +46,59 @@ class G2PLiveStockInformation(models.Model):
                 error_message = _("Illness type is required when the crop is diseased.")
                 raise ValidationError(error_message)
 
-    @api.onchange("collected_gc")
-    def _onchange_collected_gc(self):
-        self._update_ec()
-
     @api.constrains("collected_gc")
     def _add_collected_gc(self):
-        for record in self:
-            if record.collected_gc:
-                record._update_ec()
+        self._update_ec_constraint()
+
+    @api.onchange("collected_gc")
+    def _onchange_collected_gc(self):
+        self._update_ec_onchange()
+
+    @api.constrains("collected_ec")
+    def _add_collected_ec(self):
+        self._update_gc_constraint()
 
     @api.onchange("collected_ec")
     def _onchange_collected_ec(self):
-        if self.collected_ec:
-            date_list = re.split("[-/,]", self.collected_ec)
-            gc_date = eth_date.to_gregorian(int(date_list[2]), int(date_list[1]), int(date_list[0]))
-            self.collected_gc = gc_date
+        self._update_gc_onchange()
 
-    def _update_ec(self):
-        if self.collected_gc:
-            cdate = date(self.collected_gc.year, self.collected_gc.month, self.collected_gc.day)
-            ethiopian_date_str = eth_date.to_ethiopian(cdate.year, cdate.month, cdate.day)
-            self.collected_ec = eth_date.convert_tuple_to_string_with_separator(ethiopian_date_str)
-            season = self.env["g2p.season"].search(
-                [("start_gc", "<=", self.collected_gc), ("end_gc", ">=", self.collected_gc)], limit=1
-            )
-            if season:
-                self.season = season.id
-            else:
-                self.season = False
+    def _update_gc_onchange(self):
+        for record in self:
+            if record.collected_ec:
+                self._update_gc(record)
+
+    def _update_gc_constraint(self):
+        for record in self:
+            if record.collected_ec and not record.collected_gc:
+                self._update_gc(record)
+
+    def _update_gc(self, record):
+        eth_date.check_ethipian_date_str(record.collected_ec)
+        date_list = re.split("[-/,]", record.collected_ec)
+        gc_date = eth_date.to_gregorian(int(date_list[2]), int(date_list[1]), int(date_list[0]))
+        record.collected_gc = gc_date
+
+    def _update_ec_onchange(self):
+        for record in self:
+            if record.collected_gc:
+                self._update_ec(record)
+
+    def _update_ec_constraint(self):
+        for record in self:
+            if record.collected_gc and not record.collected_ec:
+                self._update_ec(record)
+
+    def _update_ec(self, record):
+        cdate = date(record.collected_gc.year, record.collected_gc.month, record.collected_gc.day)
+        ethiopian_date_str = eth_date.to_ethiopian(cdate.year, cdate.month, cdate.day)
+        record.collected_ec = eth_date.convert_tuple_to_string_with_separator(ethiopian_date_str)
+        season = self.env["g2p.season"].search(
+            [("start_gc", "<=", record.collected_gc), ("end_gc", ">=", record.collected_gc)], limit=1
+        )
+        if season:
+            record.season = season.id
+        else:
+            record.season = False
 
 
 class G2PIllnessType(models.Model):
