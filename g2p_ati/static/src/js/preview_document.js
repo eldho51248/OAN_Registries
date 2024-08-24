@@ -57,6 +57,10 @@ class Widgetpreview extends Component {
         };
         if (file.isViewable) {
             this.fileViewer.open(file);
+            const modalElement = document.querySelector(".modal");
+            if (modalElement) {
+                modalElement.style.zIndex = 1000;
+            }
         } else {
             window.open(result.url, "_blank");
         }
