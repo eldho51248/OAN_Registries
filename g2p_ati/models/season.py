@@ -38,7 +38,7 @@ class G2PSeason(models.Model):
     def _compute_start_gc_from_start_ec(self):
         for record in self:
             if record.start_ec:
-                eth_date.check_ethipian_date_str(record.start_ec)
+                eth_date.check_ethipian_date_str(record.start_ec, future_date=True)
                 date_list = re.split("[-/,]", self.start_ec)
                 gc_date = eth_date.to_gregorian(int(date_list[2]), int(date_list[1]), int(date_list[0]))
                 self.start_gc = gc_date
@@ -62,7 +62,7 @@ class G2PSeason(models.Model):
     def _compute_end_gc_from_end_ec(self):
         for record in self:
             if record.end_ec:
-                eth_date.check_ethipian_date_str(record.end_ec)
+                eth_date.check_ethipian_date_str(record.end_ec, future_date=True)
                 date_list = re.split("[-/,]", self.end_ec)
                 gc_date = eth_date.to_gregorian(int(date_list[2]), int(date_list[1]), int(date_list[0]))
                 if gc_date and self.start_gc:

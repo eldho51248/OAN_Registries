@@ -17,8 +17,8 @@ class G2PCropInformation(models.Model):
         string="Has this crop been affected by illness?", selection=[("yes", "Yes"), ("no", "No")]
     )
     illness_type = fields.Many2many("g2p.illness.type", string="Disease")
-    collected_gc = fields.Date(string="Collected GC")
-    collected_ec = fields.Char(string="Collected EC")
+    collected_gc = fields.Date(string="Planted date in GC")
+    collected_ec = fields.Char(string="Planted date in EC")
     season = fields.Many2one("g2p.season", store=True)
 
     # @api.constrains("collected_gc", "collected_ec")
