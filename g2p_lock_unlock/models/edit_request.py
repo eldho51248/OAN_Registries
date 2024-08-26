@@ -79,6 +79,7 @@ class ResPartner(models.Model):
         if (
             self.env.context.get("bypass_write")
             or record.edit_state != "locked"
+            or self.env.is_superuser()
             or user.has_group("g2p_ati.group_data_validator")
             or user.has_group("g2p_registry_base.group_g2p_admin")
         ):
