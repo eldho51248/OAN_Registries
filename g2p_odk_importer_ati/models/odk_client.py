@@ -152,10 +152,7 @@ def process_reg_ids(self, json_data, id_type_name, id_value_key):
             (
                 0,
                 0,
-                {
-                    "id_type": id_type.id,
-                    "value": json_data[id_value_key],
-                },
+                {"id_type": id_type.id, "value": json_data[id_value_key], "status": "valid"},
             )
         )
     else:
@@ -163,10 +160,7 @@ def process_reg_ids(self, json_data, id_type_name, id_value_key):
             (
                 0,
                 0,
-                {
-                    "id_type": id_type.id,
-                    "value": json_data[id_value_key],
-                },
+                {"id_type": id_type.id, "value": json_data[id_value_key], "status": "valid"},
             )
         ]
     return json_data
