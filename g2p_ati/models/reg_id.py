@@ -8,9 +8,6 @@ class G2PRegistrantID(models.Model):
     _inherit = "g2p.reg.id"
 
     @api.onchange("id_type", "value")
-    def _check_value_format(self):
-        self.check_value()
-
     @api.constrains("id_type", "value")
     def _check_value_format(self):
         self.check_value()
@@ -34,7 +31,7 @@ class G2PRegistrantID(models.Model):
                         )
                     )
 
-            else:
+            elif record.id_type.name == "RID":
                 pattern = r"^\d{29}$"
                 if not re.match(pattern, record.value):
                     raise ValidationError(_("RID should be exactly 29 digits"))
