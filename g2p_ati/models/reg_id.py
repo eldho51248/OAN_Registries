@@ -7,7 +7,6 @@ from odoo.exceptions import ValidationError
 class G2PRegistrantID(models.Model):
     _inherit = "g2p.reg.id"
 
-    @api.onchange("id_type", "value")
     @api.constrains("id_type", "value")
     def _check_value_format(self):
         self.check_value()
