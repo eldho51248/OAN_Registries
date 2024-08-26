@@ -2,6 +2,8 @@ import json
 
 from odoo import fields, models
 
+from ..json_encoder import CustomJSONEncoder
+
 
 class ResPartner(models.Model):
     _inherit = "res.partner"
@@ -88,7 +90,7 @@ class ResPartner(models.Model):
                 self.env["res.partner.change.request"].create(
                     {
                         "partner_id": partner.id,
-                        "new_values": vals,
+                        "new_values": CustomJSONEncoder.python_dict_to_json_dict(vals),
                         "update_message": json_compatible_vals,
                         "state": "pending",
                     }
