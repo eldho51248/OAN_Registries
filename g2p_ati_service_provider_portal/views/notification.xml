@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="ati_individual_registrant_notification_view" inherit_id="g2p_service_provider_portal_base.base" customize_show="True" name="ATI" priority="200">
+        <xpath expr="//div[hasclass('search-box')]" position="before">
+            <div class="navbar_right">
+                <div class="notifications_button_div">
+                    <button id="show_notification">
+                        <p class="notification_number" style="display: none;"><span></span></p>
+                        <img
+                            class="request_log"
+                            src="/g2p_ati_service_provider_portal/static/src/img/notification.png"
+                            style="width: 26px; height: 26px;"
+                            alt="Notification"
+                        />
+                    </button>
+
+                    <div class="notification_dd" id="notification_dd" style="display: none;">
+                        <ul class="notification_ul">
+                            <h5 class="notification_header_new">Notifications</h5>
+                            <p class="notification_number"></p>
+                            <!-- Notifications will be dynamically inserted here by JavaScript -->
+                            <li class="show_all">
+                                <a href="#" class="link" id="view_all_notif" onclick="viewAllNotifications()">View All Notifications</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <link rel="stylesheet" href="/g2p_ati_service_provider_portal/static/src/css/notification.css"/>
+            <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+            <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+            <script src="/g2p_ati_service_provider_portal/static/src/js/notification.js"></script>
+        </xpath>
+    </template>
+</odoo>
+
+
+
+
+
+<!-- <?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="ati_individual_registrant_notification_view" inherit_id="g2p_service_provider_portal_base.base" customize_show="True" name="ATI" priority="200">
+        <xpath expr="//div[hasclass('search-box')]" position="before">
+            <div class="navbar_right">
+                <div class="notifications_button_div">
+                    <button id="show_notification">
+                        <p class="notifcation_number" style="display: none;"><span/></p>
+                        <img
+                            class="request_log"
+                            src="/g2p_ati_service_provider_portal/static/src/img/notification.png"
+                            style="width: 26px; height: 26px;"
+                            alt="Notification"
+                        />
+                    </button>
+                    <div class="notification_dd" id="notification_dd" style="display: none;">
+                        <ul class="notification_ul">
+                            <h5 class="notification_header_new">Notifications</h5>
+                           
+                            <div class="notification_separation"/>
+                            <li class="show_all">
+                                <a href="/serviceprovider/update/suggests" class="link">View All Notifications</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <link rel="stylesheet" href="/g2p_ati_service_provider_portal/static/src/css/notification.css"/>
+            <script src="https://kit.fontawesome.com/b99e675b6e.js"/>
+            <script src="https://code.jquery.com/jquery-3.4.1.min.js"/>
+            <script src="/g2p_ati_service_provider_portal/static/src/js/notification.js"/>
+        </xpath>
+    </template>
+</odoo> -->

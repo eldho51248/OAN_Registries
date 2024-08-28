@@ -1,0 +1,499 @@
+const alltable = document.getElementById("newreimbursements");
+const allheadercells = alltable.querySelectorAll("th");
+const allRows = Array.from(alltable.querySelectorAll("tbody tr"));
+const tbody = alltable.getElementsByTagName("tbody");
+const totalRow = tbody[0].children.length;
+const itemsPerPage = 12;
+let currentPage = 1;
+
+function addTableSrNo() {
+    for (let i = 0; i < totalRow; i++) {
+        tbody[0].children[i].firstElementChild.innerText = i + 1;
+    }
+}
+
+addTableSrNo();
+let filteredRows = [];
+function showPage(page) {
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const rows = filteredRows.slice(startIndex, endIndex);
+    // Hide all rows
+    allRows.forEach((row) => (row.style.display = "none"));
+    // Show rows for current page
+    rows.forEach((row) => (row.style.display = ""));
+}
+function updatePaginationButtons() {
+    const pageButtonsContainer = document.getElementById("page-buttons");
+    const buttons = pageButtonsContainer.querySelectorAll("button");
+    buttons.forEach((button) => {
+        button.classList.remove("active");
+        if (Number(button.textContent) === currentPage) {
+            button.classList.add("active");
+        }
+    });
+
+    const prevButton = pageButtonsContainer.querySelector("button:first-child");
+    const nextButton = pageButtonsContainer.querySelector(".next-button");
+
+    prevButton.disabled = currentPage === 1;
+    nextButton.disabled = currentPage === Math.ceil(filteredRows.length / itemsPerPage);
+}
+
+function applySearchFilter(searchValue) {
+    filteredRows = allRows.filter((row) => {
+        const cellValue1 = row.cells[1].innerText.toLowerCase();
+        const cellValue2 = row.cells[2].innerText.toLowerCase();
+        const cellValue3 = row.cells[5].innerText.toLowerCase();
+        const cellValue4 = row.cells[7].innerText.toLowerCase();
+        return (
+            cellValue1.includes(searchValue) ||
+            cellValue2.includes(searchValue) ||
+            cellValue3.includes(searchValue) ||
+            cellValue4.includes(searchValue)
+        );
+    });
+}
+function applySelectionFilter(selectionValue, isGroup) {
+    filteredRows = filteredRows.filter((row) => {
+        // console.log(row);
+        // Assuming each row has a data attribute or a cell with the selection value
+        if (isGroup) {
+            var cellValue2 = row.cells[3].innerText.trim().replace(/\s/g, "");
+        } else {
+            var cellValue2 = row.cells[2].innerText.trim().replace(/\s/g, "");
+        }
+        // console.log(row.cells[2]);
+        console.log("individual", cellValue2);
+        const selectedText = selectionValue.options[selectionValue.selectedIndex].text.trim().replace(/\s/g, "");
+        console.log("selected", selectedText);
+        return cellValue2 === selectedText || selectedText === "Region";
+    });
+}
+function applySelectionFilterZone(selectionValue, isGroup) {
+    filteredRows = filteredRows.filter((row) => {
+        if (isGroup) {
+            var cellValue2 = row.cells[4].innerText.trim().replace(/\s/g, "");
+            text_i = SelectionZonGroup.options[SelectionZonGroup.selectedIndex].text.trim().replace(/\s/g, "");
+        } else {
+            var cellValue2 = row.cells[3].innerText.trim().replace(/\s/g, "");
+            var text_i = SelectionZon.options[SelectionZon.selectedIndex].text.trim().replace(/\s/g, "");
+        }
+        // const cellValue2 = row.cells[3].value
+        
+        // console.log(cellValue2,selectionValue,text_i)
+        // return cellValue2 === selectionValue;
+        return cellValue2 === text_i;
+    });
+}
+
+
+function applySelectionFilterWoreda(selectionValue, isGroup) {
+    filteredRows = allRows.filter((row) => {
+
+        // const cellValue2 = row.cells[4].innerText.trim().replace(/\s/g, "");
+        // const selectedText = selectionValue.options[selectionValue.selectedIndex].text;
+
+        // return cellValue2 === selectedText || selectedText === "Woreda";
+        if (isGroup) {
+            var cellValue2 = row.cells[5].innerText.trim().replace(/\s/g, "");
+            var text_i = SelectionWoredaGroup.options[SelectionWoredaGroup.selectedIndex].text.trim().replace(/\s/g, "");
+        } else {
+            var cellValue2 = row.cells[4].innerText.trim().replace(/\s/g, "");
+            var text_i = SelectionWoreda.options[SelectionWoreda.selectedIndex].text.trim().replace(/\s/g, "");
+        }
+
+        
+        return cellValue2 === text_i;
+    });
+}
+
+function applySelectionFilterKebele(selectionValue, isGroup) {
+    console.log("HEre");
+    filteredRows = allRows.filter((row) => {
+        if (isGroup) {
+            var cellValue2 = row.cells[6].innerText.trim().replace(/\s/g, "");
+            var text_i = SelectionKebeleGroup.options[SelectionKebeleGroup.selectedIndex].text.trim().replace(/\s/g, "");
+        } else {
+            var cellValue2 = row.cells[5].innerText.trim().replace(/\s/g, "");
+            var text_i = SelectionKebele.options[SelectionKebele.selectedIndex].text.trim().replace(/\s/g, "");
+        }
+        
+
+        return cellValue2 === text_i;
+    });
+}
+
+function createPageButton(pageNumber) {
+    const button = document.createElement("button");
+    button.textContent = pageNumber;
+    if (pageNumber === currentPage) {
+        button.classList.add("active");
+    }
+    button.addEventListener("click", function () {
+        currentPage = pageNumber;
+        showPage(currentPage);
+        renderPageButtons(); // Re-render the pagination buttons
+    });
+    return button;
+}
+
+// function renderPageButtons() {
+//     const totalPages = Math.ceil(filteredRows.length / itemsPerPage);
+//     const pageButtonsContainer = document.getElementById("page-buttons");
+//     pageButtonsContainer.innerHTML = "";
+
+//     // Add previous page button
+//     const prevButton = document.createElement("button");
+//     prevButton.innerHTML = '<i class="fa fa-angle-left"></i>';
+
+//     // Add next page button
+//     const nextButton = document.createElement("button");
+//     nextButton.innerHTML = '<i class="fa fa-angle-right"></i>';
+
+//     // Angle bracket for left arrow
+//     prevButton.addEventListener("click", function () {
+//         if (currentPage > 1) {
+//             currentPage--;
+//             showPage(currentPage);
+//             updatePaginationButtons();
+//         }
+//     });
+//     pageButtonsContainer.appendChild(prevButton);
+
+//     // Add page buttons
+//     for (let i = 1; i <= totalPages; i++) {
+//         const button = document.createElement("button");
+//         button.textContent = i;
+//         if (i === currentPage) {
+//             button.classList.add("active");
+//         }
+
+//         button.addEventListener("click", function () {
+//             currentPage = i;
+//             showPage(currentPage);
+//             updatePaginationButtons();
+//         });
+
+//         pageButtonsContainer.appendChild(button);
+//     }
+
+//     // Angular bracket for right arrow
+//     nextButton.classList.add("next-button");
+//     nextButton.addEventListener("click", function () {
+//         if (currentPage < totalPages) {
+//             currentPage++;
+//             showPage(currentPage);
+//             updatePaginationButtons();
+//         }
+//     });
+//     pageButtonsContainer.appendChild(nextButton);
+
+//     updatePaginationButtons();
+// }
+
+function renderPageButtons() {
+    const totalPages = Math.ceil(filteredRows.length / itemsPerPage);
+    const pageButtonsContainer = document.getElementById("page-buttons");
+    pageButtonsContainer.innerHTML = "";
+
+    // Add previous page button
+    const prevButton = document.createElement("button");
+    prevButton.innerHTML = '<i class="fa fa-angle-left"></i>';
+    prevButton.addEventListener("click", function () {
+        if (currentPage > 1) {
+            currentPage--;
+            showPage(currentPage);
+            renderPageButtons(); // Re-render the pagination buttons
+        }
+    });
+    pageButtonsContainer.appendChild(prevButton);
+
+    // Add page buttons with ellipsis logic
+    if (totalPages <= 5) {
+        // If total pages are 5 or less, show all pages
+        for (let i = 1; i <= totalPages; i++) {
+            const button = createPageButton(i);
+            pageButtonsContainer.appendChild(button);
+        }
+    } else {
+        // Show first page, ellipsis, current page range, ellipsis, last page
+        if (currentPage > 3) {
+            const firstButton = createPageButton(1);
+            pageButtonsContainer.appendChild(firstButton);
+
+            const ellipsis1 = document.createElement("span");
+            ellipsis1.classList.add("ellipsis");
+            ellipsis1.textContent = "...";
+            pageButtonsContainer.appendChild(ellipsis1);
+        }
+
+        // Show current page and nearby pages
+        for (let i = Math.max(1, currentPage - 1); i <= Math.min(totalPages, currentPage + 1); i++) {
+            const button = createPageButton(i);
+            pageButtonsContainer.appendChild(button);
+        }
+
+        if (currentPage < totalPages - 2) {
+            const ellipsis2 = document.createElement("span");
+            ellipsis2.classList.add("ellipsis");
+            ellipsis2.textContent = "...";
+            pageButtonsContainer.appendChild(ellipsis2);
+
+            const lastButton = createPageButton(totalPages);
+            pageButtonsContainer.appendChild(lastButton);
+        }
+    }
+
+    // Add next page button
+    const nextButton = document.createElement("button");
+    nextButton.innerHTML = '<i class="fa fa-angle-right"></i>';
+    nextButton.classList.add("next-button");
+    nextButton.addEventListener("click", function () {
+        if (currentPage < totalPages) {
+            currentPage++;
+            showPage(currentPage);
+            renderPageButtons(); // Re-render the pagination buttons
+        }
+    });
+    pageButtonsContainer.appendChild(nextButton);
+
+    updatePaginationButtons(); // Highlight the active page
+}
+
+function compareCellValues(a, b, columnIndex) {
+    const aCellValue = a.cells[columnIndex].textContent.trim().replace(/,/g, "");
+    const bCellValue = b.cells[columnIndex].textContent.trim().replace(/,/g, "");
+    const aNumber = parseFloat(aCellValue);
+    const bNumber = parseFloat(bCellValue);
+
+    if (!isNaN(aNumber) && !isNaN(bNumber)) {
+        return aNumber - bNumber;
+    }
+
+    return aCellValue.localeCompare(bCellValue);
+}
+
+allheadercells.forEach(function (th) {
+    // Default sort order
+    let sortOrder = "asc";
+    th.addEventListener("click", function () {
+        const columnIndex = th.cellIndex;
+        allRows.sort(function (a, b) {
+            let comparison = compareCellValues(a, b, columnIndex);
+
+            if (sortOrder === "desc") {
+                comparison *= -1;
+            }
+            return comparison;
+        });
+
+        sortOrder = sortOrder === "asc" ? "desc" : "asc";
+        allRows.forEach((row) => {
+            alltable.tBodies[0].appendChild(row);
+        });
+        allRows.forEach((row, index) => {
+            const firstCell = row.cells[0];
+            firstCell.innerText = index + 1;
+        });
+        currentPage = 1;
+        showPage(currentPage);
+        renderPageButtons();
+    });
+});
+
+const searchResultCount = document.getElementById("search-result-count");
+const searchInputText = document.getElementById("search-text");
+const searchClearText = document.getElementById("search-text-clear");
+
+// Const selectedOption = selectionRegion.options[selectionRegion.selectedIndex];
+// const selectedOptionText = selectedOption.textContent || selectedOption.innerText;
+const SelectionRegion = document.getElementById("region_selection");
+const SelectionZon = document.getElementById("zone_selection");
+const SelectionWoreda = document.getElementById("woreda_selection");
+const SelectionKebele = document.getElementById("kebele_selection");
+
+const SelectionRegionGroup = document.getElementById("region_selection_group");
+const SelectionZonGroup = document.getElementById("zone_selection_group");
+const SelectionWoredaGroup = document.getElementById("woreda_selection_group");
+const SelectionKebeleGroup = document.getElementById("kebele_selection_group");
+
+searchClearText.style.display = "none";
+
+function updateOptions(url, data, targetSelectId, defaultOptionText) {
+    $.ajax({
+        url: url,
+        method: "POST",
+        dataType: "json",
+        data: data,
+        success: function (options) {
+            const selectElement = document.getElementById(targetSelectId);
+            selectElement.innerHTML = "";
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = defaultOptionText;
+            selectElement.appendChild(defaultOption);
+
+            options.forEach((option) => {
+                const opt = document.createElement("option");
+                opt.value = option.id;
+                opt.textContent = option.name;
+                selectElement.appendChild(opt);
+            });
+        },
+        error: function (error) {
+            console.error("Error fetching options:", error);
+        },
+    });
+}
+
+function handleSearch(isGroup=true) {
+    if (isGroup) {
+        var SelectionRegionValue = SelectionRegionGroup;
+        var SelectionZonValue = SelectionZonGroup?.value;
+        var SelectionWoredaValue = SelectionWoredaGroup?.value;
+        var SelectionKebeleValue = SelectionKebeleGroup?.value;
+    } else {
+        var SelectionRegionValue = SelectionRegion;
+        var SelectionZonValue = SelectionZon?.value;
+        var SelectionWoredaValue = SelectionWoreda?.value;
+        var SelectionKebeleValue = SelectionKebele?.value;
+    }
+
+    var searchValue = searchInputText.value;
+    
+
+    if (typeof searchValue === "string") {
+        searchValue = searchValue.toLowerCase();
+    }
+
+    if (
+        searchValue ||
+        SelectionRegionValue?.value.trim() ||
+        SelectionZonValue?.trim() ||
+        SelectionWoredaValue?.trim() ||
+        SelectionKebeleValue?.trim()
+    ) {
+        filteredRows = allRows;
+        if (searchValue) {
+            applySearchFilter(searchValue);
+            currentPage = 1;
+            showPage(currentPage);
+            renderPageButtons();
+            // Update search result count
+            searchResultCount.textContent = `Search found ${filteredRows.length} result(s)`;
+        }
+        if (SelectionRegionValue?.value.trim()) {
+            console.log(SelectionRegionValue.value);
+            applySelectionFilter(SelectionRegionValue, isGroup);
+            currentPage = 1;
+            showPage(currentPage);
+            renderPageButtons();
+            // Update search result count
+            searchResultCount.textContent = `Search found ${filteredRows.length} result(s)`;
+        }
+        if (SelectionZonValue?.trim()) {
+            applySelectionFilterZone(SelectionZonValue, isGroup);
+            currentPage = 1;
+            showPage(currentPage);
+            renderPageButtons();
+            if (searchValue) {
+                applySearchFilter(searchValue);
+            }
+            // Update search result count
+            searchResultCount.textContent = `Search found ${filteredRows.length} result(s)`;
+        }
+        if (SelectionWoredaValue?.trim()) {
+
+            applySelectionFilterWoreda(SelectionWoredaValue, isGroup);
+            if (searchValue) {
+                applySearchFilter(searchValue);
+            }
+            currentPage = 1;
+            showPage(currentPage);
+            renderPageButtons();
+            // Update search result count
+            searchResultCount.textContent = `Search found ${filteredRows.length} result(s)`;
+        }
+        if (SelectionKebeleValue?.trim()) {
+            console.log(SelectionKebeleValue);
+            applySelectionFilterKebele(SelectionKebeleValue, isGroup);
+            if (searchValue) {
+                applySearchFilter(searchValue);
+            }
+            currentPage = 1;
+            showPage(currentPage);
+            renderPageButtons();
+            // Update search result count
+            searchResultCount.textContent = `Search found ${filteredRows.length} result(s)`;
+        }
+    } 
+    else {
+        filteredRows = allRows;
+        currentPage = 1;
+        showPage(currentPage);
+        renderPageButtons();
+        // Clear search result count
+        searchResultCount.textContent = "";
+    }
+
+    searchClearText.style.display = searchValue ? "block" : "none";
+}
+
+searchInputText.addEventListener("input", handleSearch);
+
+SelectionRegion?.addEventListener("input", function () {
+    handleSearch(false);
+    const regionId = this.value;
+    updateOptions("/update_zone_options", {region_id: regionId}, "zone_selection", "Zone");
+});
+
+SelectionRegionGroup?.addEventListener("input", function () {
+    handleSearch(true);
+    const regionId = this.value;
+    updateOptions("/update_zone_options", {region_id: regionId}, "zone_selection_group", "Zone");
+});
+
+SelectionZon?.addEventListener("input", function () {
+    handleSearch(false);
+    const zoneId = this.value;
+    updateOptions("/update_woreda_options", {zone_id: zoneId}, "woreda_selection", "Woreda");
+});
+
+SelectionZonGroup?.addEventListener("input", function () {
+    handleSearch(true);
+    const zoneId = this.value;
+    updateOptions("/update_woreda_options", {zone_id: zoneId}, "woreda_selection_group", "Woreda");
+});
+
+SelectionWoreda?.addEventListener("input", function () {
+    handleSearch(false);
+    const woredaId = this.value;
+    updateOptions("/update_kebele_options", {woreda_id: woredaId}, "kebele_selection", "Kebele");
+});
+
+SelectionWoredaGroup?.addEventListener("input", function () {
+    handleSearch(true);
+    const woredaId = this.value;
+    updateOptions("/update_kebele_options", {woreda_id: woredaId}, "kebele_selection_group", "Kebele");
+});
+
+SelectionKebele?.addEventListener("input", handleSearch(false));
+SelectionKebeleGroup?.addEventListener("input", handleSearch(true));
+
+
+searchClearText.addEventListener("click", function () {
+    searchInputText.value = "";
+    handleSearch();
+});
+
+document.addEventListener("click", function (event) {
+    if (event.target !== searchInputText && event.target !== searchClearText) {
+        searchClearText.style.display = searchInputText.value ? "block" : "none";
+    }
+});
+
+// Initial setup
+filteredRows = allRows;
+showPage(currentPage);
+renderPageButtons();

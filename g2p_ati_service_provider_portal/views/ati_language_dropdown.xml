@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="inherited_language_dropdown" inherit_id="g2p_service_provider_portal_base.base">
+       <xpath expr="//div[@class='language-dropdown language-box']" position="replace">
+             <!-- <div class="dropdown-menu" aria-labelledby="language-dropdown-button">
+                <a class="dropdown-item" href="/website/lang/en_US?r=/serviceprovider/individual" data-url_code="en_US">
+                    <span>English</span>
+                </a> 
+                 <a class="dropdown-item" href="/website/lang/am_ET?r=/serviceprovider/individual" data-url_code="am_ET">
+                    <span>Amharic</span>
+                </a> 
+            </div>  -->
+             <link rel="stylesheet" href="/g2p_ati_service_provider_portal/static/src/css/language_dropdown.css" />
+            <div class="language-dropdown language-box">
+                <t t-call="portal.language_selector" />
+            </div>
+        </xpath>
+    </template>
+</odoo>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="inherited_template" inherit_id="g2p_service_provider_portal_base.base">
+    <xpath expr="//div[@class='language-dropdown language-box']" position="replace">
+        <div class="language-dropdown language-box">
+            <button class="dropdown-toggle button" type="button" id="language-dropdown-button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span>English</span>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="language-dropdown-button">
+                <a class="dropdown-item" href="/website/lang/en_US?r=/serviceprovider" data-url_code="en_US">
+                    <span>English</span>
+                </a>
+                <a class="dropdown-item" href="/website/lang/am_ET?r=/serviceprovider" data-url_code="am_ET">
+                    <span>Amharic</span>
+                </a>
+                
+            </div>
+        </div>
+    </xpath>
+</template>
+</odoo> -->
+
+
+<!-- <?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="inherited_language_dropdown" inherit_id="g2p_service_provider_portal_base.base">
+       <xpath expr="//div[@class='language-dropdown language-box']" position="replace">
+             <div class="dropdown-menu" aria-labelledby="language-dropdown-button">
+                <a class="dropdown-item" href="/website/lang/en_US?r=/serviceprovider/individual" data-url_code="en_US">
+                    <span>English</span>
+                </a> 
+                 <a class="dropdown-item" href="/website/lang/am_ET?r=/serviceprovider/individual" data-url_code="am_ET">
+                    <span>Amharic</span>
+                </a> 
+            </div> 
+             <link rel="stylesheet" href="/g2p_ati_service_provider_portal/static/src/css/language_dropdown.css" />
+            <div class="language-dropdown language-box">
+                <t t-call="portal.language_selector" />
+            </div>
+        </xpath>
+    </template>
+</odoo> -->

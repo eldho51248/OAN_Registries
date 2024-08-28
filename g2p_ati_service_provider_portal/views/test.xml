@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template
+        id="ati_individual_registrant_update_form_template"
+        inherit_id="g2p_service_provider_beneficiary_management.individual_update_form_template"
+        customize_show="True"
+        name="ATI"
+        priority="200"
+    >
+
+        <xpath expr="//div[hasclass('main-container')]" position="replace">
+            <div
+                class="container-adjuster container"
+                style="background-color: #F5F8FA; height: 100%; margin-top:20px"
+            >
+                <h5 class="all-title">Update Farmer</h5>
+                <div class="form-template">
+
+                    <ol class="breadcrumb form-layout-breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="/serviceprovider/home">
+                                    Dashboard
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="/serviceprovider/individual">
+                                    Farmer
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                Update Farmer
+                            </li>
+                        </ol>
+                    <form
+                        id="updategroupForm"
+                        action="/serviceprovider/individual/update/submit"
+                        method="POST"
+                        enctype="multipart/form-data"
+                    >
+
+                            <div class="rounded-card">
+                                <input type="hidden" name="group_id" value="" />
+                                <div class="sidebar">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" href="#" onclick="showSection('id-section')">Id Section</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#" onclick="showSection('individual-details')">Individual Details</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#" onclick="showSection('membership-details')">Membership Details</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#" onclick="showSection('land-information')">Land Information</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#" onclick="showSection('crop-information')">Crop Information</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#" onclick="showSection('livestock-information')">Livestock Information</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#" onclick="showSection('agricultural-input')">Agricultural Input</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#" onclick="showSection('access-to-resouce')">Access to Resource</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#" onclick="showSection('financial-service')">Financial Service</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#" onclick="showSection('socio-economic-data')">Socio Economic Data</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            <div role="main" class="content">
+                                <div id="id-section" class="section-container">
+                                    <div class="row section-content">
+                                    ID Section
+                                    </div>
+                                    <div class="section-footer d-flex justify-content-end">
+
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-secondary "
+                                            id="nextButton"
+                                            onclick="showNextSection('individual-details','id-section')"
+                                        >Next <span>&#x276F;</span></button>
+                                    </div>
+                                </div>
+
+                                <div id="individual-details" class="section-container" style="display: none;">
+                                    <div class="row section-content">
+                                    Individual Details
+                                    </div>
+                                    <div class="section-footer d-flex justify-content-end">
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-secondary"
+                                            onclick="showNextSection('membership-details', 'individual-details')"
+                                        >Next <span>&#x276F;</span></button>
+                                    </div>
+                                </div>
+
+                                <div id="membership-details" class="section-container" style="display: none;">
+                                    <div class="row section-content"> 
+                                    Membership Details      
+                                    </div>
+                                    <div class="section-footer d-flex justify-content-end">
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-secondary next-btn"
+                                            onclick="showNextSection('land-information', 'membership-details')"
+                                        >Next <span>&#x276F;</span></button>
+                                    </div>
+                                </div>
+
+                                <div id="land-information" class="section-container" style="display: none;">
+                                    <div class="section-content">
+                                    Land Information
+                                    </div>
+                                    <div class="section-footer d-flex justify-content-end">
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-secondary"
+                                            onclick="showNextSection('crop-information', 'land-information')"
+                                        >Next <span>&#x276F;</span></button>
+                                    </div>
+                                </div>
+
+                                <div id="crop-information" class="section-container" style="display: none;">
+                                    <div class="section-content">
+                                    Crop Information
+                                    </div>
+                                    <div class="section-footer d-flex justify-content-end">
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-secondary"
+                                            onclick="showNextSection('livestock-information', 'crop-information')"
+                                        >Next <span>&#x276F;</span></button>
+                                    </div>
+                                </div>
+
+                                <div id="livestock-information" class="section-container" style="display: none;">
+                                    <div class="section-content custom-scrollbar">
+                                    Livestock Information
+                                    </div>
+                                    <div class="section-footer d-flex justify-content-end">
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-secondary"
+                                            onclick="showNextSection('agricultural-input', 'livestock-information')"
+                                            id="some-button-or-link"
+                                        >Next <span>&#x276F;</span></button>
+                                    </div>
+                                </div>
+
+                                <div id="agricultural-input" class="section-container" style="display: none;">
+                                    <div class="section-content custom-scrollbar">
+                                    Agricultural Input
+                                    </div>
+                                    <div class="section-footer d-flex justify-content-end">
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-secondary"
+                                            onclick="showNextSection('access-to-resource', 'agricultural-input')"
+                                            id="some-button-or-link"
+                                        >Next <span>&#x276F;</span></button>
+                                    </div>
+                                </div>
+
+                                <div id="access-to-resource" class="section-container" style="display: none;">
+                                    <div class="section-content custom-scrollbar">
+                                    Access to Resource
+                                    </div>
+                                    <div class="section-footer d-flex justify-content-end">
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-secondary"
+                                            onclick="showNextSection('financial-service', 'access-to-resource')"
+                                            id="some-button-or-link"
+                                        >Next <span>&#x276F;</span></button>
+                                    </div>
+                                </div>
+
+                                <div id="financial-service" class="section-container" style="display: none;">
+                                    <div class="section-content custom-scrollbar">
+                                    Financial Service
+                                    </div>
+                                    <div class="section-footer d-flex justify-content-end">
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-secondary"
+                                            onclick="showNextSection('socio-economic-data', 'financial-service')"
+                                            id="some-button-or-link"
+                                        >Next <span>&#x276F;</span></button>
+                                    </div>
+                                </div>
+
+                                <div id="socio-economic-data" class="section-container" style="display: none;">
+                                    <div class="row section-content-row s_website_form_field">
+                                    Socio Economic Data
+                                    </div>
+
+                                    <div class="section-footer d-flex justify-content-end">
+                                                        <button
+                                            type="button"
+                                            class="btn btn-outline-primary"
+                                            onclick="location.href = '/serviceprovider/individual';"
+                                        >
+                                                        Cancel
+                                                    </button>
+                                                    <button
+                                            id="beneficiary_submit"
+                                            type="button"
+                                            onclick="customvalidateForm(false);"
+                                            class="btn btn-primary create-new"
+                                        >
+                                                        Submit
+                                                    </button>
+                                     </div>
+
+
+                                </div>
+
+                                </div>
+
+
+                        </div>
+
+
+                    </form><br/><br/><br/><br/><br/><br/>
+
+
+
+
+
+
+
+
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" />
+                    <script
+                        type="text/javascript"
+                        src="/g2p_ati_service_provider_portal/static/src/js/member_form.js"
+                    />
+
+                        <script type="text/javascript" src="/g2p_ati_service_provider_portal/static/src/js/form_validation.js" />
+                    <link rel="stylesheet" href="/g2p_ati_service_provider_portal/static/src/css/style.css" />
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" />
+                    <script
+                        src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.1/js/select2.min.js"
+                    />
+                    <link
+                        href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.1/css/select2.css"
+                        rel="stylesheet"
+                    />
+
+
+                </div>
+            </div>
+         </xpath>
+    </template>
+</odoo>
