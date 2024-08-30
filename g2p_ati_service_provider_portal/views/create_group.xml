@@ -62,6 +62,17 @@
                                                     </a>
                                                 </li>
 
+                                                <li class="nav-item">
+                                                    <a
+                                                        id="family-members-link"
+                                                        class="nav-link"
+                                                        href="#"
+                                                        onclick="showSection('family-members', this)"
+                                                    >
+                                                        Family Members
+                                                    </a>
+                                                </li>
+
                                                 <li class="nav-item" style="display: none;">
                                                     <a class="nav-link" href="#">
                                                         Basic Details
@@ -102,16 +113,7 @@
                                                     </a>
                                                 </li>
 
-                                                    <li class="nav-item">
-                                                    <a
-                                                        id="family-members-link"
-                                                        class="nav-link"
-                                                        href="#"
-                                                        onclick="showSection('family-members', this)"
-                                                    >
-                                                        Family Members
-                                                    </a>
-                                                </li>
+
                                                 <li class="nav-item" style="display: none;">
                                                     <a
                                                         class="nav-link"
@@ -305,7 +307,7 @@
                                                     <button
                                                         type="button"
                                                         class="btn btn-outline-secondary"
-                                                        onclick="showNextSection('farmer-details', 'location-details', true)"
+                                                        onclick="showNextSection('farmer-details', 'location-details')"
                                                         id="some-button-or-link"
                                                     >NEXT <span>&#x276F;</span>
                                                     </button>
@@ -441,7 +443,7 @@
                                                     <button
                                                         type="button"
                                                         class="btn btn-outline-secondary"
-                                                        onclick="showNextSection('family-members', 'farmer-details', true)"
+                                                        onclick="showNextSection('family-members', 'farmer-details')"
                                                         id="some-button-or-link"
                                                     >NEXT <span>&#x276F;</span>
                                                     </button>

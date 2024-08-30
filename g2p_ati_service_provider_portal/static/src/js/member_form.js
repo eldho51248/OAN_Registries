@@ -248,13 +248,15 @@ $(document).on("click", "#member_submit", async function () {
 
         record[`livestock_types_${index}`] = $(this).find(`select[name="livestock_types_${index}"]`).val();
         record[`number_of_livestock_${index}`] = $(this)
-            .find(`select[name="number_of_livestock_${index}"]`)
+            .find(`input[name="number_of_livestock_${index}"]`)
             .val();
         // For file inputs, you can either send the file directly or handle it differently if neede
-        if (Object.keys(record).length > 0 && record.constructor === Object) {
-            livestockRecord.push(record);
-        }
+        // if (Object.keys(record).length > 0 && record.constructor === Object) {
+        //     livestockRecord.push(record);
+        // }
+        livestockRecord.push(record);
     });
+    // Console.log("LIVESTOCK", livestockRecord);
     //    Var landRecords = JSON.stringify(landRecords)
 
     $(".form-control, .form-select").removeClass("is-invalid");
@@ -282,7 +284,7 @@ $(document).on("click", "#member_submit", async function () {
             primaryLanguage: primaryLanguage,
             given_name: firstName,
             family_name: middleName,
-            addl_name: lastName,
+            gf_name_eng: lastName,
             firstNameAmh: firstNameAmh,
             familyNameAmh: familyNameAmh,
             gFNameAmh: gFNameAmh,

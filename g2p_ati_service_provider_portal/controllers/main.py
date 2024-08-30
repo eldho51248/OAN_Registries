@@ -1004,17 +1004,17 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
     def _process_individual_details(self, vals, kw):
         self._process_household_head(vals, kw)
-        self._process_names(vals, kw)
-        self._process_location(vals, kw)
+        # self._process_names(vals, kw)
+        # self._process_location(vals, kw)
         self._process_additional_details(vals, kw)
-        self._process_phone_numbers(vals, kw)
+        # self._process_phone_numbers(vals, kw)
 
     def _process_household_head(self, vals, kw):
-        if kw.get("hh_is_household_head"):
+        if kw.get("isHouseholdHead"):
             hh_is_household_head = (
                 request.env["ir.model.fields.selection"]
                 .sudo()
-                .search([("id", "=", kw.get("hh_is_household_head"))])
+                .search([("id", "=", kw.get("isHouseholdHead"))])
                 .value
             )
             vals["hh_is_household_head"] = hh_is_household_head
@@ -1044,27 +1044,27 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             vals["kebele"] = int(kw.get("kebele"))
 
     def _process_additional_details(self, vals, kw):
-        if kw.get("birthdate"):
-            vals["birthdate"] = kw.get("birthdate")
-        if kw.get("gender"):
-            vals["gender"] = kw.get("gender")
+        # if kw.get("birthdate"):
+        #     vals["birthdate"] = kw.get("birthdate")
+        # if kw.get("gender"):
+        #     vals["gender"] = kw.get("gender")
         if kw.get("email") and kw.get("email").strip():
             vals["email"] = kw.get("email")
-        if kw.get("is_disabled"):
+        if kw.get("isDisabled"):
             vals["is_disabled"] = (
                 request.env["ir.model.fields.selection"]
                 .sudo()
-                .search([("id", "=", kw.get("is_disabled"))])
+                .search([("id", "=", kw.get("isDisabled"))])
                 .value
             )
 
-        if kw.get("primary_language"):
-            vals["primary_language"] = int(kw.get("primary_language"))
-        if kw.get("farming_type"):
+        if kw.get("primaryLanguage"):
+            vals["primary_Language"] = int(kw.get("primaryLanguage"))
+        if kw.get("farmingType"):
             vals["farming_type"] = (
                 request.env["ir.model.fields.selection"]
                 .sudo()
-                .search([("id", "=", kw.get("farming_type"))])
+                .search([("id", "=", kw.get("farmingType"))])
                 .value
             )
 
@@ -1130,7 +1130,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                         },
                     )
                 )
-        vals["phone_number_ids"] = phone_no
+        # vals["phone_number_ids"] = phone_no
 
     def _process_socio_economic_data(self, vals, kw):
         if kw.get("marital_status"):
@@ -1271,92 +1271,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         website=True,
         csrf=False,
     )
-    def _get_selection_id(self, model, field_name, value):
-        field = (
-            request.env["ir.model.fields"]
-            .sudo()
-            .search([("model_id", "=", model.id), ("name", "=", field_name)])
-        )
-        for choice in field.selection_ids:
-            if choice.value == value:
-                return choice.id
-        return False
-
-    def _prepare_land_info_data(self, beneficiary, ownership_type_selections):
-        land_info_data = []
-        for index, land_info in enumerate(beneficiary.land_information_ids, start=1):
-            ownership_selection_id = self._get_selection_id(
-                land_info._name, "ownership_type", land_info.ownership_type
-            )
-            land_info_data.append(
-                {
-                    "index": index,
-                    "id": land_info.id,
-                    "total_land_area": land_info.total_land_area,
-                    "land_id": land_info.land_id,
-                    "ownership_type_selection_id": ownership_selection_id,
-                }
-            )
-        return land_info_data
-
-    def _prepare_crop_info_data(self, beneficiary, crop_is_diseased_selections):
-        crop_info_data = []
-        serialized_crop_info_data = []
-        for index, crop_info in enumerate(beneficiary.crop_information_ids, start=1):
-            crop_is_diseased_selection_id = self._get_selection_id(
-                crop_info._name, "is_diseased", crop_info.is_diseased
-            )
-            crop_info_data.append(
-                {
-                    "index": index,
-                    "id": crop_info.id,
-                    "crop": crop_info.crop,
-                    "is_diseased": crop_info.is_diseased,
-                    "illness_type": crop_info.illness_type,
-                    "crop_is_diseased_selection_id": crop_is_diseased_selection_id,
-                }
-            )
-            serialized_crop_info_data.append(
-                {
-                    "index": index,
-                    "id": crop_info.id,
-                    "crop_id": crop_info.crop.id,
-                    "is_diseased": crop_info.is_diseased,
-                    "illness_type": [it.id for it in crop_info.illness_type],
-                }
-            )
-        return crop_info_data, serialized_crop_info_data
-
-    def _prepare_livestock_info_data(self, beneficiary, livestock_is_diseased_selections):
-        livestock_info_data = []
-        serialized_livestock_info_data = []
-        for index, livestock_info in enumerate(beneficiary.livestock_information_ids, start=1):
-            livestock_is_diseased_selection_id = self._get_selection_id(
-                livestock_info._name, "is_diseased", livestock_info.is_diseased
-            )
-            livestock_info_data.append(
-                {
-                    "index": index,
-                    "id": livestock_info.id,
-                    "livestock_type": livestock_info.livestock_type,
-                    "number_of_livestock": livestock_info.number_of_livestock,
-                    "is_diseased": livestock_info.is_diseased,
-                    "illness_type": livestock_info.illness_type,
-                    "livestock_is_diseased_selection_id": livestock_is_diseased_selection_id,
-                }
-            )
-            serialized_livestock_info_data.append(
-                {
-                    "index": index,
-                    "id": livestock_info.id,
-                    "livestock_type": livestock_info.livestock_type.id,
-                    "is_diseased": livestock_info.is_diseased,
-                    "illness_type": [it.id for it in livestock_info.illness_type],
-                }
-            )
-        return livestock_info_data, serialized_livestock_info_data
-
-    def indvidual_update(self, _id, **kw):
+    def indvidual_update(self, _id):
         try:
             beneficiary = request.env["res.partner"].sudo().browse(_id)
             if not beneficiary:
@@ -1365,23 +1280,20 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     {"error_message": "Beneficiary not found."},
                 )
             land_model_id = request.env["ir.model"].sudo().search([("model", "=", "g2p.land.information")])
-            crop_model_id = request.env["ir.model"].sudo().search([("model", "=", "g2p.crop.information")])
-            livestock_model_id = (
-                request.env["ir.model"].sudo().search([("model", "=", "g2p.livestock.information")])
-            )
 
             # Fetching selections and other data
-            ownership_type_selections = self._get_selection_id(land_model_id, "ownership_type", None)
-            crop_is_diseased_selections = self._get_selection_id(crop_model_id, "is_diseased", None)
-            livestock_is_diseased_selections = self._get_selection_id(livestock_model_id, "is_diseased", None)
+            ownership_type_selections = (
+                request.env["ir.model.fields"]
+                .sudo()
+                .search([("model_id", "=", land_model_id.id), ("name", "=", "ownership_type")])
+                .selection_ids
+            )
 
             # Preparing data for rendering
             land_info_data = self._prepare_land_info_data(beneficiary, ownership_type_selections)
-            crop_info_data, serialized_crop_info_data = self._prepare_crop_info_data(
-                beneficiary, crop_is_diseased_selections
-            )
+            crop_info_data, serialized_crop_info_data = self._prepare_crop_info_data(beneficiary)
             livestock_info_data, serialized_livestock_info_data = self._prepare_livestock_info_data(
-                beneficiary, livestock_is_diseased_selections
+                beneficiary
             )
 
             # Other data retrieval
@@ -1425,11 +1337,56 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 elif beneficiary.has_national_id == "no" and reg_id.id_type.name == "RID":
                     rid = reg_id.value
 
-            hh_is_household_head = (
-                request.env["ir.model.fields"]
-                .sudo()
-                .search([("model_id", "=", model_id.id), ("name", "=", "hh_is_household_head")])
-                .selection_ids
+            hh_is_household_head, household_head_selection_id = self._get_selection_id(
+                model_id, "hh_is_household_head", beneficiary.hh_is_household_head
+            )
+            has_national_id, have_national_id_selection_id = self._get_selection_id(
+                model_id, "has_national_id", beneficiary.has_national_id
+            )
+            farming_type, farming_type_selection_id = self._get_selection_id(
+                model_id, "farming_type", beneficiary.farming_type
+            )
+            is_member_of_primary_cooperative, is_member_of_primary_id = self._get_selection_id(
+                model_id, "is_member_of_primary_cooperative", beneficiary.is_member_of_primary_cooperative
+            )
+            is_member_of_cooperative_union, is_member_of_coop_id = self._get_selection_id(
+                model_id, "is_member_of_cooperative_union", beneficiary.is_member_of_cooperative_union
+            )
+            is_member_in_farmer_cluster, is_member_in_farmer_cluster_selection_id = self._get_selection_id(
+                model_id, "is_member_in_farmer_cluster", beneficiary.is_member_in_farmer_cluster
+            )
+            role_in_cluster, role_in_cluster_selection_id = self._get_selection_id(
+                model_id, "role_in_farmer_cluster", beneficiary.role_in_farmer_cluster
+            )
+            access_to_machinery, access_to_machinery_selection_id = self._get_selection_id(
+                model_id, "access_to_machinery", beneficiary.access_to_machinery
+            )
+            marital_status, marital_status_selection_id = self._get_selection_id(
+                model_id, "martial_status", beneficiary.martial_status
+            )
+            education_level, education_level_selection_id = self._get_selection_id(
+                model_id, "education", beneficiary.education
+            )
+            disability_status, disability_status_selection_id = self._get_selection_id(
+                model_id, "is_disabled", beneficiary.is_disabled
+            )
+            do_you_use_fertilizer, do_you_use_fertilizer_selection_id = self._get_selection_id(
+                model_id, "do_you_use_fertilizer", beneficiary.do_you_use_fertilizer
+            )
+            do_you_use_pesticide, do_you_use_pesticide_selection_id = self._get_selection_id(
+                model_id, "do_you_use_pesticide", beneficiary.do_you_use_pesticide
+            )
+            do_you_use_insecticide, do_you_use_insecticide_selection_id = self._get_selection_id(
+                model_id, "do_you_use_insecticide", beneficiary.do_you_use_insecticide
+            )
+            do_you_use_improved_seed, do_you_use_improved_seed_selection_id = self._get_selection_id(
+                model_id, "do_you_use_improved_seed", beneficiary.do_you_use_improved_seed
+            )
+            has_finance_access, has_finance_access_selection_id = self._get_selection_id(
+                model_id, "has_finance_access", beneficiary.has_finance_access
+            )
+            has_personal_phone, has_personal_phone_selection_id = self._get_selection_id(
+                model_id, "has_personal_phone", beneficiary.has_personal_phone
             )
 
             # Rendering the template with the prepared data
@@ -1437,6 +1394,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 "g2p_ati_service_provider_portal.ati_individual_registrant_update_form_template",
                 {
                     "beneficiary": beneficiary,
+                    "has_national_id": has_national_id,
                     "uid": uid,
                     "rid": rid,
                     "hh_is_household_head": hh_is_household_head,
@@ -1446,17 +1404,23 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     "woreda": woreda,
                     "kebele": kebele,
                     "primary_language": primary_language,
+                    "has_personal_phone": has_personal_phone,
                     "primary_phone": primary_phone,
                     "secondary_phone": secondary_phone,
                     "other_phone": other_phone,
+                    "farming_type": farming_type,
+                    "is_member_of_primary_cooperative": is_member_of_primary_cooperative,
+                    "is_member_of_cooperative_union": is_member_of_cooperative_union,
+                    "is_member_in_farmer_cluster": is_member_in_farmer_cluster,
                     "primary_cooperatives": primary_cooperatives,
                     "cooperative_unions": cooperative_unions,
                     "primary_commodities": primary_commodities,
+                    "role_in_cluster": role_in_cluster,
                     "ownership_type_selections": ownership_type_selections,
                     "land_info_data": land_info_data,
                     "crop_info_data": crop_info_data,
-                    "livestock_info_data": livestock_info_data,
                     "serialized_crop_info_data": serialized_crop_info_data,
+                    "livestock_info_data": livestock_info_data,
                     "serialized_livestock_info_data": serialized_livestock_info_data,
                     "crops": crops,
                     "crop_illness_type": crop_illness_type,
@@ -1464,9 +1428,36 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     "livestock_types": livestock_types,
                     "livestock_illness_type": livestock_illness_type,
                     "water_source": water_source,
+                    "access_to_machinery": access_to_machinery,
                     "machinary_types": machinary_types,
+                    "marital_status": marital_status,
+                    "education_level": education_level,
+                    "disability_status": disability_status,
+                    "do_you_use_fertilizer": do_you_use_fertilizer,
+                    "do_you_use_pesticide": do_you_use_pesticide,
+                    "do_you_use_insecticide": do_you_use_insecticide,
+                    "do_you_use_improved_seed": do_you_use_improved_seed,
+                    "has_finance_access": has_finance_access,
                     "financial_access": financial_access,
                     "source_of_income": source_of_income,
+                    "have_national_id_selection_id": have_national_id_selection_id,
+                    "household_head_selection_id": household_head_selection_id,
+                    "farming_type_selection_id": farming_type_selection_id,
+                    "role_in_cluster_selection_id": role_in_cluster_selection_id,
+                    "is_member_in_farmer_cluster_selection_id": is_member_in_farmer_cluster_selection_id,
+                    "is_member_of_cooperative_union_selection_id": is_member_of_coop_id,
+                    "is_member_of_primary_cooperative_selection_id": is_member_of_primary_id,
+                    "education_level_selection_id": education_level_selection_id,
+                    "marital_status_selection_id": marital_status_selection_id,
+                    "access_to_machinery_selection_id": access_to_machinery_selection_id,
+                    "access_to_finance_selection_id": has_finance_access_selection_id,
+                    "disability_status_selection_id": disability_status_selection_id,
+                    "has_personal_phone_selection_id": has_personal_phone_selection_id,
+                    "do_you_use_fertilizer_selection_id": do_you_use_fertilizer_selection_id,
+                    "do_you_use_pesticide_selection_id": do_you_use_pesticide_selection_id,
+                    "do_you_use_insecticide_selection_id": do_you_use_insecticide_selection_id,
+                    "do_you_use_improved_seed_selection_id": do_you_use_improved_seed_selection_id,
+                    "has_finance_access_selection_id": has_finance_access_selection_id,
                 },
             )
         except Exception as e:
@@ -1474,6 +1465,95 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 "g2p_service_provider_beneficiary_management.error_template",
                 {"error_message": str(e)},
             )
+
+    def _get_selection_id(self, model, field_name, value):
+        selection_ids = (
+            request.env["ir.model.fields"]
+            .sudo()
+            .search([("model_id", "=", model.id), ("name", "=", field_name)])
+            .selection_ids
+        )
+        selection_id = False
+        for choice in selection_ids:
+            if choice.value == value:
+                selection_id = choice.id
+
+        return [selection_ids, selection_id]
+
+    def _prepare_land_info_data(self, beneficiary, ownership_type_selections):
+        land_info_data = []
+        for index, land_info in enumerate(beneficiary.land_information_ids, start=1):
+            ownership_selection_id = False
+            for choice in ownership_type_selections:
+                if choice.value == land_info.ownership_type:
+                    ownership_selection_id = choice.id
+            land_info_data.append(
+                {
+                    "index": index,
+                    "id": land_info.id,
+                    "total_land_area": land_info.total_land_area,
+                    "land_id": land_info.land_id,
+                    "ownership_type_selection_id": ownership_selection_id,
+                }
+            )
+        return land_info_data
+
+    def _prepare_crop_info_data(self, beneficiary):
+        crop_info_data = []
+        serialized_crop_info_data = []
+        for index, crop_info in enumerate(beneficiary.crop_information_ids, start=1):
+            # crop_is_diseased_selection_id = self._get_selection_id(
+            #     crop_info._name, "is_diseased", crop_info.is_diseased
+            # )
+            crop_info_data.append(
+                {
+                    "index": index,
+                    "id": crop_info.id,
+                    "crop": crop_info.crop,
+                    "is_diseased": crop_info.is_diseased,
+                    "illness_type": crop_info.illness_type,
+                    # "crop_is_diseased_selection_id": crop_is_diseased_selection_id,
+                }
+            )
+            serialized_crop_info_data.append(
+                {
+                    "index": index,
+                    "id": crop_info.id,
+                    "crop_id": crop_info.crop.id,
+                    "is_diseased": crop_info.is_diseased,
+                    "illness_type": [it.id for it in crop_info.illness_type],
+                }
+            )
+        return crop_info_data, serialized_crop_info_data
+
+    def _prepare_livestock_info_data(self, beneficiary):
+        livestock_info_data = []
+        serialized_livestock_info_data = []
+        for index, livestock_info in enumerate(beneficiary.livestock_information_ids, start=1):
+            # livestock_is_diseased_selection_id = self._get_selection_id(
+            #     livestock_info._name, "is_diseased", livestock_info.is_diseased
+            # )
+            livestock_info_data.append(
+                {
+                    "index": index,
+                    "id": livestock_info.id,
+                    "livestock_type": livestock_info.livestock_type,
+                    "number_of_livestock": livestock_info.number_of_livestock,
+                    "is_diseased": livestock_info.is_diseased,
+                    "illness_type": livestock_info.illness_type,
+                    # "livestock_is_diseased_selection_id": livestock_is_diseased_selection_id,
+                }
+            )
+            serialized_livestock_info_data.append(
+                {
+                    "index": index,
+                    "id": livestock_info.id,
+                    "livestock_type": livestock_info.livestock_type.id,
+                    "is_diseased": livestock_info.is_diseased,
+                    "illness_type": [it.id for it in livestock_info.illness_type],
+                }
+            )
+        return livestock_info_data, serialized_livestock_info_data
 
     @http.route(
         "/serviceprovider/individual/update/submit",
@@ -1491,6 +1571,27 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     {"error_message": "Member not found."},
                 )
 
+            has_national_id = member.has_national_id
+            primary_Language = member.primary_Language
+            is_member_of_primary_cooperative = member.is_member_of_primary_cooperative
+            primary_cooperatives = member.primary_cooperatives
+            is_member_of_cooperative_union = member.is_member_of_cooperative_union
+            cooperative_unions = member.cooperative_unions
+            is_member_in_farmer_cluster = member.is_member_in_farmer_cluster
+            primary_commodity = member.primary_commodity
+            role_in_farmer_cluster = member.role_in_farmer_cluster
+            martial_status = member.martial_status
+            education = member.education
+            crop_water_sources = member.crop_water_sources
+            livestock_water_sources = member.livestock_water_sources
+            access_to_machinery = member.access_to_machinery
+            type_of_machinery = member.type_of_machinery
+            has_finance_access = member.has_finance_access
+            finance_accesses = member.finance_accesses
+            martial_status = member.martial_status
+            education = member.education
+            hh_income_type = member.hh_income_type
+
             # Helper function to fetch selection values
             def get_selection_value(model, selection_id):
                 return (
@@ -1498,43 +1599,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     if selection_id
                     else None
                 )
-
-            # Helper function to handle phone numbers
-            def handle_phone_numbers(has_phone, primary_phone, secondary_phone, other_phone, country_id):
-                phone_number_ids = []
-                if has_phone == "yes":
-                    phone_number_ids.append(
-                        (0, 0, {"phone_no": primary_phone, "phone_type": "primary", "country_id": country_id})
-                    )
-                    if secondary_phone:
-                        phone_number_ids.append(
-                            (
-                                0,
-                                0,
-                                {
-                                    "phone_no": secondary_phone,
-                                    "phone_type": "secondary",
-                                    "country_id": country_id,
-                                },
-                            )
-                        )
-                else:
-                    phone_number_ids.append(
-                        (0, 0, {"phone_no": other_phone, "phone_type": "other", "country_id": country_id})
-                    )
-                    if secondary_phone:
-                        phone_number_ids.append(
-                            (
-                                0,
-                                0,
-                                {
-                                    "phone_no": secondary_phone,
-                                    "phone_type": "secondary",
-                                    "country_id": country_id,
-                                },
-                            )
-                        )
-                return phone_number_ids
 
             # Update individual details
             has_national_id = (
@@ -1556,16 +1620,16 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 reg_ids = [(0, 0, {"id_type": id_type.id, "value": kw.get("rid")})]
 
             # Handle phone numbers
-            ethiopia_country_id = (
-                request.env["res.country"].sudo().search([("name", "=", "Ethiopia")], limit=1).id
-            )
-            phone_number_ids = handle_phone_numbers(
-                has_phone=has_national_id,
-                primary_phone=kw.get("primary_phone"),
-                secondary_phone=kw.get("secondary_phone"),
-                other_phone=kw.get("other_phone"),
-                country_id=ethiopia_country_id,
-            )
+            # ethiopia_country_id = (
+            #     request.env["res.country"].sudo().search([("name", "=", "Ethiopia")], limit=1).id
+            # )
+            # phone_number_ids = handle_phone_numbers(
+            #     has_phone=has_national_id,
+            #     primary_phone=kw.get("primary_phone"),
+            #     secondary_phone=kw.get("secondary_phone"),
+            #     other_phone=kw.get("other_phone"),
+            #     country_id=ethiopia_country_id,
+            # )
 
             # Socio-economic data
             martial_status = get_selection_value("ir.model.fields.selection", kw.get("marital_status"))
@@ -1587,8 +1651,16 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 "ir.model.fields.selection", kw.get("in_farmer_cluster")
             )
 
+            # ownership_type_selections = (
+            #     request.env["ir.model.fields"]
+            #     .sudo()
+            #     .search([("model_id", "=", land_model_id.id), ("name", "=", "ownership_type")])
+            #     .selection_ids
+            # )
+
             # Land information
-            land_info_data, supporting_documents_ids = self._prepare_land_info_data(kw)
+            # TODO: a new function needs to be added here
+            # land_info_data = self._prepare_land_info_data(kw, ownership_type_selections)
 
             # Crop information
             crop_water_sources = (
@@ -1596,7 +1668,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 if kw.get("crop_water_source")
                 else []
             )
-            crop_info_data = self._prepare_crop_info_data(kw)
+            # TODO: a new function needs to be added here
+            # crop_info_data = self._prepare_crop_info_data(kw)
 
             # Livestock information
             livestock_water_sources = (
@@ -1604,7 +1677,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 if kw.get("livestock_water_source")
                 else []
             )
-            livestock_info_data = self._prepare_livestock_info_data(kw)
+            # TODO: a new function needs to be added here
+            # livestock_info_data = self._prepare_livestock_info_data(kw)
 
             # Access to machinery
             access_to_machinery = get_selection_value(
@@ -1626,9 +1700,47 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 else []
             )
 
+            if kw.get("is_member_of_primary_coop") and kw.get("is_member_of_primary_coop").strip():
+                is_member_of_primary_cooperative = (
+                    request.env["ir.model.fields.selection"]
+                    .sudo()
+                    .search([("id", "=", kw.get("is_member_of_primary_coop"))])
+                    .value
+                )
+            if is_member_of_primary_cooperative == "yes":
+                if kw.get("name_of_primary_coop") and kw.get("name_of_primary_coop").strip():
+                    primary_cooperatives = int(kw.get("name_of_primary_coop"))
+            if kw.get("is_member_of_coop_union") and kw.get("is_member_of_coop_union").strip():
+                is_member_of_cooperative_union = (
+                    request.env["ir.model.fields.selection"]
+                    .sudo()
+                    .search([("id", "=", kw.get("is_member_of_coop_union"))])
+                    .value
+                )
+            if is_member_of_cooperative_union == "yes":
+                if kw.get("name_of_coop_union") and kw.get("name_of_coop_union").strip():
+                    cooperative_unions = int(kw.get("name_of_coop_union"))
+            if kw.get("in_farmer_cluster") and kw.get("in_farmer_cluster").strip():
+                is_member_in_farmer_cluster = (
+                    request.env["ir.model.fields.selection"]
+                    .sudo()
+                    .search([("id", "=", kw.get("in_farmer_cluster"))])
+                    .value
+                )
+            if is_member_in_farmer_cluster == "yes":
+                if kw.get("primary_commodity") and kw.get("primary_commodity").strip():
+                    primary_commodity = int(kw.get("primary_commodity"))
+                if kw.get("role_in_cluster") and kw.get("role_in_cluster").strip():
+                    role_in_farmer_cluster = (
+                        request.env["ir.model.fields.selection"]
+                        .sudo()
+                        .search([("id", "=", kw.get("role_in_cluster"))])
+                        .value
+                    )
+
             # Clean up existing data
             member.reg_ids.unlink()
-            member.phone_number_ids.unlink()
+            # member.phone_number_ids.unlink()
             member.land_information_ids.unlink()
             member.crop_information_ids.unlink()
             member.livestock_information_ids.unlink()
@@ -1656,7 +1768,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     "birthdate": kw.get("birthdate", member.birthdate),
                     "gender": kw.get("gender", member.gender),
                     "has_personal_phone": has_national_id,
-                    "phone_number_ids": phone_number_ids,
+                    # "phone_number_ids": phone_number_ids,
                     "email": kw.get("email", member.email),
                     "is_disabled": kw.get("is_disabled", member.is_disabled),
                     "farming_type": kw.get("farming_type", member.farming_type),
@@ -1664,17 +1776,17 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     "education": education,
                     "hh_income_type": hh_income_type,
                     "is_member_of_primary_cooperative": is_member_of_primary_cooperative,
-                    "primary_cooperatives": int(kw.get("name_of_primary_coop", member.primary_cooperatives)),
+                    "primary_cooperatives": primary_cooperatives,
                     "is_member_of_cooperative_union": is_member_of_cooperative_union,
-                    "cooperative_unions": int(kw.get("name_of_coop_union", member.cooperative_unions)),
+                    "cooperative_unions": cooperative_unions,
                     "is_member_in_farmer_cluster": is_member_in_farmer_cluster,
-                    "primary_commodity": int(kw.get("primary_commodity", member.primary_commodity)),
-                    "role_in_farmer_cluster": kw.get("role_in_cluster", member.role_in_farmer_cluster),
-                    "land_information_ids": land_info_data,
+                    "primary_commodity": primary_commodity,
+                    "role_in_farmer_cluster": role_in_farmer_cluster,
+                    # "land_information_ids": land_info_data,
                     "crop_water_sources": crop_water_sources,
-                    "crop_information_ids": crop_info_data,
+                    # "crop_information_ids": crop_info_data,
                     "livestock_water_sources": livestock_water_sources,
-                    "livestock_information_ids": livestock_info_data,
+                    # "livestock_information_ids": livestock_info_data,
                     "access_to_machinery": access_to_machinery,
                     "type_of_machinery": type_of_machinery,
                     "has_finance_access": has_finance_access,
@@ -2006,19 +2118,16 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             vals["crop_information_ids"] = self._prepare_crop_information(kw.get("cropRecords"))
             vals["livestock_information_ids"] = self._livestock_information(kw.get("livestockRecord"))
-            # vals["phone_number_ids"] = self._prepare_phone_numbers(kw, region, zone, woreda, kebele)
+            vals["phone_number_ids"] = self._prepare_phone_numbers(kw, region, zone, woreda, kebele, vals)
 
             # Socioeconomic data
-            # self._prepare_socioeconomic_data(kw, vals)
+            self._prepare_socioeconomic_data(kw, vals)
 
             # Membership details
-            # self._prepare_membership_details(kw, vals)
-
-            # Resource Access
-            # self._prepare_resource_access(kw, vals)
+            self._prepare_membership_details(kw, vals)
 
             # Financial Service
-            # self._prepare_financial_service(kw, vals)
+            self._prepare_financial_agricultural_service(kw, vals)
 
             # Additional details
             vals["is_farmer"] = "yes"
@@ -2109,7 +2218,16 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 vals[key] = kw.get(field)
 
         # National ID and Registration
-        # self._prepare_national_id(kw, vals)
+        self._prepare_national_id(kw, vals)
+
+        # Handle individual details
+        self._process_individual_details(vals, kw)
+
+        # Handle socio-economic data
+        self._process_socio_economic_data(vals, kw)
+
+        # Handle membership details
+        self._process_membership_details(vals, kw)
 
         return vals
 
@@ -2152,8 +2270,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                         break
         return livestock_info_data
 
-    def _prepare_phone_numbers(self, kw, region, zone, woreda, kebele):
+    def _prepare_phone_numbers(self, kw, region, zone, woreda, kebele, vals):
         has_personal_phone = self._get_selection_value("ir.model.fields.selection", kw.get("havePhoneNumber"))
+        vals["has_personal_phone"] = has_personal_phone
         ethiopia_country_id = (
             request.env["res.country"].sudo().search([("name", "=", "Ethiopia")], limit=1).id
         )
@@ -2216,7 +2335,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": kw.get("selectedId")})]
         elif has_national_id == "no" and kw.get("rid"):
             id_type = request.env["g2p.id.type"].sudo().search([("name", "=", "RID")], limit=1)
-            vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": kw.get("rid")})]
+            vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": kw.get("selectedId")})]
 
     def _prepare_socioeconomic_data(self, kw, vals):
         fields = {
@@ -2244,61 +2363,58 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             "ir.model.fields.selection", kw.get("isMemberOfPrimaryCoop")
         )
         vals["is_member_of_primary_cooperative"] = is_member_of_primary_cooperative
-        if is_member_of_primary_cooperative == "yes" and kw.get("nameOfPrimaryCoop"):
+        if is_member_of_primary_cooperative == "yes" and kw.get("nameOfPrimaryCoop").strip():
             vals["primary_cooperatives"] = int(kw.get("nameOfPrimaryCoop"))
 
         is_member_of_cooperative_union = self._get_selection_value(
             "ir.model.fields.selection", kw.get("isMemberOfCoopUnion")
         )
         vals["is_member_of_cooperative_union"] = is_member_of_cooperative_union
-        if is_member_of_cooperative_union == "yes" and kw.get("nameOfCoopUnion"):
+        if is_member_of_cooperative_union == "yes" and kw.get("nameOfCoopUnion").strip():
             vals["cooperative_unions"] = int(kw.get("nameOfCoopUnion"))
 
-    def _prepare_resource_access(self, kw, vals):
-        can_access_natural_resource = self._get_selection_value(
-            "ir.model.fields.selection", kw.get("canAccessNaturalResource")
+        is_member_in_farmer_cluster = self._get_selection_value(
+            "ir.model.fields.selection", kw.get("inFarmerCluster")
         )
-        vals["can_access_natural_resource"] = can_access_natural_resource
-        if can_access_natural_resource == "yes":
-            vals["natural_resources"] = [
-                (6, 0, [int(id) for id in json.loads(kw.get("naturalResourceIds", "[]"))])
-            ]
+        vals["is_member_in_farmer_cluster"] = is_member_in_farmer_cluster
+        if is_member_in_farmer_cluster == "yes":
+            if kw.get("primaryComodity").strip():
+                vals["primary_commodity"] = int(kw.get("primaryComodity"))
+            if kw.get("roleInCluster").strip():
+                vals["role_in_farmer_cluster"] = self._get_selection_value(
+                    "ir.model.fields.selection", kw.get("roleInCluster")
+                )
 
-        can_access_training_service = self._get_selection_value(
-            "ir.model.fields.selection", kw.get("canAccessTraining")
-        )
-        vals["can_access_training_service"] = can_access_training_service
-        if can_access_training_service == "yes":
-            vals["training_service_ids"] = [
-                (6, 0, [int(id) for id in json.loads(kw.get("trainingServiceIds", "[]"))])
-            ]
-
-        can_access_extension_service = self._get_selection_value(
-            "ir.model.fields.selection", kw.get("canAccessExtensionService")
-        )
-        vals["can_access_extension_service"] = can_access_extension_service
-        if can_access_extension_service == "yes":
-            vals["extension_service_ids"] = [
-                (6, 0, [int(id) for id in json.loads(kw.get("extensionServiceIds", "[]"))])
-            ]
-
-        can_access_veterinary_service = self._get_selection_value(
-            "ir.model.fields.selection", kw.get("canAccessVeterinaryService")
-        )
-        vals["can_access_veterinary_service"] = can_access_veterinary_service
-        if can_access_veterinary_service == "yes":
-            vals["veterinary_service_ids"] = [
-                (6, 0, [int(id) for id in json.loads(kw.get("veterinaryServiceIds", "[]"))])
-            ]
-
-    def _prepare_financial_service(self, kw, vals):
+    def _prepare_financial_agricultural_service(self, kw, vals):
         can_access_financial_service = self._get_selection_value(
-            "ir.model.fields.selection", kw.get("canAccessFinanceService")
+            "ir.model.fields.selection", kw.get("accessToFinance")
         )
-        vals["can_access_financial_service"] = can_access_financial_service
+        vals["has_finance_access"] = can_access_financial_service
         if can_access_financial_service == "yes":
-            vals["financial_service_ids"] = [
-                (6, 0, [int(id) for id in json.loads(kw.get("financialServiceIds", "[]"))])
+            vals["finance_accesses"] = [
+                (6, 0, [int(id) for id in json.loads(kw.get("financialSectors", "[]"))])
+            ]
+
+        vals["do_you_use_fertilizer"] = self._get_selection_value(
+            "ir.model.fields.selection", kw.get("usedFertilizer")
+        )
+        vals["do_you_use_insecticide"] = self._get_selection_value(
+            "ir.model.fields.selection", kw.get("usedInsecticide")
+        )
+        vals["do_you_use_pesticide"] = self._get_selection_value(
+            "ir.model.fields.selection", kw.get("usedPesticide")
+        )
+        vals["do_you_use_improved_seed"] = self._get_selection_value(
+            "ir.model.fields.selection", kw.get("usedImprovedSeed")
+        )
+
+        can_access_machinery = self._get_selection_value(
+            "ir.model.fields.selection", kw.get("accessToMachinary")
+        )
+        vals["access_to_machinery"] = can_access_machinery
+        if can_access_machinery == "yes":
+            vals["type_of_machinery"] = [
+                (6, 0, [int(id) for id in json.loads(kw.get("matchinaryTypes", "[]"))])
             ]
 
     def _manage_group_membership(self, group_rec, individual):
@@ -2314,10 +2430,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         return members
 
     def _get_selection_value(self, model, field_value):
-        if not field_value:
-            return None
-        selection = request.env[model].sudo().search([("value", "=", field_value)], limit=1)
-        return selection.value if selection else field_value
+        selection = request.env[model].sudo().search([("id", "=", field_value)]).value
+        return selection
 
     @http.route(
         ["/serviceprovider/member/create/"],

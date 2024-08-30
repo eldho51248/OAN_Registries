@@ -50,8 +50,9 @@
                                                         Location
                                                     </a>
                                                 </li>
-                                                <li id="farmer-details-link" class="nav-item">
+                                                <li class="nav-item">
                                                     <a
+                                                        id="farmer-details-link"
                                                         class="nav-link"
                                                         href="#"
                                                         onclick="showSection('farmer-details', this)"
@@ -60,8 +61,9 @@
                                                     </a>
                                                 </li>
 
-                                                <li id="family-members-link" class="nav-item">
+                                                <li class="nav-item">
                                                     <a
+                                                        id="family-members-link"
                                                         class="nav-link"
                                                         href="#"
                                                         onclick="showSection('family-members', this)"
@@ -314,7 +316,7 @@
                                                     <button
                                                         type="button"
                                                         class="btn btn-outline-secondary"
-                                                        onclick="showNextSection('farmer-details', 'location-details', true)"
+                                                        onclick="showNextSection('farmer-details', 'location-details')"
                                                         id="some-button-or-link"
                                                     >
                                                         NEXT <span>&#x276F;</span>
@@ -469,7 +471,7 @@
                                                     <button
                                                         type="button"
                                                         class="btn btn-outline-secondary"
-                                                        onclick="showNextSection('family-members', 'farmer-details', true)"
+                                                        onclick="showNextSection('family-members', 'farmer-details')"
                                                         id="some-button-or-link"
                                                     >NEXT <span>&#x276F;</span>
                                                     </button>
