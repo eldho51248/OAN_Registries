@@ -1,15 +1,10 @@
 $(document).ready(function () {
     // $('.selectpicker').selectpicker();
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, "0");
-    const day = String(today.getDate()).padStart(2, "0");
-    const formattedDate = `${year}-${month}-${day}`;
 
     // Determine starting index based on existing crop_info_data
     var cropMaxIndex = 0;
-    $('.crop-section-wrapper').each(function() {
-        var cropIndex = parseInt($(this).attr('data-index'));
+    $(".crop-section-wrapper").each(function () {
+        var cropIndex = parseInt($(this).attr("data-index"), 10);
         if (!isNaN(cropIndex)) {
             cropMaxIndex = Math.max(cropMaxIndex, cropIndex);
         }
@@ -17,8 +12,8 @@ $(document).ready(function () {
     var cropIndex = cropMaxIndex + 1;
 
     var livestockMaxIndex = 0;
-    $('.livestock-section-wrapper').each(function() {
-        var livestockIndex = parseInt($(this).attr('data-index'));
+    $(".livestock-section-wrapper").each(function () {
+        var livestockIndex = parseInt($(this).attr("data-index"), 10);
         if (!isNaN(livestockIndex)) {
             livestockMaxIndex = Math.max(livestockMaxIndex, livestockIndex);
         }
@@ -26,15 +21,15 @@ $(document).ready(function () {
     var livestockIndex = livestockMaxIndex + 1;
 
     var landMaxIndex = 0;
-    $('.land-section-wrapper').each(function() {
-        var landIndex = parseInt($(this).attr('data-index'));
+    $(".land-section-wrapper").each(function () {
+        var landIndex = parseInt($(this).attr("data-index"), 10);
         if (!isNaN(landIndex)) {
             landMaxIndex = Math.max(landMaxIndex, landIndex);
         }
     });
     var landIndex = landMaxIndex + 1;
 
-    // console.log(incomeSourceData);
+    // Console.log(incomeSourceData);
     // VirtualSelect.init({
     //     ele: `#hh_income_type`,
     //     options: incomeSourceData,
@@ -83,75 +78,76 @@ $(document).ready(function () {
     //     });
     // }
 
-    $('#add-crop-info').click(function() {
-        var $template = $('#crop-hidden-template').html();
-        var $formContainer = $('#section-content-crop');
+    $("#add-crop-info").click(function () {
+        var $template = $("#crop-hidden-template").html();
+        var $formContainer = $("#section-content-crop");
 
         // Use jQuery to replace {cropIndex} placeholder in the template
         var newLineHtml = $template.replace(/\{9999\}/g, cropIndex);
         var $newLine = $(newLineHtml);
         $formContainer.append($newLine);
 
-        // var newSelectIdIllness = `crop_illness_types_${cropIndex}`;
+        // Var newSelectIdIllness = `crop_illness_types_${cropIndex}`;
         //     VirtualSelect.init({
         //         ele: `#${newSelectIdIllness}`,
         //         options: cropIllnessType,
         //         search: true,
         //         multiple: true,
         //     });
-        cropIndex++; // Increment index for next line
+        cropIndex++;
     });
 
-    $('#add-livestock-info').click(function() {
-        var $template = $('#livestock-hidden-template').html();
-        var $formContainer = $('#section-content-livestock');
+    $("#add-livestock-info").click(function () {
+        var $template = $("#livestock-hidden-template").html();
+        var $formContainer = $("#section-content-livestock");
 
         // Use jQuery to replace {cropIndex} placeholder in the template
         var newLineHtml = $template.replace(/\{9999\}/g, livestockIndex);
         var $newLine = $(newLineHtml);
         $formContainer.append($newLine);
 
-        // var newSelectIdIllness = `livestock_illness_types_${livestockIndex}`;
+        // Var newSelectIdIllness = `livestock_illness_types_${livestockIndex}`;
         //     VirtualSelect.init({
         //         ele: `#${newSelectIdIllness}`,
         //         options: livestockIllnessType,
         //         search: true,
         //         multiple: true,
         //     });
-        livestockIndex++; // Increment index for next line
+        livestockIndex++;
     });
 
-    $('#add-land-info').click(function() {
-        var $template = $('#land-hidden-template').html();
-        var $formContainer = $('#section-content-land');
+    $("#add-land-info").click(function () {
+        var $template = $("#land-hidden-template").html();
+        var $formContainer = $("#section-content-land");
 
         // Use jQuery to replace {cropIndex} placeholder in the template
         var newLineHtml = $template.replace(/\{9999\}/g, landIndex);
         var $newLine = $(newLineHtml);
         $formContainer.append($newLine);
 
-        landIndex++; // Increment index for next line
+        landIndex++;
     });
 
     // Function to toggle display and required attribute of a field
     function toggleField(selectElementId, fieldId, inputId, yesText = "yes") {
         const selectElement = document.getElementById(selectElementId);
         const field = document.getElementById(fieldId);
-        const input = document.getElementById(inputId);
+        // Const input = document.getElementById(inputId);
         const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
             .trim()
             .toLowerCase();
 
         if (selectedOptionText === yesText.toLowerCase()) {
             field.style.display = "block";
-            // input.setAttribute("required", "required");
+            // Input.setAttribute("required", "required");
         } else {
             field.style.display = "none";
-            // input.removeAttribute("required");
+            // Input.removeAttribute("required");
         }
     }
 
     // Function to handle changes in a select element
+    // eslint-disable-next-line no-unused-vars
     function handleSelectChange(selectElementId, fieldId, inputId, otherText = "other") {
         const selectElement = document.getElementById(selectElementId);
         const field = document.getElementById(fieldId);
@@ -187,7 +183,7 @@ $(document).ready(function () {
         const uidDiv = document.getElementById("uid-div");
         const ridDiv = document.getElementById("rid-div");
         const ridInput = document.getElementById("rid_input");
-        const uidInput = document.getElementById("uid_input");
+        // Const uidInput = document.getElementById("uid_input");
         const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
             .trim()
             .toLowerCase();
@@ -201,7 +197,7 @@ $(document).ready(function () {
             uidDiv.style.display = "none";
             uidInput.removeAttribute("required");
             ridDiv.style.display = "block";
-            // ridInput.setAttribute("required", "required");
+            // RidInput.setAttribute("required", "required");
         } else {
             uidDiv.style.display = "none";
             uidInput.removeAttribute("required");
@@ -267,14 +263,14 @@ $(document).ready(function () {
                     selectedvalue = " ";
                 } else if (selectElement.selectedIndex > 0) {
                     selectedvalue = selectElement.options[selectElement.selectedIndex].value;
-                    if (selectedName) {
-                        defaultOptionText = selectedName;
-                    }
-                } else if (selectElement.selectedIndex == 0 && selectedName != "Select") {
+                    // If (selectedName) {
+                    //     defaultOptionText = selectedName;
+                    // }
+                } else if (selectElement.selectedIndex === 0 && selectedName !== "Select") {
                     selectedvalue = selectElement.options[selectElement.selectedIndex].value;
-                    if (selectedName) {
-                        defaultOptionText = selectedName;
-                    }
+                    // If (selectedName) {
+                    //     defaultOptionText = selectedName;
+                    // }
                 }
 
                 selectElement.innerHTML = "";
@@ -301,12 +297,12 @@ $(document).ready(function () {
     // Event listener for phone number selection change
     $("#have-phone-no-selection").on("change", handlePhoneNumberSelection);
 
-    $("#access-to-machinery-selection").on("change", function() {
-        toggleField("access-to-machinery-selection", "machinery-field", "machinery-types-select")
+    $("#access-to-machinery-selection").on("change", function () {
+        toggleField("access-to-machinery-selection", "machinery-field", "machinery-types-select");
     });
 
-    $("#access-to-finance-selection").on("change", function() {
-        toggleField("access-to-finance-selection", "finance-field", "finance-selection")
+    $("#access-to-finance-selection").on("change", function () {
+        toggleField("access-to-finance-selection", "finance-field", "finance-selection");
     });
 
     $("#region_selection").on("change", function (event) {
@@ -339,10 +335,10 @@ $(document).ready(function () {
 
     // Validation for email
     const emailInput = document.getElementById("email");
-    // const emailError = document.createElement("div");
+    // Const emailError = document.createElement("div");
     // emailError.classList.add("invalid-feedback");
     // emailInput.parentNode.appendChild(emailError);
-    
+
     function isValidEmail(email) {
         // Basic email regex pattern
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -350,17 +346,15 @@ $(document).ready(function () {
     }
 
     emailInput.addEventListener("input", function () {
-        if (emailInput.value.length !== 0) {
-            if (!isValidEmail(emailInput.value)) {
-                emailInput.classList.add("is-invalid");
-                // emailError.style.display = "block";
-            } else {
-                emailInput.classList.remove("is-invalid");
-                // emailError.style.display = "none";
-            }
-        } else {
+        if (emailInput.value.length === 0) {
             emailInput.classList.remove("is-invalid");
-            // emailError.style.display = "none";
+            // EmailError.style.display = "none";
+        } else if (isValidEmail(emailInput.value)) {
+            emailInput.classList.remove("is-invalid");
+            // EmailError.style.display = "none";
+        } else {
+            emailInput.classList.add("is-invalid");
+            // EmailError.style.display = "block";
         }
     });
 
@@ -368,27 +362,27 @@ $(document).ready(function () {
         var consentSection = document.getElementById(sectionId);
         consentSection.classList.add("show");
     }
-    function hideSection(sectionId) {
-        var consentSection = document.getElementById(sectionId);
-        consentSection.classList.add("hide");
-    }
+    // Function hideSection(sectionId) {
+    //     var consentSection = document.getElementById(sectionId);
+    //     consentSection.classList.add("hide");
+    // }
 
     window.customvalidateForm = function (isCreateForm) {
         console.log("Here");
         const requiredFields = document.querySelectorAll("[required]");
-        valid = true;
+        var valid = true;
 
         for (let i = 0; i < requiredFields.length; i++) {
             const field = requiredFields[i];
             const isFieldValid = field.value.trim();
             const fieldName = field.getAttribute("name");
-        
+
             if (fieldName.includes("{9999}")) {
-                continue; // Skip to the next iteration
+                continue;
             }
-        
+
             valid = valid && isFieldValid;
-        
+
             if (!valid) {
                 field.classList.toggle("is-invalid", !isFieldValid);
                 const parentDiv = field.closest(".section-container");
@@ -396,36 +390,24 @@ $(document).ready(function () {
                     var sectionRequiredFields = parentDiv.querySelectorAll("[required]");
                     sectionRequiredFields.forEach((sectionField) => {
                         const isSectionFieldValid = sectionField.value.trim();
-                        sectionField.classList.toggle("is-invalid", !isSectionFieldValid);                
+                        sectionField.classList.toggle("is-invalid", !isSectionFieldValid);
                     });
-                    
-                    const navId = parentDiv.id + '-link';
+
+                    const navId = parentDiv.id + "-link";
                     var navLink = document.getElementById(navId);
                     expandSection(parentDiv.id);
                     navLink.click();
                 }
-        
-                break; // Exit the loop
+
+                break;
             }
         }
 
         if (valid) {
             this.validateForm(isCreateForm);
         }
-
-       
     };
 });
-
-
-function validateElement(element) {
-    // Check if the element is a select or an input field
-    if (element.tagName === 'SELECT') {
-        validateSelect(element);
-    } else if (element.tagName === 'INPUT') {
-        validateInput(element);
-    }
-}
 
 function validateSelect(selectElement) {
     const value = selectElement.value;
@@ -442,6 +424,16 @@ function validateInput(inputElement) {
     }
 }
 
+// eslint-disable-next-line no-unused-vars
+function validateElement(element) {
+    // Check if the element is a select or an input field
+    if (element.tagName === "SELECT") {
+        validateSelect(element);
+    } else if (element.tagName === "INPUT") {
+        validateInput(element);
+    }
+}
+
 function validateUID() {
     const uid = document.getElementById("uid_input");
     const uidError = document.getElementById("uid_error");
@@ -452,18 +444,18 @@ function validateUID() {
 }
 
 function validateSection(sectionId) {
+    console.log(sectionId);
     const section = document.getElementById(sectionId);
     const requiredFields = section.querySelectorAll("[required]");
     let valid = true;
 
-
     requiredFields.forEach((field) => {
         const isFieldValid = field.value.trim();
-        fieldName = field.getAttribute("name");
+        var fieldName = field.getAttribute("name");
         if (fieldName.includes("{9999}")) {
             return;
         }
-        
+
         field.classList.toggle("is-invalid", !isFieldValid);
         valid = valid && isFieldValid;
         if (sectionId === "id-section" && fieldName === "uid") {
@@ -474,11 +466,11 @@ function validateSection(sectionId) {
     return valid;
 }
 
-let previousSection = "id-section";
+// Let previousSection = "id-section";
 
-function showSection(sectionId, element, fromGroup=false) {
-    // val = validateSection(previousSection);
-    val = true;
+function showSection(sectionId, element, fromGroup = false) {
+    // Val = validateSection(previousSection);
+    var val = true;
 
     if (val) {
         if (fromGroup) {
@@ -487,27 +479,28 @@ function showSection(sectionId, element, fromGroup=false) {
             });
         } else {
             document.querySelectorAll(".section-container").forEach((section) => {
+                if (
+                    sectionId === "family-members" ||
+                    sectionId === "location-details" ||
+                    sectionId === "family-member-template"
+                ) {
+                    console.log("yes it is");
+                    section.style.display = "none";
+                } else {
+                    section.style.display = "none";
+                    const farmerDetailSection = document.getElementById("farmer-details");
+                    if (farmerDetailSection) {
+                        console.log("Farmer Detail Secion is");
+                        console.log(farmerDetailSection);
 
-                if (sectionId === 'family-members' || sectionId === 'location-details' || sectionId === 'family-member-template'){
-                    console.log("yes it is")
-                section.style.display = "none";
-
-                }else{
-                section.style.display = "none";
-                const farmerDetailSection = document.getElementById("farmer-details");
-                if(farmerDetailSection){
-                 console.log("Farmer Detail Secion is")
-                console.log(farmerDetailSection)
-
-                farmerDetailSection.style.display = "block";
+                        farmerDetailSection.style.display = "block";
                     }
-
                 }
             });
         }
         document.getElementById(sectionId).style.display = "block";
-        previousSection = sectionId;
-        // if (!fromGroup) {
+        // PreviousSection = sectionId;
+        // If (!fromGroup) {
         document.querySelectorAll(".sidebar .nav-link").forEach((link) => {
             link.classList.remove("active");
         });
@@ -518,52 +511,23 @@ function showSection(sectionId, element, fromGroup=false) {
     }
 }
 
-function showSectionFamily(sectionId, element, fromGroup=false) {
-    // val = validateSection(previousSection);
-
-    val = true;
-
-    if (val) {
-        if (fromGroup) {
-            document.querySelectorAll(".section-container-group").forEach((section) => {
-                section.style.display = "none";
-            });
-        } else {
-            document.querySelectorAll(".section-container").forEach((section) => {
-               section.style.display = "none";
-
-            });
-        }
-        document.getElementById(sectionId).style.display = "block";
-        previousSection = sectionId;
-        // if (!fromGroup) {
-        document.querySelectorAll(".sidebar .nav-link").forEach((link) => {
-            link.classList.remove("active");
-        });
-        // }
-        if (element) {
-            element.classList.add("active");
-        }
-    }
-}
-
-function showNextSection(nextSectionId, currentSectionId) {
-    val = validateSection(currentSectionId);
-    val = true
+// eslint-disable-next-line no-unused-vars
+function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
+    var val = validateSection(currentSectionId);
+    // Val = true
 
     if (val) {
         var activeLink = document.querySelector(".sidebar .nav-link.active");
-        // console.log(activeLink);
+        // Console.log(activeLink);
         var nextLink = activeLink.parentElement.nextElementSibling.querySelector(".nav-link");
         if (nextLink) {
             nextLink.classList.remove("disabled");
-            showSection(nextSectionId, nextLink);
+            showSection(nextSectionId, nextLink, fromGroup);
         }
     }
 }
-
 function checkRequired() {
-    // const farmingType = document.getElementById('farming-type-selection'); 
+    // Const farmingType = document.getElementById('farming-type-selection');
     // const selectedOptionText = farmingType.options[farmingType.selectedIndex].text
     //     .trim()
     //     // .toLowerCase();
@@ -577,45 +541,44 @@ function toggleFieldBasedOnRadio(inputName, fieldIdToToggle, toggleValue = "Yes"
     const radios = document.querySelectorAll(`input[name="${inputName}"]`);
     let shouldShowField = false;
 
-    radios.forEach(radio => {
+    radios.forEach((radio) => {
         if (radio.checked && radio.dataset.text === toggleValue) {
             shouldShowField = true;
         }
     });
 
     const fieldToToggle = document.getElementById(fieldIdToToggle);
-    fieldToToggle.style.display = shouldShowField ? 'block' : 'none';
+    fieldToToggle.style.display = shouldShowField ? "block" : "none";
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener("DOMContentLoaded", function () {
     // Initial check on page load
     checkRequired();
-    toggleFieldBasedOnRadio('is_member_of_primary_coop', 'primary-coop-field');
-    toggleFieldBasedOnRadio('is_member_of_coop_union', 'coop-union-field');
-    toggleFieldBasedOnRadio('in_farmer_cluster', 'primary-commodity-field');
-    toggleFieldBasedOnRadio('in_farmer_cluster', 'role-in-cluster-field');
+    toggleFieldBasedOnRadio("is_member_of_primary_coop", "primary-coop-field");
+    toggleFieldBasedOnRadio("is_member_of_coop_union", "coop-union-field");
+    toggleFieldBasedOnRadio("in_farmer_cluster", "primary-commodity-field");
+    toggleFieldBasedOnRadio("in_farmer_cluster", "role-in-cluster-field");
 
     // Attach event listeners to the radio buttons
     const primaryCoopRadios = document.querySelectorAll('input[name="is_member_of_primary_coop"]');
-    primaryCoopRadios.forEach(radio => {
-        radio.addEventListener('change', function() {
-            toggleFieldBasedOnRadio('is_member_of_primary_coop', 'primary-coop-field');
+    primaryCoopRadios.forEach((radio) => {
+        radio.addEventListener("change", function () {
+            toggleFieldBasedOnRadio("is_member_of_primary_coop", "primary-coop-field");
         });
     });
 
     const coopUnionRadios = document.querySelectorAll('input[name="is_member_of_coop_union"]');
-    coopUnionRadios.forEach(radio => {
-        radio.addEventListener('change', function() {
-            toggleFieldBasedOnRadio('is_member_of_coop_union', 'coop-union-field');
+    coopUnionRadios.forEach((radio) => {
+        radio.addEventListener("change", function () {
+            toggleFieldBasedOnRadio("is_member_of_coop_union", "coop-union-field");
         });
     });
 
     const isMemberRadios = document.querySelectorAll('input[name="in_farmer_cluster"]');
-    isMemberRadios.forEach(radio => {
-        radio.addEventListener('change', function() {
-            toggleFieldBasedOnRadio('in_farmer_cluster', 'primary-commodity-field');
-            toggleFieldBasedOnRadio('in_farmer_cluster', 'role-in-cluster-field');
+    isMemberRadios.forEach((radio) => {
+        radio.addEventListener("change", function () {
+            toggleFieldBasedOnRadio("in_farmer_cluster", "primary-commodity-field");
+            toggleFieldBasedOnRadio("in_farmer_cluster", "role-in-cluster-field");
         });
     });
-
 });

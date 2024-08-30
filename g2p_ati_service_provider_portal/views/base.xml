@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template
         id="base_inh"
@@ -8,7 +8,7 @@
     >
         <!-- Include custom CSS -->
         <xpath expr="//header" position="inside">
-            <link rel="stylesheet" href="/g2p_ati_service_provider_portal/static/src/css/style.css"/>
+            <link rel="stylesheet" href="/g2p_ati_service_provider_portal/static/src/css/style.css" />
         </xpath>
 
         <!-- Change the header logo image, apply the custom CSS class -->

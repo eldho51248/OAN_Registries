@@ -8,13 +8,12 @@
 }
 
 .heading-text {
-    color: #06916B;
+    color: #06916b;
     margin-left: 1.5%;
 }
 
 .numbering {
-    color: #06916B;
-    ;
+    color: #06916b;
 }
 .heading-header {
     background-color: #f3e6f6;
@@ -26,12 +25,12 @@
 }
 
 .heading-text {
-    color: #06916B;
+    color: #06916b;
     margin-left: 1.5%;
 }
 
 .numbering {
-    color: #06916B;
+    color: #06916b;
 }
 .additional_filter_container {
     display: flex;
@@ -61,17 +60,12 @@
     display: none;
 }
 
-
-
-
 .container-adjuster {
     /* max-width: 1400px; */
     padding-right: 200px;
     padding-top: 20px;
     width: 1400px;
     margin: 0 auto;
-    
-   
 }
 
 .table-box {
@@ -138,7 +132,6 @@ th {
     width: calc(15% / 2);
 }
 
-
 .create-new {
     border-radius: 5px;
     background: #078148;
@@ -151,7 +144,6 @@ th {
 
 #page-buttons button.active {
     background-color: #078148;
-
 }
 
 .ellipsis {
@@ -159,33 +151,24 @@ th {
     color: #333;
 }
 
-head_name_rec{
-
- height: 100vh;
-
- } 
-
-.form-select{
-
-width: 150px;
-color: #535353;
-
+head_name_rec {
+    height: 100vh;
 }
 
+.form-select {
+    width: 150px;
+    color: #535353;
+}
 
 li a {
-
-    color:#078148;
-    font-weight: bold;
-
-}
-.table-title  p {
-
     color: #078148;
-
+    font-weight: bold;
+}
+.table-title p {
+    color: #078148;
 }
 
-.list-view{
+.list-view {
     /* width: 100%; */
     width: 1400px;
     min-height: 400px;
@@ -194,14 +177,13 @@ li a {
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #fff;
-    
-    overflow: hidden;
 
+    overflow: hidden;
 }
 
 .table-title {
     color: #000;
-    font:  Inter;
+    font: Inter;
     /* font-family: Roboto; */
     /* font-size: 16px; */
     /* font-style: normal; */
@@ -213,8 +195,6 @@ li a {
     background-color: #f5f8fa;
     width: 100%;
     height: 100%;
-    
-    
 }
 
 .view-button2 {
@@ -224,13 +204,9 @@ li a {
     border-radius: 2px;
     padding: 2px 6px;
     box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.075);
-    
-
 }
-.head_name_rec{
-
+.head_name_rec {
     font-weight: bold;
-
 }
 
 .breadcrumb {
@@ -248,15 +224,13 @@ li a {
     list-style: none;
 }
 
- .count-text
- {
-
-    font:  Inter;
+.count-text {
+    font: Inter;
     color: #078148;
-    font-weight : light;
- }
+    font-weight: light;
+}
 
- .view-button {
+.view-button {
     top: 336px;
     left: 1110px;
     width: 50px;
@@ -269,4 +243,4 @@ li a {
     color: #078148;
     opacity: 1;
     background: rgba(249, 249, 249, 0.1);
-  }
+}

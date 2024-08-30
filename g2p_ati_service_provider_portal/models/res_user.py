@@ -4,9 +4,8 @@ from odoo import _, fields, models
 class ResUsers(models.Model):
     _inherit = "res.users"
 
-    notification = fields.One2many("g2p.ati.notification", "notified_user", string="Notification")
+    notification = fields.One2many("g2p.ati.notification", "notified_user")
     unseen_notification_count = fields.Integer(
-        string="Unseen Notification Count",
         compute="_compute_unseen_notification_count",
     )
 

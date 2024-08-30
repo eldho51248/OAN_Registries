@@ -1,8 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <template id="ati_individual_list_template"
+    <template
+        id="ati_individual_list_template"
         inherit_id="g2p_service_provider_beneficiary_management.individual_list"
-        customize_show="True" name="farmers" priority="200">
+        customize_show="True"
+        name="farmers"
+        priority="200"
+    >
         <xpath expr="//div[hasclass('main-container')]" position="replace">
             <div class="main-container1">
 
@@ -42,7 +46,8 @@
 
                         <div id="head_name_rec">
                             <p class="table-title d-flex flex-row"> Farmer List <span
-                                    class="count-text">&amp;nbsp;<t t-out="len(individual)    " />
+                                        class="count-text"
+                                    >&amp;nbsp;<t t-out="len(individual)    " />
                                 Records</span>
 
                             </p>
@@ -52,15 +57,19 @@
                         <!-- <div id="head_name_rec">
                             <p  class="table-title d-flex flex-row">Farmer List <t
                         t-out="len(individual)"/>&amp;nbsp;Records</p>
-                            <p style="color: #783E83; margin-left:25px"><t t-out="len(individual)" />&amp;nbsp;Records </p> 
+                            <p style="color: #783E83; margin-left:25px"><t t-out="len(individual)" />&amp;nbsp;Records </p>
                         </div> -->
 
 
                         <div class="additional_filter_container">
 
-                            <div class="additional_filter" >
-                                <select id="region_selection" class="form-select" name="region"
-                                    required="required" >
+                            <div class="additional_filter">
+                                <select
+                                        id="region_selection"
+                                        class="form-select"
+                                        name="region"
+                                        required="required"
+                                    >
                                     <option value=" ">Region</option>
                                     <t t-foreach="region" t-as="option">
                                         <option t-att-value="option.id">
@@ -70,9 +79,13 @@
                                 </select>
                             </div>
 
-                            <div class="additional_filter" > 
-                                <select id="zone_selection" class="form-select" name="zone"
-                                    required="required" >
+                            <div class="additional_filter">
+                                <select
+                                        id="zone_selection"
+                                        class="form-select"
+                                        name="zone"
+                                        required="required"
+                                    >
                                     <option value=" ">Zone</option>
                                     <t t-foreach="zone" t-as="option">
                                         <option t-att-value="option.id">
@@ -82,7 +95,7 @@
                                 </select>
                             </div>
 
-                            <div class="additional_filter" >
+                            <div class="additional_filter">
                                 <select id="woreda_selection" class="form-select" name="woreda">
                                     <option value=" ">Woreda</option>
                                     <t t-foreach="wereda" t-as="option">
@@ -108,21 +121,33 @@
 
                             <form class="form-inline my-2 my-lg-0">
                                 <div class="search-box">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="13.6"
-                                        height="13.6" fill="currentColor"
-                                        class="bi bi-search search-icon" viewBox="0 0 16 16">
+                                    <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="13.6"
+                                            height="13.6"
+                                            fill="currentColor"
+                                            class="bi bi-search search-icon"
+                                            viewBox="0 0 16 16"
+                                        >
                                         <path
-                                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
+                                            />
                                     </svg>
-                                    <input placeholder="Search" class="search-text"
-                                        name="q" id="search-text" />
+                                    <input
+                                            placeholder="Search"
+                                            class="search-text"
+                                            name="q"
+                                            id="search-text"
+                                        />
                                     <span id="search-text-clear">
                                         <i class="fa fa-times" />
                                     </span>
 
                                 </div>
-                                <div id="search-result-count"
-                                    style="color: #078148;font-weight:500;padding:5px">
+                                <div
+                                        id="search-result-count"
+                                        style="color: #078148;font-weight:500;padding:5px"
+                                    >
                                 </div>
                             </form>
                         </div>
@@ -136,22 +161,29 @@
                                 <tr>
                                     <th class="sr-column" style="color:#b3b3b3;">Sr.No.</th>
                                     <th class="name-column">Name <i class="fas fa fa-sort" /></th>
-                                    <th class="fixed-width-column">Region <i class="fas fa-sort fa-3x"></i></th>
-                                    <th class="fixed-width-column">Zone <i class="fas fa-sort fa-3x"></i></th>
-                                    <th class="fixed-width-column">Woreda <i class="fas fa-sort fa-3x"></i></th>
-                                    <th class="fixed-width-column">Kebele <i class="fas fa-sort fa-2xl"></i></th>
-                                    <th class="fixed-width-column">Last Updated <i class="fas fa-sort fa-lg"></i></th>
+                                    <th class="fixed-width-column">Region <i class="fas fa-sort fa-3x" /></th>
+                                    <th class="fixed-width-column">Zone <i class="fas fa-sort fa-3x" /></th>
+                                    <th class="fixed-width-column">Woreda <i class="fas fa-sort fa-3x" /></th>
+                                    <th class="fixed-width-column">Kebele <i
+                                                class="fas fa-sort fa-2xl"
+                                            /></th>
+                                    <th class="fixed-width-column">Last Updated <i
+                                                class="fas fa-sort fa-lg"
+                                            /></th>
                                     <!-- <th class="fixed-width-column">Enumerator</th> -->
                                     <th class="status-column">Status</th>
-                                    <th class="status-column">Action <i class="fas fa-sort fa-3x"></i></th>
+                                    <th class="status-column">Action <i class="fas fa-sort fa-3x" /></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                
+
                                 <t t-foreach="individual" t-as="group">
                                     <tr t-att-data-selection="group['region']">
-                                        <td class="sr-column" style="color:#b3b3b3;"></td>
-                                        <td class="name-column" style="color:#078148; font: normal normal 600 13px/16px Inter;">
+                                        <td class="sr-column" style="color:#b3b3b3;" />
+                                        <td
+                                                class="name-column"
+                                                style="color:#078148; font: normal normal 600 13px/16px Inter;"
+                                            >
                                             <t t-out="group['name']" />
                                         </td>
                                         <td class="fixed-width-column" id="region_row">
@@ -172,48 +204,57 @@
                                         <td class="status-column">
                                             <div class="status-icon">
                                                     <button type="object" class="view-button2">
-                                                        <t t-esc="dict(request.env['res.partner'].fields_get(['state'])['state']['selection'])[group['state']]" />
+                                                        <t
+                                                            t-esc="dict(request.env['res.partner'].fields_get(['state'])['state']['selection'])[group['state']]"
+                                                        />
                                                     </button>
                                             </div>
                                         </td>
                                         <td class="status-column">
                                             <div class="status-icon">
-                                                <a t-attf-href="/serviceprovider/individual/update/{{ group.id }}">
-                                                    <button string="Update" type="object" class="view-button2">
+                                                <a
+                                                        t-attf-href="/serviceprovider/individual/update/{{ group.id }}"
+                                                    >
+                                                    <button
+                                                            string="Update"
+                                                            type="object"
+                                                            class="view-button2"
+                                                        >
                                                         Update
                                                     </button>
                                                 </a>
                                             </div>
                                         </td>
-                                        <td></td>
+                                        <td />
                                     </tr>
                                 </t>
                             </tbody>
                         </table>
                     </div>
-                    
+
                     <div id="page-buttons" class="pagination justify-content-center">
                     </div>
 
                 </div>
-                   
+
                 </div>
 
                 <div id="page-buttons" class="pagination justify-content-center">
 
                 </div>
-                <script type="text/javascript"
-                    src="/g2p_ati_service_provider_portal/static/src/js/table_pagination_and_row.js" />
+                <script
+                    type="text/javascript"
+                    src="/g2p_ati_service_provider_portal/static/src/js/table_pagination_and_row.js"
+                />
 
-           
 
-                <link rel="stylesheet"
-                    href="/g2p_ati_service_provider_portal/static/src/css/list.css" />
+
+                <link rel="stylesheet" href="/g2p_ati_service_provider_portal/static/src/css/list.css" />
 
             </div>
 
 
-           
+
         </xpath>
     </template>
 </odoo>

@@ -1,4 +1,4 @@
-.js_language_selector>button{
+.js_language_selector > button {
     height: 40px !important;
     min-width: 80px !important;
     display: inline !important;
@@ -6,9 +6,9 @@
     border: 1px solid #c6c6c6 !important;
     border-radius: 6px !important;
     opacity: 1 !important;
-    color: #8595A2 !important;
-  }
-  .js_language_selector>button:hover{
+    color: #8595a2 !important;
+}
+.js_language_selector > button:hover {
     background: #ffffff !important;
-    color: #8595A2  !important;
-  }
+    color: #8595a2 !important;
+}

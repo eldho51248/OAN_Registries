@@ -1,25 +1,58 @@
 $(document).ready(function () {
-    window.customvalidateFormGroup = function (isCreateFrom) {
+    function expandSection(sectionId) {
+        var consentSection = document.getElementById(sectionId);
+        consentSection.classList.add("show");
+    }
+
+    window.customvalidateFormGroup = function (isCreateForm) {
         console.log("customvalidateFormGroup");
         const locationDetailsSection = document.querySelector("#location-details");
         const requiredFields = locationDetailsSection.querySelectorAll("[required]");
-        console.log(requiredFields);
-        
-    }
-});
+        var valid = true;
+        for (let i = 0; i < requiredFields.length; i++) {
+            const field = requiredFields[i];
+            const isFieldValid = field.value.trim();
 
+            valid = valid && isFieldValid;
+
+            if (!valid) {
+                field.classList.toggle("is-invalid", !isFieldValid);
+                const parentDiv = field.closest(".section-container");
+                if (parentDiv) {
+                    var sectionRequiredFields = parentDiv.querySelectorAll("[required]");
+                    sectionRequiredFields.forEach((sectionField) => {
+                        const isSectionFieldValid = sectionField.value.trim();
+                        sectionField.classList.toggle("is-invalid", !isSectionFieldValid);
+                    });
+
+                    const navId = parentDiv.id + "-link";
+                    var navLink = document.getElementById(navId);
+                    expandSection(parentDiv.id);
+                    navLink.click();
+                }
+
+                break;
+            }
+        }
+
+        if (valid) {
+            this.validateFormGroup(isCreateForm);
+        }
+    };
+});
 
 let memberCount = 0;
 
+// eslint-disable-next-line no-unused-vars
 function addFamilyMember() {
-    const givenName = document.getElementById('mamber_given_name').value;
-    const fathersName = document.getElementById('member_fathers_name').value;
-    const grandfathersName = document.getElementById('member_grandfathers_name').value;
-    const birthdate = document.getElementById('member-birthdate').value;
+    const givenName = document.getElementById("mamber_given_name").value;
+    const fathersName = document.getElementById("member_fathers_name").value;
+    const grandfathersName = document.getElementById("member_grandfathers_name").value;
+    const birthdate = document.getElementById("member-birthdate").value;
     const gender = document.querySelector('input[name="gender"]:checked').value;
 
     if (givenName && fathersName && grandfathersName && birthdate && gender) {
-        const table = document.getElementById('familylist').getElementsByTagName('tbody')[0];
+        const table = document.getElementById("familylist").getElementsByTagName("tbody")[0];
 
         const newRow = table.insertRow();
         newRow.innerHTML = `
@@ -34,34 +67,38 @@ function addFamilyMember() {
         memberCount++;
 
         // Clear the form fields
-        document.getElementById('mamber_given_name').value = '';
-        document.getElementById('member_fathers_name').value = '';
-        document.getElementById('member_grandfathers_name').value = '';
-        document.getElementById('member-birthdate').value = '';
-        document.querySelectorAll('input[name="gender"]').forEach((el) => { el.checked = false; });
+        document.getElementById("mamber_given_name").value = "";
+        document.getElementById("member_fathers_name").value = "";
+        document.getElementById("member_grandfathers_name").value = "";
+        document.getElementById("member-birthdate").value = "";
+        document.querySelectorAll('input[name="gender"]').forEach((el) => {
+            el.checked = false;
+        });
 
-        $('#familyMemberModal').modal('hide');
+        $("#familyMemberModal").modal("hide");
     } else {
-        alert('Please fill all the required fields');
+        console.log("Please fill all the required fields");
     }
 }
 
+// eslint-disable-next-line no-unused-vars
 function deleteMember(button) {
     const row = button.parentNode.parentNode;
     row.parentNode.removeChild(row);
 }
 
-let farmerCount = 0;
+const farmerCount = 0;
 
+// eslint-disable-next-line no-unused-vars
 function addFarmerMember() {
-    const givenName = document.getElementById('mamber_given_name').value;
-    const fathersName = document.getElementById('member_fathers_name').value;
-    const grandfathersName = document.getElementById('member_grandfathers_name').value;
-    const birthdate = document.getElementById('member-birthdate').value;
+    const givenName = document.getElementById("mamber_given_name").value;
+    const fathersName = document.getElementById("member_fathers_name").value;
+    const grandfathersName = document.getElementById("member_grandfathers_name").value;
+    const birthdate = document.getElementById("member-birthdate").value;
     const gender = document.querySelector('input[name="gender"]:checked').value;
 
     if (givenName && fathersName && grandfathersName && birthdate && gender) {
-        const table = document.getElementById('familylist').getElementsByTagName('tbody')[0];
+        const table = document.getElementById("familylist").getElementsByTagName("tbody")[0];
 
         const newRow = table.insertRow();
         newRow.innerHTML = `
@@ -76,42 +113,21 @@ function addFarmerMember() {
         memberCount++;
 
         // Clear the form fields
-        document.getElementById('mamber_given_name').value = '';
-        document.getElementById('member_fathers_name').value = '';
-        document.getElementById('member_grandfathers_name').value = '';
-        document.getElementById('member-birthdate').value = '';
-        document.querySelectorAll('input[name="gender"]').forEach((el) => { el.checked = false; });
+        document.getElementById("mamber_given_name").value = "";
+        document.getElementById("member_fathers_name").value = "";
+        document.getElementById("member_grandfathers_name").value = "";
+        document.getElementById("member-birthdate").value = "";
+        document.querySelectorAll('input[name="gender"]').forEach((el) => {
+            el.checked = false;
+        });
 
-        $('#familyMemberModal').modal('hide');
+        $("#familyMemberModal").modal("hide");
     } else {
-        alert('Please fill all the required fields');
+        console.log("Please fill all the required fields");
     }
 }
 
-function populateEditModal(id, givenName, fathersName, grandfathersName, birthdate, gender) {
-    console.log("populate");
-    // $('#editFamilyMemberModal').modal('show');
-
-    // console.log('populateEditModal called with:', id, givenName, fathersName, grandfathersName, birthdate, gender);
-
-    // document.getElementById('edit_given_name').value = givenName;
-    // document.getElementById('edit_fathers_name').value = fathersName;
-    // document.getElementById('edit_grandfathers_name').value = grandfathersName;
-    // document.getElementById('edit_birthdate').value = birthdate;
-
-    // const genderRadio = document.querySelector(`input[name="edit_gender"][value="${gender}"]`);
-    // if (genderRadio) {
-    //     genderRadio.checked = true;
-    // } else {
-    //     console.error('Gender radio button not found');
-    // }
-
-    // document.getElementById('update_member').setAttribute('data-id', id);
-}
-
-
-
-// function updateFamilyMember() {
+// Function updateFamilyMember() {
 //     const id = document.getElementById('update_member').getAttribute('data-id');
 //     const givenName = document.getElementById('edit_given_name').value;
 //     const fathersName = document.getElementById('edit_fathers_name').value;
@@ -129,14 +145,10 @@ function populateEditModal(id, givenName, fathersName, grandfathersName, birthda
 //     }
 // }
 
-
-
-
-
-//this is to populate the data for editing family member
+// this is to populate the data for editing family member
 
 $(document).on("click", "#hh_member_update", function () {
-    // console.log('populateEditModal called');
+    // Console.log('populateEditModal called');
     var memberId = $(this).attr("store");
     var modal = $("#editFamilyMemberModal");
     console.log("Click edit", memberId);
@@ -152,18 +164,16 @@ $(document).on("click", "#hh_member_update", function () {
             modal.find("#edit_fathers_name").val(response.family_name);
             modal.find("#edit_grandfathers_name").val(response.gf_name_eng);
             modal.find("#edit_birthdate").val(response.dob);
-            if (response.gender == "male") {
-                modal.find("#edit_gender_male").prop('checked', true);
-            }
-            else if (response.gender == "female") {
-                modal.find("#edit_gender_female").prop('checked', true);
+            if (response.gender === "male") {
+                modal.find("#edit_gender_male").prop("checked", true);
+            } else if (response.gender === "female") {
+                modal.find("#edit_gender_female").prop("checked", true);
             }
 
             console.log();
-            var ele = document.getElementById("update-member-btn")
+            var ele = document.getElementById("update-member-btn");
             ele.setAttribute("store", memberId);
-            // ele.setAttribute("id", "update-member-btn");
-
+            // Ele.setAttribute("id", "update-member-btn");
 
             // $("#update_member").replaceWith(
             //     '<div id="update-member-btn" store="' +
@@ -177,26 +187,23 @@ $(document).on("click", "#hh_member_update", function () {
             //                     memberId +
             //                     '" class="btn btn-primary create-new">Updatee</div>'
             //             );
-            
         },
         error: function (error) {
             console.error("Ajax request failed");
             console.error("Error:", error);
         },
-    }); 
+    });
 });
 
-
-
 $(document).on("click", "#update-member-btn", function () {
-    // console.log("HERE this is for editing");
+    // Console.log("HERE this is for editing");
 
     var ele = document.getElementById("update-member-btn");
     var modal = $("#editFamilyMemberModal");
-    var memberId = ele.getAttribute('store');
+    var memberId = ele.getAttribute("store");
 
     var group_id = $("input[name='group_id']").val();
-    // console.log(memberId)
+    // Console.log(memberId)
 
     var data = {
         group_id: group_id,
@@ -206,10 +213,10 @@ $(document).on("click", "#update-member-btn", function () {
         gf_name_eng: modal.find("#edit_grandfathers_name").val(),
         birthdate: modal.find("#edit_birthdate").val(),
         gender: modal.find("input[name='gender']:checked").val(),
-        // relationship: modal.find("select[name='relationship']").val() 
+        // Relationship: modal.find("select[name='relationship']").val()
     };
 
-    // console.log("Sending data:", data);
+    // Console.log("Sending data:", data);
     console.log("Click update", memberId);
 
     $.ajax({
@@ -218,21 +225,21 @@ $(document).on("click", "#update-member-btn", function () {
         data: data,
         dataType: "json",
         success: function (response) {
-            // console.log("Ajax request successful");
+            // Console.log("Ajax request successful");
             // console.log("Response:", response);
             if (response.member_list) {
                 // Update the table with the new member list
                 var tableBody = $("#familylist tbody");
                 tableBody.empty();
-                response.member_list.forEach(function (member, index) {
+                response.member_list.forEach(function (member) {
                     var newRowHtml = `
                         <tr>
                             <td>${member.name}</td>
+                            <td>${member.age}</td>
                             <td>${member.gender}</td>
-                            <td>${member.birthdate}</td>
-                        
 
-                            <td>${member.active ? "Active" : "Inactive"}</td>
+
+                            <td>"Member"</td>
                             <td>
                                 <button type="button" class="btn btn-icon rounded-0" id="hh_member_update" store="${member.id}" title="Edit" data-bs-toggle="modal" data-bs-target="#editFamilyMemberModal">
                                     <i class="fa fa-pencil"></i>
@@ -245,52 +252,48 @@ $(document).on("click", "#update-member-btn", function () {
                     `;
                     tableBody.append(newRowHtml);
                 });
-    
+
                 // Hide the modal after successful submission
                 $("#editFamilyMemberModal").modal("hide");
-               
             } else {
                 console.error("Failed to edit family member");
             }
         },
-        
+
         error: function (error) {
             console.error("Ajax request failed");
             console.error("Error:", error);
-        }
+        },
     });
 });
 
-
-/// Add button
+// / Add button
 $(document).on("click", "#family_member_submit", function () {
-    console.log("Add button in update household")
+    console.log("Add button in update household");
     var group_id = $("input[name='group_id']").val();
     var given_name = $("#mamber_given_name").val();
     var family_name = $("#member_fathers_name").val();
     var gf_name_eng = $("#member_grandfathers_name").val();
     var birthdate = $("#member-birthdate").val();
-    var gender = $("input[name='gender']:checked").val();  // Use :checked to get the selected radio button
-    // var relationship =$("select[name='relation_with_household_head_add']").val(); 
+    var gender = $("input[name='gender']:checked").val();
+    // Var relationship =$("select[name='relation_with_household_head_add']").val();
 
-    
-    var isValid = true;
-    $(".form-control, .form-check-input").removeClass("is-invalid");
-    
-    if (!given_name || !family_name || !gf_name_eng || !birthdate || !gender ) {
-        isValid = false;
-        $("#family-member-template .form-control[required], #family-member-template .form-check-input[required]").each(function () {
-            if (!$(this).val()) {
-                $(this).addClass("is-invalid");
-            }
-        });
-    }
-    
-    if (!isValid) {
-        showToast("Please fill out all required fields.");
-        return;
-    }
-    
+    // var isValid = true;
+    // $(".form-control, .form-check-input").removeClass("is-invalid");
+
+    // if (!given_name || !family_name || !gf_name_eng || !birthdate || !gender) {
+    //     isValid = false;
+    //     $(
+    //         "#family-member-template .form-control[required], #family-member-template .form-check-input[required]"
+    //     ).each(function () {
+    //         if (!$(this).val()) {
+    //             $(this).addClass("is-invalid");
+    //         }
+    //     });
+    // }
+
+    console.log(group_id, given_name, gender);
+
     // Proceed with the AJAX request if the form is valid
     $.ajax({
         url: "/serviceprovider/family_member/add/submit/",
@@ -302,25 +305,28 @@ $(document).on("click", "#family_member_submit", function () {
             gf_name_eng: gf_name_eng,
             birthdate: birthdate,
             gender: gender,
-            // relationship:relationship
+            // Relationship:relationship
         },
         dataType: "json",
         success: function (response) {
             console.log("Ajax request successful");
             console.log("Response:", response);
             if (response.member_list) {
+                // eslint-disable-next-line no-undef
+                resetFormFieldsMember();
                 // Update the table with the new member list
                 var tableBody = $("#familylist tbody");
                 tableBody.empty();
-                response.member_list.forEach(function (member, index) {
+                response.member_list.forEach(function (member) {
                     var newRowHtml = `
                         <tr>
+                            <td></td>
                             <td>${member.name}</td>
+                            <td>${member.age}</td>
                             <td>${member.gender}</td>
-                            <td>${member.birthdate}</td>
-                        
 
-                            <td>${member.active ? "Active" : "Inactive"}</td>
+
+                            <td>"Member"</td>
                             <td>
                                 <button type="button" class="btn btn-icon rounded-0" id="hh_member_update" store="${member.id}" title="Edit">
                                     <i class="fa fa-pencil"></i>
@@ -333,7 +339,7 @@ $(document).on("click", "#family_member_submit", function () {
                     `;
                     tableBody.append(newRowHtml);
                 });
-    
+
                 // Hide the modal after successful submission
                 $("#familyMemberModal").modal("hide");
             } else {
@@ -343,15 +349,19 @@ $(document).on("click", "#family_member_submit", function () {
         error: function (error) {
             console.error("request failed");
             console.error("Error:", error);
-        }
+        },
     });
-    
 });
-    
 
-function showNextModal(nextSectionId, currentSectionId) {
-
-    val = true
+// Function expandSection(sectionId) {
+//     var consentSection = document.getElementById(sectionId);
+//     consentSection.classList.add("show");
+// }
+// eslint-disable-next-line no-unused-vars
+function showNextModal(nextSectionId) {
+    // eslint-disable-next-line no-undef
+    var val = validateSection("location-details");
+    // Var val = true;
 
     if (val) {
         var activeLink = document.querySelector(".sidebar .nav-link.active");
@@ -359,34 +369,26 @@ function showNextModal(nextSectionId, currentSectionId) {
         var nextLink = activeLink.parentElement.nextElementSibling.querySelector(".nav-link");
         if (nextLink) {
             nextLink.classList.remove("disabled");
+            // eslint-disable-next-line no-undef
             showSection(nextSectionId, nextLink, true);
         }
+        // } else {
+        //     const navId = "location-details-link";
+        //     var navLink = document.getElementById(navId);
+        //     expandSection("location-details");
+        //     navLink.click();
     }
 }
 
-function showFamilyModal(nextSectionId, currentSectionId) {
-
-    val = true
-
-    if (val) {
-        var activeLink = document.querySelector(".sidebar .nav-link.active");
-
-        var nextLink = activeLink.parentElement.nextElementSibling.querySelector(".nav-link");
-        if (nextLink) {
-            nextLink.classList.remove("disabled");
-            showSectionFamily(nextSectionId, nextLink, true);
-        }
-    }
-}
-
-
+// eslint-disable-next-line no-unused-vars
 function showModalSection(nextSectionId, currentSectionId, direction) {
-        console.log("Show Modal Section")
-    val = true;
+    // eslint-disable-next-line no-undef
+    var val = validateSection(currentSectionId);
+    // Val = true;
 
-    if (val) {
+    if (val && (currentSectionId || direction)) {
         var activeLink = document.querySelector(".sidebar .nav-link.active");
-        // console.log(activeLink);
+        // Console.log(activeLink);
         // var targetLink = false;
         // if (direction === 'next') {
         //     targetLink = activeLink.parentElement.nextElementSibling?.querySelector(".nav-link");
@@ -397,6 +399,7 @@ function showModalSection(nextSectionId, currentSectionId, direction) {
         // if (targetLink) {
         //     targetLink.classList.remove("disabled");
         // }
+        // eslint-disable-next-line no-undef
         showSection(nextSectionId, activeLink, true);
     }
 }

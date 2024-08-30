@@ -8,7 +8,13 @@
     "website": "https://openg2p.org",
     "license": "Other OSI approved licence",
     "development_status": "Alpha",
-    "depends": ["g2p_social_registry","g2p_service_provider_beneficiary_management","g2p_registry_base","g2p_service_provider_portal_base","portal"],
+    "depends": [
+        "g2p_social_registry",
+        "g2p_service_provider_beneficiary_management",
+        "g2p_registry_base",
+        "g2p_service_provider_portal_base",
+        "portal",
+    ],
     "data": [
         "security/ir.model.access.csv",
         "views/ati_language_dropdown.xml",
@@ -25,7 +31,7 @@
         "views/update_group.xml",
         "views/ati_portal_update_suggests.xml",
         "views/notification.xml",
-        "views/notification_list.xml"
+        "views/notification_list.xml",
     ],
     "assets": {"web.assets_backend": []},
     "demo": [],
@@ -33,5 +39,5 @@
     "application": True,
     "installable": True,
     "auto_install": False,
-     'i18n': ['am_ET', 'om_ET'],
+    "i18n": ["am_ET", "om_ET"],
 }

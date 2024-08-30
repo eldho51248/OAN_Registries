@@ -6,6 +6,24 @@ const totalRow = tbody[0].children.length;
 const itemsPerPage = 12;
 let currentPage = 1;
 
+const searchResultCount = document.getElementById("search-result-count");
+const searchInputText = document.getElementById("search-text");
+const searchClearText = document.getElementById("search-text-clear");
+
+// Const selectedOption = selectionRegion.options[selectionRegion.selectedIndex];
+// const selectedOptionText = selectedOption.textContent || selectedOption.innerText;
+const SelectionRegion = document.getElementById("region_selection");
+const SelectionZon = document.getElementById("zone_selection");
+const SelectionWoreda = document.getElementById("woreda_selection");
+const SelectionKebele = document.getElementById("kebele_selection");
+
+const SelectionRegionGroup = document.getElementById("region_selection_group");
+const SelectionZonGroup = document.getElementById("zone_selection_group");
+const SelectionWoredaGroup = document.getElementById("woreda_selection_group");
+const SelectionKebeleGroup = document.getElementById("kebele_selection_group");
+
+searchClearText.style.display = "none";
+
 function addTableSrNo() {
     for (let i = 0; i < totalRow; i++) {
         tbody[0].children[i].firstElementChild.innerText = i + 1;
@@ -56,69 +74,78 @@ function applySearchFilter(searchValue) {
 }
 function applySelectionFilter(selectionValue, isGroup) {
     filteredRows = filteredRows.filter((row) => {
-        // console.log(row);
+        // Console.log(row);
         // Assuming each row has a data attribute or a cell with the selection value
+        var cellValue2 = null;
         if (isGroup) {
-            var cellValue2 = row.cells[3].innerText.trim().replace(/\s/g, "");
+            cellValue2 = row.cells[3].innerText.trim().replace(/\s/g, "");
         } else {
-            var cellValue2 = row.cells[2].innerText.trim().replace(/\s/g, "");
+            cellValue2 = row.cells[2].innerText.trim().replace(/\s/g, "");
         }
-        // console.log(row.cells[2]);
+        // Console.log(row.cells[2]);
         console.log("individual", cellValue2);
-        const selectedText = selectionValue.options[selectionValue.selectedIndex].text.trim().replace(/\s/g, "");
+        const selectedText = selectionValue.options[selectionValue.selectedIndex].text
+            .trim()
+            .replace(/\s/g, "");
         console.log("selected", selectedText);
         return cellValue2 === selectedText || selectedText === "Region";
     });
 }
-function applySelectionFilterZone(selectionValue, isGroup) {
+function applySelectionFilterZone(isGroup) {
     filteredRows = filteredRows.filter((row) => {
+        var cellValue2 = null;
+        var text_i = null;
         if (isGroup) {
-            var cellValue2 = row.cells[4].innerText.trim().replace(/\s/g, "");
-            text_i = SelectionZonGroup.options[SelectionZonGroup.selectedIndex].text.trim().replace(/\s/g, "");
+            cellValue2 = row.cells[4].innerText.trim().replace(/\s/g, "");
+            text_i = SelectionZonGroup.options[SelectionZonGroup.selectedIndex].text
+                .trim()
+                .replace(/\s/g, "");
         } else {
-            var cellValue2 = row.cells[3].innerText.trim().replace(/\s/g, "");
-            var text_i = SelectionZon.options[SelectionZon.selectedIndex].text.trim().replace(/\s/g, "");
+            cellValue2 = row.cells[3].innerText.trim().replace(/\s/g, "");
+            text_i = SelectionZon.options[SelectionZon.selectedIndex].text.trim().replace(/\s/g, "");
         }
-        // const cellValue2 = row.cells[3].value
-        
+        // Const cellValue2 = row.cells[3].value
+
         // console.log(cellValue2,selectionValue,text_i)
         // return cellValue2 === selectionValue;
         return cellValue2 === text_i;
     });
 }
 
-
 function applySelectionFilterWoreda(selectionValue, isGroup) {
     filteredRows = allRows.filter((row) => {
-
-        // const cellValue2 = row.cells[4].innerText.trim().replace(/\s/g, "");
+        // Const cellValue2 = row.cells[4].innerText.trim().replace(/\s/g, "");
         // const selectedText = selectionValue.options[selectionValue.selectedIndex].text;
 
-        // return cellValue2 === selectedText || selectedText === "Woreda";
+        var cellValue2 = null;
+        var text_i = null;
         if (isGroup) {
-            var cellValue2 = row.cells[5].innerText.trim().replace(/\s/g, "");
-            var text_i = SelectionWoredaGroup.options[SelectionWoredaGroup.selectedIndex].text.trim().replace(/\s/g, "");
+            cellValue2 = row.cells[5].innerText.trim().replace(/\s/g, "");
+            text_i = SelectionWoredaGroup.options[SelectionWoredaGroup.selectedIndex].text
+                .trim()
+                .replace(/\s/g, "");
         } else {
-            var cellValue2 = row.cells[4].innerText.trim().replace(/\s/g, "");
-            var text_i = SelectionWoreda.options[SelectionWoreda.selectedIndex].text.trim().replace(/\s/g, "");
+            cellValue2 = row.cells[4].innerText.trim().replace(/\s/g, "");
+            text_i = SelectionWoreda.options[SelectionWoreda.selectedIndex].text.trim().replace(/\s/g, "");
         }
 
-        
         return cellValue2 === text_i;
     });
 }
 
 function applySelectionFilterKebele(selectionValue, isGroup) {
-    console.log("HEre");
     filteredRows = allRows.filter((row) => {
+        var cellValue2 = null;
+        var text_i = null;
         if (isGroup) {
-            var cellValue2 = row.cells[6].innerText.trim().replace(/\s/g, "");
-            var text_i = SelectionKebeleGroup.options[SelectionKebeleGroup.selectedIndex].text.trim().replace(/\s/g, "");
+            cellValue2 = row.cells[6].innerText.trim().replace(/\s/g, "");
+            text_i = SelectionKebeleGroup.options[SelectionKebeleGroup.selectedIndex].text
+                .trim()
+                .replace(/\s/g, "");
         } else {
-            var cellValue2 = row.cells[5].innerText.trim().replace(/\s/g, "");
-            var text_i = SelectionKebele.options[SelectionKebele.selectedIndex].text.trim().replace(/\s/g, "");
+            cellValue2 = row.cells[5].innerText.trim().replace(/\s/g, "");
+            text_i = SelectionKebele.options[SelectionKebele.selectedIndex].text.trim().replace(/\s/g, "");
         }
-        
 
         return cellValue2 === text_i;
     });
@@ -133,12 +160,83 @@ function createPageButton(pageNumber) {
     button.addEventListener("click", function () {
         currentPage = pageNumber;
         showPage(currentPage);
-        renderPageButtons(); // Re-render the pagination buttons
+        // eslint-disable-next-line no-use-before-define
+        renderPageButtons();
     });
     return button;
 }
 
-// function renderPageButtons() {
+// eslint-disable-next-line no-use-before-define
+function renderPageButtons() {
+    const totalPages = Math.ceil(filteredRows.length / itemsPerPage);
+    const pageButtonsContainer = document.getElementById("page-buttons");
+    pageButtonsContainer.innerHTML = "";
+
+    // Add previous page button
+    const prevButton = document.createElement("button");
+    prevButton.innerHTML = '<i class="fa fa-angle-left"></i>';
+    prevButton.addEventListener("click", function () {
+        if (currentPage > 1) {
+            currentPage--;
+            showPage(currentPage);
+            renderPageButtons();
+        }
+    });
+    pageButtonsContainer.appendChild(prevButton);
+
+    // Add page buttons with ellipsis logic
+    if (totalPages <= 5) {
+        // If total pages are 5 or less, show all pages
+        for (let i = 1; i <= totalPages; i++) {
+            const button = createPageButton(i);
+            pageButtonsContainer.appendChild(button);
+        }
+    } else {
+        // Show first page, ellipsis, current page range, ellipsis, last page
+        if (currentPage > 3) {
+            const firstButton = createPageButton(1);
+            pageButtonsContainer.appendChild(firstButton);
+
+            const ellipsis1 = document.createElement("span");
+            ellipsis1.classList.add("ellipsis");
+            ellipsis1.textContent = "...";
+            pageButtonsContainer.appendChild(ellipsis1);
+        }
+
+        // Show current page and nearby pages
+        for (let i = Math.max(1, currentPage - 1); i <= Math.min(totalPages, currentPage + 1); i++) {
+            const button = createPageButton(i);
+            pageButtonsContainer.appendChild(button);
+        }
+
+        if (currentPage < totalPages - 2) {
+            const ellipsis2 = document.createElement("span");
+            ellipsis2.classList.add("ellipsis");
+            ellipsis2.textContent = "...";
+            pageButtonsContainer.appendChild(ellipsis2);
+
+            const lastButton = createPageButton(totalPages);
+            pageButtonsContainer.appendChild(lastButton);
+        }
+    }
+
+    // Add next page button
+    const nextButton = document.createElement("button");
+    nextButton.innerHTML = '<i class="fa fa-angle-right"></i>';
+    nextButton.classList.add("next-button");
+    nextButton.addEventListener("click", function () {
+        if (currentPage < totalPages) {
+            currentPage++;
+            showPage(currentPage);
+            renderPageButtons();
+        }
+    });
+    pageButtonsContainer.appendChild(nextButton);
+
+    updatePaginationButtons();
+}
+
+// Function renderPageButtons() {
 //     const totalPages = Math.ceil(filteredRows.length / itemsPerPage);
 //     const pageButtonsContainer = document.getElementById("page-buttons");
 //     pageButtonsContainer.innerHTML = "";
@@ -192,75 +290,6 @@ function createPageButton(pageNumber) {
 //     updatePaginationButtons();
 // }
 
-function renderPageButtons() {
-    const totalPages = Math.ceil(filteredRows.length / itemsPerPage);
-    const pageButtonsContainer = document.getElementById("page-buttons");
-    pageButtonsContainer.innerHTML = "";
-
-    // Add previous page button
-    const prevButton = document.createElement("button");
-    prevButton.innerHTML = '<i class="fa fa-angle-left"></i>';
-    prevButton.addEventListener("click", function () {
-        if (currentPage > 1) {
-            currentPage--;
-            showPage(currentPage);
-            renderPageButtons(); // Re-render the pagination buttons
-        }
-    });
-    pageButtonsContainer.appendChild(prevButton);
-
-    // Add page buttons with ellipsis logic
-    if (totalPages <= 5) {
-        // If total pages are 5 or less, show all pages
-        for (let i = 1; i <= totalPages; i++) {
-            const button = createPageButton(i);
-            pageButtonsContainer.appendChild(button);
-        }
-    } else {
-        // Show first page, ellipsis, current page range, ellipsis, last page
-        if (currentPage > 3) {
-            const firstButton = createPageButton(1);
-            pageButtonsContainer.appendChild(firstButton);
-
-            const ellipsis1 = document.createElement("span");
-            ellipsis1.classList.add("ellipsis");
-            ellipsis1.textContent = "...";
-            pageButtonsContainer.appendChild(ellipsis1);
-        }
-
-        // Show current page and nearby pages
-        for (let i = Math.max(1, currentPage - 1); i <= Math.min(totalPages, currentPage + 1); i++) {
-            const button = createPageButton(i);
-            pageButtonsContainer.appendChild(button);
-        }
-
-        if (currentPage < totalPages - 2) {
-            const ellipsis2 = document.createElement("span");
-            ellipsis2.classList.add("ellipsis");
-            ellipsis2.textContent = "...";
-            pageButtonsContainer.appendChild(ellipsis2);
-
-            const lastButton = createPageButton(totalPages);
-            pageButtonsContainer.appendChild(lastButton);
-        }
-    }
-
-    // Add next page button
-    const nextButton = document.createElement("button");
-    nextButton.innerHTML = '<i class="fa fa-angle-right"></i>';
-    nextButton.classList.add("next-button");
-    nextButton.addEventListener("click", function () {
-        if (currentPage < totalPages) {
-            currentPage++;
-            showPage(currentPage);
-            renderPageButtons(); // Re-render the pagination buttons
-        }
-    });
-    pageButtonsContainer.appendChild(nextButton);
-
-    updatePaginationButtons(); // Highlight the active page
-}
-
 function compareCellValues(a, b, columnIndex) {
     const aCellValue = a.cells[columnIndex].textContent.trim().replace(/,/g, "");
     const bCellValue = b.cells[columnIndex].textContent.trim().replace(/,/g, "");
@@ -302,24 +331,6 @@ allheadercells.forEach(function (th) {
     });
 });
 
-const searchResultCount = document.getElementById("search-result-count");
-const searchInputText = document.getElementById("search-text");
-const searchClearText = document.getElementById("search-text-clear");
-
-// Const selectedOption = selectionRegion.options[selectionRegion.selectedIndex];
-// const selectedOptionText = selectedOption.textContent || selectedOption.innerText;
-const SelectionRegion = document.getElementById("region_selection");
-const SelectionZon = document.getElementById("zone_selection");
-const SelectionWoreda = document.getElementById("woreda_selection");
-const SelectionKebele = document.getElementById("kebele_selection");
-
-const SelectionRegionGroup = document.getElementById("region_selection_group");
-const SelectionZonGroup = document.getElementById("zone_selection_group");
-const SelectionWoredaGroup = document.getElementById("woreda_selection_group");
-const SelectionKebeleGroup = document.getElementById("kebele_selection_group");
-
-searchClearText.style.display = "none";
-
 function updateOptions(url, data, targetSelectId, defaultOptionText) {
     $.ajax({
         url: url,
@@ -347,24 +358,46 @@ function updateOptions(url, data, targetSelectId, defaultOptionText) {
     });
 }
 
-function handleSearch(isGroup=true) {
-    if (isGroup) {
-        var SelectionRegionValue = SelectionRegionGroup;
-        var SelectionZonValue = SelectionZonGroup?.value;
-        var SelectionWoredaValue = SelectionWoredaGroup?.value;
-        var SelectionKebeleValue = SelectionKebeleGroup?.value;
-    } else {
-        var SelectionRegionValue = SelectionRegion;
-        var SelectionZonValue = SelectionZon?.value;
-        var SelectionWoredaValue = SelectionWoreda?.value;
-        var SelectionKebeleValue = SelectionKebele?.value;
-    }
+function resetFilters() {
+    filteredRows = allRows;
+    currentPage = 1;
+    showPage(currentPage);
+    renderPageButtons();
+    searchResultCount.textContent = "";
+}
 
-    var searchValue = searchInputText.value;
-    
+function getSelectionValues(isGroup) {
+    return {
+        SelectionRegionValue: isGroup ? SelectionRegionGroup : SelectionRegion,
+        SelectionZonValue: isGroup ? SelectionZonGroup?.value : SelectionZon?.value,
+        SelectionWoredaValue: isGroup ? SelectionWoredaGroup?.value : SelectionWoreda?.value,
+        SelectionKebeleValue: isGroup ? SelectionKebeleGroup?.value : SelectionKebele?.value,
+    };
+}
 
-    if (typeof searchValue === "string") {
-        searchValue = searchValue.toLowerCase();
+function handleSearch(isGroup = true) {
+    var {SelectionRegionValue, SelectionZonValue, SelectionWoredaValue, SelectionKebeleValue} =
+        getSelectionValues(isGroup);
+    var searchValue = searchInputText.value.trim().toLowerCase();
+
+    filteredRows = allRows;
+
+    function applyFilters() {
+        if (SelectionRegionValue?.value.trim()) {
+            applySelectionFilter(SelectionRegionValue, isGroup);
+        }
+        if (SelectionZonValue?.trim()) {
+            applySelectionFilterZone(isGroup);
+        }
+        if (SelectionWoredaValue?.trim()) {
+            applySelectionFilterWoreda(SelectionWoredaValue, isGroup);
+        }
+        if (SelectionKebeleValue?.trim()) {
+            applySelectionFilterKebele(SelectionKebeleValue, isGroup);
+        }
+        if (searchValue) {
+            applySearchFilter(searchValue);
+        }
     }
 
     if (
@@ -374,72 +407,17 @@ function handleSearch(isGroup=true) {
         SelectionWoredaValue?.trim() ||
         SelectionKebeleValue?.trim()
     ) {
-        filteredRows = allRows;
-        if (searchValue) {
-            applySearchFilter(searchValue);
-            currentPage = 1;
-            showPage(currentPage);
-            renderPageButtons();
-            // Update search result count
-            searchResultCount.textContent = `Search found ${filteredRows.length} result(s)`;
-        }
-        if (SelectionRegionValue?.value.trim()) {
-            console.log(SelectionRegionValue.value);
-            applySelectionFilter(SelectionRegionValue, isGroup);
-            currentPage = 1;
-            showPage(currentPage);
-            renderPageButtons();
-            // Update search result count
-            searchResultCount.textContent = `Search found ${filteredRows.length} result(s)`;
-        }
-        if (SelectionZonValue?.trim()) {
-            applySelectionFilterZone(SelectionZonValue, isGroup);
-            currentPage = 1;
-            showPage(currentPage);
-            renderPageButtons();
-            if (searchValue) {
-                applySearchFilter(searchValue);
-            }
-            // Update search result count
-            searchResultCount.textContent = `Search found ${filteredRows.length} result(s)`;
-        }
-        if (SelectionWoredaValue?.trim()) {
-
-            applySelectionFilterWoreda(SelectionWoredaValue, isGroup);
-            if (searchValue) {
-                applySearchFilter(searchValue);
-            }
-            currentPage = 1;
-            showPage(currentPage);
-            renderPageButtons();
-            // Update search result count
-            searchResultCount.textContent = `Search found ${filteredRows.length} result(s)`;
-        }
-        if (SelectionKebeleValue?.trim()) {
-            console.log(SelectionKebeleValue);
-            applySelectionFilterKebele(SelectionKebeleValue, isGroup);
-            if (searchValue) {
-                applySearchFilter(searchValue);
-            }
-            currentPage = 1;
-            showPage(currentPage);
-            renderPageButtons();
-            // Update search result count
-            searchResultCount.textContent = `Search found ${filteredRows.length} result(s)`;
-        }
-    } 
-    else {
-        filteredRows = allRows;
+        applyFilters();
         currentPage = 1;
         showPage(currentPage);
         renderPageButtons();
-        // Clear search result count
-        searchResultCount.textContent = "";
+        searchResultCount.textContent = `Search found ${filteredRows.length} result(s)`;
+    } else {
+        resetFilters();
     }
 
     searchClearText.style.display = searchValue ? "block" : "none";
 }
-
 searchInputText.addEventListener("input", handleSearch);
 
 SelectionRegion?.addEventListener("input", function () {
@@ -480,7 +458,6 @@ SelectionWoredaGroup?.addEventListener("input", function () {
 
 SelectionKebele?.addEventListener("input", handleSearch(false));
 SelectionKebeleGroup?.addEventListener("input", handleSearch(true));
-
 
 searchClearText.addEventListener("click", function () {
     searchInputText.value = "";

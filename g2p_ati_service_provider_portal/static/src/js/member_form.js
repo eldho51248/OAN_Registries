@@ -9,7 +9,7 @@ $(document).ready(function () {
 
 // eslint-disable-next-line no-unused-vars
 function validateForm(isCreateForm) {
-    // var requiredFields = document.querySelectorAll(".s_website_form_field [required]");
+    // Var requiredFields = document.querySelectorAll(".s_website_form_field [required]");
     // var isValid = true;
 
     // requiredFields.forEach(function (field) {
@@ -42,12 +42,23 @@ function validateForm(isCreateForm) {
     //         field.style.border = "";
     //     }
     // });
-    isValid=  true;
+    var isValid = true;
 
     if (isValid && isCreateForm) {
         document.getElementById("creategroupForm").submit();
     } else if (isValid && !isCreateForm) {
         document.getElementById("updategroupForm").submit();
+    }
+}
+
+// eslint-disable-next-line no-unused-vars
+function validateFormGroup(isCreateForm) {
+    var isValid = true;
+
+    if (isValid && isCreateForm) {
+        document.getElementById("createhouseholdForm").submit();
+    } else if (isValid && !isCreateForm) {
+        document.getElementById("updatehouseholdForm").submit();
     }
 }
 
@@ -71,7 +82,7 @@ function resetFormFields() {
     // Reset multi-select fields
     $("#farmerDetailModal select").prop("selectedIndex", -1).trigger("change");
 }
-
+// eslint-disable-next-line no-unused-vars
 function resetFormFieldsMember() {
     $("#familyMemberModal input, #familyMemberModal select").val("");
 }
@@ -85,22 +96,22 @@ $('[data-bs-target="#memberDetailModal"]').on("click", function () {
 });
 
 $(document).on("click", "#member_submit", async function () {
-    console.log("Add member clicked" )
+    console.log("Add member clicked");
     var group = $("input[name='group_id']").val();
-    var region =  document.getElementById("region_selection").value;
-    var zone =  document.getElementById("zon_selection").value;
+    var region = document.getElementById("region_selection").value;
+    var zone = document.getElementById("zon_selection").value;
     console.log(zone);
-    var woreda =  document.getElementById("woreda_selection").value;
-    var kebele =  document.getElementById("kebele_selection").value;
-    var isHouseholdHead =  document.getElementById("hh_is_household_head_id").value;
+    var woreda = document.getElementById("woreda_selection").value;
+    var kebele = document.getElementById("kebele_selection").value;
+    var isHouseholdHead = document.getElementById("hh_is_household_head_id").value;
     var hasNationalId = document.getElementById("have-national-id-selection").value;
     var hasNationalIdCheck = document.getElementById("have-national-id-selection");
     const selectedIDOptionText = hasNationalIdCheck.options[hasNationalIdCheck.selectedIndex].text
-            .trim()
-            .toLowerCase();
+        .trim()
+        .toLowerCase();
     var uid = document.getElementById("uid_input").value;
     var rid = document.getElementById("rid_input").value;
-    var selectedId;
+    var selectedId = null;
 
     if (selectedIDOptionText === "yes") {
         selectedId = uid;
@@ -119,7 +130,7 @@ $(document).on("click", "#member_submit", async function () {
     var lastNameOther = $("#farmerDetailModal #gf_name_other").val();
     var dob = $("#farmerDetailModal #birthdate").val();
     var gender = document.querySelector('input[name="farmer_gender"]:checked').value;
-    console.log(gender)
+    console.log(gender);
 
     var havePhoneNumber = document.getElementById("have-phone-no-selection").value;
 
@@ -148,28 +159,28 @@ $(document).on("click", "#member_submit", async function () {
     var accessToFinance = document.getElementById("access-to-finance-selection").value;
     var financialSectors = $("#farmerDetailModal #finance-selection").val();
 
-//    var financialSectors = document.getElementById("finance-selection").value;
+    //    Var financialSectors = document.getElementById("finance-selection").value;
 
     var incomeType = $("#farmerDetailModal #hh_income_type").val();
     var cropWaterSource = $("#farmerDetailModal #crop_water_source").val();
     var livestockWaterSource = $("#farmerDetailModal #livestock_water_source").val();
-    var isValid = true;
+    // Var isValid = true;
     var modal = $("#farmerDetailModal");
 
     // Function to read file as Base64 string
     function readFileAsBase64(input) {
         return new Promise((resolve, reject) => {
-            let file = input.files[0];
+            const file = input.files[0];
             if (file) {
-                let reader = new FileReader();
-                reader.onload = function(event) {
-                    let base64String = event.target.result.split(',')[1]; // Remove the data URL prefix
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    const base64String = event.target.result.split(",")[1];
                     resolve(base64String);
                 };
-                reader.onerror = function(error) {
+                reader.onerror = function (error) {
                     reject(error);
                 };
-                reader.readAsDataURL(file); // Read the file as a data URL
+                reader.readAsDataURL(file);
             } else {
                 resolve(null);
             }
@@ -177,68 +188,74 @@ $(document).on("click", "#member_submit", async function () {
     }
 
     async function collectLandRecords() {
-        let landRecords = [];
-        let landSections = $('.land-section-wrapper');  // Get all the land sections
-    
+        const landRecords = [];
+        const landSections = $(".land-section-wrapper");
+
         for (let i = 0; i < landSections.length; i++) {
-            let section = landSections[i];
-            let record = {};
-            let index = $(section).data('index');
-    
-            record[`ownership_type_${index}`]  = $(section).find(`select[name="land_ownership_type_${index}"]`).val();
-            record[`total_land_area_${index}`]  = $(section).find(`input[name="total_land_area_${index}"]`).val();
+            const section = landSections[i];
+            const record = {};
+            const index = $(section).data("index");
+
+            record[`ownership_type_${index}`] = $(section)
+                .find(`select[name="land_ownership_type_${index}"]`)
+                .val();
+            record[`total_land_area_${index}`] = $(section)
+                .find(`input[name="total_land_area_${index}"]`)
+                .val();
             record[`land_id_${index}`] = $(section).find(`input[name="land_id_${index}"]`).val();
-    
-            let landCertificateInput = $(section).find(`input[name="land_certificate_${index}"]`)[0];
-    
+
+            const landCertificateInput = $(section).find(`input[name="land_certificate_${index}"]`)[0];
+
             // Wait for the file to be read and then add it to the record
             try {
-                let landCertificate = await readFileAsBase64(landCertificateInput);
+                const landCertificate = await readFileAsBase64(landCertificateInput);
                 if (landCertificate) {
                     record[`land_certificate_${index}`] = {
                         filename: landCertificateInput.files[0].name,
-                        content: landCertificate
+                        content: landCertificate,
                     };
                 }
             } catch (error) {
-                console.error('Error reading file:', error);
+                console.error("Error reading file:", error);
             }
-    
+
             landRecords.push(record);
         }
-    
+
         return landRecords;
     }
-    
+
     // Invoke the async function to collect land records
-    landRecords = await collectLandRecords();
+    var landRecords = await collectLandRecords();
     console.log(landRecords);
 
-    let cropRecords = [];
+    const cropRecords = [];
 
-    $('.crop-section-wrapper').each(function() {
-        let record = {};
-        let index = $(this).data('index');
+    $(".crop-section-wrapper").each(function () {
+        const record = {};
+        const index = $(this).data("index");
 
-        record[`crops_${index}`]  = $(this).find(`select[name="crops_${index}"]`).val();
+        record[`crops_${index}`] = $(this).find(`select[name="crops_${index}"]`).val();
         // For file inputs, you can either send the file directly or handle it differently if neede
         cropRecords.push(record);
     });
 
-    let livestockRecord = [];
+    const livestockRecord = [];
 
-    $('.livestock-section-wrapper').each(function() {
-        let record = {};
-        let index = $(this).data('index');
+    $(".livestock-section-wrapper").each(function () {
+        const record = {};
+        const index = $(this).data("index");
 
-        record[`livestock_types_${index}`]  = $(this).find(`select[name="livestock_types_${index}"]`).val();
-        record[`number_of_livestock_${index}`]  = $(this).find(`select[name="number_of_livestock_${index}"]`).val();
+        record[`livestock_types_${index}`] = $(this).find(`select[name="livestock_types_${index}"]`).val();
+        record[`number_of_livestock_${index}`] = $(this)
+            .find(`select[name="number_of_livestock_${index}"]`)
+            .val();
         // For file inputs, you can either send the file directly or handle it differently if neede
         if (Object.keys(record).length > 0 && record.constructor === Object) {
             livestockRecord.push(record);
         }
     });
-//    var landRecords = JSON.stringify(landRecords)
+    //    Var landRecords = JSON.stringify(landRecords)
 
     $(".form-control, .form-select").removeClass("is-invalid");
 
@@ -333,11 +350,6 @@ $(document).on("click", "#member_submit", async function () {
                             "</td>" +
                             "<td>" +
                             "dependent" +
-                            "</td>" +
-                            "<td>" +
-                            '<div class="active-button">' +
-                            (member.active ? "Active" : "Inactive") +
-                            "</div>" +
                             "</td>" +
                             "<td>" +
                             '<button class="btn btn-icon rounded-0" id="mem-update" store="' +
@@ -498,7 +510,7 @@ $(document).on("click", "#update-member-btn", function () {
 //     var dob = $("#member-birthdate").val();
 //     var gender = $("input[name='gender']:checked").val();
 //     var gender = $("#familyMemberModal input[name='gender']:checked").val();
-//     var relationship =$("select[name='relation_with_household_head_add']").val(); 
+//     var relationship =$("select[name='relation_with_household_head_add']").val();
 
 //     console.log(relationship);
 //     // var firstName = $("#familyMemberModal #mamber_given_name").val();
@@ -533,7 +545,6 @@ $(document).on("click", "#update-member-btn", function () {
 //         showToast("Please Create The Farmer First");
 //         return;
 //     }
-
 
 //     $.ajax({
 //         url: "/serviceprovider/member/create/",
@@ -611,4 +622,3 @@ $(document).on("click", "#update-member-btn", function () {
 //         },
 //     });
 // });
-

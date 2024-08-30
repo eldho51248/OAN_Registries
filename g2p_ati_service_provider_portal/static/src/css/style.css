@@ -11,23 +11,23 @@
 }
 
 .modal-content {
-  position: absolute;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 1150px;
-  height: 750px;
-  pointer-events: auto;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid rgba(0,0,0,.2);
-  border-radius: 15px;
-  outline: 0;
+    position: absolute;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 1150px;
+    height: 750px;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    outline: 0;
 
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 .s_website_form_field {
     /* font: normal normal normal 14px / 17px Inter; */
@@ -39,17 +39,13 @@
     color: black;
 }
 
-.container-adjuster{
+.container-adjuster {
     width: 1500px;
     margin-left: 225px;
 }
 
-
-
-
-
 .accordion .card-header {
-    background-color: #DBE3E9;
+    background-color: #dbe3e9;
     color: #6c757d;
     border-bottom: 1px solid #ddd;
     border-radius: 4px;
@@ -58,7 +54,7 @@
     cursor: pointer;
 }
 .accordion .card-header:hover {
-    background-color: #A9B4BF;
+    background-color: #a9b4bf;
     color: #333;
 }
 .accordion .card-header.hidden {
@@ -67,7 +63,7 @@
 .sidebar {
     width: 300px;
     min-height: 300px;
-    background-color: #DBE3E9;
+    background-color: #dbe3e9;
     border-right: 1px solid #ddd;
 }
 .sidebar ul {
@@ -82,11 +78,11 @@
     font-size: 16px;
     cursor: pointer;
     margin-bottom: 1px;
-    background-color: #DBE3E9;
+    background-color: #dbe3e9;
     border-radius: 4px;
 }
 .sidebar .nav-link.active::after {
-    content: '';
+    content: "";
     position: absolute;
     left: 100%;
     top: 50%;
@@ -97,15 +93,14 @@
 }
 
 .sidebar .nav-link:hover {
-    background-color: #A9B4BF;
+    background-color: #a9b4bf;
     color: #333;
 }
 .sidebar .nav-link.active {
     color: #fff;
-    background-color: #06916B;
+    background-color: #06916b;
     font-size: 16px;
 }
-
 
 .content {
     padding: 20px;
@@ -118,24 +113,20 @@
 }
 
 .form-template .breadcrumb-item a {
-  color: #06916B;
-  font: normal normal 600 14px/17px Inter;
+    color: #06916b;
+    font: normal normal 600 14px/17px Inter;
 }
 
-.btn-outline-green{
+.btn-outline-green {
     background-color: transparent;
-    border-color: #06916B;
+    border-color: #06916b;
 }
 
 .btn-outline-secondary:hover {
-    background-color: #06916B; /* Purple color */
-    border-color: #06916B; /* Purple color */
+    background-color: #06916b; /* Purple color */
+    border-color: #06916b; /* Purple color */
     color: white;
 }
-
-
-
-
 
 .heading-header {
     background-color: #e6f7e8;
@@ -147,12 +138,12 @@
 }
 
 .heading-text {
-    color: #06916B;
+    color: #06916b;
     margin-left: 1.5%;
 }
 
 .numbering {
-    color: #06916B;
+    color: #06916b;
 }
 
 .additional_filter_container {
@@ -182,258 +173,246 @@
 }
 
 .card {
-  width: 1200px;
-  box-shadow: 0px 2px 5px #0000001a;
-  border-radius: 10px;
-  opacity: 1;
+    width: 1200px;
+    box-shadow: 0px 2px 5px #0000001a;
+    border-radius: 10px;
+    opacity: 1;
 }
-  
-  body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            /* align-items: center; */
-            min-height: 100vh;
-        }
-        .form-container {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            max-width: 500px;
-            width: 100%;
-        }
-        h1 {
-            text-align: center;
-            color: #5D5C61;
-        }
-        .section {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 15px;
-            margin-bottom: 15px;
-            background-color: #fafafa;
-        }
-        .section label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        .section input, .section select {
-            width: calc(100% - 20px);
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .section-container {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            min-height: 600px; /* Ensure the section takes the full viewport height */
-            position: relative;
-        }
-        
-        .section-content {
-            flex: 1 1 auto;
-            padding: 20px;
-            min-height: 600px;
-        }
 
-        .section-footer {
-            flex-shrink: 0;
-            display: flex;
-            justify-content: flex-end;
-            position: relative;
-            padding: 10px;
-        
-            margin: 0px 10px;
-            border-top: 1px solid #ddd;
-            margin-bottom: 10px; 
-            display: grid;
-                    grid-template-columns: auto auto;
-                    column-gap: 20px;
-        }
-        
-        input[type="radio"] {
-            accent-color: #06916B;
-        }
+body {
+    font-family: "Arial", sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    min-height: 100vh;
+}
+.form-container {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 500px;
+    width: 100%;
+}
+h1 {
+    text-align: center;
+    color: #5d5c61;
+}
+.section {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #fafafa;
+}
+.section label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.section input,
+.section select {
+    width: calc(100% - 20px);
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.section-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 600px; /* Ensure the section takes the full viewport height */
+    position: relative;
+}
 
+.section-content {
+    flex: 1 1 auto;
+    padding: 20px;
+    min-height: 600px;
+}
 
-        .no_list{
-            margin-left: 400px;
+.section-footer {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    padding: 10px;
 
-        }
+    margin: 0px 10px;
+    border-top: 1px solid #ddd;
+    margin-bottom: 10px;
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 20px;
+}
 
-        .custom-dashboard-background {
-            position: relative;
-            z-index: 1;
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-        }
-        
-        .custom-dashboard-background::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('/g2p_ati_service_provider_portal/static/src/img/crop.jpg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            opacity: 0.4; /* Adjust transparency level */
-            z-index: -1;
-        }
-        
-        .card-container {
-            display: flex;
-            justify-content: center; /* Centers the cards horizontally */
-            align-items: center; /* Centers the cards vertically */
-            flex-direction: row;
-            margin: 50px auto 0 auto; /* Adds margin from the main container on top */
-            transform: translateX(20%); /* Moves the content to the right */
-        }
-        
-        .card-container-mini {
-            width: 60%; /* Adjusts the width of the cards to make them bigger */
-            height: auto;
-            margin-bottom: 30px; /* Adds spacing between cards */
-            
-        }
-        
-        .card {
-            width: 90%; /* Increases the size of the cards */
-            height: auto;
-            margin-top: 80px;
-            padding-top: 20px;
-        }
-        
-        .card img {
-            width: 100px; /* Makes the icons bigger */
-            height: 80px;
-            margin-top: 8%; 
-            margin-left: 40%; 
-            margin-bottom: 3%;
-        }
-        
-        .gradient-card {
-            background: linear-gradient(135deg, #F3F9A7 0%, #ffffff 100%); /* Green to white gradient */
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Adds shadow for depth */
-            color: #ffffff; /* Ensures text color is visible on the gradient */
-        }
-        
-        
-        .card-heading {
-            font-size: 18px;
-            font-weight: bold;
-        }
-        
-        .card p {
-            font-size: 12px;
-        }
-        
-        .card-foot a {
-            font-size: 16px;
-            color: #09A261;
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        .buttons {
-            text-align: right;
-        }
-        .buttons button {
-            background-color: #28a745;
-            border: none;
-            color: #fff;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-left: 5px;
-            transition: background-color 0.3s ease;
-        }
-        .buttons button.delete {
-            background-color: #dc3545;
-        }
-        .buttons button:hover {
-            background-color: #06916B;
-        }
-        .buttons button.delete:hover {
-            background-color: #c82333;
-        }
-        .delete-icon {
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-        .delete-icon:hover {
-            transform: scale(1.1);
-        }
-        .add-button-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .add-button-container button {
-            background-color: #06916B;
-            border: none;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        .add-button-container button:hover {
-            background-color: #06916B;
-        }
+input[type="radio"] {
+    accent-color: #06916b;
+}
 
-        .addLine{
-            color:#06916B ;
-            background-color: #f0fff0;;
-            border:none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            margin-right: 50px;
-           
-        }
+.no_list {
+    margin-left: 400px;
+}
 
-        .btn-primary{
-            background-color: #06916B;
-            color: white;
-            border-color:#06916B ;
-        }
+.custom-dashboard-background {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
 
-        
-        .btn-primary:hover{
-            background-color: #06916B;
-            color: white;
-        }
+.custom-dashboard-background::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("/g2p_ati_service_provider_portal/static/src/img/crop.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.4; /* Adjust transparency level */
+    z-index: -1;
+}
 
-        .selectpicker option:checked::after {
-            display: none !important; /* Important to override Bootstrap's default */
-        }
+.card-container {
+    display: flex;
+    justify-content: center; /* Centers the cards horizontally */
+    align-items: center; /* Centers the cards vertically */
+    flex-direction: row;
+    margin: 50px auto 0 auto; /* Adds margin from the main container on top */
+    transform: translateX(20%); /* Moves the content to the right */
+}
 
-        #land_selection option:hover {
-            background-color: green;
-        }
+.card-container-mini {
+    width: 60%; /* Adjusts the width of the cards to make them bigger */
+    height: auto;
+    margin-bottom: 30px; /* Adds spacing between cards */
+}
 
-        /* Style for the radio button container */
+.card {
+    width: 90%; /* Increases the size of the cards */
+    height: auto;
+    margin-top: 80px;
+    padding-top: 20px;
+}
+
+.card img {
+    width: 100px; /* Makes the icons bigger */
+    height: 80px;
+    margin-top: 8%;
+    margin-left: 40%;
+    margin-bottom: 3%;
+}
+
+.gradient-card {
+    background: linear-gradient(135deg, #f3f9a7 0%, #ffffff 100%); /* Green to white gradient */
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Adds shadow for depth */
+    color: #ffffff; /* Ensures text color is visible on the gradient */
+}
+
+.card-heading {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.card p {
+    font-size: 12px;
+}
+
+.card-foot a {
+    font-size: 16px;
+    color: #09a261;
+}
+
+.buttons {
+    text-align: right;
+}
+.buttons button {
+    background-color: #28a745;
+    border: none;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 5px;
+    transition: background-color 0.3s ease;
+}
+.buttons button.delete {
+    background-color: #dc3545;
+}
+.buttons button:hover {
+    background-color: #06916b;
+}
+.buttons button.delete:hover {
+    background-color: #c82333;
+}
+.delete-icon {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+.delete-icon:hover {
+    transform: scale(1.1);
+}
+.add-button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+.add-button-container button {
+    background-color: #06916b;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.add-button-container button:hover {
+    background-color: #06916b;
+}
+
+.addLine {
+    color: #06916b;
+    background-color: #f0fff0;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-right: 50px;
+}
+
+.btn-primary {
+    background-color: #06916b;
+    color: white;
+    border-color: #06916b;
+}
+
+.btn-primary:hover {
+    background-color: #06916b;
+    color: white;
+}
+
+.selectpicker option:checked::after {
+    display: none !important; /* Important to override Bootstrap's default */
+}
+
+#land_selection option:hover {
+    background-color: green;
+}
+
+/* Style for the radio button container */
 .form-check-input[type="radio"] {
     appearance: none;
     background-color: white;
-    border: 1px solid #06916B;
+    border: 1px solid #06916b;
     border-radius: 50%;
     width: 24px;
     height: 24px;
@@ -444,17 +423,17 @@
 /* Ensure the border color is green */
 .form-check-input[type="radio"]:checked,
 .form-check-input[type="radio"]:focus {
-    border-color: #06916B;
+    border-color: #06916b;
 }
 
 /* Style for the checked state */
 .form-check-input[type="radio"]:checked::before {
-    content: '';
+    content: "";
     display: block;
     width: 14px; /* Adjusted to center the inner circle */
     height: 14px; /* Adjusted to center the inner circle */
     border-radius: 50%;
-    background-color: #06916B;
+    background-color: #06916b;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -463,9 +442,9 @@
 
 /* Ensure the border color is green for the unchecked state */
 .form-check-input[type="radio"]::before {
-    content: '';
+    content: "";
     display: block;
-    border: 1px solid #06916B;
+    border: 1px solid #06916b;
     border-radius: 50%;
     width: 20px;
     height: 20px;
@@ -482,12 +461,9 @@ input:valid {
     border-color: green;
 } */
 
-.header-container{
+.header-container {
     height: 110px;
 }
-
-
-
 
 .header-container .nav .main-logo,
 .footer-container .nav .main-logo {
@@ -497,7 +473,6 @@ input:valid {
     margin-bottom: 15px;
     opacity: 1;
 }
-
 
 .header-container .nav {
     top: 0px;
@@ -512,61 +487,34 @@ input:valid {
     opacity: 1;
 }
 
-
 .header-container .nav .nav-user {
     display: flex;
     width: auto;
 }
 
+.land_container2 {
+    padding-left: 8px;
+    padding-right: 8px;
+}
 
+.form-label2 {
+    font-size: 15px;
+}
 
+.list_section {
+    border-top: 1px dashed;
+}
 
+.inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
-        
-
-       
-          
-
-        .land_container2 {
-
-            padding-left: 8px;
-            padding-right: 8px;
-
-
-        }
-
-        .form-label2 { 
-            font-size: 15px;
-        }
-
-        .list_section {
-            border-top: 1px dashed;
-          }
-
-          .inputfile {
-            width: 0.1px;
-            height: 0.1px;
-            opacity: 0;
-            overflow: hidden;
-            position: absolute;
-            z-index: -1;
-        }
-
-       /* Hide the file input */
+/* Hide the file input */
 input[type="file"] {
     display: none;
 }
@@ -599,9 +547,6 @@ input[type="file"] {
     text-overflow: ellipsis;
 }
 
-
-
-
 /* Adjust spacing */
 .custom-file-upload span {
     margin-left: auto; /* Push icon to the right end */
@@ -619,8 +564,6 @@ input[type="file"] {
     color: #6c757d;
 }
 
-
-
 .land-separator {
     border: none;
     border-top: 1px dashed lightgray;
@@ -632,14 +575,14 @@ input[type="file"] {
 
 .btn-custom {
     /* border: 1px solid #bdc0be; Border color */
-    font-family: 'Arial', sans-serif;
+    font-family: "Arial", sans-serif;
     background-color: white;
     color: #333;
     width: 100%;
     border: 1px solid;
-  }
+}
 
-  .bootstrap-select .dropdown-menu .inner li a {
+.bootstrap-select .dropdown-menu .inner li a {
     padding-left: 30px; /* Adjust spacing */
     position: relative;
     display: block;
@@ -677,7 +620,7 @@ input[type="file"] {
 .hh-checkbox {
     appearance: none; /* Remove default styles */
     -webkit-appearance: none; /* Remove default styles in WebKit browsers */
-    border: 1px solid #06916B; /* Border color */
+    border: 1px solid #06916b; /* Border color */
     width: 20px; /* Size of the checkbox */
     height: 20px; /* Size of the checkbox */
     border-radius: 10px; /* Rounded corners */
@@ -686,13 +629,13 @@ input[type="file"] {
 }
 
 .hh-checkbox:checked {
-    background-color: #06916B;
-    border-color: #06916B; 
+    background-color: #06916b;
+    border-color: #06916b;
 }
 
 /* Adding a custom checkmark */
 .hh-checkbox:checked::after {
-    content: ''; /* Empty content */
+    content: ""; /* Empty content */
     position: absolute;
     top: 50%;
     left: 50%;
@@ -700,7 +643,7 @@ input[type="file"] {
     height: 10px; /* Size of the checkmark */
     background: white; /* Color of the checkmark */
     transform: translate(-50%, -50%) rotate(45deg); /* Center and rotate */
-    border: 2px solid #06916B; /* Border color for the checkmark */
+    border: 2px solid #06916b; /* Border color for the checkmark */
 }
 
 .list-row {
