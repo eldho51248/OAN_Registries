@@ -4224,13 +4224,7 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <t
-                                t-set="primary_language_js"
-                                t-value="json.dumps([{'label': pl.name, 'value': pl.id} for pl in primary_language])"
-                            />
-
-                                <link
+                            <link
                                 rel="stylesheet"
                                 href="/g2p_ati_service_provider_portal/static/src/css/virtual-select.min.css"
                             />
@@ -4303,7 +4297,7 @@
                                 <script>
                                     function updateFileName(input) {
                                         var inputId = input.getAttribute('id');
-                                        var label = document.querySelector(`label[for="${inputId}"]`);
+                                        var label = document.querySelector(label[for="${inputId}"]);
                                         var uploadText = label.querySelector('.upload-text');
                                         var fileName = input.files.length > 0 ? input.files[0].name : 'Upload';
                                         uploadText.textContent = fileName;
@@ -4315,8 +4309,6 @@
                                         $('.selectpicker').selectpicker();
                                     });
                                 </script>
-
-
 
                         </form>
                     </div>

@@ -1,3 +1,4 @@
+import base64
 import json
 import logging
 
@@ -1565,11 +1566,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     def update_individual_submit(self, **kw):
         try:
             member = request.env["res.partner"].sudo().browse(int(kw.get("id holder")))
-            if not member:
-                return request.render(
-                    "g2p_service_provider_beneficiary_management.error_template",
-                    {"error_message": "Member not found."},
-                )
 
             has_national_id = member.has_national_id
             primary_Language = member.primary_Language
@@ -1591,19 +1587,41 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             martial_status = member.martial_status
             education = member.education
             hh_income_type = member.hh_income_type
+            do_you_use_fertilizer = member.do_you_use_fertilizer
+            do_you_use_pesticide = member.do_you_use_pesticide
+            do_you_use_insecticide = member.do_you_use_insecticide
+            do_you_use_improved_seed = member.do_you_use_improved_seed
 
             # Helper function to fetch selection values
-            def get_selection_value(model, selection_id):
-                return (
-                    (request.env[model].sudo().search([("id", "=", selection_id)]).value)
-                    if selection_id
-                    else None
-                )
 
             # Update individual details
+            do_you_use_fertilizer = (
+                self.get_selection_value("ir.model.fields.selection", kw.get("have_used_fertilizer"))
+                or member.do_you_use_fertilizer
+            )
+            do_you_use_pesticide = (
+                self.get_selection_value("ir.model.fields.selection", kw.get("have_used_pesticide"))
+                or member.do_you_use_pesticide
+            )
+            do_you_use_insecticide = (
+                self.get_selection_value("ir.model.fields.selection", kw.get("have_used_insecticide"))
+                or member.do_you_use_insecticide
+            )
+            do_you_use_improved_seed = (
+                self.get_selection_value("ir.model.fields.selection", kw.get("have_used_improved_seed"))
+                or member.do_you_use_improved_seed
+            )
             has_national_id = (
-                get_selection_value("ir.model.fields.selection", kw.get("has_national_id"))
+                self.get_selection_value("ir.model.fields.selection", kw.get("has_national_id"))
                 or member.has_national_id
+            )
+            is_disabled = (
+                self.get_selection_value("ir.model.fields.selection", kw.get("is_disabled"))
+                or member.is_disabled
+            )
+            farming_type = (
+                self.get_selection_value("ir.model.fields.selection", kw.get("farming_type"))
+                or member.farming_type
             )
             primary_Language = int(kw.get("primary_language", member.primary_Language))
             name = " ".join(
@@ -1620,20 +1638,21 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 reg_ids = [(0, 0, {"id_type": id_type.id, "value": kw.get("rid")})]
 
             # Handle phone numbers
-            # ethiopia_country_id = (
-            #     request.env["res.country"].sudo().search([("name", "=", "Ethiopia")], limit=1).id
-            # )
-            # phone_number_ids = handle_phone_numbers(
-            #     has_phone=has_national_id,
-            #     primary_phone=kw.get("primary_phone"),
-            #     secondary_phone=kw.get("secondary_phone"),
-            #     other_phone=kw.get("other_phone"),
-            #     country_id=ethiopia_country_id,
-            # )
+            ethiopia_country_id = (
+                request.env["res.country"].sudo().search([("name", "=", "Ethiopia")], limit=1).id
+            )
+
+            phone_number_ids = self.handle_phone_numbers(
+                has_phone=has_national_id,
+                primary_phone=kw.get("primary_phone"),
+                secondary_phone=kw.get("secondary_phone"),
+                other_phone=kw.get("other_phone"),
+                country_id=ethiopia_country_id,
+            )
 
             # Socio-economic data
-            martial_status = get_selection_value("ir.model.fields.selection", kw.get("marital_status"))
-            education = get_selection_value("ir.model.fields.selection", kw.get("education_level"))
+            martial_status = self.get_selection_value("ir.model.fields.selection", kw.get("marital_status"))
+            education = self.get_selection_value("ir.model.fields.selection", kw.get("education_level"))
             hh_income_type = (
                 [(6, 0, list(map(int, request.httprequest.form.getlist("hh_income_type"))))]
                 if kw.get("hh_income_type")
@@ -1641,33 +1660,26 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             )
 
             # Membership details
-            is_member_of_primary_cooperative = get_selection_value(
+            is_member_of_primary_cooperative = self.get_selection_value(
                 "ir.model.fields.selection", kw.get("is_member_of_primary_coop")
             )
-            is_member_of_cooperative_union = get_selection_value(
+            is_member_of_cooperative_union = self.get_selection_value(
                 "ir.model.fields.selection", kw.get("is_member_of_coop_union")
             )
-            is_member_in_farmer_cluster = get_selection_value(
+            is_member_in_farmer_cluster = self.get_selection_value(
                 "ir.model.fields.selection", kw.get("in_farmer_cluster")
             )
 
-            # ownership_type_selections = (
-            #     request.env["ir.model.fields"]
-            #     .sudo()
-            #     .search([("model_id", "=", land_model_id.id), ("name", "=", "ownership_type")])
-            #     .selection_ids
-            # )
-
-            # Land information
-            # TODO: a new function needs to be added here
-            # land_info_data = self._prepare_land_info_data(kw, ownership_type_selections)
-
-            # Crop information
             crop_water_sources = (
                 [(6, 0, list(map(int, request.httprequest.form.getlist("crop_water_source"))))]
                 if kw.get("crop_water_source")
                 else []
             )
+            crop_ws = request.httprequest.form.getlist("crop_water_source")
+            if crop_ws:
+                crop_water_sources_ids = [int(id) for id in crop_ws]
+                crop_water_sources = [(6, 0, crop_water_sources_ids)]
+
             # TODO: a new function needs to be added here
             # crop_info_data = self._prepare_crop_info_data(kw)
 
@@ -1677,11 +1689,17 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 if kw.get("livestock_water_source")
                 else []
             )
+
+            livestock_ws = request.httprequest.form.getlist("livestock_water_source")
+            if livestock_ws:
+                livestock_water_sources_ids = [int(id) for id in livestock_ws]
+                livestock_water_sources = [(6, 0, livestock_water_sources_ids)]
+
             # TODO: a new function needs to be added here
             # livestock_info_data = self._prepare_livestock_info_data(kw)
 
             # Access to machinery
-            access_to_machinery = get_selection_value(
+            access_to_machinery = self.get_selection_value(
                 "ir.model.fields.selection", kw.get("access_to_machinery")
             )
             type_of_machinery = (
@@ -1691,7 +1709,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             )
 
             # Financial service access
-            has_finance_access = get_selection_value(
+            has_finance_access = self.get_selection_value(
                 "ir.model.fields.selection", kw.get("has_finance_access")
             )
             finance_accesses = (
@@ -1701,98 +1719,99 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             )
 
             if kw.get("is_member_of_primary_coop") and kw.get("is_member_of_primary_coop").strip():
-                is_member_of_primary_cooperative = (
-                    request.env["ir.model.fields.selection"]
-                    .sudo()
-                    .search([("id", "=", kw.get("is_member_of_primary_coop"))])
-                    .value
+                is_member_of_primary_cooperative = self.get_selection_value(
+                    "ir.model.fields.selection", kw.get("is_member_of_primary_coop")
                 )
+
             if is_member_of_primary_cooperative == "yes":
                 if kw.get("name_of_primary_coop") and kw.get("name_of_primary_coop").strip():
                     primary_cooperatives = int(kw.get("name_of_primary_coop"))
             if kw.get("is_member_of_coop_union") and kw.get("is_member_of_coop_union").strip():
-                is_member_of_cooperative_union = (
-                    request.env["ir.model.fields.selection"]
-                    .sudo()
-                    .search([("id", "=", kw.get("is_member_of_coop_union"))])
-                    .value
+                is_member_of_cooperative_union = self.get_selection_value(
+                    "ir.model.fields.selection", kw.get("is_member_of_coop_union")
                 )
             if is_member_of_cooperative_union == "yes":
                 if kw.get("name_of_coop_union") and kw.get("name_of_coop_union").strip():
                     cooperative_unions = int(kw.get("name_of_coop_union"))
             if kw.get("in_farmer_cluster") and kw.get("in_farmer_cluster").strip():
-                is_member_in_farmer_cluster = (
-                    request.env["ir.model.fields.selection"]
-                    .sudo()
-                    .search([("id", "=", kw.get("in_farmer_cluster"))])
-                    .value
+                is_member_in_farmer_cluster = self.get_selection_value(
+                    "ir.model.fields.selection", kw.get("in_farmer_cluster")
                 )
             if is_member_in_farmer_cluster == "yes":
                 if kw.get("primary_commodity") and kw.get("primary_commodity").strip():
                     primary_commodity = int(kw.get("primary_commodity"))
                 if kw.get("role_in_cluster") and kw.get("role_in_cluster").strip():
-                    role_in_farmer_cluster = (
-                        request.env["ir.model.fields.selection"]
-                        .sudo()
-                        .search([("id", "=", kw.get("role_in_cluster"))])
-                        .value
+                    role_in_farmer_cluster = self.get_selection_value(
+                        "ir.model.fields.selection", kw.get("role_in_cluster")
                     )
-
+            backend_id = (
+                request.env.ref("storage_backend.default_storage_backend").id
+                or request.env["storage.backend"].sudo().search([], limit=1).id
+            )
+            land_info_data = self.get_land_info_data(kw, backend_id)
+            crop_info_data = self.get_crop_info_data(kw)
+            livestock_info_data = self.get_livestock_info_data(kw)
+            supporting_documents_ids = self.get_supporting_documents_ids(kw)
             # Clean up existing data
             member.reg_ids.unlink()
-            # member.phone_number_ids.unlink()
+            member.phone_number_ids.unlink()
             member.land_information_ids.unlink()
             member.crop_information_ids.unlink()
             member.livestock_information_ids.unlink()
-
+            member.supporting_documents_ids.unlink()
+            update_records = {
+                "has_national_id": has_national_id,
+                "reg_ids": reg_ids,
+                "primary_Language": primary_Language,
+                "given_name": kw.get("given_name"),
+                "family_name": kw.get("family_name"),
+                "gf_name_eng": kw.get("gf_name_eng"),
+                "name": name,
+                "first_name_amh": kw.get("first_name_amh"),
+                "family_name_amh": kw.get("family_name_amh"),
+                "gf_name_amh": kw.get("gf_name_amh"),
+                "first_name_other": kw.get("first_name_other"),
+                "family_name_other": kw.get("family_name_other"),
+                "gf_name_other": kw.get("gf_name_other"),
+                "region": int(kw.get("region", member.region)),
+                "zone": int(kw.get("zone", member.zone)),
+                "woreda": int(kw.get("woreda", member.woreda)),
+                "kebele": int(kw.get("kebele", member.kebele)),
+                "birthdate": kw.get("birthdate", member.birthdate),
+                "gender": kw.get("gender", member.gender),
+                "has_personal_phone": has_national_id,
+                "phone_number_ids": phone_number_ids,
+                "email": kw.get("email", member.email),
+                "is_disabled": is_disabled,
+                "farming_type": farming_type,
+                "martial_status": martial_status,
+                "education": education,
+                "hh_income_type": hh_income_type,
+                "is_member_of_primary_cooperative": is_member_of_primary_cooperative,
+                "primary_cooperatives": primary_cooperatives,
+                "is_member_of_cooperative_union": is_member_of_cooperative_union,
+                "cooperative_unions": cooperative_unions,
+                "is_member_in_farmer_cluster": is_member_in_farmer_cluster,
+                "primary_commodity": primary_commodity,
+                "role_in_farmer_cluster": role_in_farmer_cluster,
+                "land_information_ids": land_info_data,
+                "supporting_documents_ids": supporting_documents_ids,
+                "crop_water_sources": crop_water_sources,
+                "crop_information_ids": crop_info_data,
+                "livestock_water_sources": livestock_water_sources,
+                "livestock_information_ids": livestock_info_data,
+                "access_to_machinery": access_to_machinery,
+                "type_of_machinery": type_of_machinery,
+                "has_finance_access": has_finance_access,
+                "finance_accesses": finance_accesses,
+                "do_you_use_fertilizer": do_you_use_fertilizer,
+                "do_you_use_pesticide": do_you_use_pesticide,
+                "do_you_use_insecticide": do_you_use_insecticide,
+                "do_you_use_improved_seed": do_you_use_improved_seed,
+            }
             # Update member details
-            member.sudo().write(
-                {
-                    "has_national_id": has_national_id,
-                    "reg_ids": reg_ids,
-                    "primary_Language": primary_Language,
-                    "given_name": kw.get("given_name"),
-                    "family_name": kw.get("family_name"),
-                    "gf_name_eng": kw.get("gf_name_eng"),
-                    "name": name,
-                    "first_name_amh": kw.get("first_name_amh"),
-                    "family_name_amh": kw.get("family_name_amh"),
-                    "gf_name_amh": kw.get("gf_name_amh"),
-                    "first_name_other": kw.get("first_name_other"),
-                    "family_name_other": kw.get("family_name_other"),
-                    "gf_name_other": kw.get("gf_name_other"),
-                    "region": int(kw.get("region", member.region)),
-                    "zone": int(kw.get("zone", member.zone)),
-                    "woreda": int(kw.get("woreda", member.woreda)),
-                    "kebele": int(kw.get("kebele", member.kebele)),
-                    "birthdate": kw.get("birthdate", member.birthdate),
-                    "gender": kw.get("gender", member.gender),
-                    "has_personal_phone": has_national_id,
-                    # "phone_number_ids": phone_number_ids,
-                    "email": kw.get("email", member.email),
-                    "is_disabled": kw.get("is_disabled", member.is_disabled),
-                    "farming_type": kw.get("farming_type", member.farming_type),
-                    "martial_status": martial_status,
-                    "education": education,
-                    "hh_income_type": hh_income_type,
-                    "is_member_of_primary_cooperative": is_member_of_primary_cooperative,
-                    "primary_cooperatives": primary_cooperatives,
-                    "is_member_of_cooperative_union": is_member_of_cooperative_union,
-                    "cooperative_unions": cooperative_unions,
-                    "is_member_in_farmer_cluster": is_member_in_farmer_cluster,
-                    "primary_commodity": primary_commodity,
-                    "role_in_farmer_cluster": role_in_farmer_cluster,
-                    # "land_information_ids": land_info_data,
-                    "crop_water_sources": crop_water_sources,
-                    # "crop_information_ids": crop_info_data,
-                    "livestock_water_sources": livestock_water_sources,
-                    # "livestock_information_ids": livestock_info_data,
-                    "access_to_machinery": access_to_machinery,
-                    "type_of_machinery": type_of_machinery,
-                    "has_finance_access": has_finance_access,
-                    "finance_accesses": finance_accesses,
-                }
-            )
+
+            member.sudo().write(update_records)
 
             return request.redirect("/serviceprovider/individual")
 
@@ -1801,6 +1820,191 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 "g2p_service_provider_beneficiary_management.error_template",
                 {"error_message": f"An error occurred: {e}"},
             )
+
+    def get_selection_value(self, model, selection_id):
+        return (request.env[model].sudo().search([("id", "=", selection_id)]).value) if selection_id else None
+
+    def get_land_info_data(self, kw, backend_id):
+        land_info_data = []
+        land_indices = set()
+
+        valid_keys = [key for key in kw.keys() if "{9999}" not in key]
+        for key in valid_keys:
+            if key.startswith("land_ownership_type_"):
+                try:
+                    land_index = int(key.split("_")[-1])
+                    land_indices.add(land_index)
+                except ValueError:
+                    continue
+
+        doc_tag = request.env["g2p.document.tag"].sudo().get_tag_by_name("Land Certificate")
+        if not doc_tag:
+            doc_tag = request.env["g2p.document.tag"].sudo().create({"name": "Land Certificate"})
+
+        for index in land_indices:
+            ownership_type = kw.get(f"land_ownership_type_{index}")
+            if ownership_type == " ":
+                continue
+            land_id = kw.get(f"land_id_{index}")
+            land_area = kw.get(f"total_land_area_{index}")
+            land_ownership_type = (
+                request.env["ir.model.fields.selection"].sudo().search([("id", "=", ownership_type)]).value
+            )
+            land_info_dict = {
+                "ownership_type": land_ownership_type,
+                "total_land_area": land_area,
+                "land_id": land_id,
+            }
+            if kw.get(f"land_certificate_{index}") and (f"land_certificate_{index}").strip():
+                land_certificate = kw.get(f"land_certificate_{index}")
+                binary_content = base64.b64encode(land_certificate.read()).decode("utf-8")
+                storage_file = (
+                    request.env["storage.file"]
+                    .sudo()
+                    .create(
+                        {
+                            "backend_id": backend_id,
+                            "name": land_certificate.filename,
+                            "data": binary_content,
+                            "tags_ids": [(4, doc_tag.id)],
+                        }
+                    )
+                )
+                land_info_dict["land_certificate"] = storage_file.id
+            land_info_data.append((0, 0, land_info_dict))
+
+        return land_info_data
+
+    def get_crop_info_data(self, kw):
+        crop_info_data = []
+        crop_indices = set()
+
+        valid_keys = [key for key in kw.keys() if "{9999}" not in key]
+        for key in valid_keys:
+            if key.startswith("crops_"):
+                try:
+                    crop_index = int(key.split("_")[-1])
+                    crop_indices.add(crop_index)
+                except ValueError:
+                    continue
+
+        for index in crop_indices:
+            crop_id = kw.get(f"crops_{index}")
+            if crop_id == " ":
+                continue
+
+            crop_info_data.append((0, 0, {"crop": crop_id}))
+
+        return crop_info_data
+
+    def get_livestock_info_data(self, kw):
+        livestock_info_data = []
+        livestock_indices = set()
+
+        valid_keys = [key for key in kw.keys() if "{9999}" not in key]
+        for key in valid_keys:
+            if key.startswith("livestock_types_"):
+                try:
+                    livestock_index = int(key.split("_")[-1])
+                    livestock_indices.add(livestock_index)
+                except ValueError:
+                    continue
+
+        for index in livestock_indices:
+            livestock_type = kw.get(f"livestock_types_{index}")
+            if livestock_type == " ":
+                continue
+            number_of_livestock = kw.get(f"number_of_livestock_{index}")
+
+            livestock_info_data.append(
+                (
+                    0,
+                    0,
+                    {
+                        "livestock_type": livestock_type,
+                        "number_of_livestock": number_of_livestock,
+                    },
+                )
+            )
+
+        return livestock_info_data
+
+    def get_supporting_documents_ids(self, kw):
+        supporting_documents_ids = []
+        backend_id = (
+            request.env.ref("storage_backend.default_storage_backend").id
+            or request.env["storage.backend"].sudo().search([], limit=1).id
+        )
+
+        doc_tag = request.env["g2p.document.tag"].sudo().get_tag_by_name("Land Certificate")
+        if not doc_tag:
+            doc_tag = request.env["g2p.document.tag"].sudo().create({"name": "Land Certificate"})
+
+        land_indices = set()
+        valid_keys = [key for key in kw.keys() if "{9999}" not in key]
+        for key in valid_keys:
+            if key.startswith("land_ownership_type_"):
+                try:
+                    land_index = int(key.split("_")[-1])
+                    land_indices.add(land_index)
+                except ValueError:
+                    continue
+
+        for index in land_indices:
+            if kw.get(f"land_certificate_{index}") and (f"land_certificate_{index}").strip():
+                land_certificate = kw.get(f"land_certificate_{index}")
+                binary_content = base64.b64encode(land_certificate.read()).decode("utf-8")
+                storage_file = (
+                    request.env["storage.file"]
+                    .sudo()
+                    .create(
+                        {
+                            "backend_id": backend_id,
+                            "name": land_certificate.filename,
+                            "data": binary_content,
+                            "tags_ids": [(4, doc_tag.id)],
+                        }
+                    )
+                )
+                supporting_documents_ids.append((4, storage_file.id))
+
+        return supporting_documents_ids
+
+    def handle_phone_numbers(self, has_phone, primary_phone, secondary_phone, other_phone, country_id):
+        phone_number_ids = []
+        if has_phone == "yes":
+            phone_number_ids.append(
+                (0, 0, {"phone_no": primary_phone, "phone_type": "primary", "country_id": country_id})
+            )
+            if secondary_phone:
+                phone_number_ids.append(
+                    (
+                        0,
+                        0,
+                        {
+                            "phone_no": secondary_phone,
+                            "phone_type": "secondary",
+                            "country_id": country_id,
+                        },
+                    )
+                )
+        else:
+            phone_number_ids.append(
+                (0, 0, {"phone_no": other_phone, "phone_type": "other", "country_id": country_id})
+            )
+            if secondary_phone:
+                phone_number_ids.append(
+                    (
+                        0,
+                        0,
+                        {
+                            "phone_no": secondary_phone,
+                            "phone_type": "secondary",
+                            "country_id": country_id,
+                        },
+                    )
+                )
+        return phone_number_ids
 
     @http.route("/serviceprovider/individual", type="http", auth="user", website=True)
     def individual_list(self, **kw):
