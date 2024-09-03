@@ -125,7 +125,6 @@
                                                 </li>
 
 
-
                                             </ul>
                                         </div>
                                         <main role="main" class="content">
@@ -144,7 +143,8 @@
                                                                     >
                                                                         Region
                                                                     </span>
-                                                                    <span class="s_website_form_mark">*</span>
+                                                                    <span class="s_website_form_mark">
+                                                                        *</span>
                                                                 </label>
                                                                 <div class="row">
                                                                     <div class="col">
@@ -326,22 +326,28 @@
                                                                     <tr class="list-row">
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >No.</th>
+                                                                        >
+                                                                            No.</th>
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >Name</th>
+                                                                        >
+                                                                            Name</th>
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >Age</th>
+                                                                        >
+                                                                            Age</th>
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >Gender</th>
+                                                                        >
+                                                                            Gender</th>
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >Is Household Head</th>
+                                                                        >Is
+                                                                            Household Head</th>
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >Actions</th>
+                                                                        >
+                                                                            Actions</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -369,22 +375,22 @@
                                                                                 />
                                                                             </td>
                                                                             <td>
-                                                                                    <t
+                                                                                <t
                                                                                     t-if="individual['hh_is_household_head'] == 'yes'"
                                                                                 >
-                                                                                        <input
+                                                                                    <input
                                                                                         type="checkbox"
                                                                                         checked="checked"
                                                                                         class="hh-checkbox"
                                                                                     />
-                                                                                    </t>
-                                                                                    <t t-else="">
-                                                                                        <input
+                                                                                </t>
+                                                                                <t t-else="">
+                                                                                    <input
                                                                                         type="checkbox"
                                                                                         disabled="disabled"
                                                                                         class="hh-checkbox"
                                                                                     />
-                                                                                    </t>
+                                                                                </t>
                                                                             </td>
 
                                                                             <td>
@@ -419,9 +425,9 @@
                                                                 src="/g2p_service_provider_beneficiary_management/static/src/img/no_mem.png"
                                                             />
                                                             <div class="ml-4">
-                                                            <div>
-                                                                <p>No members!</p>
-                                                            </div>
+                                                                <div>
+                                                                    <p>No members!</p>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div style="text-align: center; margin-top: 20px;">
@@ -637,7 +643,7 @@
                                                                                         style="color: #666666;"
                                                                                     >
                                                                                         RID
-                                                                                        </span>
+                                                                                    </span>
                                                                                 </label>
                                                                                 <input
                                                                                     type="text"
@@ -1129,12 +1135,15 @@
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
                                                                                     >
-                                                                                        Do you have a personal phone
+                                                                                        Do you have
+                                                                                        a personal
+                                                                                        phone
                                                                                         number?
                                                                                     </span>
                                                                                     <span
                                                                                         class="s_website_form_mark"
-                                                                                    > *</span>
+                                                                                    >
+                                                                                        *</span>
                                                                                 </label>
                                                                                 <select
                                                                                     class="form-select"
@@ -1143,9 +1152,8 @@
                                                                                     onchange="validateElement(this)"
                                                                                     id="have-phone-no-selection"
                                                                                 >
-                                                                                    <option
-                                                                                        value=""
-                                                                                    >Select</option>
+                                                                                    <option value="">
+                                                                                        Select</option>
                                                                                     <t
                                                                                         t-foreach="has_personal_phone"
                                                                                         t-as="option"
@@ -1181,11 +1189,13 @@
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
                                                                                     >
-                                                                                        Primary Phone Number
+                                                                                        Primary
+                                                                                        Phone Number
                                                                                     </span>
                                                                                     <span
                                                                                         class="s_website_form_mark"
-                                                                                    > *</span>
+                                                                                    >
+                                                                                        *</span>
                                                                                 </label>
                                                                                 <input
                                                                                     type="text"
@@ -1217,11 +1227,13 @@
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
                                                                                     >
-                                                                                        Other Phone Number
+                                                                                        Other Phone
+                                                                                        Number
                                                                                     </span>
                                                                                     <span
                                                                                         class="s_website_form_mark"
-                                                                                    > *</span>
+                                                                                    >
+                                                                                        *</span>
                                                                                 </label>
                                                                                 <input
                                                                                     type="text"
@@ -1250,7 +1262,8 @@
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
                                                                                     >
-                                                                                        Secondary Phone Number
+                                                                                        Secondary
+                                                                                        Phone Number
                                                                                     </span>
 
 
@@ -2041,7 +2054,10 @@
                                                                                                         class="s_website_form_label_content"
                                                                                                         style="color: #666666;"
                                                                                                     >
-                                                                                                        Land Area (in Hectares)
+                                                                                                        Land
+                                                                                                        Area
+                                                                                                        (in
+                                                                                                        Hectares)
                                                                                                     </span>
                                                                                                     <span
                                                                                                         class="s_website_form_mark"
@@ -2239,7 +2255,10 @@
                                                                                                         class="s_website_form_label_content"
                                                                                                         style="color: #666666;"
                                                                                                     >
-                                                                                                        Land Area (in Hectares)
+                                                                                                        Land
+                                                                                                        Area
+                                                                                                        (in
+                                                                                                        Hectares)
                                                                                                     </span>
                                                                                                     <span
                                                                                                         class="s_website_form_mark"
@@ -2482,7 +2501,11 @@
                                                                                                         class="s_website_form_label_content"
                                                                                                         style="color: #666666;"
                                                                                                     >
-                                                                                                        Which commodity do you produce?
+                                                                                                        Which
+                                                                                                        commodity
+                                                                                                        do
+                                                                                                        you
+                                                                                                        produce?
                                                                                                     </span>
                                                                                                     <span
                                                                                                         class="s_website_form_mark"
@@ -2605,7 +2628,11 @@
                                                                                                         class="s_website_form_label_content"
                                                                                                         style="color: #666666;"
                                                                                                     >
-                                                                                                        Which commodity do you produce?
+                                                                                                        Which
+                                                                                                        commodity
+                                                                                                        do
+                                                                                                        you
+                                                                                                        produce?
                                                                                                     </span>
                                                                                                     <span
                                                                                                         class="s_website_form_mark"
@@ -2831,7 +2858,13 @@
                                                                                                         class="s_website_form_label_content"
                                                                                                         style="color: #666666;"
                                                                                                     >
-                                                                                                        What kind of animals do you own?
+                                                                                                        What
+                                                                                                        kind
+                                                                                                        of
+                                                                                                        animals
+                                                                                                        do
+                                                                                                        you
+                                                                                                        own?
                                                                                                     </span>
                                                                                                     <span
                                                                                                         class="s_website_form_mark"
@@ -2879,7 +2912,12 @@
                                                                                                         class="s_website_form_label_content"
                                                                                                         style="color: #666666;"
                                                                                                     >
-                                                                                                        How many animals do you own?
+                                                                                                        How
+                                                                                                        many
+                                                                                                        animals
+                                                                                                        do
+                                                                                                        you
+                                                                                                        own?
                                                                                                     </span>
                                                                                                     <span
                                                                                                         class="s_website_form_mark"
@@ -3131,10 +3169,13 @@
                                                                                     <span
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
-                                                                                    >Have you used any fertilizers?</span>
+                                                                                    >Have
+                                                                                        you used any
+                                                                                        fertilizers?</span>
                                                                                     <span
                                                                                         class="s_website_form_mark"
-                                                                                    > *</span>
+                                                                                    >
+                                                                                        *</span>
                                                                                 </label>
                                                                                 <select
                                                                                     class="form-select"
@@ -3142,9 +3183,8 @@
                                                                                     onchange="validateElement(this)"
                                                                                     id="have-used-fertilizer-selection"
                                                                                 >
-                                                                                    <option
-                                                                                        value=" "
-                                                                                    >Select</option>
+                                                                                    <option value=" ">
+                                                                                        Select</option>
                                                                                     <t
                                                                                         t-foreach="do_you_use_fertilizer"
                                                                                         t-as="option"
@@ -3168,10 +3208,13 @@
                                                                                     <span
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
-                                                                                    >Have you used any pesticides?</span>
+                                                                                    >Have
+                                                                                        you used any
+                                                                                        pesticides?</span>
                                                                                     <span
                                                                                         class="s_website_form_mark"
-                                                                                    > *</span>
+                                                                                    >
+                                                                                        *</span>
                                                                                 </label>
                                                                                 <select
                                                                                     class="form-select"
@@ -3179,9 +3222,8 @@
                                                                                     onchange="validateElement(this)"
                                                                                     id="have-used-pesticide-selection"
                                                                                 >
-                                                                                    <option
-                                                                                        value=" "
-                                                                                    >Select</option>
+                                                                                    <option value=" ">
+                                                                                        Select</option>
                                                                                     <t
                                                                                         t-foreach="do_you_use_pesticide"
                                                                                         t-as="option"
@@ -3208,10 +3250,14 @@
                                                                                     <span
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
-                                                                                    >Have you used any insecticides?</span>
+                                                                                    >
+                                                                                        Have
+                                                                                        you used any
+                                                                                        insecticides?</span>
                                                                                     <span
                                                                                         class="s_website_form_mark"
-                                                                                    > *</span>
+                                                                                    >
+                                                                                        *</span>
                                                                                 </label>
                                                                                 <select
                                                                                     class="form-select"
@@ -3219,9 +3265,8 @@
                                                                                     onchange="validateElement(this)"
                                                                                     id="have-used-insecticide-selection"
                                                                                 >
-                                                                                    <option
-                                                                                        value=" "
-                                                                                    >Select</option>
+                                                                                    <option value=" ">
+                                                                                        Select</option>
                                                                                     <t
                                                                                         t-foreach="do_you_use_insecticide"
                                                                                         t-as="option"
@@ -3245,10 +3290,14 @@
                                                                                     <span
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
-                                                                                    >Have you used any improved seeds?</span>
+                                                                                    >Have
+                                                                                        you used any
+                                                                                        improved
+                                                                                        seeds?</span>
                                                                                     <span
                                                                                         class="s_website_form_mark"
-                                                                                    > *</span>
+                                                                                    >
+                                                                                        *</span>
                                                                                 </label>
 
                                                                                 <select
@@ -3257,9 +3306,8 @@
                                                                                     onchange="validateElement(this)"
                                                                                     id="have-used-improved-seed-selection"
                                                                                 >
-                                                                                    <option
-                                                                                        value=" "
-                                                                                    >Select</option>
+                                                                                    <option value=" ">
+                                                                                        Select</option>
                                                                                     <t
                                                                                         t-foreach="do_you_use_improved_seed"
                                                                                         t-as="option"
@@ -3346,7 +3394,7 @@
                                                                                 >
                                                                                     <option value=" ">
                                                                                         Select
-                                                                                        </option>
+                                                                                    </option>
                                                                                     <t
                                                                                         t-foreach="access_to_machinery"
                                                                                         t-as="option"
@@ -3446,7 +3494,7 @@
                                                                                 >
                                                                                     <option value=" ">
                                                                                         Select
-                                                                                        </option>
+                                                                                    </option>
                                                                                     <t
                                                                                         t-foreach="has_finance_access"
                                                                                         t-as="option"
@@ -3550,22 +3598,28 @@
                                                                     <tr class="list-row">
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >No.</th>
+                                                                        >
+                                                                            No.</th>
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >Name</th>
+                                                                        >
+                                                                            Name</th>
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >Age</th>
+                                                                        >
+                                                                            Age</th>
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >Gender</th>
+                                                                        >
+                                                                            Gender</th>
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >Role</th>
+                                                                        >
+                                                                            Role</th>
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >Actions</th>
+                                                                        >
+                                                                            Actions</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -3576,27 +3630,29 @@
                                                                         <tr
                                                                             t-att-data-member-id="individual.id"
                                                                         >
-                                                                        <td style="color:#b3b3b3;" />
-                                                                        <td
+                                                                            <td style="color:#b3b3b3;" />
+                                                                            <td
                                                                                 style="color:#078148; font: normal normal 600 13px/16px Inter;"
                                                                             >
-                                                                            <t t-out="individual.name" />
-                                                                        </td>
-                                                                        <td>
-                                                                            <t t-out="individual.age" />
-                                                                        </td>
-                                                                        <td class="text-capitalize">
-                                                                            <t t-out="individual.gender" />
-                                                                        </td>
-                                                                        <td>
-                                                                            <t
+                                                                                <t t-out="individual.name" />
+                                                                            </td>
+                                                                            <td>
+                                                                                <t t-out="individual.age" />
+                                                                            </td>
+                                                                            <td class="text-capitalize">
+                                                                                <t
+                                                                                    t-out="individual.gender"
+                                                                                />
+                                                                            </td>
+                                                                            <td>
+                                                                                <t
                                                                                     t-out="individual.individual_membership_ids.kind.name"
                                                                                 />
-                                                                        </td>
+                                                                            </td>
 
 
-                                                                        <td>
-                                                                            <button
+                                                                            <td>
+                                                                                <button
                                                                                     type="button"
                                                                                     class="btn btn-icon rounded-0"
                                                                                     title="Edit"
@@ -3606,17 +3662,19 @@
                                                                                     data-bs-target="#editFamilyMemberModal"
                                                                                     onclick="populateEditModal('{{ individual.id }}')"
                                                                                 >
-                                                                                <i class="fa fa-pencil" />
-                                                                            </button>
-                                                                            <button
+                                                                                    <i class="fa fa-pencil" />
+                                                                                </button>
+                                                                                <button
                                                                                     type="button"
                                                                                     class="btn btn-outline-secondary btn-sm my-3"
                                                                                     onclick="deleteMember(this)"
                                                                                 >
-                                                                                <i class="fas fa-trash-alt" />
-                                                                            </button>
-                                                                        </td>
-                                                                    </tr>
+                                                                                    <i
+                                                                                        class="fas fa-trash-alt"
+                                                                                    />
+                                                                                </button>
+                                                                            </td>
+                                                                        </tr>
                                                                     </t>
                                                                 </tbody>
                                                             </table>
@@ -3842,39 +3900,41 @@
                                                                     </div>
 
 
-                                                                <div class="col-lg-4">
-                                                                    <label
+                                                                    <div class="col-lg-4">
+                                                                        <label
                                                                             class="s_website_form_label"
                                                                             for="relationship"
                                                                         >
-                                                                        <span
+                                                                            <span
                                                                                 class="s_website_form_label_content"
                                                                                 style="color: #666666;"
                                                                             >
-                                                                            Relationship
-                                                                        </span>
-                                                                    </label>
-                                                                    <select
+                                                                                Relationship
+                                                                            </span>
+                                                                        </label>
+                                                                        <select
                                                                             class="form-select"
                                                                             name="relation_with_household_head_add"
                                                                             required="required"
                                                                             onchange="validateElement(this)"
                                                                             id="relation_with_hh_selection"
                                                                         >
-                                                                        <option value=" ">Select
-                                                                            Relation
-                                                                        </option>
-                                                                        <t
+                                                                            <option value=" ">Select
+                                                                                Relation
+                                                                            </option>
+                                                                            <t
                                                                                 t-foreach="relationship_with_hhh"
                                                                                 t-as="option"
                                                                             >
-                                                                            <option t-att-value="option.id">
-                                                                                <t t-esc="option.name" />
-                                                                            </option>
-                                                                        </t>
-                                                                    </select>
+                                                                                <option
+                                                                                    t-att-value="option.id"
+                                                                                >
+                                                                                    <t t-esc="option.name" />
+                                                                                </option>
+                                                                            </t>
+                                                                        </select>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
 
                                                             </div>
 
@@ -3916,97 +3976,100 @@
                                             </div>
 
 
-
                                         </main>
                                     </div>
                                 </div>
                             </div>
+
+                            <t
+                                t-set="primary_language_js"
+                                t-value="json.dumps([{'label': pl.name, 'value': pl.id} for pl in primary_language])"
+                            />
+
                             <link
                                 rel="stylesheet"
                                 href="/g2p_ati_service_provider_portal/static/src/css/virtual-select.min.css"
                             />
-                                <link
+                            <link
                                 href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
                                 rel="stylesheet"
                             />
-                                <link
+                            <link
                                 rel="stylesheet"
                                 href="/g2p_ati_service_provider_portal/static/src/css/style.css"
                             />
-                                <link
+                            <link
                                 href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.14/css/bootstrap-select.min.css"
                                 rel="stylesheet"
                             />
-                                <link
+                            <link
                                 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
                                 rel="stylesheet"
                             />
 
-                                <script
-                                src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-                            />
-                                <script
+                            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" />
+                            <script
                                 src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"
                                 integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g=="
                                 crossorigin="anonymous"
                                 referrerpolicy="no-referrer"
                             />
-                                <script
+                            <script
                                 src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"
                             />
-                                <script
+                            <script
                                 src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.14/js/bootstrap-select.min.js"
                             />
 
-                                <script type="text/javascript"> var primaryLanguageData = JSON.parse('<t
+                            <script type="text/javascript"> var primaryLanguageData = JSON.parse('<t
                                     t-esc="primary_language_js"
                                 />'); </script>
 
-                                <script
+                            <script
                                 type="text/javascript"
                                 src="/g2p_ati_service_provider_portal/static/src/js/virtual-select.min.js"
                             />
-                                <script
+                            <script
                                 type="text/javascript"
                                 src="/g2p_ati_service_provider_portal/static/src/js/member_form.js"
                             />
-                                <script
+                            <script
                                 type="text/javascript"
                                 src="/g2p_ati_service_provider_portal/static/src/js/side_nav_bar.js"
                             />
-                                <script
+                            <script
                                 type="text/javascript"
                                 src="/g2p_ati_service_provider_portal/static/src/js/create_individual_validations.js"
                             />
-                                <script
+                            <script
                                 type="text/javascript"
                                 src="/g2p_ati_service_provider_portal/static/src/js/add_informations.js"
                             />
-                                <script
+                            <script
                                 type="text/javascript"
                                 src="/g2p_ati_service_provider_portal/static/src/js/household_validations.js"
                             />
-                                <script
+                            <script
                                 type="text/javascript"
                                 src="/g2p_ati_service_provider_portal/static/src/js/language_validations.js"
                             />
 
-                                <script>
-                                    function updateFileName(input) {
-                                        var inputId = input.getAttribute('id');
-                                        var label = document.querySelector(label[for="${inputId}"]);
-                                        var uploadText = label.querySelector('.upload-text');
-                                        var fileName = input.files.length > 0 ? input.files[0].name : 'Upload';
-                                        uploadText.textContent = fileName;
-                                    }
-                                </script>
+                            <script>
+                                function updateFileName(input) {
+                                var inputId = input.getAttribute('id');
+                                var label = document.querySelector(label[for="${inputId}"]);
+                                var uploadText = label.querySelector('.upload-text');
+                                var fileName = input.files.length > 0 ? input.files[0].name :
+                                'Upload';
+                                uploadText.textContent = fileName;
+                                }
+                            </script>
 
-                                <script>
-                                    $(document).ready(function () {
-                                        $('.selectpicker').selectpicker();
-                                    });
-                                </script>
-
+                            <script>
+                                $(document).ready(function () {
+                                $('.selectpicker').selectpicker();
+                                });
+                            </script>
                         </form>
                     </div>
                 </div>

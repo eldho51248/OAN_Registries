@@ -170,8 +170,10 @@
                                                                 <label class="s_website_form_label">
                                                                     <span
                                                                         class="s_website_form_label_content"
-                                                                    >Region</span>
-                                                                    <span class="s_website_form_mark">*</span>
+                                                                    >
+                                                                        Region</span>
+                                                                    <span class="s_website_form_mark">
+                                                                        *</span>
                                                                 </label>
                                                                 <div class="row">
                                                                     <div class="col">
@@ -207,8 +209,10 @@
                                                                 <label class="s_website_form_label">
                                                                     <span
                                                                         class="s_website_form_label_content"
-                                                                    >Zone</span>
-                                                                    <span class="s_website_form_mark">*</span>
+                                                                    >
+                                                                        Zone</span>
+                                                                    <span class="s_website_form_mark">
+                                                                        *</span>
                                                                 </label>
                                                                 <div class="row">
                                                                     <div class="col">
@@ -243,8 +247,10 @@
                                                                 <label class="s_website_form_label">
                                                                     <span
                                                                         class="s_website_form_label_content"
-                                                                    >Woreda</span>
-                                                                    <span class="s_website_form_mark">*</span>
+                                                                    >
+                                                                        Woreda</span>
+                                                                    <span class="s_website_form_mark">
+                                                                        *</span>
                                                                 </label>
                                                                 <div class="row">
                                                                     <div class="col">
@@ -280,8 +286,10 @@
                                                                 <label class="s_website_form_label">
                                                                     <span
                                                                         class="s_website_form_label_content"
-                                                                    >Kebele</span>
-                                                                    <span class="s_website_form_mark">*</span>
+                                                                    >
+                                                                        Kebele</span>
+                                                                    <span class="s_website_form_mark">
+                                                                        *</span>
                                                                 </label>
                                                                 <div class="row">
                                                                     <div class="col">
@@ -318,12 +326,10 @@
                                                         class="btn btn-outline-secondary"
                                                         onclick="showNextSection('farmer-details', 'location-details')"
                                                         id="some-button-or-link"
-                                                    >
-                                                        NEXT <span>&#x276F;</span>
+                                                    > NEXT <span>&#x276F;</span>
                                                     </button>
                                                 </div>
                                             </div>
-
 
 
                                             <div
@@ -345,22 +351,28 @@
                                                                     <tr class="list-row">
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >No.</th>
+                                                                        >
+                                                                            No.</th>
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >Name</th>
+                                                                        >
+                                                                            Name</th>
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >Age</th>
+                                                                        >
+                                                                            Age</th>
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >Gender</th>
+                                                                        >
+                                                                            Gender</th>
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >Is Household Head</th>
+                                                                        >Is
+                                                                            Household Head</th>
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >Actions</th>
+                                                                        >
+                                                                            Actions</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -389,22 +401,22 @@
                                                                                     />
                                                                                 </td>
                                                                                 <td>
-                                                                                        <t
+                                                                                    <t
                                                                                         t-if="individual['hh_is_household_head'] == 'yes'"
                                                                                     >
-                                                                                            <input
+                                                                                        <input
                                                                                             type="checkbox"
                                                                                             checked="checked"
                                                                                             class="hh-checkbox"
                                                                                         />
-                                                                                        </t>
-                                                                                        <t t-else="">
-                                                                                            <input
+                                                                                    </t>
+                                                                                    <t t-else="">
+                                                                                        <input
                                                                                             type="checkbox"
                                                                                             disabled="disabled"
                                                                                             class="hh-checkbox"
                                                                                         />
-                                                                                        </t>
+                                                                                    </t>
                                                                                 </td>
 
                                                                                 <td>
@@ -477,9 +489,6 @@
                                                     </button>
                                                 </div>
                                             </div>
-
-
-
 
 
                                             <div
@@ -3634,22 +3643,28 @@
                                                                     <tr class="list-row">
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >No.</th>
+                                                                        >
+                                                                            No.</th>
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >Name</th>
+                                                                        >
+                                                                            Name</th>
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >Age</th>
+                                                                        >
+                                                                            Age</th>
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >Gender</th>
+                                                                        >
+                                                                            Gender</th>
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >Role</th>
+                                                                        >
+                                                                            Role</th>
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >Actions</th>
+                                                                        >
+                                                                            Actions</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -3926,20 +3941,22 @@
                                                                                 onchange="validateElement(this)"
                                                                                 id="relation_with_hh_selection"
                                                                             >
-                                                                            <option value=" ">Select
-                                                                                Relation
-                                                                            </option>
-                                                                            <t
+                                                                                <option value=" ">Select
+                                                                                    Relation
+                                                                                </option>
+                                                                                <t
                                                                                     t-foreach="realationship_with_hhh"
                                                                                     t-as="option"
                                                                                 >
-                                                                                <option
+                                                                                    <option
                                                                                         t-att-value="option.id"
                                                                                     >
-                                                                                    <t t-esc="option.name" />
-                                                                                </option>
-                                                                            </t>
-                                                                        </select>
+                                                                                        <t
+                                                                                            t-esc="option.name"
+                                                                                        />
+                                                                                    </option>
+                                                                                </t>
+                                                                            </select>
 
 
                                                                         </div>
@@ -4146,39 +4163,41 @@
                                                                     </div>
 
 
-                                                                <div class="col-lg-4">
-                                                                    <label
+                                                                    <div class="col-lg-4">
+                                                                        <label
                                                                             class="s_website_form_label"
                                                                             for="relationship"
                                                                         >
-                                                                        <span
+                                                                            <span
                                                                                 class="s_website_form_label_content"
                                                                                 style="color: #666666;"
                                                                             >
-                                                                            Relationship
-                                                                        </span>
-                                                                    </label>
-                                                                    <select
+                                                                                Relationship
+                                                                            </span>
+                                                                        </label>
+                                                                        <select
                                                                             class="form-select"
                                                                             name="relation_with_household_head_add"
                                                                             required="required"
                                                                             onchange="validateElement(this)"
                                                                             id="relation_with_hh_selection"
                                                                         >
-                                                                        <option value=" ">Select
-                                                                            Relation
-                                                                        </option>
-                                                                        <t
+                                                                            <option value=" ">Select
+                                                                                Relation
+                                                                            </option>
+                                                                            <t
                                                                                 t-foreach="relationship_with_hhh"
                                                                                 t-as="option"
                                                                             >
-                                                                            <option t-att-value="option.id">
-                                                                                <t t-esc="option.name" />
-                                                                            </option>
-                                                                        </t>
-                                                                    </select>
+                                                                                <option
+                                                                                    t-att-value="option.id"
+                                                                                >
+                                                                                    <t t-esc="option.name" />
+                                                                                </option>
+                                                                            </t>
+                                                                        </select>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
 
                                                             </div>
 
@@ -4224,92 +4243,95 @@
                                     </div>
                                 </div>
                             </div>
+                            <t
+                                t-set="primary_language_js"
+                                t-value="json.dumps([{'label': pl.name, 'value': pl.id} for pl in primary_language])"
+                            />
+
                             <link
                                 rel="stylesheet"
                                 href="/g2p_ati_service_provider_portal/static/src/css/virtual-select.min.css"
                             />
-                                <link
+                            <link
                                 href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
                                 rel="stylesheet"
                             />
-                                <link
+                            <link
                                 rel="stylesheet"
                                 href="/g2p_ati_service_provider_portal/static/src/css/style.css"
                             />
-                                <link
+                            <link
                                 href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.14/css/bootstrap-select.min.css"
                                 rel="stylesheet"
                             />
-                                <link
+                            <link
                                 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
                                 rel="stylesheet"
                             />
 
-                                <script
-                                src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-                            />
-                                <script
+                            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" />
+                            <script
                                 src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"
                                 integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g=="
                                 crossorigin="anonymous"
                                 referrerpolicy="no-referrer"
                             />
-                                <script
+                            <script
                                 src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"
                             />
-                                <script
+                            <script
                                 src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.14/js/bootstrap-select.min.js"
                             />
 
-                                <script type="text/javascript"> var primaryLanguageData = JSON.parse('<t
+                            <script type="text/javascript"> var primaryLanguageData = JSON.parse('<t
                                     t-esc="primary_language_js"
                                 />'); </script>
 
-                                <script
+                            <script
                                 type="text/javascript"
                                 src="/g2p_ati_service_provider_portal/static/src/js/virtual-select.min.js"
                             />
-                                <script
+                            <script
                                 type="text/javascript"
                                 src="/g2p_ati_service_provider_portal/static/src/js/member_form.js"
                             />
-                                <script
+                            <script
                                 type="text/javascript"
                                 src="/g2p_ati_service_provider_portal/static/src/js/side_nav_bar.js"
                             />
-                                <script
+                            <script
                                 type="text/javascript"
                                 src="/g2p_ati_service_provider_portal/static/src/js/create_individual_validations.js"
                             />
-                                <script
+                            <script
                                 type="text/javascript"
                                 src="/g2p_ati_service_provider_portal/static/src/js/add_informations.js"
                             />
-                                <script
+                            <script
                                 type="text/javascript"
                                 src="/g2p_ati_service_provider_portal/static/src/js/household_validations.js"
                             />
-                                <script
+                            <script
                                 type="text/javascript"
                                 src="/g2p_ati_service_provider_portal/static/src/js/language_validations.js"
                             />
 
-                                <script>
-                                    function updateFileName(input) {
-                                        var inputId = input.getAttribute('id');
-                                        var label = document.querySelector(label[for="${inputId}"]);
-                                        var uploadText = label.querySelector('.upload-text');
-                                        var fileName = input.files.length > 0 ? input.files[0].name : 'Upload';
-                                        uploadText.textContent = fileName;
-                                    }
-                                </script>
+                            <script>
+                                function updateFileName(input) {
+                                var inputId = input.getAttribute('id');
+                                var label = document.querySelector(label[for="${inputId}"]);
+                                var uploadText = label.querySelector('.upload-text');
+                                var fileName = input.files.length > 0 ? input.files[0].name :
+                                'Upload';
+                                uploadText.textContent = fileName;
+                                }
+                            </script>
 
-                                <script>
-                                    $(document).ready(function () {
-                                        $('.selectpicker').selectpicker();
-                                    });
-                                </script>
-
+                            <script>
+                                $(document).ready(function () {
+                                $('.selectpicker').selectpicker();
+                                });
+                            </script>
                         </form>
                     </div>
                 </div>

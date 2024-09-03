@@ -128,7 +128,7 @@
 
                                             <td>
                                                 <a
-                                                    t-attf-href="/serviceprovider/individual/update/{{ update.id }}"
+                                                    t-attf-href="/serviceprovider/individual/update/{{ update.record_id.id }}"
                                                 >
                                                     <button string="Update" type="object" class="view-button">
                                                         Update
