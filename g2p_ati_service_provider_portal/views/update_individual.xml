@@ -3350,6 +3350,11 @@
                             </div>
 
                             <!-- Pass data to JavaScript -->
+                            <t
+                                t-set="primary_language_js"
+                                t-value="json.dumps([{'label': pl.name, 'value': pl.id} for pl in primary_language])"
+                            />
+
                             <link
                                 rel="stylesheet"
                                 href="/g2p_ati_service_provider_portal/static/src/css/virtual-select.min.css"
