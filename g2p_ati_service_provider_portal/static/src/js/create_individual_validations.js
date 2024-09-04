@@ -325,22 +325,22 @@ $(document).ready(function () {
         console.log("HERE");
         const regionId = this.value;
         var ev = event.originalEvent;
-        updateOptions("/update_zone_options", { region_id: regionId }, "zon_selection", "Select", ev, "region");
-        updateOptions("/update_woreda_options", { zone_id: 0 }, "woreda_selection", "Select", ev, "region");
-        updateOptions("/update_kebele_options", { woreda_id: 0 }, "kebele_selection", "Select", ev, "region");
+        updateOptions("/update_zone_options", {region_id: regionId}, "zon_selection", "Select", ev, "region");
+        updateOptions("/update_woreda_options", {zone_id: 0}, "woreda_selection", "Select", ev, "region");
+        updateOptions("/update_kebele_options", {woreda_id: 0}, "kebele_selection", "Select", ev, "region");
     });
 
     $("#zon_selection").on("change", function (event) {
         const zoneId = this.value;
         var ev = event.originalEvent;
-        updateOptions("/update_woreda_options", { zone_id: zoneId }, "woreda_selection", "Select", ev);
-        updateOptions("/update_kebele_options", { woreda_id: 0 }, "kebele_selection", "Select", ev);
+        updateOptions("/update_woreda_options", {zone_id: zoneId}, "woreda_selection", "Select", ev);
+        updateOptions("/update_kebele_options", {woreda_id: 0}, "kebele_selection", "Select", ev);
     });
 
     $("#woreda_selection").on("change", function (event) {
         const woredaId = this.value;
         var ev = event.originalEvent;
-        updateOptions("/update_kebele_options", { woreda_id: woredaId }, "kebele_selection", "Select", ev);
+        updateOptions("/update_kebele_options", {woreda_id: woredaId}, "kebele_selection", "Select", ev);
     });
 
     // Trigger the change event on page load to handle the initial state
