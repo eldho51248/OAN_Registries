@@ -62,18 +62,25 @@ function applySearchFilter(searchValue) {
     filteredRows = allRows.filter((row) => {
         const cellValue1 = row.cells[1].innerText.toLowerCase();
         const cellValue2 = row.cells[2].innerText.toLowerCase();
-        const cellValue3 = row.cells[5].innerText.toLowerCase();
-        const cellValue4 = row.cells[7].innerText.toLowerCase();
+        const cellValue3 = row.cells[3].innerText.toLowerCase();
+        const cellValue4 = row.cells[4].innerText.toLowerCase();
+        const cellValue5 = row.cells[5].innerText.toLowerCase();
+        const cellValue6 = row.cells[6].innerText.toLowerCase();
+
         return (
             cellValue1.includes(searchValue) ||
             cellValue2.includes(searchValue) ||
             cellValue3.includes(searchValue) ||
-            cellValue4.includes(searchValue)
+            cellValue4.includes(searchValue) ||
+            cellValue5.includes(searchValue) ||
+            cellValue6.includes(searchValue)
         );
     });
 }
 function applySelectionFilter(selectionValue, isGroup) {
-    filteredRows = filteredRows.filter((row) => {
+    console.log(allRows);
+
+    filteredRows = allRows.filter((row) => {
         // Console.log(row);
         // Assuming each row has a data attribute or a cell with the selection value
         var cellValue2 = null;
@@ -83,16 +90,17 @@ function applySelectionFilter(selectionValue, isGroup) {
             cellValue2 = row.cells[2].innerText.trim().replace(/\s/g, "");
         }
         // Console.log(row.cells[2]);
-        console.log("individual", cellValue2);
+        // console.log("individual", cellValue2);
         const selectedText = selectionValue.options[selectionValue.selectedIndex].text
             .trim()
             .replace(/\s/g, "");
-        console.log("selected", selectedText);
+        // Console.log("selected", selectedText);
         return cellValue2 === selectedText || selectedText === "Region";
     });
+    console.log(filteredRows);
 }
 function applySelectionFilterZone(isGroup) {
-    filteredRows = filteredRows.filter((row) => {
+    filteredRows = allRows.filter((row) => {
         var cellValue2 = null;
         var text_i = null;
         if (isGroup) {
@@ -108,7 +116,7 @@ function applySelectionFilterZone(isGroup) {
 
         // console.log(cellValue2,selectionValue,text_i)
         // return cellValue2 === selectionValue;
-        return cellValue2 === text_i;
+        return cellValue2 === text_i || text_i === "Zone";
     });
 }
 
@@ -129,7 +137,7 @@ function applySelectionFilterWoreda(selectionValue, isGroup) {
             text_i = SelectionWoreda.options[SelectionWoreda.selectedIndex].text.trim().replace(/\s/g, "");
         }
 
-        return cellValue2 === text_i;
+        return cellValue2 === text_i || text_i === "Woreda";
     });
 }
 
@@ -147,7 +155,7 @@ function applySelectionFilterKebele(selectionValue, isGroup) {
             text_i = SelectionKebele.options[SelectionKebele.selectedIndex].text.trim().replace(/\s/g, "");
         }
 
-        return cellValue2 === text_i;
+        return cellValue2 === text_i || text_i === "Kebele";
     });
 }
 
@@ -332,29 +340,36 @@ allheadercells.forEach(function (th) {
 });
 
 function updateOptions(url, data, targetSelectId, defaultOptionText) {
-    $.ajax({
-        url: url,
-        method: "POST",
-        dataType: "json",
-        data: data,
-        success: function (options) {
-            const selectElement = document.getElementById(targetSelectId);
-            selectElement.innerHTML = "";
-            const defaultOption = document.createElement("option");
-            defaultOption.value = "";
-            defaultOption.textContent = defaultOptionText;
-            selectElement.appendChild(defaultOption);
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: url,
+            method: "POST",
+            dataType: "json",
+            data: data,
+            success: function (options) {
+                const selectElement = document.getElementById(targetSelectId);
+                selectElement.innerHTML = "";
+                const defaultOption = document.createElement("option");
+                defaultOption.value = "";
+                defaultOption.textContent = defaultOptionText;
+                selectElement.appendChild(defaultOption);
 
-            options.forEach((option) => {
-                const opt = document.createElement("option");
-                opt.value = option.id;
-                opt.textContent = option.name;
-                selectElement.appendChild(opt);
-            });
-        },
-        error: function (error) {
-            console.error("Error fetching options:", error);
-        },
+                options.forEach((option) => {
+                    const opt = document.createElement("option");
+                    opt.value = option.id;
+                    opt.textContent = option.name;
+                    selectElement.appendChild(opt);
+                });
+
+                // Resolve the promise when the AJAX call is successful
+                resolve();
+            },
+            error: function (error) {
+                console.error("Error fetching options:", error);
+                // Reject the promise in case of an error
+                reject(error);
+            },
+        });
     });
 }
 
@@ -396,7 +411,7 @@ function handleSearch(isGroup = true) {
             applySelectionFilterKebele(SelectionKebeleValue, isGroup);
         }
         if (searchValue) {
-            applySearchFilter(searchValue);
+            applySearchFilter(searchValue, isGroup);
         }
     }
 
@@ -421,39 +436,88 @@ function handleSearch(isGroup = true) {
 searchInputText.addEventListener("input", handleSearch);
 
 SelectionRegion?.addEventListener("input", function () {
-    handleSearch(false);
     const regionId = this.value;
-    updateOptions("/update_zone_options", {region_id: regionId}, "zone_selection", "Zone");
+    // Use Promise.all to wait for all updateOptions calls to complete
+    Promise.all([
+        updateOptions("/update_zone_options", {region_id: regionId}, "zone_selection", "Zone"),
+        updateOptions("/update_woreda_options", {zone_id: null}, "woreda_selection", "Woreda"),
+        updateOptions("/update_kebele_options", {woreda_id: null}, "kebele_selection", "Kebele"),
+    ])
+        .then(() => {
+            handleSearch(false);
+        })
+        .catch((error) => {
+            console.error("Error in one of the updateOptions calls:", error);
+        });
 });
 
 SelectionRegionGroup?.addEventListener("input", function () {
-    handleSearch(true);
     const regionId = this.value;
-    updateOptions("/update_zone_options", {region_id: regionId}, "zone_selection_group", "Zone");
+    Promise.all([
+        updateOptions("/update_zone_options", {region_id: regionId}, "zone_selection_group", "Zone"),
+        updateOptions("/update_woreda_options", {zone_id: null}, "woreda_selection_group", "Woreda"),
+        updateOptions("/update_kebele_options", {woreda_id: null}, "kebele_selection_group", "Kebele"),
+    ])
+        .then(() => {
+            handleSearch(true);
+        })
+        .catch((error) => {
+            console.error("Error in one of the updateOptions calls:", error);
+        });
 });
 
 SelectionZon?.addEventListener("input", function () {
-    handleSearch(false);
     const zoneId = this.value;
-    updateOptions("/update_woreda_options", {zone_id: zoneId}, "woreda_selection", "Woreda");
+    Promise.all([
+        updateOptions("/update_woreda_options", {zone_id: zoneId}, "woreda_selection", "Woreda"),
+        updateOptions("/update_kebele_options", {woreda_id: null}, "kebele_selection", "Kebele"),
+    ])
+        .then(() => {
+            handleSearch(false);
+        })
+        .catch((error) => {
+            console.error("Error in one of the updateOptions calls:", error);
+        });
 });
 
 SelectionZonGroup?.addEventListener("input", function () {
-    handleSearch(true);
     const zoneId = this.value;
-    updateOptions("/update_woreda_options", {zone_id: zoneId}, "woreda_selection_group", "Woreda");
+    Promise.all([
+        updateOptions("/update_woreda_options", {zone_id: zoneId}, "woreda_selection_group", "Woreda"),
+        updateOptions("/update_kebele_options", {woreda_id: null}, "kebele_selection_group", "Kebele"),
+    ])
+        .then(() => {
+            handleSearch(true);
+        })
+        .catch((error) => {
+            console.error("Error in one of the updateOptions calls:", error);
+        });
 });
 
 SelectionWoreda?.addEventListener("input", function () {
-    handleSearch(false);
     const woredaId = this.value;
-    updateOptions("/update_kebele_options", {woreda_id: woredaId}, "kebele_selection", "Kebele");
+    Promise.all([
+        updateOptions("/update_kebele_options", {woreda_id: woredaId}, "kebele_selection", "Kebele"),
+    ])
+        .then(() => {
+            handleSearch(false);
+        })
+        .catch((error) => {
+            console.error("Error in one of the updateOptions calls:", error);
+        });
 });
 
 SelectionWoredaGroup?.addEventListener("input", function () {
-    handleSearch(true);
     const woredaId = this.value;
-    updateOptions("/update_kebele_options", {woreda_id: woredaId}, "kebele_selection_group", "Kebele");
+    Promise.all([
+        updateOptions("/update_kebele_options", {woreda_id: woredaId}, "kebele_selection_group", "Kebele"),
+    ])
+        .then(() => {
+            handleSearch(true);
+        })
+        .catch((error) => {
+            console.error("Error in one of the updateOptions calls:", error);
+        });
 });
 
 SelectionKebele?.addEventListener("input", handleSearch(false));
