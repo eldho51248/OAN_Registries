@@ -24,6 +24,9 @@ class ResPartner(models.Model):
 
     edit_count = fields.Integer(default=0)
 
+    update_request_ids = fields.One2many("res.partner.change.request", "partner_id", string="Update Requests")
+    edit_suggestion_ids = fields.One2many("request", "record_id", string="Edit Suggestions")
+
     def _filter_json_compatible(self, vals):
         """
         Filters out fields with non-JSON-serializable data and returns a message indicating the changes.
@@ -103,6 +106,7 @@ class ResPartner(models.Model):
 class ResPartnerChangeRequest(models.Model):
     _name = "res.partner.change.request"
     _inherit = ["mail.thread", "mail.activity.mixin"]
+    _rec_name = "partner_id"
 
     _description = "Update Request"
 
@@ -110,6 +114,7 @@ class ResPartnerChangeRequest(models.Model):
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     # new_values = fields.Text(string="New Values", required=True)
     requested_by = fields.Many2one("res.users", default=lambda self: self.env.user)
+    validator = fields.Many2one("res.users")
     new_values = fields.Json(string="Changes", required=True)
     update_message = fields.Char(string="Message", required=True)
     new_values_display = fields.Char(string="New Values (Preview)", compute="_compute_new_values_display")
@@ -171,6 +176,8 @@ class ResPartnerChangeRequest(models.Model):
                     request.partner_id.with_context(bypass_write=True).sudo().write(new_vals)
                     # Mark the request as approved
                     request.state = "approved"
+                    # Add the user who validated (approved) the request
+                    request.validator = self.env.user
                     # Log the applied changes for debugging
                     request.partner_id.message_post(body=f"Changes approved and applied: {new_vals}")
                 else:
@@ -178,6 +185,7 @@ class ResPartnerChangeRequest(models.Model):
             except Exception as e:
                 # Handle any exceptions and log them for debugging
                 request.state = "rejected"
+                request.validator = self.env.user  # The user who validated (rejected)
                 request.partner_id.message_post(body=f"Failed to apply changes: {str(e)}")
                 # Optionally, raise the exception if you want to handle it at a higher level
                 raise
@@ -200,6 +208,7 @@ class ResPartnerChangeRequest(models.Model):
                 if isinstance(new_vals, dict):
                     # Mark the request as approved
                     request.state = "rejected"
+                    request.validator = self.env.user  # The user who validated (rejected)
                     # Log the applied changes for debugging
                     request.partner_id.message_post(body=f"Changes Rejected Please Try again: {new_vals}")
                 else:
@@ -207,6 +216,7 @@ class ResPartnerChangeRequest(models.Model):
             except Exception as e:
                 # Handle any exceptions and log them for debugging
                 request.state = "rejected"
+                request.validator = self.env.user  # The user who validated (rejected)
                 request.partner_id.message_post(body=f"Failed to apply changes: {str(e)}")
 
         activities = self.env["mail.activity"].search(
