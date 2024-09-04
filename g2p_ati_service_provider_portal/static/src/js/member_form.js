@@ -76,12 +76,27 @@ function hideToast() {
 }
 
 function resetFormFields() {
-    $("#farmerDetailModal input, #farmerDetailModal select").val("");
-    $("#farmerDetailModal input[type='radio']").prop("checked", false);
+    // Reset text inputs, email, and password fields
+    $(
+        "#farmerDetailModal input[type='text'], #farmerDetailModal input[type='email'], #farmerDetailModal input[type='password']"
+    ).val("");
 
-    // Reset multi-select fields
-    $("#farmerDetailModal select").prop("selectedIndex", -1).trigger("change");
+    // Uncheck checkboxes and radio buttons
+    $("#farmerDetailModal input[type='checkbox'], #farmerDetailModal input[type='radio']").prop(
+        "checked",
+        false
+    );
+
+    // Reset select dropdowns to the first option
+    $("#farmerDetailModal select").prop("selectedIndex", 0).trigger("change");
+
+    // Clear multi-select fields
+    $("#farmerDetailModal select[multiple]").val([]).trigger("change");
+
+    // Reset number and date fields to their default state
+    $("#farmerDetailModal input[type='number'], #farmerDetailModal input[type='date']").val("");
 }
+
 // eslint-disable-next-line no-unused-vars
 function resetFormFieldsMember() {
     $("#familyMemberModal input, #familyMemberModal select").val("");
