@@ -132,7 +132,7 @@
     "other_primary_cooperative": .hh_member_membership.hh_member_other_primary_cooperative,
     "is_member_of_cooperative_union": .hh_member_membership.hh_member_coop_union,
     "cooperative_unions": .hh_member_membership.hh_member_name_of_union,
-    "other_cooperative_union": .hh_member_membership.hh_member_other_coop_union,
+    "other_coop_union": .hh_member_membership.hh_member_other_coop_union,
     "is_member_in_farmer_cluster": .hh_member_membership.hh_member_farmer_cluster,
     "primary_commodity": .hh_member_membership.hh_member_primary_commodity,
     "role_in_farmer_cluster": .hh_member_membership.hh_member_farmer_role,
