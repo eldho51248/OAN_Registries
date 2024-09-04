@@ -166,8 +166,8 @@ $(document).ready(function () {
 
     function formatInputWithSpaces(inputElement) {
         inputElement.addEventListener("input", function () {
-            const value = inputElement.value.replace(/\s+/g, ""); // Remove any existing spaces
-            const formattedValue = value.match(/.{1,4}/g)?.join(" ") || ""; // Add space after every 4 digits
+            const value = inputElement.value.replace(/\s+/g, "");
+            const formattedValue = value.match(/.{1,4}/g)?.join(" ") || "";
             inputElement.value = formattedValue;
         });
     }
@@ -182,7 +182,7 @@ $(document).ready(function () {
     formatInputWithSpaces(ridInput);
 
     uidInput.addEventListener("input", function () {
-        const sanitizedValue = uidInput.value.replace(/\s+/g, ""); // Remove all spaces
+        const sanitizedValue = uidInput.value.replace(/\s+/g, "");
 
         if (sanitizedValue.length !== 12 && sanitizedValue.length !== 0) {
             uidInput.classList.add("uid_error");
@@ -198,7 +198,7 @@ $(document).ready(function () {
         const selectElement = document.getElementById("have-national-id-selection");
         const uidDiv = document.getElementById("uid-div");
         const ridDiv = document.getElementById("rid-div");
-        const ridInput = document.getElementById("rid_input");
+        // Const ridInput = document.getElementById("rid_input");
         // Const uidInput = document.getElementById("uid_input");
         const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
             .trim()
@@ -325,22 +325,22 @@ $(document).ready(function () {
         console.log("HERE");
         const regionId = this.value;
         var ev = event.originalEvent;
-        updateOptions("/update_zone_options", { region_id: regionId }, "zon_selection", "Select", ev, "region");
-        updateOptions("/update_woreda_options", { zone_id: 0 }, "woreda_selection", "Select", ev, "region");
-        updateOptions("/update_kebele_options", { woreda_id: 0 }, "kebele_selection", "Select", ev, "region");
+        updateOptions("/update_zone_options", {region_id: regionId}, "zon_selection", "Select", ev, "region");
+        updateOptions("/update_woreda_options", {zone_id: 0}, "woreda_selection", "Select", ev, "region");
+        updateOptions("/update_kebele_options", {woreda_id: 0}, "kebele_selection", "Select", ev, "region");
     });
 
     $("#zon_selection").on("change", function (event) {
         const zoneId = this.value;
         var ev = event.originalEvent;
-        updateOptions("/update_woreda_options", { zone_id: zoneId }, "woreda_selection", "Select", ev);
-        updateOptions("/update_kebele_options", { woreda_id: 0 }, "kebele_selection", "Select", ev);
+        updateOptions("/update_woreda_options", {zone_id: zoneId}, "woreda_selection", "Select", ev);
+        updateOptions("/update_kebele_options", {woreda_id: 0}, "kebele_selection", "Select", ev);
     });
 
     $("#woreda_selection").on("change", function (event) {
         const woredaId = this.value;
         var ev = event.originalEvent;
-        updateOptions("/update_kebele_options", { woreda_id: woredaId }, "kebele_selection", "Select", ev);
+        updateOptions("/update_kebele_options", {woreda_id: woredaId}, "kebele_selection", "Select", ev);
     });
 
     // Trigger the change event on page load to handle the initial state
