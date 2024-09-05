@@ -177,6 +177,7 @@ $(document).ready(function () {
     const ridInput = document.getElementById("rid_input");
     const uidInput = document.getElementById("uid_input");
     const uidError = document.getElementById("uid_error");
+    const ridError = document.getElementById("rid_error");
 
     formatInputWithSpaces(uidInput);
     formatInputWithSpaces(ridInput);
@@ -190,6 +191,18 @@ $(document).ready(function () {
         } else {
             uidInput.classList.remove("uid_error");
             uidError.style.display = "none";
+        }
+    });
+
+    ridInput.addEventListener("input", function () {
+        const sanitizedValue = ridInput.value.replace(/\s+/g, ""); // Remove all spaces
+
+        if (sanitizedValue.length !== 29 && sanitizedValue.length !== 0) {
+            ridInput.classList.add("rid_error");
+            ridError.style.display = "block";
+        } else {
+            ridInput.classList.remove("rid_error");
+            ridError.style.display = "none";
         }
     });
 

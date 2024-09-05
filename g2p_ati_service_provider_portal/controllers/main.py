@@ -139,9 +139,12 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         csrf=False,
     )
     def update_zone_options(self, region_id=None, **kwargs):
-        zones = request.env["g2p.zone"].sudo().search([("region", "=", int(region_id))])
-        zone_options = [{"id": zone.id, "name": zone.name} for zone in zones]
-        return json.dumps(zone_options)
+        if region_id and region_id.strip():
+            zones = request.env["g2p.zone"].sudo().search([("region", "=", int(region_id))])
+            zone_options = [{"id": zone.id, "name": zone.name} for zone in zones]
+            return json.dumps(zone_options)
+        else:
+            return json.dumps([])
 
     @http.route(
         ["/update_woreda_options"],
@@ -151,9 +154,12 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         csrf=False,
     )
     def update_woreda_options(self, zone_id=None, **kwargs):
-        woredas = request.env["g2p.woreda"].sudo().search([("zone", "=", int(zone_id))])
-        woredas_options = [{"id": woreda.id, "name": woreda.name} for woreda in woredas]
-        return json.dumps(woredas_options)
+        if zone_id and zone_id.strip():
+            woredas = request.env["g2p.woreda"].sudo().search([("zone", "=", int(zone_id))])
+            woredas_options = [{"id": woreda.id, "name": woreda.name} for woreda in woredas]
+            return json.dumps(woredas_options)
+        else:
+            return json.dumps([])
 
     @http.route(
         ["/update_kebele_options"],
@@ -163,9 +169,12 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         csrf=False,
     )
     def update_kebele_options(self, woreda_id=None, **kwargs):
-        kebeles = request.env["g2p.kebele"].sudo().search([("woreda", "=", int(woreda_id))])
-        kebeles_options = [{"id": kebele.id, "name": kebele.name} for kebele in kebeles]
-        return json.dumps(kebeles_options)
+        if woreda_id and woreda_id.strip():
+            kebeles = request.env["g2p.kebele"].sudo().search([("woreda", "=", int(woreda_id))])
+            kebeles_options = [{"id": kebele.id, "name": kebele.name} for kebele in kebeles]
+            return json.dumps(kebeles_options)
+        else:
+            return json.dumps([])
 
     @http.route(
         ["/serviceprovider/group/create/"],
@@ -2129,7 +2138,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                             {
                                 "id": membership.individual.id,
                                 "name": membership.individual.name,
-                                "age": membership.age,
+                                "birthdate": str(
+                                    membership.individual.birthdate
+                                ),  # Ensure date is serialized
                                 "gender": membership.individual.gender,
                                 # "relationship":membership.individual.kind,
                                 "active": membership.individual.active,
