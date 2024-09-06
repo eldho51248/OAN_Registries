@@ -6,12 +6,16 @@
             name="groups_id"
             eval="[(4, ref('group_data_enumerator')),(4, ref('group_data_admin')),(4, ref('g2p_registry_base.group_g2p_admin')), (4, ref('g2p_registry_base.group_g2p_registrar')) ]"
         />
+        <field name="sequence">2</field>
     </record>
+
     <record model="ir.ui.menu" id="g2p_registry_individual.menu_individuals_list">
         <field
             name="groups_id"
             eval="[(4, ref('group_data_enumerator')),(4, ref('group_data_admin')),(4, ref('g2p_registry_base.group_g2p_admin')), (4, ref('g2p_registry_base.group_g2p_registrar')) ]"
         />
+        <field name="sequence">1</field>
+
     </record>
 
     <record model="ir.ui.menu" id="g2p_registry_base.g2p_configuration_menu_root">

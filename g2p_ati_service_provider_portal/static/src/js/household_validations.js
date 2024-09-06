@@ -127,7 +127,8 @@ function addFarmerMember() {
     }
 }
 
-// This is to populate the data for editing family member
+
+// this is to populate the data for editing family member
 
 $(document).on("click", "#hh_member_update", function () {
     // Console.log('populateEditModal called');
@@ -328,3 +329,4 @@ $(document).on("click", "#family_member_submit", function () {
 //     consentSection.classList.add("show");
 // }
 // eslint-disable-next-line no-unused-vars
+

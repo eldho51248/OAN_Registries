@@ -21,6 +21,28 @@ class ResPartnerFormOtherGroupController extends FormController {
                         break;
                     }
                 }
+
+                if (
+                    this.model.root.data.first_name_other ||
+                    this.model.root.data.family_name_other ||
+                    this.model.root.data.gf_name_other
+                ) {
+                    const label_elements = document.querySelectorAll(".o_form_label");
+
+                    for (const label of label_elements) {
+                        const labelText = label.innerText.trim().toLowerCase();
+                        const primaryLanguageText = this.model.root.data.primary_Language["1"];
+
+                        if (
+                            (labelText === "first name" ||
+                                labelText === "father's name" ||
+                                labelText === "grand father's name") &&
+                            this.model.root.data.primary_Language["1"] !== "Amharic"
+                        ) {
+                            label.innerText = `${label.innerText}(${primaryLanguageText})`;
+                        }
+                    }
+                }
             }
         });
     }

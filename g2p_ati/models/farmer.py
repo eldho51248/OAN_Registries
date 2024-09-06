@@ -54,28 +54,28 @@ class G2PFarmer(models.Model):
     birthdate_ec = fields.Char(string="Date Of Birth (EC)", help="YYYY-MM-DD")
     primary_Language = fields.Many2one("g2p.lang")
     is_farmer = fields.Selection(
-        string="Are you a Farmer? ", index=True, selection=[("yes", "Yes"), ("no", "No")]
+        string="Are you a farmer? ", index=True, selection=[("yes", "Yes"), ("no", "No")]
     )
     farming_type = fields.Selection(
         selection=[
-            ("crop_farming", "Crop Farming"),
-            ("livestock_farming", "Livestock Farming"),
-            ("mixed_farming", "Mixed Farming"),
+            ("crop_farming", "Crop farming"),
+            ("livestock_farming", "livestock Farming"),
+            ("mixed_farming", "mixed farming"),
         ]
     )
     is_disabled = fields.Selection(string="Are you disabled? ", selection=[("yes", "Yes"), ("no", "No")])
 
     # MEMEBERSHIP
     is_member_of_primary_cooperative = fields.Selection(
-        string="Is Member Of Primary Cooperative? ", selection=[("yes", "Yes"), ("no", "No")]
+        string="Is member of primary cooperative? ", selection=[("yes", "Yes"), ("no", "No")]
     )
     primary_cooperatives = fields.Many2one("g2p.primary.cooperative")
     is_member_of_cooperative_union = fields.Selection(
-        string="Is Member Of Cooperative Union? ", selection=[("yes", "Yes"), ("no", "No")]
+        string="Is member of cooperative union? ", selection=[("yes", "Yes"), ("no", "No")]
     )
     cooperative_unions = fields.Many2one("g2p.cooperative.union")
     is_member_in_farmer_cluster = fields.Selection(
-        string="Is Member In Farmer Cluster? ", selection=[("yes", "Yes"), ("no", "No")]
+        string="Is member in farmer cluster? ", selection=[("yes", "Yes"), ("no", "No")]
     )
     primary_commodity = fields.Many2one("g2p.primary.commodity")
     role_in_farmer_cluster = fields.Selection(
@@ -113,10 +113,10 @@ class G2PFarmer(models.Model):
     )
     amount_insecticide_utilized = fields.Float(string="What is The amount Of insecticide you have in(L)? ")
     do_you_use_improved_seed = fields.Selection(
-        string="Do you use improved_seed? ", selection=[("yes", "Yes"), ("no", "No")]
+        string="Do you use improved seed? ", selection=[("yes", "Yes"), ("no", "No")]
     )
     amount_improved_seed_utilized = fields.Float(
-        string="What is The amount Of improved seed you have used(qt)? "
+        string="What is the amount Of improved seed you have used(qt)? "
     )
 
     # ACCESS TO RESOURCES
@@ -137,10 +137,10 @@ class G2PFarmer(models.Model):
     )
     type_of_machinery = fields.Many2many("g2p.machinery", string="What kind of machinery do you use? ")
     irrigation_types = fields.Selection(
-        string="What Type of Irrigation do you use?", selection=[("pump", "Pump"), ("canal", "canal")]
+        string="What type of irrigation do you use?", selection=[("pump", "Pump"), ("canal", "canal")]
     )
     has_finance_access = fields.Selection(
-        string="Do you have Financial Access ", selection=[("yes", "Yes"), ("no", "No")], default="no"
+        string="Do you have financial access ", selection=[("yes", "Yes"), ("no", "No")], default="no"
     )
     finance_accesses = fields.Many2many(comodel_name="g2p.finance.access")
     other_farmer_in_hh = fields.Selection(
@@ -167,7 +167,7 @@ class G2PFarmer(models.Model):
         string="Educational Level",
     )
     hh_is_household_head = fields.Selection(
-        string="Are You a household head? ", selection=[("yes", "Yes"), ("no", "No")]
+        string="Are you a household head? ", selection=[("yes", "Yes"), ("no", "No")]
     )
     hh_income_type = fields.Many2many(comodel_name="g2p.hh.income", string="House Hold Income")
 
@@ -183,11 +183,26 @@ class G2PFarmer(models.Model):
         readonly=True,
     )
     livestock_information_ids = fields.One2many(
-        "g2p.livestock.information", "partner_id", string="Live Stock Information"
+        "g2p.livestock.information", "partner_id", string="Live stock information"
     )
     rejection_reason = fields.Text()
 
     farmer_id = fields.Char(string="Farmer ID", compute="_compute_farmer_id", store=True, index=True)
+
+    @api.onchange("region")
+    def _onchange_region(self):
+        self.zone = False
+        self.woreda = False
+        self.kebele = False
+
+    @api.onchange("zone")
+    def _onchange_zone(self):
+        self.woreda = False
+        self.kebele = False
+
+    @api.onchange("woreda")
+    def _onchange_woreda(self):
+        self.kebele = False
 
     @api.onchange("is_group", "family_name", "given_name", "gf_name_eng")
     def name_change_farmer(self):
@@ -255,8 +270,13 @@ class G2PFarmer(models.Model):
         if self.has_finance_access == "no":
             return {"finance_accesses": [(6, 0, [])]}
 
+    def set_to_draft(self):
+        for record in self:
+            record.state = "draft"
+
     def state_approve(self):
-        self.state = "approved"
+        for record in self:
+            record.state = "approved"
 
     def state_reject(self):
         return {
@@ -294,3 +314,46 @@ class G2PFarmer(models.Model):
             raise ValidationError(_("Cannot delete approved records."))
 
         return super().unlink()
+
+    @api.model
+    def create(self, vals):
+        record = super().create(vals)
+        if record.hh_is_household_head == "yes":
+            record._update_group_memberships()
+        return record
+
+    def write(self, vals):
+        result = super().write(vals)
+        if "zone" in vals or "woreda" in vals or "kebele" in vals or "hh_is_household_head" in vals:
+            if self.hh_is_household_head == "yes":
+                self._update_group_memberships()
+        return result
+
+    def _update_group_memberships(self):
+        for record in self:
+            if record.hh_is_household_head == "yes":
+                for membership in record.individual_membership_ids:
+                    group = membership.group
+                    if group:
+                        group.write(
+                            {
+                                "region": record.region.id,
+                                "zone": record.zone.id,
+                                "woreda": record.woreda.id,
+                                "kebele": record.kebele.id,
+                            }
+                        )
+
+                    for group_member in group.group_membership_ids:
+                        if (
+                            group_member.individual != record
+                            and group_member.individual.hh_is_household_head != "yes"
+                        ):
+                            group_member.individual.write(
+                                {
+                                    "region": record.region.id,
+                                    "zone": record.zone.id,
+                                    "woreda": record.woreda.id,
+                                    "kebele": record.kebele.id,
+                                }
+                            )
