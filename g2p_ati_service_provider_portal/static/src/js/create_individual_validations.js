@@ -207,12 +207,13 @@ $(document).ready(function () {
         }
     });
 
+
     // Event listeners
     function handleNationalIdSelection() {
         const selectElement = document.getElementById("have-national-id-selection");
         const uidDiv = document.getElementById("uid-div");
         const ridDiv = document.getElementById("rid-div");
-        const ridInput = document.getElementById("rid_input");
+        // Const ridInput = document.getElementById("rid_input");
         // Const uidInput = document.getElementById("uid_input");
         const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
             .trim()
@@ -608,4 +609,3 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
-
