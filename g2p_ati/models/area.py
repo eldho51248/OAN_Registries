@@ -47,7 +47,7 @@ class Zone(models.Model):
 
     region = fields.Many2one("g2p.region", required=True)
     code = fields.Char(required=True, index=True)
-    name = fields.Char(required=True)
+    name = fields.Char(required=True, string="Zone")
 
     @api.constrains("region")
     def _check_zone(self):
@@ -87,7 +87,7 @@ class Woreda(models.Model):
 
     zone = fields.Many2one("g2p.zone", required=True)
     code = fields.Char(required=True, index=True)
-    name = fields.Char(required=True)
+    name = fields.Char(required=True, string="Woreda")
 
     @api.model
     def name_search(self, name, args=None, operator="ilike", limit=100):
@@ -127,7 +127,7 @@ class Kebele(models.Model):
 
     woreda = fields.Many2one("g2p.woreda", required=True)
     code = fields.Char(required=True, index=True)
-    name = fields.Char(required=True)
+    name = fields.Char(required=True, string="Kebele")
 
     @api.constrains("woreda")
     def _check_woreda(self):

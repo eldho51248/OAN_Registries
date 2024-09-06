@@ -11,7 +11,6 @@
     "external_dependencies": {},
     "data": [
         "security/groups.xml",
-        "security/rule.xml",
         "security/ir.model.access.csv",
         "data/group_membership_kind.xml",
         "data/id_types.xml",

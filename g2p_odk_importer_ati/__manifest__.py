@@ -9,7 +9,7 @@
     "license": "LGPL-3",
     "depends": ["g2p_ati", "g2p_odk_importer", "g2p_registry_addl_info"],
     "external_dependencies": {},
-    "data": ["security/ir.model.access.csv", "views/views.xml"],
+    "data": ["data/odk_config.xml", "data/odk_import.xml", "security/ir.model.access.csv", "views/views.xml"],
     "assets": {"web.assets_backend": []},
     "demo": [],
     "images": [],
