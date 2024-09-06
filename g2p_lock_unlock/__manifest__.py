@@ -2,11 +2,11 @@
 {
     "name": "OpenG2P Lock Unlock",
     "category": "G2P",
-    "version": "17.0.1.0.0",
+    "version": "17.0.0.0.0",
     "sequence": 1,
     "author": "OpenG2P",
     "website": "https://openg2p.org",
-    "license": "Other OSI approved licence",
+    "license": "LGPL-3",
     "depends": [
         "base",
         "g2p_registry_group",
