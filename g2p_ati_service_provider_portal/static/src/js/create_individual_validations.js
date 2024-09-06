@@ -166,8 +166,8 @@ $(document).ready(function () {
 
     function formatInputWithSpaces(inputElement) {
         inputElement.addEventListener("input", function () {
-            const value = inputElement.value.replace(/\s+/g, ""); // Remove any existing spaces
-            const formattedValue = value.match(/.{1,4}/g)?.join(" ") || ""; // Add space after every 4 digits
+            const value = inputElement.value.replace(/\s+/g, "");
+            const formattedValue = value.match(/.{1,4}/g)?.join(" ") || "";
             inputElement.value = formattedValue;
         });
     }
@@ -183,9 +183,10 @@ $(document).ready(function () {
     formatInputWithSpaces(ridInput);
 
     uidInput.addEventListener("input", function () {
-        const sanitizedValue = uidInput.value.replace(/\s+/g, ""); // Remove all spaces
+        const sanitizedValue = uidInput.value.replace(/\s+/g, "");
+        const isOnlyDigits = /^\d*$/.test(sanitizedValue);
 
-        if (sanitizedValue.length !== 12 && sanitizedValue.length !== 0) {
+        if ((sanitizedValue.length !== 12 && sanitizedValue.length !== 0) || !isOnlyDigits) {
             uidInput.classList.add("uid_error");
             uidError.style.display = "block";
         } else {
@@ -195,9 +196,9 @@ $(document).ready(function () {
     });
 
     ridInput.addEventListener("input", function () {
-        const sanitizedValue = ridInput.value.replace(/\s+/g, ""); // Remove all spaces
-
-        if (sanitizedValue.length !== 29 && sanitizedValue.length !== 0) {
+        const sanitizedValue = ridInput.value.replace(/\s+/g, "");
+        const isOnlyDigits = /^\d*$/.test(sanitizedValue);
+        if ((sanitizedValue.length !== 29 && sanitizedValue.length !== 0) || !isOnlyDigits) {
             ridInput.classList.add("rid_error");
             ridError.style.display = "block";
         } else {
@@ -607,3 +608,39 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+
+/* eslint-disable no-unused-vars */
+function showNextModal(nextSectionId) {
+    // eslint-disable-next-line no-undef
+    var val = validateSection("location-details");
+    // Var val = true;
+
+    if (val) {
+        var activeLink = document.querySelector(".sidebar .nav-link.active");
+
+        var nextLink = activeLink.parentElement.nextElementSibling.querySelector(".nav-link");
+        if (nextLink) {
+            nextLink.classList.remove("disabled");
+            // eslint-disable-next-line no-undef
+            showSection(nextSectionId, nextLink, true);
+        }
+    }
+}
+
+// eslint-disable-next-line no-unused-vars
+function showModalSection(nextSectionId, currentSectionId, direction) {
+    // eslint-disable-next-line no-undef
+    if (direction === "prev") {
+        var val = true;
+    } else {
+        val = validateSection(currentSectionId);
+    }
+    // Val = true;
+
+    if (val && (currentSectionId || direction)) {
+        var activeLink = document.querySelector(".sidebar .nav-link.active");
+
+        showSection(nextSectionId, activeLink, true);
+    }
+}

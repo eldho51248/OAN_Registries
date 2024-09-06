@@ -166,10 +166,9 @@
                                         <th class="fixed-width-column-group">Last Updated <i
                                                 class="fas fa-sort fa-lg"
                                             /></th>
-                                        <th class="status-column-group">Status</th>
-                                        <th class="status-column-group">Action <i
-                                                class="fas fa-sort fa-3x"
-                                            /></th>
+                                        <th class="status-column-group">Status <i class="fas fa-sort fa-3x" />
+                                        </th>
+                                        <th class="status-column-group">Action </th>
                                     </tr>
                                 </thead>
                                 <tbody>

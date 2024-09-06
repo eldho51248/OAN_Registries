@@ -2177,6 +2177,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             given_name = kw.get("given_name")
             family_name = kw.get("family_name")
             gf_name_eng = kw.get("gf_name_eng")
+            relationship = int(kw.get("relationship"))
+            # relationship = [(0, 0, {"id":relationship})]
+            relationship = [(6, 0, [relationship])]
             # relationship = kw.get("relationship")
 
             name = f"{given_name} {family_name} {gf_name_eng}"
@@ -2199,7 +2202,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             # group_membership_vals = [(0, 0, {"individual": individual.id,
             # "group": group_rec.id,"kind":[(4, membership_kind)]})]
 
-            group_membership_vals = [(0, 0, {"individual": individual.id, "group": group_rec.id})]
+            group_membership_vals = [
+                (0, 0, {"individual": individual.id, "group": group_rec.id, "kind": relationship})
+            ]
 
             group_rec.write({"group_membership_ids": group_membership_vals})
 
@@ -2384,6 +2389,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         if kw.get("group_id"):
             return request.env["res.partner"].sudo().browse(int(kw.get("group_id")))
         elif head_name:
+            group_type = request.env["g2p.group.kind"].sudo().search([("name", "=", "Household")], limit=1)
             return (
                 request.env["res.partner"]
                 .sudo()
@@ -2394,6 +2400,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                         "zone": zone,
                         "woreda": woreda,
                         "kebele": kebele,
+                        "kind": group_type.id,
                         "is_registrant": True,
                         "is_group": True,
                     }

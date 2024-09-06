@@ -351,31 +351,24 @@ $(document).on("click", "#member_submit", async function () {
                     member_list.forEach(function (member, index) {
                         $(".mem-list").css("display", "block");
                         var serialNumber = index + 1;
-                        var newRowHtml =
-                            "<tr>" +
-                            "<td>" +
-                            serialNumber +
-                            "</td>" +
-                            '<td style="color:#704880; font: normal normal 600 13px/16px Inter;">' +
-                            member.name +
-                            "</td>" +
-                            "<td>" +
-                            member.age +
-                            "</td>" +
-                            "<td>" +
-                            member.gender +
-                            "</td>" +
-                            "<td>" +
-                            "dependent" +
-                            "</td>" +
-                            "<td>" +
-                            '<button class="btn btn-icon rounded-0" id="mem-update" store="' +
-                            member.id +
-                            '" title="Edit">' +
-                            '<i class="fa fa-pencil"></i>' +
-                            "</button>" +
-                            "</td>" +
-                            "</tr>";
+                        var newRowHtml = `
+                            <tr data-member-id="${member.id}">
+                            <td>${serialNumber}</td>
+                            <td style="color:#704880; font: normal normal 600 13px/16px Inter;">${member.name}</td>
+                            <td>${member.age}</td>
+                            <td>${member.gender}</td>
+                            <td>${member.relationship}</td>
+
+                            <td>
+                                 <a href="/serviceprovider/individual/update/${member.id}" class="btn btn-icon rounded-0 edit-btn" title="Edit">
+                                    <i class="fa fa-pencil"></i>
+                                </a>
+                                <button type="button" class="btn btn-outline-secondary btn-sm my-3" onclick="deleteMember(this)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                            </tr>
+                            `;
                         tableBody.append(newRowHtml);
                     });
                 }
@@ -516,126 +509,3 @@ $(document).on("click", "#update-member-btn", function () {
         },
     });
 });
-
-// $(document).on("click", "#family_member_submit", function () {
-//     var group = $("input[name='group_id']").val();
-
-//     var group_id = $("input[name='group_id']").val();
-//     var firstName = $("#mamber_given_name").val();
-//     var middleName = $("#member_fathers_name").val();
-//     var lastName = $("#member_grandfathers_name").val();
-//     var dob = $("#member-birthdate").val();
-//     var gender = $("input[name='gender']:checked").val();
-//     var gender = $("#familyMemberModal input[name='gender']:checked").val();
-//     var relationship =$("select[name='relation_with_household_head_add']").val();
-
-//     console.log(relationship);
-//     // var firstName = $("#familyMemberModal #mamber_given_name").val();
-//     // var middleName = $("#familyMemberModal #addl_name").val();
-//     // var lastName = $("#familyMemberModal #family_name").val();
-//     // var dob = $("#familyMemberModal #birthdate").val();
-//     // var gender = $('#familyMemberModal select[name="gender"]').val();
-//     // var relationship = $('#familyMemberModal select[name="relationship"]').val();
-//     var isValid = true;
-//     var modal = $("#familyMemberModal");
-
-//     $(".form-control, .form-select").removeClass("is-invalid");
-
-//     if (!firstName || !lastName || !gender || !dob) {
-//         console.log("empty");
-//         isValid = false;
-//         $("#memberDetailModal .form-control[required], #memberDetailModal .form-select[required]").each(
-//             function () {
-//                 if (!$(this).val()) {
-//                     $(this).addClass("is-invalid");
-//                 }
-//             }
-//         );
-//     }
-
-//     if (!isValid) {
-//         showToast("Please fill out all required fields.");
-//         return;
-//     }
-
-//      if (!group) {
-//         showToast("Please Create The Farmer First");
-//         return;
-//     }
-
-//     $.ajax({
-//         url: "/serviceprovider/member/create/",
-//         method: "POST",
-//         data: {
-//             group_id: group,
-//             given_name: firstName,
-//             family_name: middleName,
-//             addl_name: lastName,
-//             dob: dob,
-//             gender: gender,
-//             relationship: relationship,
-//         },
-//         dataType: "json",
-//         success: function (response) {
-//             console.log("Ajax request successful");
-//             console.log("Response:", response);
-//             if (response.member_list) {
-//                 var member_list = response.member_list;
-//                 if (member_list) {
-//                     resetFormFieldsMember();
-//                     modal.modal("hide");
-//                     console.log("member_list[0].group_id :", member_list[0].group_id);
-//                     $("input[name='group_id']").val(member_list[0].group_id);
-//                     $(".no_list").css("display", "none");
-
-//                     var tableBody = $("#familylist tbody");
-//                     tableBody.empty();
-//                     $(".old-list").css("display", "none");
-
-//                     member_list.forEach(function (member, index) {
-//                         $(".mem-list").css("display", "block");
-//                         var serialNumber = index + 1;
-//                         var newRowHtml =
-//                             "<tr>" +
-//                             "<td>" +
-//                             serialNumber +
-//                             "</td>" +
-//                             '<td style="color:#704880; font: normal normal 600 13px/16px Inter;">' +
-//                             member.name +
-//                             "</td>" +
-//                             "<td>" +
-//                             member.age +
-//                             "</td>" +
-//                             "<td>" +
-//                             member.gender +
-//                             "</td>" +
-//                             "<td>" +
-//                             "dependent" +
-//                             "</td>" +
-//                             "<td>" +
-//                             '<div class="active-button">' +
-//                             (member.active ? "Active" : "Inactive") +
-//                             "</div>" +
-//                             "</td>" +
-//                             "<td>" +
-//                             '<button class="btn btn-icon rounded-0" id="mem-update" store="' +
-//                             member.id +
-//                             '" title="Edit">' +
-//                             '<i class="fa fa-pencil"></i>' +
-//                             "</button>" +
-//                             "</td>" +
-//                             "</tr>";
-
-//                         tableBody.append(newRowHtml);
-//                     });
-//                 }
-//             } else {
-//                 console.error("Failed to create individual");
-//             }
-//         },
-//         error: function (error) {
-//             console.error("request failed");
-//             console.error("Error:", error);
-//         },
-//     });
-// });

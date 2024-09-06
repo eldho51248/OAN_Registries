@@ -171,8 +171,8 @@
                                                 class="fas fa-sort fa-lg"
                                             /></th>
                                     <!-- <th class="fixed-width-column">Enumerator</th> -->
-                                    <th class="status-column">Status</th>
-                                    <th class="status-column">Action <i class="fas fa-sort fa-3x" /></th>
+                                    <th class="status-column">Status <i class="fas fa-sort fa-3x" /></th>
+                                    <th class="status-column">Action </th>
                                 </tr>
                             </thead>
                             <tbody>

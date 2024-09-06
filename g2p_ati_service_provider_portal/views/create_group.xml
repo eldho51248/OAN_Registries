@@ -630,7 +630,7 @@
                                                                                 style="display: none;color: red;"
                                                                             >
                                                                                 UID must be exactly
-                                                                                12 characters long.
+                                                                                12 dIgits only.
                                                                             </div>
                                                                             <div
                                                                                 class="s_website_form_field"
@@ -661,7 +661,7 @@
                                                                                     style="display: none;color: red;"
                                                                                 >
                                                                                 RID must be exactly
-                                                                                29 characters long.
+                                                                                29 digits only.
                                                                             </div>
                                                                             </div>
                                                                         </div>
