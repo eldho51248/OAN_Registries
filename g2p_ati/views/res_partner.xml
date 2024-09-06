@@ -185,7 +185,7 @@
 						<field name="primary_Language" />
 						<field name="farming_type" />
 					</group>
-					<group name="disability" string="Disablity">
+					<group name="disability" string="Disability">
 						<field name="is_disabled" />
 					</group>
 				</group>
