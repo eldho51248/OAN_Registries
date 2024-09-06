@@ -361,6 +361,7 @@ $(document).on("click", "#family_member_submit", function () {
 function showNextModal(nextSectionId, currentSectionId) {
     // eslint-disable-next-line no-undef
     var val = validateSection("location-details");
+
     // Var val = true;
 
     if (val) {
@@ -385,6 +386,10 @@ function showNextModal(nextSectionId, currentSectionId) {
 function showModalSection(nextSectionId, currentSectionId, direction) {
     // eslint-disable-next-line no-undef
     var val = validateSection(currentSectionId);
+    if (direction === "prev") {
+        var val = true;
+        }
+
     // Val = true;
 
     if (val && (currentSectionId || direction)) {
@@ -404,3 +409,4 @@ function showModalSection(nextSectionId, currentSectionId, direction) {
         showSection(nextSectionId, activeLink, true);
     }
 }
+

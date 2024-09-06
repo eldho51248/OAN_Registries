@@ -29,6 +29,13 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+@media (min-width: 768px) {
+    .o_error_dialog {
+        padding: 1rem;
+        margin-top: 400px;
+    }
+}
 .s_website_form_field {
     /* font: normal normal normal 14px / 17px Inter; */
     padding-left: 20px;
@@ -472,6 +479,7 @@ input:valid {
     margin-top: 0px;
     margin-bottom: 15px;
     opacity: 1;
+    margin-left: -115px;
 }
 
 .header-container .nav {

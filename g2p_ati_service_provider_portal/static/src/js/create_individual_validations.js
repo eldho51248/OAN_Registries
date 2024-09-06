@@ -177,14 +177,16 @@ $(document).ready(function () {
     const ridInput = document.getElementById("rid_input");
     const uidInput = document.getElementById("uid_input");
     const uidError = document.getElementById("uid_error");
+    const ridError = document.getElementById("rid_error");
 
     formatInputWithSpaces(uidInput);
     formatInputWithSpaces(ridInput);
 
     uidInput.addEventListener("input", function () {
         const sanitizedValue = uidInput.value.replace(/\s+/g, "");
+        const isOnlyDigits = /^\d*$/.test(sanitizedValue);
 
-        if (sanitizedValue.length !== 12 && sanitizedValue.length !== 0) {
+        if ((sanitizedValue.length !== 12 && sanitizedValue.length !== 0) || !isOnlyDigits) {
             uidInput.classList.add("uid_error");
             uidError.style.display = "block";
         } else {
@@ -192,6 +194,19 @@ $(document).ready(function () {
             uidError.style.display = "none";
         }
     });
+
+    ridInput.addEventListener("input", function () {
+        const sanitizedValue = ridInput.value.replace(/\s+/g, "");
+        const isOnlyDigits = /^\d*$/.test(sanitizedValue);
+        if ((sanitizedValue.length !== 29 && sanitizedValue.length !== 0) || !isOnlyDigits) {
+            ridInput.classList.add("rid_error");
+            ridError.style.display = "block";
+        } else {
+            ridInput.classList.remove("rid_error");
+            ridError.style.display = "none";
+        }
+    });
+
 
     // Event listeners
     function handleNationalIdSelection() {
