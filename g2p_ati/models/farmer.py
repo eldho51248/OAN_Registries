@@ -270,8 +270,13 @@ class G2PFarmer(models.Model):
         if self.has_finance_access == "no":
             return {"finance_accesses": [(6, 0, [])]}
 
+    def set_to_draft(self):
+        for record in self:
+            record.state = "draft"
+
     def state_approve(self):
-        self.state = "approved"
+        for record in self:
+            record.state = "approved"
 
     def state_reject(self):
         return {

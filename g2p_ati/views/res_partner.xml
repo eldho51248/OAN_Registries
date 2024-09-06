@@ -25,6 +25,15 @@
                         class="btn-danger"
                         groups="g2p_ati.group_data_validator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
                     />
+
+					<button
+                        name="set_to_draft"
+                        invisible="state!='rejected'"
+                        string="Set To Draft"
+                        type="object"
+                        class="btn-info"
+                        groups="g2p_ati.group_data_validator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
+                    />
 					<field name="state" widget="statusbar" readonly="1" statusbar_visible="draft,update_requested,approved" />
 				</header>
 			</xpath>
@@ -362,6 +371,15 @@
                         string="Reject"
                         type="object"
                         class="btn-danger"
+                        groups="g2p_ati.group_data_validator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
+                    />
+
+					<button
+                        name="set_to_draft"
+                        invisible="state!='rejected'"
+                        string="Set To Draft"
+                        type="object"
+                        class="btn-info"
                         groups="g2p_ati.group_data_validator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
                     />
 					<field name="state" widget="statusbar" readonly="1" statusbar_visible="draft,update_requested,approved" />
