@@ -328,3 +328,38 @@ $(document).on("click", "#family_member_submit", function () {
 //     consentSection.classList.add("show");
 // }
 // eslint-disable-next-line no-unused-vars
+/* eslint-disable no-unused-vars */
+function showNextModal(nextSectionId) {
+    // eslint-disable-next-line no-undef
+    var val = validateSection("location-details");
+    // Var val = true;
+
+    if (val) {
+        var activeLink = document.querySelector(".sidebar .nav-link.active");
+
+        var nextLink = activeLink.parentElement.nextElementSibling.querySelector(".nav-link");
+        if (nextLink) {
+            nextLink.classList.remove("disabled");
+            // eslint-disable-next-line no-undef
+            showSection(nextSectionId, nextLink, true);
+        }
+    }
+}
+
+// eslint-disable-next-line no-unused-vars
+function showModalSection(nextSectionId, currentSectionId, direction) {
+    // eslint-disable-next-line no-undef
+    if (direction === "prev") {
+        var val = true;
+    } else {
+        val = validateSection(currentSectionId);
+    }
+    // Val = true;
+
+    if (val && (currentSectionId || direction)) {
+        var activeLink = document.querySelector(".sidebar .nav-link.active");
+
+        showSection(nextSectionId, activeLink, true);
+    }
+}
+
