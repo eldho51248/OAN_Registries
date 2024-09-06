@@ -358,7 +358,7 @@ $(document).on("click", "#family_member_submit", function () {
 //     consentSection.classList.add("show");
 // }
 // eslint-disable-next-line no-unused-vars
-function showNextModal(nextSectionId) {
+function showNextModal(nextSectionId, currentSectionId) {
     // eslint-disable-next-line no-undef
     var val = validateSection("location-details");
     // Var val = true;
@@ -369,6 +369,7 @@ function showNextModal(nextSectionId) {
         var nextLink = activeLink.parentElement.nextElementSibling.querySelector(".nav-link");
         if (nextLink) {
             nextLink.classList.remove("disabled");
+            nextLink = document.getElementById(currentSectionId + "-link");
             // eslint-disable-next-line no-undef
             showSection(nextSectionId, nextLink, true);
         }
