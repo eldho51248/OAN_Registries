@@ -1,7 +1,7 @@
 import datetime
 import re
 
-from odoo import _
+from odoo import _, fields
 from odoo.exceptions import ValidationError
 
 
@@ -171,7 +171,7 @@ def to_gregorian(year, month, date) -> datetime.date:
             m = i
             until -= gregorian_months[i]
 
-    # if m > 4, we're already on next Gregorian year
+    # if m > 4, already on next Gregorian year
     if m > 4:
         gregorian_year += 1
 
@@ -182,13 +182,30 @@ def to_gregorian(year, month, date) -> datetime.date:
     return datetime.date(gregorian_year, gregorian_month, gregorian_date)
 
 
-def check_ethipian_date_str(eth_date_str):
+def check_no_for_future_date(gc_date):
+    today = fields.date.today()
+    if gc_date > today:
+        raise ValidationError(_("The date should not be in the future."))
+
+
+def check_ethipian_date_str(eth_date_str, future_date=False):
     date_list = re.split("[-/,]", eth_date_str)
-
-    if len(date_list) != 3:
-        raise ValidationError(_("Select a valid Ethiopian date with day,month and year (dd-mm-yyyy)"))
-
     day = int(date_list[0])
     month = int(date_list[1])
-    if day < 1 or day > 30 or month < 1 or month > 13:
+    year = int(date_list[2])
+
+    if (
+        len(date_list) != 3
+        or day < 1
+        or day > 30
+        or month < 1
+        or month > 13
+        or len(str(year)) != 4
+        or year < 1800
+        or year > 9999
+    ):
         raise ValidationError(_("Select a valid Ethiopian date with day,month and year (dd-mm-yyyy)"))
+
+    if not future_date:
+        gc_date = to_gregorian(int(date_list[2]), int(date_list[1]), int(date_list[0]))
+        check_no_for_future_date(gc_date)

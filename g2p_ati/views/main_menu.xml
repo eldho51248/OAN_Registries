@@ -2,7 +2,20 @@
 <odoo>
 
 
-<menuitem id="g2p_documents.g2p_documents_main_menu_root" sequence="15" />
+<menuitem id="g2p_documents.g2p_documents_main_menu_root" name="Documents" sequence="15" />
+
+<menuitem
+        id="contacts.menu_contacts"
+        name="Contacts"
+        sequence="15"
+        web_icon="g2p_ati,static/description/contacts.png"
+    />
+<menuitem
+        id="queue_job.menu_queue_job_root"
+        name="Job Queue"
+        sequence="15"
+        web_icon="g2p_ati,static/description/job.png"
+    />
 
     <!-- Farmer -->
     <record id="g2p_registry_farmer_form_view_inherit_no_create" model="ir.ui.view">
@@ -65,6 +78,8 @@
             </xpath>
         </field>
     </record>
+
+
     <record id="g2p_registry_household_tree_view_inherit_no_create" model="ir.ui.view">
         <field name="name">res.partner.tree.household.inherit.no.create</field>
         <field name="model">res.partner</field>
@@ -76,6 +91,7 @@
             </xpath>
         </field>
     </record>
+
     <record id="action_household_view" model="ir.actions.act_window">
         <field name="name">Households</field>
         <field name="res_model">res.partner</field>
@@ -275,6 +291,39 @@
         parent="g2p_configuration_menu_root_main"
         sequence="10"
     />
+
+     <menuitem
+        id="menu_gender_type_main"
+        name="Group Mme"
+        action="g2p_registry_individual.action_gender_type"
+        parent="g2p_configuration_menu_root_main"
+        sequence="10"
+    />
+     <menuitem
+        id="menu_group_membership_kind_main"
+        name="Group Membership Kind"
+        action="g2p_registry_membership.action_group_membership_kind"
+        parent="g2p_configuration_menu_root_main"
+        sequence="10"
+    />
+
+
+    <menuitem
+        id="g2p_machinery_menu_main"
+        action="g2p_ati.g2p_machinery_action"
+        name="Machineries"
+        sequence="10"
+        parent="g2p_configuration_menu_root_main"
+    />
+
+       <menuitem
+        id="g2p_season_menu_main"
+        action="g2p_ati.g2p_season_view_tree_action"
+        name="Seasons"
+        sequence="10"
+        parent="g2p_configuration_menu_root_main"
+    />
+
     <menuitem
         id="menu_group_kind_main"
         name="Group types"

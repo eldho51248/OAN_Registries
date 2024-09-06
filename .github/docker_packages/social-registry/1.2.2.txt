@@ -1,0 +1,27 @@
+#!openg2p/openg2p-social-registry-ati:1.2.2
+#!17.0.20240505-debian-12-r0
+# The below modules are OCA dependencies, manually adding them here for now.
+queue = git://17.0//https://github.com/oca/queue
+connector = git://17.0//https://github.com/oca/connector
+rest_framework = git://17.0//https://github.com/openg2p/rest-framework
+storage = git://17.0//https://github.com/openg2p/storage
+server_env = git://17.0//https://github.com/oca/server-env
+server_tools = git://17.0//https://github.com/openg2p/server-tools
+web = git://17.0//https://github.com/oca/web
+web_api= git://17.0//https://github.com/oca/web-api
+#
+# The below modules are External Addons
+smile_odoo_addons = git://17.0//https://github.com/OpenG2P/smile_odoo_addons
+odoo_modules = git://17.0//https://github.com/muk-it/odoo-modules
+#
+openg2p_odoo_commons = git://v1.2.1//https://github.com/openg2p/openg2p-odoo-commons
+openg2p_auth = git://v1.2.1//https://github.com/openg2p/openg2p-auth
+openg2p_documents = git://v1.2.1//https://github.com/openg2p/openg2p-documents
+openg2p_registry = git://v1.2.2//https://github.com/openg2p/openg2p-registry
+openg2p_social_registry = git://v1.2.2//https://github.com/openg2p/openg2p-social-registry
+openg2p_importers = git://v1.2.1//https://github.com/openg2p/openg2p-importers
+openg2p_security = git://v1.2.1//https://github.com/openg2p/openg2p-security
+openg2p_vci = git://v1.2.1//https://github.com/openg2p/openg2p-vci
+openg2p_registration_portal = git://v1.2.1//https://github.com/openg2p/openg2p-registration-portal
+openg2p_service_provider_portal = git://v1.2.1//https://github.com/openg2p/openg2p-service-provider-portal
+openg2p_ati = file://./openg2p-ati

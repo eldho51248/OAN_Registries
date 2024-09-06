@@ -36,7 +36,7 @@
                                 <field name="individual_gender" string="Sex" />
                                 <field
                                     name="kind"
-                                    string="Role"
+                                    string="Relation"
                                     widget="many2many_tags"
                                     options="{'no_open':True, 'no_create_edit':True, 'no_create':True, 'no_quick_create':True}"
                                 />
@@ -60,7 +60,13 @@
 
             <xpath expr="//page[@name='basic_info']" position="after">
                 <page string="Households">
-                    <field name="individual_membership_ids" readonly="disabled" nolabel="1" colspan="4">
+                    <field
+                        name="individual_membership_ids"
+                        readonly="true"
+                        create="false"
+                        nolabel="1"
+                        colspan="4"
+                    >
                         <tree editable="top">
                             <button
                                 name="open_group_form"
@@ -78,7 +84,7 @@
                             />
                             <field
                                 name="kind"
-                                string="Role"
+                                string="Relation"
                                 widget="many2many_tags"
                                 options="{'no_open':True, 'no_create_edit':True}"
                             />

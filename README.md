@@ -21,9 +21,10 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
-[g2p_ati](g2p_ati/) | 17.0.1.2.0 |  | OpenG2P Country Config: ATI
-[g2p_lock_unlock](g2p_lock_unlock/) | 17.0.1.0.0 |  | OpenG2P Lock Unlock
-[g2p_odk_importer_ati](g2p_odk_importer_ati/) | 17.0.1.2.0 |  | OpenG2P ODK Config: ATI
+[g2p_ati](g2p_ati/) | 17.0.0.0.0 |  | OpenG2P Country Config: ATI
+[g2p_ati_service_provider_portal](g2p_ati_service_provider_portal/) | 17.0.0.0.0 |  | OpenG2P Service Provider: ATI
+[g2p_lock_unlock](g2p_lock_unlock/) | 17.0.0.0.0 |  | OpenG2P Lock Unlock
+[g2p_odk_importer_ati](g2p_odk_importer_ati/) | 17.0.0.0.0 |  | OpenG2P ODK Config: ATI
 
 [//]: # (end addons)
 
@@ -31,11 +32,7 @@ addon | version | maintainers | summary
 
 ## Licenses
 
-This repository is licensed under [MPL-2.0](LICENSE).
-
-However, each module can have a totally different license, as long as they adhere to OpenG2P
-policy. Consult each module's `__manifest__.py` file, which contains a `license` key
-that explains its license.
+This repository is licensed under [LGPL-3.0](LICENSE).
 
 ----
 <!-- /!\ Non OCA Context : Set here the full description of your organization. -->
