@@ -17,13 +17,27 @@
     <field name="arch" type="xml">
         <form string="Change Request">
             <header>
-                <button string="Approve" type="object" name="approve_changes" class="btn-primary" />
-                <button string="Reject" type="object" name="reject_changes" class="btn-secondary" />
+                <button
+                        string="Approve"
+                        type="object"
+                        name="approve_changes"
+                        class="btn-primary"
+                        invisible="state != 'pending'"
+                    />
+                <button
+                        string="Reject"
+                        type="object"
+                        name="reject_changes"
+                        class="btn-secondary"
+                        invisible="state != 'pending'"
+                    />
             </header>
             <sheet>
                 <group>
                     <field name="partner_id" />
-                    <field name="new_values" />
+                    <!-- <field name="new_values" /> -->
+                    <field name="update_message" string="Changes" />
+                    <field name="validator" />
                     <field name="state" />
                 </group>
             </sheet>
@@ -38,7 +52,8 @@
     <field name="arch" type="xml">
         <tree class="text-left">
                 <field name="partner_id" />
-                <field name="update_message" string="Message" />
+                <field name="update_message" string="Changes" />
+                <field name="validator" />
                 <field name="state" />
                 <button
                     title="Approve"

@@ -182,7 +182,13 @@ def to_gregorian(year, month, date) -> datetime.date:
     return datetime.date(gregorian_year, gregorian_month, gregorian_date)
 
 
-def check_ethipian_date_str(eth_date_str):
+def check_no_for_future_date(gc_date):
+    today = fields.date.today()
+    if gc_date > today:
+        raise ValidationError(_("The date should not be in the future."))
+
+
+def check_ethipian_date_str(eth_date_str, future_date=False):
     date_list = re.split("[-/,]", eth_date_str)
     day = int(date_list[0])
     month = int(date_list[1])
@@ -200,7 +206,6 @@ def check_ethipian_date_str(eth_date_str):
     ):
         raise ValidationError(_("Select a valid Ethiopian date with day,month and year (dd-mm-yyyy)"))
 
-    gc_date = to_gregorian(int(date_list[2]), int(date_list[1]), int(date_list[0]))
-    today = fields.date.today()
-    if gc_date > today:
-        raise ValidationError(_("The date should not be in the future."))
+    if not future_date:
+        gc_date = to_gregorian(int(date_list[2]), int(date_list[1]), int(date_list[0]))
+        check_no_for_future_date(gc_date)

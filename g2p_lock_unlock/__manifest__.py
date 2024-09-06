@@ -21,6 +21,7 @@
         "wizard/request_wiz_view.xml",
         "views/edit_request.xml",
         "views/g2p_lock_social_registry.xml",
+        "views/res_partner.xml",
     ],
     "assets": {"web.assets_backend": []},
     "demo": [],

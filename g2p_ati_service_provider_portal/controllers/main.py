@@ -2030,9 +2030,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             )
         )
         region = request.env["g2p.region"].sudo().search([])
-        zone = request.env["g2p.zone"].sudo().search([])
-        woreda = request.env["g2p.woreda"].sudo().search([])
-        kebele = request.env["g2p.kebele"].sudo().search([])
+        zone = []
+        woreda = []
+        kebele = []
         return request.render(
             "g2p_service_provider_beneficiary_management.individual_list",
             {"individual": individual, "region": region, "zone": zone, "wereda": woreda, "kebele": kebele},
@@ -2052,9 +2052,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             )
         )
         region = request.env["g2p.region"].sudo().search([])
-        zone = request.env["g2p.zone"].sudo().search([])
-        woreda = request.env["g2p.woreda"].sudo().search([])
-        kebele = request.env["g2p.kebele"].sudo().search([])
+        zone = []
+        woreda = []
+        kebele = []
         return request.render(
             "g2p_service_provider_beneficiary_management.group_list",
             {"groups": groups, "region": region, "zone": zone, "wereda": woreda, "kebele": kebele},
