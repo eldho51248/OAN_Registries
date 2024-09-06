@@ -388,7 +388,7 @@ function showModalSection(nextSectionId, currentSectionId, direction) {
     var val = validateSection(currentSectionId);
     if (direction === "prev") {
         var val = true;
-        }
+    }
 
     // Val = true;
 
@@ -409,4 +409,3 @@ function showModalSection(nextSectionId, currentSectionId, direction) {
         showSection(nextSectionId, activeLink, true);
     }
 }
-

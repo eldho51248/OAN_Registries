@@ -207,7 +207,6 @@ $(document).ready(function () {
         }
     });
 
-
     // Event listeners
     function handleNationalIdSelection() {
         const selectElement = document.getElementById("have-national-id-selection");
