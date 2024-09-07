@@ -1,3 +1,4 @@
 [submodule ".github/docker_packaging"]
 	path = .github/docker_packaging
 	url = https://github.com/openg2p/openg2p-packaging
+	branch = main
