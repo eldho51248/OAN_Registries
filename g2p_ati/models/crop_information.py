@@ -12,20 +12,16 @@ class G2PCropInformation(models.Model):
     _rec_name = "partner_id"
 
     partner_id = fields.Many2one("res.partner", string="Farmer", required=True, index=True)
+    farmer_id = fields.Char(related="partner_id.farmer_id", string="Farmer ID", readonly=True)
     crop = fields.Many2one("g2p.crop", required=True, index=True)
+
+    collected_gc = fields.Date(string="Planted date in GC")
+    collected_ec = fields.Char(string="Planted date in EC")
+    season = fields.Many2one("g2p.season", store=True)
     is_diseased = fields.Selection(
         string="Has this crop been affected by illness?", selection=[("yes", "Yes"), ("no", "No")]
     )
     illness_type = fields.Many2many("g2p.illness.type", string="Disease")
-    collected_gc = fields.Date(string="Planted date in GC")
-    collected_ec = fields.Char(string="Planted date in EC")
-    season = fields.Many2one("g2p.season", store=True)
-
-    # @api.constrains("collected_gc", "collected_ec")
-    # def _check_collected_dates(self):
-    #     for record in self:
-    #         if not record.collected_gc and not record.collected_ec:
-    #             raise ValidationError(_("Either Collected GC or Collected EC must be filled."))
 
     @api.constrains("is_diseased", "illness_type")
     def _check_illness_type_required(self):
