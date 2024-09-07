@@ -524,8 +524,8 @@
                                                             >
                                                                 <div class="row">
                                                                     <div
-                                                                        class="col-lg-11 container-fluid heading-header"
-                                                                        style="background-color: #d6eae0;"
+                                                                        class="container-fluid heading-header"
+                                                                        style="background-color: #d6eae0; width: 95%;"
                                                                     >
                                                                         <span
                                                                             class="heading-text"
@@ -1621,8 +1621,8 @@
                                                             >
                                                                 <div class="section-content">
                                                                     <div
-                                                                        class="col-lg-11 container-fluid heading-header"
-                                                                        style="background-color: #d6eae0;"
+                                                                        class="container-fluid heading-header"
+                                                                        style="background-color: #d6eae0; width: 95%;"
                                                                     >
                                                                         <span
                                                                             class="heading-text"
@@ -1983,8 +1983,8 @@
                                                                 <div class="section-content">
                                                                     <div class="row">
                                                                         <div
-                                                                            class="col-lg-11 container-fluid heading-header"
-                                                                            style="background-color: #d6eae0;"
+                                                                            class="container-fluid heading-header"
+                                                                            style="background-color: #d6eae0; width: 95%;"
                                                                         >
                                                                             <span
                                                                                 class="heading-text"
@@ -2436,8 +2436,8 @@
                                                                 <div class="section-content">
                                                                     <div class="row">
                                                                         <div
-                                                                            class="col-lg-11 container-fluid heading-header"
-                                                                            style="background-color: #d6eae0;"
+                                                                            class="container-fluid heading-header"
+                                                                            style="background-color: #d6eae0; width: 95%;"
                                                                         >
                                                                             <span
                                                                                 class="heading-text"
@@ -2798,8 +2798,8 @@
                                                                 <div class="section-content">
                                                                     <div class="row">
                                                                         <div
-                                                                            class="col-lg-11 container-fluid heading-header"
-                                                                            style="background-color: #d6eae0;"
+                                                                            class="container-fluid heading-header"
+                                                                            style="background-color: #d6eae0; width: 95%;"
                                                                         >
                                                                             <span
                                                                                 class="heading-text"
@@ -3177,8 +3177,8 @@
                                                                 <div class="section-content">
                                                                     <div class="row">
                                                                         <div
-                                                                            class="col-lg-11 container-fluid heading-header"
-                                                                            style="background-color: #d6eae0;"
+                                                                            class="container-fluid heading-header"
+                                                                            style="background-color: #d6eae0; width: 95%;"
                                                                         >
                                                                             <span
                                                                                 class="heading-text"
@@ -3389,8 +3389,8 @@
                                                                 <div class="section-content">
                                                                     <div class="row">
                                                                         <div
-                                                                            class="col-lg-11 container-fluid heading-header"
-                                                                            style="background-color: #d6eae0;"
+                                                                            class="container-fluid heading-header"
+                                                                            style="background-color: #d6eae0; width: 95%;"
                                                                         >
                                                                             <span
                                                                                 class="heading-text"
@@ -3488,8 +3488,8 @@
                                                                         </div>
                                                                     </div>
                                                                     <div
-                                                                        class="col-lg-11 container-fluid heading-header"
-                                                                        style="background-color: #d6eae0;"
+                                                                        class="container-fluid heading-header"
+                                                                        style="background-color: #d6eae0; width: 95%;"
                                                                     >
                                                                         <span
                                                                             class="heading-text"
@@ -3710,7 +3710,6 @@
                                                                                         id="hh_member_update"
                                                                                         t-attf-store="{{ individual.id }}"
                                                                                         data-bs-target="#editFamilyMemberModal"
-                                                                                        onclick="populateEditModal('{{ individual.id }}')"
                                                                                     >
                                                                                         <i
                                                                                             class="fa fa-pencil"
@@ -3733,21 +3732,18 @@
                                                                     <t t-if="not member_ids">
                                                                         <tr>
                                                                             <td
-                                                                                colspan="5"
-                                                                                style="padding: 0; border: none;"
+                                                                                colspan="7"
+                                                                                style="text-align: center; padding: 0; border: none;"
                                                                             >
-                                                                                <div
-                                                                                    class="no_list"
-                                                                                    style="text-align: left; padding: 20px;"
-                                                                                >
-                                                                                    <img
-                                                                                        src="/g2p_service_provider_beneficiary_management/static/src/img/no_mem.png"
-                                                                                        alt="No Members"
-                                                                                        style="display: block; margin-bottom: 10px;"
-                                                                                    />
-                                                                                    <p>No members!</p>
-
-                                                                                </div>
+                                                                                <img
+                                                                                    src="/g2p_service_provider_beneficiary_management/static/src/img/no_mem.png"
+                                                                                    alt="No Members"
+                                                                                    style="display: block; margin: 0 auto;"
+                                                                                />
+                                                                                <p
+                                                                                    style="margin: 0; padding: 0; font-size: 16px;"
+                                                                                >No
+                                                                                    members!</p>
                                                                             </td>
                                                                         </tr>
                                                                     </t>
