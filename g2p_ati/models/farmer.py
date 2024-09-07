@@ -67,11 +67,11 @@ class G2PFarmer(models.Model):
 
     # MEMEBERSHIP
     is_member_of_primary_cooperative = fields.Selection(
-        string="Is member Of primary cooperative? ", selection=[("yes", "Yes"), ("no", "No")]
+        string="Is member of primary cooperative? ", selection=[("yes", "Yes"), ("no", "No")]
     )
     primary_cooperatives = fields.Many2one("g2p.primary.cooperative")
     is_member_of_cooperative_union = fields.Selection(
-        string="Is member Of cooperative union? ", selection=[("yes", "Yes"), ("no", "No")]
+        string="Is member of cooperative union? ", selection=[("yes", "Yes"), ("no", "No")]
     )
     cooperative_unions = fields.Many2one("g2p.cooperative.union")
     is_member_in_farmer_cluster = fields.Selection(
@@ -189,6 +189,21 @@ class G2PFarmer(models.Model):
 
     farmer_id = fields.Char(string="Farmer ID", compute="_compute_farmer_id", store=True, index=True)
 
+    @api.onchange("region")
+    def _onchange_region(self):
+        self.zone = False
+        self.woreda = False
+        self.kebele = False
+
+    @api.onchange("zone")
+    def _onchange_zone(self):
+        self.woreda = False
+        self.kebele = False
+
+    @api.onchange("woreda")
+    def _onchange_woreda(self):
+        self.kebele = False
+
     @api.onchange("is_group", "family_name", "given_name", "gf_name_eng")
     def name_change_farmer(self):
         vals = {}
@@ -255,8 +270,13 @@ class G2PFarmer(models.Model):
         if self.has_finance_access == "no":
             return {"finance_accesses": [(6, 0, [])]}
 
+    def set_to_draft(self):
+        for record in self:
+            record.state = "draft"
+
     def state_approve(self):
-        self.state = "approved"
+        for record in self:
+            record.state = "approved"
 
     def state_reject(self):
         return {

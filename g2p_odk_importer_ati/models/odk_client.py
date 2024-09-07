@@ -429,6 +429,10 @@ def get_member_data(self, member, head, enumerator):
         if kebele_id != "other":
             vals["kebele"] = kebele_id
 
+    language_id = process_many2one_field(self, "g2p.lang", head.get("primary_Language"))
+    if language_id:
+        vals["primary_Language"] = language_id
+
     if enumerator:
         vals["enumerator_id"] = enumerator.id
 

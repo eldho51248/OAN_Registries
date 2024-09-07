@@ -128,7 +128,7 @@
 
                                             <td>
                                                 <a
-                                                    t-attf-href="/serviceprovider/individual/update/{{ update.id }}"
+                                                    t-attf-href="/serviceprovider/individual/update/{{ update.record_id.id }}"
                                                 >
                                                     <button string="Update" type="object" class="view-button">
                                                         Update
@@ -140,22 +140,15 @@
                                 </tbody>
                             </table>
                         </div>
-
                         <div id="page-buttons" class="pagination justify-content-center">
-
                         </div>
                     </div>
                 </div>
-
-
                 <script
                     type="text/javascript"
                     src="/g2p_ati_service_provider_portal/static/src/js/table_pagination_and_row.js"
                 />
-
                 <link rel="stylesheet" href="/g2p_ati_service_provider_portal/static/src/css/list.css" />
-
-
             </div>
         </t>
     </template>

@@ -358,9 +358,10 @@ $(document).on("click", "#family_member_submit", function () {
 //     consentSection.classList.add("show");
 // }
 // eslint-disable-next-line no-unused-vars
-function showNextModal(nextSectionId) {
+function showNextModal(nextSectionId, currentSectionId) {
     // eslint-disable-next-line no-undef
     var val = validateSection("location-details");
+
     // Var val = true;
 
     if (val) {
@@ -369,6 +370,7 @@ function showNextModal(nextSectionId) {
         var nextLink = activeLink.parentElement.nextElementSibling.querySelector(".nav-link");
         if (nextLink) {
             nextLink.classList.remove("disabled");
+            nextLink = document.getElementById(currentSectionId + "-link");
             // eslint-disable-next-line no-undef
             showSection(nextSectionId, nextLink, true);
         }
@@ -384,6 +386,10 @@ function showNextModal(nextSectionId) {
 function showModalSection(nextSectionId, currentSectionId, direction) {
     // eslint-disable-next-line no-undef
     var val = validateSection(currentSectionId);
+    if (direction === "prev") {
+        var val = true;
+    }
+
     // Val = true;
 
     if (val && (currentSectionId || direction)) {

@@ -210,8 +210,6 @@
                                                                 name="uid"
                                                                 class="form-control"
                                                                 placeholder="UID"
-                                                                oninput="validateUID()"
-                                                                required="required"
                                                                 t-att-value="uid"
                                                             />
                                                         </div>
@@ -220,7 +218,7 @@
                                                             id="uid_error"
                                                             style="display: none;color: red;"
                                                         >
-                                                            UID must be exactly 12 characters long.
+                                                            UID must be exactly 12 Digits Only.
                                                         </div>
                                                         <div
                                                             class="s_website_form_field"
@@ -242,10 +240,17 @@
                                                                 class="form-control"
                                                                 t-att-value="rid"
                                                                 placeholder="RID"
-                                                                oninput="validateElement(this)"
-                                                                required="required"
                                                             />
+                                                            <div
+                                                                class="error-message col-12 s_website_form_field"
+                                                                id="rid_error"
+                                                                style="display: none;color: red;"
+                                                            >
+                                                            RID must be exactly
+                                                            29 digits only.
                                                         </div>
+                                                        </div>
+
                                                     </div>
                                                 </div>
 
@@ -334,7 +339,7 @@
                                                                             name="hh_is_household_head"
                                                                             t-att-data-text="option.name"
                                                                             t-att-value="option.id"
-                                                                            t-att-selected="option.id == household_head_selection_id"
+                                                                            t-att-checked="option.id == household_head_selection_id"
                                                                             required="required"
                                                                         />
                                                                         <label
@@ -1934,7 +1939,7 @@
                                                                                                 class="form-control"
                                                                                                 required="required"
                                                                                                 oninput="validateElement(this)"
-                                                                                                t-att-value="land_info['total_land_area']"
+                                                                                                t-att-value="land_info['land_id']"
                                                                                                 placeholder="Enter Land ID"
                                                                                             />
                                                                                         </div>
@@ -2309,6 +2314,38 @@
                                                                                     </select>
 
                                                                                 </div>
+                                                                                <div class="col-lg-6">
+                                                                                    <div
+                                                                                        class="s_website_form_field lmargin-input"
+                                                                                        style="margin-right: -10%"
+                                                                                    >
+                                                                                        <label
+                                                                                            class="s_website_form_label"
+                                                                                            for="crop_date"
+                                                                                        >
+                                                                                            <span
+                                                                                                class="s_website_form_label_content"
+                                                                                                style="color: #666666;"
+                                                                                            >
+                                                                                                Crop Planted Date
+                                                                                            </span>
+                                                                                            <span
+                                                                                                class="s_website_form_mark"
+                                                                                            >
+                                                                                                *</span>
+                                                                                        </label>
+                                                                                        <input
+                                                                                            type="date"
+                                                                                            id="crop_planted_date"
+                                                                                            name="crop-date"
+                                                                                            class="form-control date-picker"
+                                                                                            required="required"
+                                                                                            onchange="validateElement(this)"
+                                                                                            placeholder="DD-MM-YYYY"
+                                                                                            t-att-value="beneficiary.crop"
+                                                                                        />
+                                                                                    </div>
+                                                                                </div>
 
                                                                             </div>
 
@@ -2404,6 +2441,38 @@
 
                                                                                         </div>
 
+                                                                                        <div class="col-lg-6">
+                                                                                            <div
+                                                                                                class="s_website_form_field lmargin-input"
+                                                                                                style="margin-right: -10%"
+                                                                                            >
+                                                                                                <label
+                                                                                                    class="s_website_form_label"
+                                                                                                    for="crop_date"
+                                                                                                >
+                                                                                                    <span
+                                                                                                        class="s_website_form_label_content"
+                                                                                                        style="color: #666666;"
+                                                                                                    >
+                                                                                                        Crop Planted Date
+                                                                                                    </span>
+                                                                                                    <span
+                                                                                                        class="s_website_form_mark"
+                                                                                                    >
+                                                                                                        *</span>
+                                                                                                </label>
+                                                                                                <input
+                                                                                                    type="date"
+                                                                                                    id="crop_planted_date"
+                                                                                                    name="crop_date"
+                                                                                                    t-att-name="crop_date"
+                                                                                                    class="form-control date-picker"
+                                                                                                    required="required"
+                                                                                                    onchange="validateElement(this)"
+                                                                                                    placeholder="DD-MM-YYYY"
+                                                                                                />
+                                                                                            </div>
+                                                                                        </div>
 
                                                                                     </div>
 
@@ -2490,6 +2559,35 @@
                                                                                 </select>
 
                                                                             </div>
+
+<!--                                                                            <div class="col-lg-6">-->
+<!--                                                                                    <div-->
+<!--                                                                                        class="s_website_form_field lmargin-input"-->
+<!--                                                                                        style="margin-right: -10%">-->
+<!--                                                                                        <label-->
+<!--                                                                                            class="s_website_form_label"-->
+<!--                                                                                            for="crop_date">-->
+<!--                                                                                            <span-->
+<!--                                                                                                class="s_website_form_label_content"-->
+<!--                                                                                                style="color: #666666;">-->
+<!--                                                                                                Crop Planted Date-->
+<!--                                                                                            </span>-->
+<!--                                                                                            <span class="s_website_form_mark">-->
+<!--                                                                                                *</span>-->
+<!--                                                                                        </label>-->
+<!--                                                                                        <input-->
+<!--                                                                                            type="date"-->
+<!--                                                                                            id="crop_planted_date"-->
+<!--                                                                                            name="crop_date"-->
+<!--                                                                                            t-att-name="'crop_date_' + str({9999})"-->
+<!--                                                                                            class="form-control date-picker"-->
+<!--                                                                                            required="required"-->
+<!--                                                                                            onchange="validateElement(this)"-->
+<!--                                                                                            placeholder="DD-MM-YYYY"-->
+<!--                                                                                            t-att-value="beneficiary.crop"-->
+<!--                                                                                        />-->
+<!--                                                                                    </div>-->
+<!--                                                                                </div>-->
 
                                                                         </div>
 
