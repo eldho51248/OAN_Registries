@@ -445,9 +445,20 @@ function validateSelect(selectElement) {
 }
 
 function validateInput(inputElement) {
-    const value = inputElement.value;
-    if (value.trim() !== "") {
-        inputElement.classList.remove("is-invalid");
+    if (inputElement.type === "radio") {
+        // Get all radio buttons with the same name (group)
+        const radioGroup = document.querySelectorAll(`input[name="${inputElement.name}"]`);
+
+        // Remove the "is-invalid" class from all radio buttons in the group
+        radioGroup.forEach((radio) => {
+            radio.classList.remove("is-invalid");
+        });
+    } else {
+        // For other input types, check the value and remove "is-invalid" if not empty
+        const value = inputElement.value;
+        if (value.trim() !== "") {
+            inputElement.classList.remove("is-invalid");
+        }
     }
 }
 
@@ -470,20 +481,58 @@ function validateUID() {
     return isValid;
 }
 
+// Function validateSection(sectionId) {
+//     const section = document.getElementById(sectionId);
+//     const requiredFields = section.querySelectorAll("[required]");
+//     let valid = true;
+
+//     requiredFields.forEach((field) => {
+//         const isFieldValid = field.value.trim();
+//         var fieldName = field.getAttribute("name");
+//         if (fieldName.includes("{9999}")) {
+//             return;
+//         }
+
+//         field.classList.toggle("is-invalid", !isFieldValid);
+//         valid = valid && isFieldValid;
+//         if (sectionId === "id-section" && fieldName === "uid") {
+//             valid = valid && validateUID();
+//         }
+//     });
+
+//     return valid;
+// }
+
 function validateSection(sectionId) {
     const section = document.getElementById(sectionId);
     const requiredFields = section.querySelectorAll("[required]");
     let valid = true;
 
     requiredFields.forEach((field) => {
-        const isFieldValid = field.value.trim();
-        var fieldName = field.getAttribute("name");
+        console.log(field);
+
+        const fieldName = field.getAttribute("name");
+        // Console.log(fieldName, field.value);
+
+        // Skip fields with a specific name pattern
         if (fieldName.includes("{9999}")) {
             return;
         }
 
-        field.classList.toggle("is-invalid", !isFieldValid);
-        valid = valid && isFieldValid;
+        if (field.type === "radio") {
+            // For radio buttons, only check the first one in the group
+            const radioGroupChecked = section.querySelector(`input[name="${fieldName}"]:checked`);
+            const isRadioGroupValid = Boolean(radioGroupChecked);
+            field.classList.toggle("is-invalid", !isRadioGroupValid);
+            valid = valid && isRadioGroupValid;
+        } else {
+            // For other input types (text, select, etc.)
+            const isFieldValid = field.value.trim();
+            field.classList.toggle("is-invalid", !isFieldValid);
+            valid = valid && isFieldValid;
+        }
+
+        // Additional validation for specific fields
         if (sectionId === "id-section" && fieldName === "uid") {
             valid = valid && validateUID();
         }
@@ -563,7 +612,7 @@ function checkRequired() {
     // }
 }
 
-function toggleFieldBasedOnRadio(inputName, fieldIdToToggle, toggleValue = "Yes") {
+function toggleFieldBasedOnRadio(inputName, fieldIdToToggle, selectElementId, toggleValue = "Yes") {
     const radios = document.querySelectorAll(`input[name="${inputName}"]`);
     let shouldShowField = false;
 
@@ -575,36 +624,46 @@ function toggleFieldBasedOnRadio(inputName, fieldIdToToggle, toggleValue = "Yes"
 
     const fieldToToggle = document.getElementById(fieldIdToToggle);
     fieldToToggle.style.display = shouldShowField ? "block" : "none";
+    const selectElement = document.getElementById(selectElementId);
+    if (shouldShowField === true) {
+        selectElement.setAttribute("required", "required");
+    } else if (shouldShowField === false) {
+        selectElement.removeAttribute("required");
+    }
 }
 
 document.addEventListener("DOMContentLoaded", function () {
     // Initial check on page load
     checkRequired();
-    toggleFieldBasedOnRadio("is_member_of_primary_coop", "primary-coop-field");
-    toggleFieldBasedOnRadio("is_member_of_coop_union", "coop-union-field");
-    toggleFieldBasedOnRadio("in_farmer_cluster", "primary-commodity-field");
-    toggleFieldBasedOnRadio("in_farmer_cluster", "role-in-cluster-field");
+    toggleFieldBasedOnRadio("is_member_of_primary_coop", "primary-coop-field", "name_of_primary_coop");
+    toggleFieldBasedOnRadio("is_member_of_coop_union", "coop-union-field", "name_of_coop_union");
+    toggleFieldBasedOnRadio("in_farmer_cluster", "primary-commodity-field", "primary_commodity");
+    toggleFieldBasedOnRadio("in_farmer_cluster", "role-in-cluster-field", "role_in_cluster");
 
     // Attach event listeners to the radio buttons
     const primaryCoopRadios = document.querySelectorAll('input[name="is_member_of_primary_coop"]');
     primaryCoopRadios.forEach((radio) => {
         radio.addEventListener("change", function () {
-            toggleFieldBasedOnRadio("is_member_of_primary_coop", "primary-coop-field");
+            toggleFieldBasedOnRadio(
+                "is_member_of_primary_coop",
+                "primary-coop-field",
+                "name_of_primary_coop"
+            );
         });
     });
 
     const coopUnionRadios = document.querySelectorAll('input[name="is_member_of_coop_union"]');
     coopUnionRadios.forEach((radio) => {
         radio.addEventListener("change", function () {
-            toggleFieldBasedOnRadio("is_member_of_coop_union", "coop-union-field");
+            toggleFieldBasedOnRadio("is_member_of_coop_union", "coop-union-field", "name_of_coop_union");
         });
     });
 
     const isMemberRadios = document.querySelectorAll('input[name="in_farmer_cluster"]');
     isMemberRadios.forEach((radio) => {
         radio.addEventListener("change", function () {
-            toggleFieldBasedOnRadio("in_farmer_cluster", "primary-commodity-field");
-            toggleFieldBasedOnRadio("in_farmer_cluster", "role-in-cluster-field");
+            toggleFieldBasedOnRadio("in_farmer_cluster", "primary-commodity-field", "primary_commodity");
+            toggleFieldBasedOnRadio("in_farmer_cluster", "role-in-cluster-field", "role_in_cluster");
         });
     });
 });

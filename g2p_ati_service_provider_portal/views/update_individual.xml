@@ -3523,12 +3523,11 @@
 
                             <script>
                                 function updateFileName(input) {
-                                var inputId = input.getAttribute('id');
-                                var label = document.querySelector(label[for="${inputId}"]);
-                                var uploadText = label.querySelector('.upload-text');
-                                var fileName = input.files.length > 0 ? input.files[0].name :
-                                'Upload';
-                                uploadText.textContent = fileName;
+                                    var inputId = input.getAttribute('id');
+                                    var label = document.querySelector(`label[for="${inputId}"]`);
+                                    var uploadText = label.querySelector('.upload-text');
+                                    var fileName = input.files.length > 0 ? input.files[0].name : 'Upload';
+                                    uploadText.textContent = fileName;
                                 }
                             </script>
 

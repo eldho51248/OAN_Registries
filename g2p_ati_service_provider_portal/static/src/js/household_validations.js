@@ -387,7 +387,7 @@ function showModalSection(nextSectionId, currentSectionId, direction) {
     // eslint-disable-next-line no-undef
     var val = validateSection(currentSectionId);
     if (direction === "prev") {
-        var val = true;
+        val = true;
     }
 
     // Val = true;
