@@ -375,6 +375,10 @@ def get_individual_data(self, individual, is_member, enumerator):
         individual = process_reg_ids(self, individual, "Member ODK ACK ID", "member_reference_id")
         vals["reg_ids"] = individual.get("reg_ids")
 
+    if individual.get("head_registered") and individual.get("head_registered") == "yes":
+        individual = process_reg_ids(self, individual, "Member ODK ACK ID", "member_reference_id")
+        vals["reg_ids"] = individual.get("reg_ids")
+
     if other_json:
         vals["additional_g2p_info"] = json.dumps(other_json)
 

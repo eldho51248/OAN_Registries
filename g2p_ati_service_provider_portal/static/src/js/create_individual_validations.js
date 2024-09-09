@@ -509,10 +509,7 @@ function validateSection(sectionId) {
     let valid = true;
 
     requiredFields.forEach((field) => {
-        console.log(field);
-
         const fieldName = field.getAttribute("name");
-        // Console.log(fieldName, field.value);
 
         // Skip fields with a specific name pattern
         if (fieldName.includes("{9999}")) {
