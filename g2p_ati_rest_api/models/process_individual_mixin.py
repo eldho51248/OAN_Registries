@@ -1,5 +1,6 @@
 from odoo import models
 
+
 class ProcessIndividualMixin(models.AbstractModel):
     _inherit = "process_individual.rest.mixin"
 
