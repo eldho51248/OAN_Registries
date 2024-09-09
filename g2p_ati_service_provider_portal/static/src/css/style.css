@@ -36,6 +36,12 @@
         margin-top: 400px;
     }
 }
+input[type="radio"].invalid-radio {
+    outline: 2px solid red;
+    outline-offset: -2px; /* Adjust to bring the outline closer to the radio button */
+}
+
+
 .s_website_form_field {
     /* font: normal normal normal 14px / 17px Inter; */
     padding-left: 20px;

@@ -18,9 +18,12 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
     def portal_home(self, **kwargs):
         # domain = []
         # domain.append(("is_group", "=", True))
-        households = request.env["res.partner"].sudo().search([("is_group", "=", True)])
+        user_id = request.env.user.id
+        
+        
+        households = request.env["res.partner"].sudo().search([("is_group", "=", True),("create_uid", "=", user_id)])
         individuals = (
-            request.env["res.partner"].sudo().search([("is_group", "=", False), ("is_farmer", "=", "yes")])
+            request.env["res.partner"].sudo().search([("is_group", "=", False), ("is_farmer", "=", "yes"),("create_uid", "=", user_id)])
         )
 
         return request.render(
@@ -1761,6 +1764,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             crop_info_data = self.get_crop_info_data(kw)
             livestock_info_data = self.get_livestock_info_data(kw)
             supporting_documents_ids = self.get_supporting_documents_ids(kw)
+            additional_info_json = self.handle_other_info(kw)
+            print("additional_info is", additional_info_json)
             # Clean up existing data
             member.reg_ids.unlink()
             member.phone_number_ids.unlink()
@@ -1817,6 +1822,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 "do_you_use_pesticide": do_you_use_pesticide,
                 "do_you_use_insecticide": do_you_use_insecticide,
                 "do_you_use_improved_seed": do_you_use_improved_seed,
+                "additional_g2p_info": additional_info_json,
             }
             # Update member details
 
@@ -1829,6 +1835,42 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 "g2p_service_provider_beneficiary_management.error_template",
                 {"error_message": f"An error occurred: {e}"},
             )
+
+    def handle_other_info(self,kw):
+        other_info = {}
+        income_ids = request.httprequest.form.getlist("hh_income_type")
+        searched_income_id = request.env['g2p.hh.income'].sudo().search([
+            '|',  
+            ('name', '=', 'Others'),
+            ('name', '=', 'Other')
+        ]).id
+
+        woreda_id = kw.get("woreda")
+        other_woreda = kw.get("other_woreda")
+        
+        searched_woreda_id = request.env['g2p.woreda'].sudo().search([
+            '|',
+            ('name', '=', 'Others'),
+            ('name', '=', 'Other')
+        ]).id
+       
+
+        if searched_woreda_id == int(woreda_id):
+            if other_woreda:
+                other_info['Woreda'] = other_woreda
+
+      
+        if str(searched_income_id) in request.httprequest.form.getlist("hh_income_type"):
+    
+            other_income_details = kw.get("other_income_details")
+            if other_income_details:
+                other_info['Household Income'] = other_income_details
+
+        print("other_info is",other_info)
+
+        
+
+        return json.dumps(other_info)
 
     def get_selection_value(self, model, selection_id):
         return (request.env[model].sudo().search([("id", "=", selection_id)]).value) if selection_id else None
@@ -2017,6 +2059,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
     @http.route("/serviceprovider/individual", type="http", auth="user", website=True)
     def individual_list(self, **kw):
+        user_id = request.env.user.id
+        
         individual = (
             request.env["res.partner"]
             .sudo()
@@ -2026,6 +2070,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     ("is_registrant", "=", True),
                     ("is_group", "=", False),
                     ("is_farmer", "=", "yes"),
+                    ("create_uid", "=", user_id)
+                    
                 ]
             )
         )
@@ -2040,6 +2086,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
     @http.route("/serviceprovider/group", type="http", auth="user", website=True)
     def group_list(self, **kw):
+        user_id = request.env.user.id
+        
         groups = (
             request.env["res.partner"]
             .sudo()
@@ -2048,6 +2096,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     ("active", "=", True),
                     ("is_registrant", "=", True),
                     ("is_group", "=", True),
+                    ("create_uid", "=", user_id)
                 ]
             )
         )
@@ -2233,6 +2282,64 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         except Exception as e:
             _logger.error("ERROR LOG IN INDIVIDUAL%s", e)
             return json.dumps({"error": "Failed to add family member"})
+        
+
+
+    @http.route(
+    "/serviceprovider/member/delete/",
+    type="http",
+    auth="user",
+    website=True,
+    csrf=False,
+)
+    def delete_family_member(self, **kw):
+        res = dict()
+        try:
+            member_id = int(kw.get("member_id"))
+            group_id = int(kw.get("group_id"))
+            member = request.env["res.partner"].sudo().browse(member_id)
+            group_rec = request.env["res.partner"].sudo().browse(group_id)
+
+            if not member.exists():
+                return json.dumps({"error": "Member not found"})
+
+            if not group_rec.exists():
+                return json.dumps({"error": "Group not found"})
+
+           
+            if member.is_farmer == "no":
+               
+           
+                group_membership = request.env["g2p.group.membership"].sudo().search([
+                    ('group', '=', group_id),
+                    ('individual', '=', member_id)
+                ])
+                if group_membership:
+                    group_membership.unlink()
+
+                member.unlink()
+            
+
+            
+
+            # member_list = []
+            # for membership in group_rec.group_membership_ids:
+            #     if membership.individual.is_farmer == "yes":
+            #         continue
+            #     member_list.append({
+            #         "id": membership.individual.id,
+            #         "name": membership.individual.name,
+            #         "gender": membership.individual.gender,
+            #         "active": membership.individual.active,
+            #         "group_id": membership.group.id,
+            #     })
+
+            # res["member_list"] = member_list
+            # return json.dumps(res)
+
+        except Exception as e:
+            _logger.error("ERROR LOG IN DELETE FAMILY MEMBER: %s", e)
+            return json.dumps({"error": f"An error occurred while deleting the member: {str(e)}"})
 
     def get_membership_kind(self, relationship):
         if relationship == "Wife":

@@ -172,6 +172,33 @@
                                                                     national ID?</span>
                                                                 <span class="s_website_form_mark"> *</span>
                                                             </label>
+
+                                                            <!-- <div class="d-flex flex-wrap">
+                                                                <div
+                                                                    t-foreach="has_national_id"
+                                                                    t-as="option"
+                                                                    class="form-check me-2"
+                                                                >
+                                                                    <input
+                                                                        class="form-check-input "
+                                                                        type="radio"
+                                                                        name="has_national_id"
+                                                                        onchange="validateElement(this)"
+                                                                id="have-national-id-selection"
+                                                                        t-att-data-text="option.name"
+                                                                        t-att-value="option.id"
+                                                                        t-att-checked="option.id == have_national_id_selection_id"
+                                                                    />
+                                                                    <label
+                                                                        class="form-check-label ms-2"
+                                                                        t-att-for="option.id"
+                                                                    >
+                                                                        <t t-esc="option.name" />
+                                                                    </label>
+                                                                </div>
+                                                            </div> -->
+                                                            
+
                                                             <select
                                                                 class="form-select"
                                                                 name="has_national_id"
@@ -189,6 +216,7 @@
                                                                     </option>
                                                                 </t>
                                                             </select>
+                                                            
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6 col-md-6 col-sm-12">
@@ -802,6 +830,22 @@
 
                                                     <div class="row">
 
+                                                        <div class="col-lg-4" id="otherWoredaField" style="display: none;">
+                                                            <div class="s_website_form_field lmargin-input">
+                                                                <label class="s_website_form_label">
+                                                                    <span class="s_website_form_label_content" style="color: #666666;">
+                                                                        Please Specify the Woreda
+                                                                    </span>
+                                                                </label>
+                                                                <input
+                                                                    type="text"
+                                                                    class="form-control"
+                                                                    name="other_woreda"
+                                                                    placeholder="Please specify"
+                                                                />
+                                                            </div>
+                                                        </div>
+
                                                         <div class="col-lg-4">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
@@ -839,6 +883,21 @@
                                                                         </select>
                                                                     </div>
                                                                 </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4" id="otherKebeleField" style="display: none;">
+                                                            <div class="s_website_form_field lmargin-input">
+                                                                <label class="s_website_form_label">
+                                                                    <span class="s_website_form_label_content" style="color: #666666;">
+                                                                        Please Specify the Kebele
+                                                                    </span>
+                                                                </label>
+                                                                <input
+                                                                    type="text"
+                                                                    class="form-control"
+                                                                    name="other_kebele"
+                                                                    placeholder="Please specify"
+                                                                />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1276,15 +1335,12 @@
                                                         <div class="col-lg-6">
                                                             <div class="s_website_form_field">
                                                                 <label class="s_website_form_label">
-                                                                    <span
-                                                                        class="s_website_form_label_content"
-                                                                        style="color: #666666;"
-                                                                    >Source
-                                                                        of
-                                                                        Income</span>
-
+                                                                    <span class="s_website_form_label_content" style="color: #666666;">
+                                                                        Source of Income
+                                                                    </span>
                                                                 </label>
                                                                 <select
+                                                                    id="incomeTypeSelect"
                                                                     class="selectpicker form-control"
                                                                     name="hh_income_type"
                                                                     multiple="multiple"
@@ -1293,10 +1349,7 @@
                                                                     style="width: 100%;"
                                                                     data-none-selected-text="Select Source of Income"
                                                                 >
-                                                                    <t
-                                                                        t-foreach="source_of_income"
-                                                                        t-as="option"
-                                                                    >
+                                                                    <t t-foreach="source_of_income" t-as="option">
                                                                         <option
                                                                             t-att-value="option.id"
                                                                             t-att-selected="'selected' if option.id in (beneficiary.hh_income_type.ids or []) else None"
@@ -1304,11 +1357,25 @@
                                                                             <t t-esc="option.name" />
                                                                         </option>
                                                                     </t>
-
+                                                                   
                                                                 </select>
                                                             </div>
                                                         </div>
-
+                                                        <div class="col-lg-6" id="otherIncomeField" style="display: none;">
+                                                            <div class="s_website_form_field">
+                                                                <label class="s_website_form_label">
+                                                                    <span class="s_website_form_label_content" style="color: #666666;">
+                                                                        Please Specify
+                                                                    </span>
+                                                                </label>
+                                                                <input
+                                                                    type="text"
+                                                                    class="form-control"
+                                                                    name="other_income_details"
+                                                                    placeholder="Please specify"
+                                                                />
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -1413,6 +1480,30 @@
                                                             </div>
                                                         </div>
                                                     </div>
+
+                                                    <div class="row">
+
+                                                        <div class="col-lg-4" id="otherPrimaryCoopField" style="display: none;">
+                                                            <div class="s_website_form_field">
+                                                                <label class="s_website_form_label">
+                                                                    <span class="s_website_form_label_content" style="color: #666666;">
+                                                                        Please Specify the Primary Cooperative
+                                                                    </span>
+                                                                </label>
+                                                                <input
+                                                                    type="text"
+                                                                    class="form-control"
+                                                                    name="other_primary_coop"
+                                                                    placeholder="Please specify"
+                                                                   
+                                                                />
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+
+
                                                     <div class="row">
                                                         <div class="col-lg-6">
                                                             <div class="s_website_form_field">
@@ -1495,6 +1586,28 @@
                                                                 </select>
                                                             </div>
                                                         </div>
+                                                    </div>
+
+                                                    <div class="row">
+
+                                                        <div class="col-lg-4" id="otherCoopUnionField" style="display: none;">
+                                                            <div class="s_website_form_field">
+                                                                <label class="s_website_form_label">
+                                                                    <span class="s_website_form_label_content" style="color: #666666;">
+                                                                        Please Specify the Cooperative Union
+                                                                    </span>
+                                                                </label>
+                                                                <input
+                                                                    type="text"
+                                                                    class="form-control"
+                                                                    name="other_coop_union"
+                                                                    placeholder="Please specify"
+                                                                  
+                                                                />
+                                                            </div>
+                                                        </div>
+
+
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-lg-6">

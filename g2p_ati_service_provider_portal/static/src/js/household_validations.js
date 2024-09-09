@@ -83,9 +83,38 @@ function addFamilyMember() {
 
 // eslint-disable-next-line no-unused-vars
 function deleteMember(button) {
-    const row = button.parentNode.parentNode;
-    row.parentNode.removeChild(row);
+    const memberId = $(button).attr("store");
+    var groupId = $("input[name='group_id']").val();
+    console.log("memberID is ", memberId);
+
+    if (confirm("Are you sure you want to delete this family member?")) {
+        $.ajax({
+            url: "/serviceprovider/member/delete/",
+            type: "POST",
+            data: { member_id: memberId , group_id: groupId},  // Send data as form-encoded
+            success: function(data) {
+                if (data.success) {
+                    console.log("heeyyyyy");
+                    const row = $(button).closest("tr");
+                    row.remove();
+                    alert("Family member deleted successfully.");
+                } else {
+                    console.log("undefined is here");
+                    alert("Error: " + data.error);
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error("Error:", textStatus, errorThrown);
+                alert("An error occurred while deleting the family member.");
+            }
+        });
+    }
 }
+
+
+
+    
+
 
 const farmerCount = 0;
 
@@ -391,6 +420,7 @@ function showModalSection(nextSectionId, currentSectionId, direction) {
     }
 
     // Val = true;
+    // val = true;
 
     if (val && (currentSectionId || direction)) {
         var activeLink = document.querySelector(".sidebar .nav-link.active");

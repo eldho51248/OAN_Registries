@@ -444,6 +444,8 @@ function validateSelect(selectElement) {
     }
 }
 
+
+
 function validateInput(inputElement) {
     const value = inputElement.value;
     if (value.trim() !== "") {
@@ -451,15 +453,18 @@ function validateInput(inputElement) {
     }
 }
 
-// eslint-disable-next-line no-unused-vars
 function validateElement(element) {
-    // Check if the element is a select or an input field
     if (element.tagName === "SELECT") {
         validateSelect(element);
     } else if (element.tagName === "INPUT") {
-        validateInput(element);
+        if (element.type === "radio") {
+            validateRadio(element.name);
+        } else {
+            validateInput(element);
+        }
     }
 }
+
 
 function validateUID() {
     const uid = document.getElementById("uid_input");
@@ -470,26 +475,59 @@ function validateUID() {
     return isValid;
 }
 
+
+
 function validateSection(sectionId) {
     const section = document.getElementById(sectionId);
     const requiredFields = section.querySelectorAll("[required]");
     let valid = true;
 
     requiredFields.forEach((field) => {
-        const isFieldValid = field.value.trim();
+        let isFieldValid;
+        if (field.type === "radio") {
+            // Validate radio buttons in this section
+            isFieldValid = validateRadioButtons(field.name, section);
+        } else {
+            isFieldValid = field.value.trim() !== "";
+        }
+
         var fieldName = field.getAttribute("name");
         if (fieldName.includes("{9999}")) {
             return;
         }
 
-        field.classList.toggle("is-invalid", !isFieldValid);
+        if (field.type !== "radio") {
+            field.classList.toggle("is-invalid", !isFieldValid);
+        }
         valid = valid && isFieldValid;
+
         if (sectionId === "id-section" && fieldName === "uid") {
             valid = valid && validateUID();
         }
     });
 
     return valid;
+}
+
+function validateRadioButtons(radioName, section) {
+    const radioGroup = section.querySelectorAll(`input[name="${radioName}"]`);
+    const radioChecked = Array.from(radioGroup).some(radio => radio.checked);
+
+    radioGroup.forEach(radio => {
+        // Add or remove the invalid-radio class based on whether any radio is checked
+        if (!radioChecked) {
+            radio.classList.add('invalid-radio');
+        } else {
+            radio.classList.remove('invalid-radio');
+        }
+
+        // Attach an event listener to each radio button to remove the invalid-radio class when checked
+        radio.addEventListener('change', function() {
+            radioGroup.forEach(radio => radio.classList.remove('invalid-radio'));
+        });
+    });
+
+    return radioChecked;
 }
 
 // Let previousSection = "id-section";
@@ -537,14 +575,12 @@ function showSection(sectionId, element, fromGroup = false) {
     }
 }
 
-// eslint-disable-next-line no-unused-vars
+
 function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
     var val = validateSection(currentSectionId);
-    // Val = true
 
     if (val) {
         var activeLink = document.querySelector(".sidebar .nav-link.active");
-        // Console.log(activeLink);
         var nextLink = activeLink.parentElement.nextElementSibling.querySelector(".nav-link");
         if (nextLink) {
             nextLink.classList.remove("disabled");
@@ -552,6 +588,8 @@ function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
         }
     }
 }
+
+
 function checkRequired() {
     // Const farmingType = document.getElementById('farming-type-selection');
     // const selectedOptionText = farmingType.options[farmingType.selectedIndex].text
@@ -584,6 +622,7 @@ document.addEventListener("DOMContentLoaded", function () {
     toggleFieldBasedOnRadio("is_member_of_coop_union", "coop-union-field");
     toggleFieldBasedOnRadio("in_farmer_cluster", "primary-commodity-field");
     toggleFieldBasedOnRadio("in_farmer_cluster", "role-in-cluster-field");
+
 
     // Attach event listeners to the radio buttons
     const primaryCoopRadios = document.querySelectorAll('input[name="is_member_of_primary_coop"]');

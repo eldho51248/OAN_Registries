@@ -509,3 +509,187 @@ $(document).on("click", "#update-member-btn", function () {
         },
     });
 });
+
+
+
+// script.js
+// document.addEventListener('DOMContentLoaded', function() {
+//     const incomeSelect = document.getElementById('incomeTypeSelect');
+//     const otherIncomeField = document.getElementById('otherIncomeField');
+
+//     function checkOthersOption() {
+//         const selectedOptions = Array.from(incomeSelect.selectedOptions);
+//         const hasOthers = selectedOptions.some(option => option.textContent.trim() === 'Others');
+
+//         if (hasOthers) {
+//             otherIncomeField.style.display = 'block';
+//         } else {
+//             otherIncomeField.style.display = 'none';
+//         }
+//     }
+
+//     incomeSelect.addEventListener('change', checkOthersOption);
+
+//     // Initial check in case "Others" is pre-selected
+//     checkOthersOption();
+// });
+
+document.addEventListener('DOMContentLoaded', function() {
+    function checkOthersOption(selectElementId, otherFieldId) {
+        const selectElement = document.getElementById(selectElementId);
+        const otherField = document.getElementById(otherFieldId);
+
+        function toggleOtherField() {
+            const selectedOptions = Array.from(selectElement.selectedOptions);
+            const hasOthers = selectedOptions.some(option => {
+                const optionText = option.textContent.trim().toLowerCase();
+                return optionText === 'other' || optionText === 'others';
+            });
+
+            if (hasOthers) {
+                otherField.style.display = 'block';
+            } else {
+                otherField.style.display = 'none';
+            }
+        }
+
+        selectElement.addEventListener('change', toggleOtherField);
+
+        
+        toggleOtherField();
+    }
+
+   
+    checkOthersOption('incomeTypeSelect', 'otherIncomeField');
+    checkOthersOption('woreda_selection', 'otherWoredaField'); 
+    checkOthersOption('kebele_selection', 'otherKebeleField'); 
+    checkOthersOption('name_of_primary_coop', 'otherPrimaryCoopField'); 
+    checkOthersOption('name_of_coop_union', 'otherCoopUnionField'); 
+    
+});
+
+
+
+
+// $(document).on("click", "#family_member_submit", function () {
+//     var group = $("input[name='group_id']").val();
+
+//     var group_id = $("input[name='group_id']").val();
+//     var firstName = $("#mamber_given_name").val();
+//     var middleName = $("#member_fathers_name").val();
+//     var lastName = $("#member_grandfathers_name").val();
+//     var dob = $("#member-birthdate").val();
+//     var gender = $("input[name='gender']:checked").val();
+//     var gender = $("#familyMemberModal input[name='gender']:checked").val();
+//     var relationship =$("select[name='relation_with_household_head_add']").val();
+
+//     console.log(relationship);
+//     // var firstName = $("#familyMemberModal #mamber_given_name").val();
+//     // var middleName = $("#familyMemberModal #addl_name").val();
+//     // var lastName = $("#familyMemberModal #family_name").val();
+//     // var dob = $("#familyMemberModal #birthdate").val();
+//     // var gender = $('#familyMemberModal select[name="gender"]').val();
+//     // var relationship = $('#familyMemberModal select[name="relationship"]').val();
+//     var isValid = true;
+//     var modal = $("#familyMemberModal");
+
+//     $(".form-control, .form-select").removeClass("is-invalid");
+
+//     if (!firstName || !lastName || !gender || !dob) {
+//         console.log("empty");
+//         isValid = false;
+//         $("#memberDetailModal .form-control[required], #memberDetailModal .form-select[required]").each(
+//             function () {
+//                 if (!$(this).val()) {
+//                     $(this).addClass("is-invalid");
+//                 }
+//             }
+//         );
+//     }
+
+//     if (!isValid) {
+//         showToast("Please fill out all required fields.");
+//         return;
+//     }
+
+//      if (!group) {
+//         showToast("Please Create The Farmer First");
+//         return;
+//     }
+
+//     $.ajax({
+//         url: "/serviceprovider/member/create/",
+//         method: "POST",
+//         data: {
+//             group_id: group,
+//             given_name: firstName,
+//             family_name: middleName,
+//             addl_name: lastName,
+//             dob: dob,
+//             gender: gender,
+//             relationship: relationship,
+//         },
+//         dataType: "json",
+//         success: function (response) {
+//             console.log("Ajax request successful");
+//             console.log("Response:", response);
+//             if (response.member_list) {
+//                 var member_list = response.member_list;
+//                 if (member_list) {
+//                     resetFormFieldsMember();
+//                     modal.modal("hide");
+//                     console.log("member_list[0].group_id :", member_list[0].group_id);
+//                     $("input[name='group_id']").val(member_list[0].group_id);
+//                     $(".no_list").css("display", "none");
+
+//                     var tableBody = $("#familylist tbody");
+//                     tableBody.empty();
+//                     $(".old-list").css("display", "none");
+
+//                     member_list.forEach(function (member, index) {
+//                         $(".mem-list").css("display", "block");
+//                         var serialNumber = index + 1;
+//                         var newRowHtml =
+//                             "<tr>" +
+//                             "<td>" +
+//                             serialNumber +
+//                             "</td>" +
+//                             '<td style="color:#704880; font: normal normal 600 13px/16px Inter;">' +
+//                             member.name +
+//                             "</td>" +
+//                             "<td>" +
+//                             member.age +
+//                             "</td>" +
+//                             "<td>" +
+//                             member.gender +
+//                             "</td>" +
+//                             "<td>" +
+//                             "dependent" +
+//                             "</td>" +
+//                             "<td>" +
+//                             '<div class="active-button">' +
+//                             (member.active ? "Active" : "Inactive") +
+//                             "</div>" +
+//                             "</td>" +
+//                             "<td>" +
+//                             '<button class="btn btn-icon rounded-0" id="mem-update" store="' +
+//                             member.id +
+//                             '" title="Edit">' +
+//                             '<i class="fa fa-pencil"></i>' +
+//                             "</button>" +
+//                             "</td>" +
+//                             "</tr>";
+
+//                         tableBody.append(newRowHtml);
+//                     });
+//                 }
+//             } else {
+//                 console.error("Failed to create individual");
+//             }
+//         },
+//         error: function (error) {
+//             console.error("request failed");
+//             console.error("Error:", error);
+//         },
+//     });
+// });
