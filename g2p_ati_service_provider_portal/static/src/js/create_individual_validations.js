@@ -472,14 +472,14 @@ function validateElement(element) {
     }
 }
 
-function validateUID() {
-    const uid = document.getElementById("uid_input");
-    const uidError = document.getElementById("uid_error");
-    const isValid = uid.value.length === 12 && /^\d+$/.test(uid.value);
-    uid.classList.toggle("is-invalid", !isValid);
-    uidError.style.display = isValid ? "none" : "block";
-    return isValid;
-}
+// Function validateUID() {
+//     const uid = document.getElementById("uid_input");
+//     const uidError = document.getElementById("uid_error");
+//     const isValid = uid.value.length === 12 && /^\d+$/.test(uid.value);
+//     uid.classList.toggle("is-invalid", !isValid);
+//     uidError.style.display = isValid ? "none" : "block";
+//     return isValid;
+// }
 
 // Function validateSection(sectionId) {
 //     const section = document.getElementById(sectionId);
@@ -530,9 +530,9 @@ function validateSection(sectionId) {
         }
 
         // Additional validation for specific fields
-        if (sectionId === "id-section" && fieldName === "uid") {
-            valid = valid && validateUID();
-        }
+        // if (sectionId === "id-section" && fieldName === "uid") {
+        //     valid = valid && validateUID();
+        // }
     });
 
     return valid;

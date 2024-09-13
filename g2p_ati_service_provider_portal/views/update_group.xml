@@ -1442,7 +1442,7 @@
                                                                                     class="form-select"
                                                                                     name="farming_type"
                                                                                     required="required"
-                                                                                    onchange="validateElement(this); checkFarmingType(this);"
+                                                                                    onchange="validateElement(this); checkFarmingType(this, true);"
                                                                                     id="farming-type-selection"
                                                                                 >
                                                                                     <option value=" ">Select
@@ -3418,7 +3418,7 @@
                                                                                         style="color: #666666;"
                                                                                     >Do
                                                                                     you use
-                                                                                    imporoved seeds
+                                                                                    improved seeds
                                                                                     on your farm?</span>
                                                                                     <span
                                                                                         class="s_website_form_mark"
