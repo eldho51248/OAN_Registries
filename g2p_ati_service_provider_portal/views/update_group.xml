@@ -663,7 +663,7 @@
                                                                                 style="display: none;color: red;"
                                                                             >
                                                                                 UID must be exactly
-                                                                                12 characters long.
+                                                                                12 dIgits only.
                                                                             </div>
                                                                             <div
                                                                                 class="s_website_form_field"
@@ -688,6 +688,14 @@
                                                                                     class="form-control"
                                                                                     placeholder="RID"
                                                                                 />
+                                                                                 <div
+                                                                                    class="error-message"
+                                                                                    id="rid_error"
+                                                                                    style="display: none;color: red;"
+                                                                                >
+                                                                                RID must be exactly
+                                                                                29 digits only.
+                                                                            </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -3777,7 +3785,6 @@
                                                     <button
                                                         id="beneficiary_submit"
                                                         type="button"
-                                                        onclick="customvalidateFormGroup(true);"
                                                         class="btn btn-primary"
                                                         style="width: 90px;"
                                                     >

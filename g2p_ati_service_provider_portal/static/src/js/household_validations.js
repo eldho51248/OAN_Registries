@@ -276,9 +276,9 @@ $(document).on("click", "#family_member_submit", function () {
     var gf_name_eng = $("#member_grandfathers_name").val();
     var birthdate = $("#member-birthdate").val();
     var gender = $("input[name='gender']:checked").val();
-    // Var relationship =$("select[name='relation_with_household_head_add']").val();
+    var relationship = $("select[name='relation_with_household_head_add']").val();
 
-    // var isValid = true;
+    // Var isValid = true;
     // $(".form-control, .form-check-input").removeClass("is-invalid");
 
     // if (!given_name || !family_name || !gf_name_eng || !birthdate || !gender) {
@@ -305,7 +305,7 @@ $(document).on("click", "#family_member_submit", function () {
             gf_name_eng: gf_name_eng,
             birthdate: birthdate,
             gender: gender,
-            // Relationship:relationship
+            Relationship: relationship,
         },
         dataType: "json",
         success: function (response) {
@@ -324,9 +324,7 @@ $(document).on("click", "#family_member_submit", function () {
                             <td>${member.name}</td>
                             <td>${member.age}</td>
                             <td>${member.gender}</td>
-
-
-                            <td>"Member"</td>
+                            <td>${member.kind}</td>
                             <td>
                                 <button type="button" class="btn btn-icon rounded-0" id="hh_member_update" store="${member.id}" title="Edit">
                                     <i class="fa fa-pencil"></i>
@@ -387,7 +385,7 @@ function showModalSection(nextSectionId, currentSectionId, direction) {
     // eslint-disable-next-line no-undef
     var val = validateSection(currentSectionId);
     if (direction === "prev") {
-        val = true;
+        var val = true;
     }
 
     // Val = true;

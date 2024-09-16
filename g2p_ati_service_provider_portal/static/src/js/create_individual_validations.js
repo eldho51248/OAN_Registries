@@ -189,6 +189,7 @@ $(document).ready(function () {
         if ((sanitizedValue.length !== 12 && sanitizedValue.length !== 0) || !isOnlyDigits) {
             uidInput.classList.add("uid_error");
             uidError.style.display = "block";
+            uidInput.setAttribute("required", "required");
         } else {
             uidInput.classList.remove("uid_error");
             uidError.style.display = "none";
@@ -201,6 +202,7 @@ $(document).ready(function () {
         if ((sanitizedValue.length !== 29 && sanitizedValue.length !== 0) || !isOnlyDigits) {
             ridInput.classList.add("rid_error");
             ridError.style.display = "block";
+            uidInput.setAttribute("required", "required");
         } else {
             ridInput.classList.remove("rid_error");
             ridError.style.display = "none";
@@ -473,6 +475,10 @@ function validateUID() {
 function validateSection(sectionId) {
     const section = document.getElementById(sectionId);
     const requiredFields = section.querySelectorAll("[required]");
+    const uidError = document.getElementById("uid_error");
+    const ridError = document.getElementById("rid_error");
+
+    console.log(requiredFields);
     let valid = true;
 
     requiredFields.forEach((field) => {
@@ -488,6 +494,12 @@ function validateSection(sectionId) {
             valid = valid && validateUID();
         }
     });
+    if (uidError.style.display === "block") {
+        valid = false;
+    }
+    if (ridError.style.display === "block") {
+        valid = false;
+    }
 
     return valid;
 }
@@ -518,7 +530,6 @@ function showSection(sectionId, element, fromGroup = false) {
                     if (farmerDetailSection) {
                         console.log("Farmer Detail Secion is");
                         console.log(farmerDetailSection);
-
                         farmerDetailSection.style.display = "block";
                     }
                 }

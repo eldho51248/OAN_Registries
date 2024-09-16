@@ -1845,7 +1845,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     land_indices.add(land_index)
                 except ValueError:
                     continue
-
         doc_tag = request.env["g2p.document.tag"].sudo().get_tag_by_name("Land Certificate")
         if not doc_tag:
             doc_tag = request.env["g2p.document.tag"].sudo().create({"name": "Land Certificate"})
@@ -1854,8 +1853,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             ownership_type = kw.get(f"land_ownership_type_{index}")
             if ownership_type == " ":
                 continue
-            land_id = kw.get(f"land_id_{index}")
-            land_area = kw.get(f"total_land_area_{index}")
+            land_id = kw.get(f"land_id{index}")
+            land_area = kw.get(f"total_land_area{index}")
             land_ownership_type = (
                 request.env["ir.model.fields.selection"].sudo().search([("id", "=", ownership_type)]).value
             )
@@ -1864,6 +1863,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 "total_land_area": land_area,
                 "land_id": land_id,
             }
+
             if kw.get(f"land_certificate_{index}") and (f"land_certificate_{index}").strip():
                 land_certificate = kw.get(f"land_certificate_{index}")
                 binary_content = base64.b64encode(land_certificate.read()).decode("utf-8")
@@ -1899,10 +1899,15 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
         for index in crop_indices:
             crop_id = kw.get(f"crops_{index}")
+
+            crop_planted_date_id = kw.get(f"crop_planted_date{index}")
+
             if crop_id == " ":
                 continue
+            if crop_planted_date_id == " ":
+                continue
 
-            crop_info_data.append((0, 0, {"crop": crop_id}))
+            crop_info_data.append((0, 0, {"crop": crop_id, "collected_gc": crop_planted_date_id}))
 
         return crop_info_data
 
@@ -2177,10 +2182,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             given_name = kw.get("given_name")
             family_name = kw.get("family_name")
             gf_name_eng = kw.get("gf_name_eng")
-            relationship = int(kw.get("relationship"))
-            # relationship = [(0, 0, {"id":relationship})]
+            relationship = int(kw.get("Relationship"))
             relationship = [(6, 0, [relationship])]
-            # relationship = kw.get("relationship")
 
             name = f"{given_name} {family_name} {gf_name_eng}"
 
@@ -2195,12 +2198,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 "is_group": False,
             }
             individual = request.env["res.partner"].sudo().create(partner_data)
-
-            # if relationship.strip():
-            #     membership_kind = self.get_membership_kind(relationship)
-
-            # group_membership_vals = [(0, 0, {"individual": individual.id,
-            # "group": group_rec.id,"kind":[(4, membership_kind)]})]
 
             group_membership_vals = [
                 (0, 0, {"individual": individual.id, "group": group_rec.id, "kind": relationship})
@@ -2220,9 +2217,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                             "name": membership.individual.name,
                             "age": membership.individual.age,
                             "gender": membership.individual.gender,
-                            # "relationship":membership.individual.kind,
                             "active": membership.individual.active,
                             "group_id": membership.group.id,
+                            "kind": membership.individual.group_membership_ids.kind.ids,
                         }
                     )
 
