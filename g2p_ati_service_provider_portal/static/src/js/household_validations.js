@@ -127,23 +127,6 @@ function addFarmerMember() {
     }
 }
 
-// Function updateFamilyMember() {
-//     const id = document.getElementById('update_member').getAttribute('data-id');
-//     const givenName = document.getElementById('edit_given_name').value;
-//     const fathersName = document.getElementById('edit_fathers_name').value;
-//     const grandfathersName = document.getElementById('edit_grandfathers_name').value;
-//     const birthdate = document.getElementById('edit_birthdate').value;
-//     const gender = document.querySelector('input[name="edit_gender"]:checked').value;
-
-//     if (givenName && fathersName && grandfathersName && birthdate    && gender) {
-//         // Handle updating logic here, e.g., AJAX request to update data
-//         console.log(`Updating member ${id}: ${givenName}, ${fathersName}, ${grandfathersName}, ${birthdate}, ${gender}`);
-
-//         $('#editFamilyMemberModal').modal('hide');
-//     } else {
-//         alert('Please fill all the required fields');
-//     }
-// }
 
 // this is to populate the data for editing family member
 
@@ -276,23 +259,7 @@ $(document).on("click", "#family_member_submit", function () {
     var gf_name_eng = $("#member_grandfathers_name").val();
     var birthdate = $("#member-birthdate").val();
     var gender = $("input[name='gender']:checked").val();
-    var relationship = $("select[name='relation_with_household_head_add']").val();
-
-    // Var isValid = true;
-    // $(".form-control, .form-check-input").removeClass("is-invalid");
-
-    // if (!given_name || !family_name || !gf_name_eng || !birthdate || !gender) {
-    //     isValid = false;
-    //     $(
-    //         "#family-member-template .form-control[required], #family-member-template .form-check-input[required]"
-    //     ).each(function () {
-    //         if (!$(this).val()) {
-    //             $(this).addClass("is-invalid");
-    //         }
-    //     });
-    // }
-
-    console.log(group_id, given_name, gender);
+    var relationship =$("select[name='relation_with_household_head_add']").val();
 
     // Proceed with the AJAX request if the form is valid
     $.ajax({
@@ -305,7 +272,7 @@ $(document).on("click", "#family_member_submit", function () {
             gf_name_eng: gf_name_eng,
             birthdate: birthdate,
             gender: gender,
-            Relationship: relationship,
+            Relationship:relationship
         },
         dataType: "json",
         success: function (response) {
@@ -317,10 +284,12 @@ $(document).on("click", "#family_member_submit", function () {
                 // Update the table with the new member list
                 var tableBody = $("#familylist tbody");
                 tableBody.empty();
-                response.member_list.forEach(function (member) {
+                response.member_list.forEach(function (member, index) {
+                    var serialNumber = index + 1;
+                    console.log(serialNumber)
                     var newRowHtml = `
                         <tr>
-                            <td></td>
+                            <td>${serialNumber}</td>
                             <td>${member.name}</td>
                             <td>${member.age}</td>
                             <td>${member.gender}</td>
@@ -351,10 +320,6 @@ $(document).on("click", "#family_member_submit", function () {
     });
 });
 
-// Function expandSection(sectionId) {
-//     var consentSection = document.getElementById(sectionId);
-//     consentSection.classList.add("show");
-// }
 // eslint-disable-next-line no-unused-vars
 function showNextModal(nextSectionId, currentSectionId) {
     // eslint-disable-next-line no-undef
@@ -372,11 +337,7 @@ function showNextModal(nextSectionId, currentSectionId) {
             // eslint-disable-next-line no-undef
             showSection(nextSectionId, nextLink, true);
         }
-        // } else {
-        //     const navId = "location-details-link";
-        //     var navLink = document.getElementById(navId);
-        //     expandSection("location-details");
-        //     navLink.click();
+       
     }
 }
 
@@ -386,24 +347,15 @@ function showModalSection(nextSectionId, currentSectionId, direction) {
     var val = validateSection(currentSectionId);
     if (direction === "prev") {
         var val = true;
-    }
+        }
 
     // Val = true;
 
     if (val && (currentSectionId || direction)) {
         var activeLink = document.querySelector(".sidebar .nav-link.active");
-        // Console.log(activeLink);
-        // var targetLink = false;
-        // if (direction === 'next') {
-        //     targetLink = activeLink.parentElement.nextElementSibling?.querySelector(".nav-link");
-        // } else if (direction === 'prev') {
-        //     targetLink = activeLink.parentElement.previousElementSibling?.querySelector(".nav-link");
-        // }
 
-        // if (targetLink) {
-        //     targetLink.classList.remove("disabled");
-        // }
         // eslint-disable-next-line no-undef
         showSection(nextSectionId, activeLink, true);
     }
 }
+
