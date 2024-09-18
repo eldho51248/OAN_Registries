@@ -383,7 +383,7 @@
                                                                             t-as="individual"
                                                                         >
                                                                             <tr>
-                                                                                <td style="color:#b3b3b3;" >
+                                                                                <td style="color:#b3b3b3;">
                                                                                     <t t-out="counter" />
                                                                                 </td>
                                                                                 <td
@@ -3693,7 +3693,7 @@
                                                                             <tr
                                                                                 t-att-data-member-id="individual.id"
                                                                             >
-                                                                                <td style="color:#b3b3b3;" >
+                                                                                <td style="color:#b3b3b3;">
                                                                                     <t t-out="counter" />
                                                                                 </td>
                                                                                 <td
@@ -3746,8 +3746,8 @@
                                                                                 </td>
                                                                             </tr>
                                                                                <t
-                                                                            t-set="counter"
-                                                                            t-value="counter + 1"
+                                                                                t-set="counter"
+                                                                                t-value="counter + 1"
                                                                             />
                                                                         </t>
 

@@ -244,71 +244,24 @@ function renderPageButtons() {
     updatePaginationButtons();
 }
 
-// Function renderPageButtons() {
-//     const totalPages = Math.ceil(filteredRows.length / itemsPerPage);
-//     const pageButtonsContainer = document.getElementById("page-buttons");
-//     pageButtonsContainer.innerHTML = "";
+function compareCellValues(rowA, rowB, columnIndex) {
+    const cellA = rowA.cells[columnIndex].innerText.trim();
+    const cellB = rowB.cells[columnIndex].innerText.trim();
 
-//     // Add previous page button
-//     const prevButton = document.createElement("button");
-//     prevButton.innerHTML = '<i class="fa fa-angle-left"></i>';
+    // Detect if the column contains date values using regex or Date parsing
+    const isDateColumn = !isNaN(Date.parse(cellA)) && !isNaN(Date.parse(cellB));
 
-//     // Add next page button
-//     const nextButton = document.createElement("button");
-//     nextButton.innerHTML = '<i class="fa fa-angle-right"></i>';
-
-//     // Angle bracket for left arrow
-//     prevButton.addEventListener("click", function () {
-//         if (currentPage > 1) {
-//             currentPage--;
-//             showPage(currentPage);
-//             updatePaginationButtons();
-//         }
-//     });
-//     pageButtonsContainer.appendChild(prevButton);
-
-//     // Add page buttons
-//     for (let i = 1; i <= totalPages; i++) {
-//         const button = document.createElement("button");
-//         button.textContent = i;
-//         if (i === currentPage) {
-//             button.classList.add("active");
-//         }
-
-//         button.addEventListener("click", function () {
-//             currentPage = i;
-//             showPage(currentPage);
-//             updatePaginationButtons();
-//         });
-
-//         pageButtonsContainer.appendChild(button);
-//     }
-
-//     // Angular bracket for right arrow
-//     nextButton.classList.add("next-button");
-//     nextButton.addEventListener("click", function () {
-//         if (currentPage < totalPages) {
-//             currentPage++;
-//             showPage(currentPage);
-//             updatePaginationButtons();
-//         }
-//     });
-//     pageButtonsContainer.appendChild(nextButton);
-
-//     updatePaginationButtons();
-// }
-
-function compareCellValues(a, b, columnIndex) {
-    const aCellValue = a.cells[columnIndex].textContent.trim().replace(/,/g, "");
-    const bCellValue = b.cells[columnIndex].textContent.trim().replace(/,/g, "");
-    const aNumber = parseFloat(aCellValue);
-    const bNumber = parseFloat(bCellValue);
-
-    if (!isNaN(aNumber) && !isNaN(bNumber)) {
-        return aNumber - bNumber;
+    if (isDateColumn) {
+        // If date column, compare dates
+        const dateA = new Date(cellA);
+        const dateB = new Date(cellB);
+        return dateA - dateB; // Ascending order (swap for descending if needed)
     }
-
-    return aCellValue.localeCompare(bCellValue);
+    // Otherwise, perform normal string or number comparison
+    if (!isNaN(cellA) && !isNaN(cellB)) {
+        return Number(cellA) - Number(cellB); // Numeric comparison
+    }
+    return cellA.localeCompare(cellB); // String comparison
 }
 
 allheadercells.forEach(function (th) {
@@ -319,20 +272,28 @@ allheadercells.forEach(function (th) {
         allRows.sort(function (a, b) {
             let comparison = compareCellValues(a, b, columnIndex);
 
+            // Reverse comparison if descending order is selected
             if (sortOrder === "desc") {
                 comparison *= -1;
             }
             return comparison;
         });
 
+        // Toggle sort order for next click
         sortOrder = sortOrder === "asc" ? "desc" : "asc";
+
+        // Append sorted rows back to the table
         allRows.forEach((row) => {
             alltable.tBodies[0].appendChild(row);
         });
+
+        // Update serial numbers
         allRows.forEach((row, index) => {
             const firstCell = row.cells[0];
             firstCell.innerText = index + 1;
         });
+
+        // Reset pagination
         currentPage = 1;
         showPage(currentPage);
         renderPageButtons();

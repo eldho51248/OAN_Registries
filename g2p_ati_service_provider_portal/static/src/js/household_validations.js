@@ -127,8 +127,7 @@ function addFarmerMember() {
     }
 }
 
-
-// this is to populate the data for editing family member
+// This is to populate the data for editing family member
 
 $(document).on("click", "#hh_member_update", function () {
     // Console.log('populateEditModal called');
@@ -259,7 +258,7 @@ $(document).on("click", "#family_member_submit", function () {
     var gf_name_eng = $("#member_grandfathers_name").val();
     var birthdate = $("#member-birthdate").val();
     var gender = $("input[name='gender']:checked").val();
-    var relationship =$("select[name='relation_with_household_head_add']").val();
+    var relationship = $("select[name='relation_with_household_head_add']").val();
 
     // Proceed with the AJAX request if the form is valid
     $.ajax({
@@ -272,7 +271,7 @@ $(document).on("click", "#family_member_submit", function () {
             gf_name_eng: gf_name_eng,
             birthdate: birthdate,
             gender: gender,
-            Relationship:relationship
+            Relationship: relationship,
         },
         dataType: "json",
         success: function (response) {
@@ -286,7 +285,7 @@ $(document).on("click", "#family_member_submit", function () {
                 tableBody.empty();
                 response.member_list.forEach(function (member, index) {
                     var serialNumber = index + 1;
-                    console.log(serialNumber)
+                    console.log(serialNumber);
                     var newRowHtml = `
                         <tr>
                             <td>${serialNumber}</td>
@@ -337,7 +336,6 @@ function showNextModal(nextSectionId, currentSectionId) {
             // eslint-disable-next-line no-undef
             showSection(nextSectionId, nextLink, true);
         }
-       
     }
 }
 
@@ -347,7 +345,7 @@ function showModalSection(nextSectionId, currentSectionId, direction) {
     var val = validateSection(currentSectionId);
     if (direction === "prev") {
         var val = true;
-        }
+    }
 
     // Val = true;
 
@@ -358,4 +356,3 @@ function showModalSection(nextSectionId, currentSectionId, direction) {
         showSection(nextSectionId, activeLink, true);
     }
 }
-
