@@ -1379,6 +1379,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             financial_access = request.env["g2p.finance.access"].sudo().search([])
             source_of_income = request.env["g2p.hh.income"].sudo().search([])
             model_id = request.env["ir.model"].sudo().search([("model", "=", "res.partner")])
+            additional_info_data = self.get_additional_info(beneficiary)
 
             # additional_info = beneficiary.additional_g2p_info
 
@@ -1553,11 +1554,11 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     "do_you_use_insecticide_selection_id": do_you_use_insecticide_selection_id,
                     "do_you_use_improved_seed_selection_id": do_you_use_improved_seed_selection_id,
                     "has_finance_access_selection_id": has_finance_access_selection_id,
-                    # "other_kebele": other_kebele,
-                    # "other_woreda": other_woreda,
-                    # "other_primary_coop": other_primary_coop,
-                    # "other_coop_union": other_coop_union,
-                    # "other_income": other_income,
+                    "other_kebele": additional_info_data["other_kebele"],
+                    "other_woreda": additional_info_data["other_woreda"],
+                    "other_primary_coop": additional_info_data["other_primary_coop"],
+                    "other_coop_union": additional_info_data["other_coop_union"],
+                    "other_income": additional_info_data["other_income"],
                 },
             )
         except Exception as e:
@@ -1565,6 +1566,36 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 "g2p_service_provider_beneficiary_management.error_template",
                 {"error_message": str(e)},
             )
+
+    def get_additional_info(self,beneficiary):
+   
+        additional_info = beneficiary.additional_g2p_info
+
+        # Check if additional_info is a string and convert it to a dictionary
+        if isinstance(additional_info, str):
+            try:
+                additional_info = json.loads(additional_info)
+            except json.JSONDecodeError:
+                additional_info = {}
+
+        # Initialize default values
+        info = {
+            "other_kebele": "",
+            "other_woreda": "",
+            "other_primary_coop": "",
+            "other_coop_union": "",
+            "other_income": "",
+        }
+
+        # Populate the info dictionary if additional_info is valid
+        if isinstance(additional_info, dict):
+            info["other_kebele"] = additional_info.get("Kebele", "")
+            info["other_woreda"] = additional_info.get("Woreda", "")
+            info["other_primary_coop"] = additional_info.get("Primary Cooperative", "")
+            info["other_coop_union"] = additional_info.get("Cooperative Union", "")
+            info["other_income"] = additional_info.get("Household Income", "")
+
+        return info
 
     def _get_selection_id(self, model, field_name, value):
         selection_ids = (
