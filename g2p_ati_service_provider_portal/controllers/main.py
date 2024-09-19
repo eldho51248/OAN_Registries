@@ -1567,8 +1567,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 {"error_message": str(e)},
             )
 
-    def get_additional_info(self,beneficiary):
-   
+    def get_additional_info(self, beneficiary):
         additional_info = beneficiary.additional_g2p_info
 
         # Check if additional_info is a string and convert it to a dictionary
