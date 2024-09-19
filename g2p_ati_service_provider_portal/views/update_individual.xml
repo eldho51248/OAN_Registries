@@ -2453,6 +2453,7 @@
                                                                                                 required="required"
                                                                                                 onchange="validateElement(this)"
                                                                                                 placeholder="DD-MM-YYYY"
+                                                                                                t-att-value="crop_info['crop_planted_date']"
                                                                                             />
                                                                                         </div>
                                                                                     </div>
@@ -3496,7 +3497,7 @@
                             <script
                                 type="text/javascript"
                                 src="/g2p_ati_service_provider_portal/static/src/js/language_validations.js"
-                            />
+                            />                            
 
                             <script>
                                 function updateFileName(input) {

@@ -1512,16 +1512,12 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         crop_info_data = []
         serialized_crop_info_data = []
         for index, crop_info in enumerate(beneficiary.crop_information_ids, start=1):
-            # crop_is_diseased_selection_id = self._get_selection_id(
-            #     crop_info._name, "is_diseased", crop_info.is_diseased
-            # )
             crop_info_data.append(
                 {
                     "index": index,
                     "id": crop_info.id,
                     "crop": crop_info.crop,
-                    "is_diseased": crop_info.is_diseased,
-                    "illness_type": crop_info.illness_type,
+                    "crop_planted_date": crop_info.collected_gc,
                     # "crop_is_diseased_selection_id": crop_is_diseased_selection_id,
                 }
             )
@@ -1530,8 +1526,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     "index": index,
                     "id": crop_info.id,
                     "crop_id": crop_info.crop.id,
-                    "is_diseased": crop_info.is_diseased,
-                    "illness_type": [it.id for it in crop_info.illness_type],
+                    "crop_planted_date": crop_info.collected_gc,
                 }
             )
         return crop_info_data, serialized_crop_info_data
@@ -1821,6 +1816,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             # Update member details
 
             member.sudo().write(update_records)
+            # return json.dumps({'status': 'success', 'message': 'Record updated successfully'})
 
             return request.redirect("/serviceprovider/individual")
 

@@ -29,55 +29,6 @@ $(document).ready(function () {
     });
     var landIndex = landMaxIndex + 1;
 
-    // Console.log(incomeSourceData);
-    // VirtualSelect.init({
-    //     ele: `#hh_income_type`,
-    //     options: incomeSourceData,
-    //     search: true,
-    //     multiple: true,
-    //     additionalClasses: 'custom-multi-select',
-    // });
-
-    // if (cropInfoData && cropInfoData.length > 0) {
-    //     cropInfoData.forEach(function(cropInfo) {
-    //         VirtualSelect.init({
-    //             ele: `#crop_illness_types_${cropInfo['index']}`,
-    //             options: cropIllnessType,
-    //             search: true,
-    //             multiple: true,
-    //             selectedValue: cropInfo.illness_type,
-    //         });
-    //     });
-    // }
-    // else {
-    //     VirtualSelect.init({
-    //         ele: `#crop_illness_types_0`,
-    //         options: cropIllnessType,
-    //         search: true,
-    //         multiple: true,
-    //     });
-    // }
-
-    // if (livestockInfoData && livestockInfoData.length > 0) {
-    //     livestockInfoData.forEach(function(livestockInfo) {
-    //         VirtualSelect.init({
-    //             ele: `#livestock_illness_types_${livestockInfo['index']}`,
-    //             options: livestockIllnessType,
-    //             search: true,
-    //             multiple: true,
-    //             selectedValue: livestockInfo.illness_type,
-    //         });
-    //     });
-    // }
-    // else {
-    //     VirtualSelect.init({
-    //         ele: `#livestock_illness_types_0`,
-    //         options: livestockIllnessType,
-    //         search: true,
-    //         multiple: true,
-    //     });
-    // }
-
     $("#add-crop-info").click(function () {
         var $template = $("#crop-hidden-template").html();
         var $formContainer = $("#section-content-crop");
@@ -472,13 +423,24 @@ function validateUID() {
     return isValid;
 }
 
+function validateRID() {
+    console.log("Check RID");
+    const rid = document.getElementById("rid_input");
+    const ridError = document.getElementById("rid_error");
+    const isValid = rid.value.length === 29 && /^\d+$/.test(rid.value);
+    rid.classList.toggle("is-invalid", !isValid);
+    ridError.style.display = isValid ? "none" : "block";
+    console.log(rid.value.length);
+    return isValid;
+}
+
 function validateSection(sectionId) {
     const section = document.getElementById(sectionId);
     const requiredFields = section.querySelectorAll("[required]");
     const uidError = document.getElementById("uid_error");
     const ridError = document.getElementById("rid_error");
 
-    console.log(requiredFields);
+    //    Console.log(requiredFields)
     let valid = true;
 
     requiredFields.forEach((field) => {
@@ -492,6 +454,9 @@ function validateSection(sectionId) {
         valid = valid && isFieldValid;
         if (sectionId === "id-section" && fieldName === "uid") {
             valid = valid && validateUID();
+        }
+        if (sectionId === "id-section" && fieldName === "rid") {
+            valid = valid && validateRID();
         }
     });
     if (uidError.style.display === "block") {
