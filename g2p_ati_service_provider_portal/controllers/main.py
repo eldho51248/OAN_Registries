@@ -448,9 +448,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     )
     def group_update(self, _id, **kw):
         try:
-            print("heyy theree")
+           
             group = request.env["res.partner"].sudo().browse(_id)
-            # print("group add",group.additional_g2p_info)
+           
 
             if not group:
                 return request.render(
@@ -482,9 +482,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             model_id = request.env["ir.model"].sudo().search([("model", "=", "res.partner")])
 
-            # additional_info = request.env["res.partner"].sudo().search([("model_id", "=", model_id.id)]).additional_g2p_info
-
-            # print("add infor is", additional_info)
+            
 
             land_model_id = request.env["ir.model"].sudo().search([("model", "=", "g2p.land.information")])
             crop_model_id = request.env["ir.model"].sudo().search([("model", "=", "g2p.crop.information")])
@@ -678,10 +676,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     other_income = additional_info.get("Household Income", '')
 
 
-
-
-            print("head is",head_individual)
-            print("add info head", additional_info)
 
 
 

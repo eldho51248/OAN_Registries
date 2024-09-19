@@ -120,31 +120,14 @@ $(document).on("click", "#member_submit", async function () {
     var zone = document.getElementById("zon_selection").value;
     console.log(zone);
     var woreda = document.getElementById("woreda_selection").value;
-    // var woredaId = parseInt(document.getElementById("woreda_selection").value, 10);
-    // console.log("wore selec",woreda);
-    // console.log("wore selec type",typeof woreda);
+    
 
     var kebele = document.getElementById("kebele_selection").value;
-    // var kebeleId = parseInt(document.getElementById("kebele_selection").value, 10);
-    // console.log("keb sele",kebele);
-    // console.log("keb sele type",typeof kebele);
+   
 
     var other_woreda = "";
     var other_kebele = "";
-//     var selectedWoredaOption = $("#woreda_selection option:selected");
-//     // Log the selected option
-//     console.log("Selected woreda option:", selectedWoredaOption);
 
-//     // Log the text of the selected option
-//     var woredaText = selectedWoredaOption.text();
-//     console.log("Selected woreda text:", woredaText);
-
-//     // Log the value of the selected option
-//     var woredaValue = selectedWoredaOption.val();
-//     console.log("Selected woreda value:", woredaValue); 
-
-// // Check the type of the value
-// console.log("Type of selected woreda value:", typeof woredaValue);
     var woredaText = $("#woreda_selection option:selected").text().trim().toLowerCase();
     
     var kebeleText = $("#kebele_selection option:selected").text().trim().toLowerCase();
@@ -218,24 +201,15 @@ $(document).on("click", "#member_submit", async function () {
     var accessToFinance = document.getElementById("access-to-finance-selection").value;
     var financialSectors = $("#farmerDetailModal #finance-selection").val();
 
-    //    Var financialSectors = document.getElementById("finance-selection").value;
-
+   
     var incomeType = $("#farmerDetailModal #hh_income_type").val();
-    // console.log("incomeType:", incomeType);  // Check what the array contains
-
-
-    // incomeType.forEach(function(type) {
-    //     console.log("Income Type Value:", type);
-    // });
-
-
-    //to check income
+   
 
     var other_income_type = "";
     var incomeTypeText = $("#farmerDetailModal #hh_income_type option:selected").map(function() {
         return $(this).text().trim(); 
     }).get();
-    console.log("Income Type Text:", incomeTypeText); 
+    
     
     if (incomeTypeText.some(type => type.toLowerCase() === "other" || type.toLowerCase() === "others")) {
         other_income_type = $("#farmerDetailModal #other_modal_income").val();
@@ -260,54 +234,7 @@ $(document).on("click", "#member_submit", async function () {
         additional_info["Cooperative Union"] = other_coop_union
     }
 
-    console.log("additonal",additional_info);
-    console.log("primary coop is",nameOfPrimaryCoop);
-    console.log("coop union is",nameOfCoopUnion);
-
-
     
-
-
-    
-    
-
-    
-    // var primaryCoopLowerCase = nameOfPrimaryCoop.trim().toLowerCase();
-    // var coopUnionLowerCase = nameOfCoopUnion.trim().toLowerCase();
-
-
-    // if ("Others" in incomeType || "Other" in incomeType){
-    //     console.log("income");
-    //     other_income_type = document.getElementById("other_modal_income").value;
-    //     // other_income_type =  $("#farmerDetailModal #other_modal_income").val();
-
-    // }
-
-    // if (incomeType.some(type => type.toLowerCase() === "other" || type.toLowerCase() === "others")) {
-    //     other_income_type = $("#farmerDetailModal #other_modal_income").val();
-    //     console.log("Other Income Type Selected:", other_income_type);
-    // }
-    
-    // Check for "other" or "others" in primary_coop
-    // if (primaryCoopLowerCase === "other" || primaryCoopLowerCase === "others") {
-    //     console.log("prim");
-    //     other_primary_coop = document.getElementById("other_primary_coop").value;
-    //     // $("#farmerDetailModal #other_primary_coop").val();
-    // }
-    
-    // // Check for "other" or "others" in coop_union
-    // if (coopUnionLowerCase === "other" || coopUnionLowerCase === "others") {
-    //     console.log("uni");
-    //     other_coop_union = document.getElementById("other_coop_union").value;
-    //     // $("#farmerDetailModal #other_coop_union").val();
-    // }
-
-
-    console.log("woreda",other_woreda);
-    console.log("kebele",other_kebele);
-    console.log("income",other_income_type);
-    console.log(other_primary_coop);
-    console.log(other_coop_union);
 
     var cropWaterSource = $("#farmerDetailModal #crop_water_source").val();
     var livestockWaterSource = $("#farmerDetailModal #livestock_water_source").val();
@@ -645,118 +572,6 @@ $(document).on("click", "#update-member-btn", function () {
 
 
 
-// script.js
-// document.addEventListener('DOMContentLoaded', function() {
-//     const incomeSelect = document.getElementById('incomeTypeSelect');
-//     const otherIncomeField = document.getElementById('otherIncomeField');
-
-//     function checkOthersOption() {
-//         const selectedOptions = Array.from(incomeSelect.selectedOptions);
-//         const hasOthers = selectedOptions.some(option => option.textContent.trim() === 'Others');
-
-//         if (hasOthers) {
-//             otherIncomeField.style.display = 'block';
-//         } else {
-//             otherIncomeField.style.display = 'none';
-//         }
-//     }
-
-//     incomeSelect.addEventListener('change', checkOthersOption);
-
-//     // Initial check in case "Others" is pre-selected
-//     checkOthersOption();
-// });
-
-// document.addEventListener('DOMContentLoaded', function() {
-//     function checkOthersOption(selectElementId, otherFieldId) {
-//         const selectElement = document.getElementById(selectElementId);
-//         const otherField = document.getElementById(otherFieldId);
-//         if (!selectElement || !otherField) {
-//             console.error(`Element with ID ${selectElementId} or ${otherFieldId} not found.`);
-//             return;
-//         }
-
-//         function toggleOtherField() {
-//             const selectedOptions = Array.from(selectElement.selectedOptions);
-//             const hasOthers = selectedOptions.some(option => {
-//                 const optionText = option.textContent.trim().toLowerCase();
-//                 return optionText === 'other' || optionText === 'others';
-//             });
-
-//             if (hasOthers) {
-//                 otherField.style.display = 'block';
-//             } else {
-//                 otherField.style.display = 'none';
-//             }
-//         }
-
-//         selectElement.addEventListener('change', toggleOtherField);
-
-        
-//         toggleOtherField();
-//     }
-
-//     function hideFieldOnNo(radioButtonsName, fieldId) {
-//         const radioButtons = document.querySelectorAll(`input[name="${radioButtonsName}"]`);
-//         const field = document.getElementById(fieldId);
-
-//         function handleToggle() {
-//             radioButtons.forEach(function (radioButton) {
-//                 if (radioButton.checked && radioButton.dataset.text === "No") {
-//                     field.style.display = 'none';
-//                 } else if (radioButton.checked && radioButton.dataset.text !== "No") {
-//                     toggleOtherField()
-//                 }
-//             });
-//         }
-
-//         // Initial check on page load
-//         handleToggle();
-
-//         // Add event listeners for change
-//         radioButtons.forEach(function (radioButton) {
-//             radioButton.addEventListener('change', handleToggle);
-//         });
-//     }
-
-//     // For primary cooperative
-//     hideFieldOnNo(
-//         'is_member_of_primary_coop',  // Name of the radio buttons group
-//         'otherPrimaryCoopField'       // ID of the field to hide
-//     );
-
-//     // For cooperative union
-//     hideFieldOnNo(
-//         'is_member_of_coop_union',    // Name of the radio buttons group
-//         'otherCoopUnionField'         // ID of the field to hide
-//     );
-
-//     // For primary cooperative
-//     hideFieldOnNo(
-//         'is_member_of_primary_coop',  // Name of the radio buttons group
-//         'otherModalPrimaryCoopField'       // ID of the field to hide
-//     );
-
-//     // For cooperative union
-//     hideFieldOnNo(
-//         'is_member_of_coop_union',    // Name of the radio buttons group
-//         'otherModalCoopUnionField'         // ID of the field to hide
-//     );
-
-
-
-
-  
-   
-//     checkOthersOption('incomeTypeSelect', 'otherIncomeField');
-//     checkOthersOption('woreda_selection', 'otherWoredaField'); 
-//     checkOthersOption('kebele_selection', 'otherKebeleField'); 
-//     checkOthersOption('name_of_primary_coop', 'otherPrimaryCoopField'); 
-//     checkOthersOption('name_of_coop_union', 'otherCoopUnionField'); 
-   
-    
-// });
-
 
 document.addEventListener('DOMContentLoaded', function() {
     function checkOthersOption(selectElementId, otherFieldId) {
@@ -779,6 +594,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 otherField.style.display = 'block';
             } else {
                 otherField.style.display = 'none';
+                // Clear the input field when hidden
+                const input = otherField.querySelector('input');
+                if (input) input.value = '';
             }
         }
 
@@ -787,12 +605,13 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleOtherField();
     }
 
-    function hideFieldOnNo(radioButtonsName, fieldId) {
+    function hideFieldOnNo(radioButtonsName, fieldId, selectElementId) {
         const radioButtons = document.querySelectorAll(`input[name="${radioButtonsName}"]`);
         const field = document.getElementById(fieldId);
+        const selectElement = document.getElementById(selectElementId);
 
-        if (!radioButtons || !field) {
-            console.error(`Element with name ${radioButtonsName} or ID ${fieldId} not found.`);
+        if (!radioButtons || !field || !selectElement) {
+            console.error(`Element with name ${radioButtonsName}, ID ${fieldId}, or select ${selectElementId} not found.`);
             return;
         }
 
@@ -800,8 +619,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const selectedRadio = Array.from(radioButtons).find(radioButton => radioButton.checked);
             if (selectedRadio && selectedRadio.dataset.text === "No") {
                 field.style.display = 'none';
+                selectElement.style.display = 'none';
+                
+                // Clear the field values when "No" is selected
+                field.querySelectorAll('input').forEach(input => input.value = '');
+                selectElement.querySelector('select').selectedIndex = 0;  // Reset the select field
             } else {
                 field.style.display = 'block';
+                selectElement.style.display = 'block';
                 // Call checkOthersOption if the field is displayed
                 checkOthersOption('name_of_primary_coop', 'otherPrimaryCoopField'); 
                 checkOthersOption('name_of_coop_union', 'otherCoopUnionField'); 
@@ -818,15 +643,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // For primary cooperative and cooperative union handling both "No" and "Other" logic
-    hideFieldOnNo('is_member_of_primary_coop', 'otherPrimaryCoopField'); 
-    hideFieldOnNo('is_member_of_coop_union', 'otherCoopUnionField'); 
+    hideFieldOnNo('is_member_of_primary_coop', 'otherPrimaryCoopField', 'primary-coop-field'); 
+    hideFieldOnNo('is_member_of_coop_union', 'otherCoopUnionField', 'coop-union-field'); 
 
     // For other fields that need the "other" option handling
+    checkOthersOption('name_of_primary_coop', 'otherPrimaryCoopField'); 
+    checkOthersOption('name_of_coop_union', 'otherCoopUnionField'); 
     checkOthersOption('incomeTypeSelect', 'otherIncomeField');
     checkOthersOption('woreda_selection', 'otherWoredaField'); 
     checkOthersOption('kebele_selection', 'otherKebeleField'); 
-    checkOthersOption('name_of_primary_coop', 'otherPrimaryCoopField'); 
-    checkOthersOption('name_of_coop_union', 'otherCoopUnionField'); 
 });
 
 
@@ -847,12 +672,12 @@ document.addEventListener('DOMContentLoaded', function() {
         );
         if (!selectElement) {
             console.error(`Element with ID ${selectElementId} not found.`);
-            return;  // Exit early if the select element is not found
+            return; 
         }
 
         if (!otherField) {
             console.error(`Other field with ID ${otherFieldId} not found.`);
-            return;  // Exit early if the other field is not found
+            return;  
         }
         
         if (hasOthers) {
@@ -884,20 +709,11 @@ document.addEventListener('DOMContentLoaded', function() {
         handleOtherFields("name_of_coop_union", "otherModalCoopUnionField");
     });
 
-    // document.getElementById("woreda_selection").addEventListener("change", function() {
-    //     handleOtherFields("woreda_selection", "otherWoredaField");
-    // });
-
-    // document.getElementById("kebele_selection").addEventListener("change", function() {
-    //     handleOtherFields("kebele_selection", "otherKebeleField");
-    // });
+    
 
 
     handleOtherFields("woreda_selection", "otherModalWoredaField");
     handleOtherFields("kebele_selection", "otherModalKebeleField");
-
-    // handleOtherFields('woreda_selection', 'otherWoredaField'); 
-    // handleOtherFields('kebele_selection', 'otherKebeleField'); 
 
     
 
