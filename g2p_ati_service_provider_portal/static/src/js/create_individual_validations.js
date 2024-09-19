@@ -29,7 +29,6 @@ $(document).ready(function () {
     });
     var landIndex = landMaxIndex + 1;
 
- 
     $("#add-crop-info").click(function () {
         var $template = $("#crop-hidden-template").html();
         var $formContainer = $("#section-content-crop");
@@ -155,13 +154,11 @@ $(document).ready(function () {
             ridInput.classList.add("rid_error");
             ridError.style.display = "block";
             uidInput.setAttribute("required", "required");
-
         } else {
             ridInput.classList.remove("rid_error");
             ridError.style.display = "none";
         }
     });
-
 
     // Event listeners
     function handleNationalIdSelection() {
@@ -407,15 +404,25 @@ function validateInput(inputElement) {
     }
 }
 
+// function validateElement(element) {
+//     if (element.tagName === "SELECT") {
+//         validateSelect(element);
+//     } else if (element.tagName === "INPUT") {
+//         if (element.type === "radio") {
+//             validateRadio(element.name);
+//         } else {
+//             validateInput(element);
+//         }
+//     }
+// }
+
+// eslint-disable-next-line no-unused-vars
 function validateElement(element) {
+    // Check if the element is a select or an input field
     if (element.tagName === "SELECT") {
         validateSelect(element);
     } else if (element.tagName === "INPUT") {
-        if (element.type === "radio") {
-            validateRadio(element.name);
-        } else {
-            validateInput(element);
-        }
+        validateInput(element);
     }
 }
 
@@ -429,13 +436,13 @@ function validateUID() {
 }
 
 function validateRID() {
-    console.log("Check RID")
+    console.log("Check RID");
     const rid = document.getElementById("rid_input");
     const ridError = document.getElementById("rid_error");
     const isValid = rid.value.length === 29 && /^\d+$/.test(rid.value);
     rid.classList.toggle("is-invalid", !isValid);
     ridError.style.display = isValid ? "none" : "block";
-    console.log(rid.value.length)
+    console.log(rid.value.length);
     return isValid;
 }
 
@@ -460,7 +467,7 @@ function validateRadioButtons(radioName, section) {
     return radioChecked;
 }
 
-// function validateSection(sectionId) {
+// Function validateSection(sectionId) {
 //     const section = document.getElementById(sectionId);
 //     const requiredFields = section.querySelectorAll("[required]");
 //     let valid = true;
@@ -501,7 +508,7 @@ function validateSection(sectionId) {
     let valid = true;
 
     requiredFields.forEach((field) => {
-        let isFieldValid = false;  // Initialize isFieldValid to avoid pre-commit error
+        let isFieldValid = false; // Initialize isFieldValid to avoid pre-commit error
 
         // Add radio button validation logic
         if (field.type === "radio") {
@@ -543,7 +550,6 @@ function validateSection(sectionId) {
 
     return valid;
 }
-
 
 // Let previousSection = "id-section";
 
@@ -590,18 +596,18 @@ function showSection(sectionId, element, fromGroup = false) {
     }
 }
 
-    function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
-        var val = validateSection(currentSectionId);
+function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
+    var val = validateSection(currentSectionId);
 
-        if (val) {
-            var activeLink = document.querySelector(".sidebar .nav-link.active");
-            var nextLink = activeLink.parentElement.nextElementSibling.querySelector(".nav-link");
-            if (nextLink) {
-                nextLink.classList.remove("disabled");
-                showSection(nextSectionId, nextLink, fromGroup);
-            }
+    if (val) {
+        var activeLink = document.querySelector(".sidebar .nav-link.active");
+        var nextLink = activeLink.parentElement.nextElementSibling.querySelector(".nav-link");
+        if (nextLink) {
+            nextLink.classList.remove("disabled");
+            showSection(nextSectionId, nextLink, fromGroup);
         }
     }
+}
 
 function checkRequired() {
     // Const farmingType = document.getElementById('farming-type-selection');
