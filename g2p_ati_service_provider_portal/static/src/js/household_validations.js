@@ -411,11 +411,7 @@ function showModalSection(nextSectionId, currentSectionId, direction) {
     // eslint-disable-next-line no-undef
     var val = validateSection(currentSectionId);
     if (direction === "prev") {
-<<<<<<< HEAD
         val = true;
-=======
-        var val = true;
->>>>>>> 070fc42 (pre-commit changes)
     }
 
     // Val = true;
