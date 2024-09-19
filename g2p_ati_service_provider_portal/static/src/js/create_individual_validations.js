@@ -609,7 +609,6 @@ function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
     }
 }
 
-
 function checkRequired() {
     // Const farmingType = document.getElementById('farming-type-selection');
     // const selectedOptionText = farmingType.options[farmingType.selectedIndex].text

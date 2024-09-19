@@ -1380,39 +1380,39 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             source_of_income = request.env["g2p.hh.income"].sudo().search([])
             model_id = request.env["ir.model"].sudo().search([("model", "=", "res.partner")])
 
-            additional_info = beneficiary.additional_g2p_info
+            # additional_info = beneficiary.additional_g2p_info
 
-            # Check if additional_info is a string and needs to be converted to a dictionary
-            if isinstance(additional_info, str):
-                try:
-                    additional_info = json.loads(additional_info)
-                except json.JSONDecodeError:
-                    # Handle JSON decoding error if the string is not valid JSON
-                    additional_info = {}
+            # # Check if additional_info is a string and needs to be converted to a dictionary
+            # if isinstance(additional_info, str):
+            #     try:
+            #         additional_info = json.loads(additional_info)
+            #     except json.JSONDecodeError:
+            #         # Handle JSON decoding error if the string is not valid JSON
+            #         additional_info = {}
 
-            # Initialize variables
-            other_kebele = ""
-            other_woreda = ""
-            other_primary_coop = ""
-            other_coop_union = ""
-            other_income = ""
+            # # Initialize variables
+            # other_kebele = ""
+            # other_woreda = ""
+            # other_primary_coop = ""
+            # other_coop_union = ""
+            # other_income = ""
 
-            # Check if additional_info is a dictionary and populate variables accordingly
-            if isinstance(additional_info, dict):
-                if "Kebele" in additional_info:
-                    other_kebele = additional_info.get("Kebele", "")
+            # # Check if additional_info is a dictionary and populate variables accordingly
+            # if isinstance(additional_info, dict):
+            #     if "Kebele" in additional_info:
+            #         other_kebele = additional_info.get("Kebele", "")
 
-                if "Woreda" in additional_info:
-                    other_woreda = additional_info.get("Woreda", "")
+            #     if "Woreda" in additional_info:
+            #         other_woreda = additional_info.get("Woreda", "")
 
-                if "Primary Cooperative" in additional_info:
-                    other_primary_coop = additional_info.get("Primary Cooperative", "")
+            #     if "Primary Cooperative" in additional_info:
+            #         other_primary_coop = additional_info.get("Primary Cooperative", "")
 
-                if "Cooperative Union" in additional_info:
-                    other_coop_union = additional_info.get("Cooperative Union", "")
+            #     if "Cooperative Union" in additional_info:
+            #         other_coop_union = additional_info.get("Cooperative Union", "")
 
-                if "Household Income" in additional_info:
-                    other_income = additional_info.get("Household Income", "")
+            #     if "Household Income" in additional_info:
+            #         other_income = additional_info.get("Household Income", "")
 
             # Handling phone numbers
             primary_phone, secondary_phone, other_phone = "", "", ""
@@ -1553,11 +1553,11 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     "do_you_use_insecticide_selection_id": do_you_use_insecticide_selection_id,
                     "do_you_use_improved_seed_selection_id": do_you_use_improved_seed_selection_id,
                     "has_finance_access_selection_id": has_finance_access_selection_id,
-                    "other_kebele": other_kebele,
-                    "other_woreda": other_woreda,
-                    "other_primary_coop": other_primary_coop,
-                    "other_coop_union": other_coop_union,
-                    "other_income": other_income,
+                    # "other_kebele": other_kebele,
+                    # "other_woreda": other_woreda,
+                    # "other_primary_coop": other_primary_coop,
+                    # "other_coop_union": other_coop_union,
+                    # "other_income": other_income,
                 },
             )
         except Exception as e:
