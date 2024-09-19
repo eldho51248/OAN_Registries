@@ -404,7 +404,7 @@ function validateInput(inputElement) {
     }
 }
 
-// function validateElement(element) {
+// Function validateElement(element) {
 //     if (element.tagName === "SELECT") {
 //         validateSelect(element);
 //     } else if (element.tagName === "INPUT") {
@@ -595,7 +595,7 @@ function showSection(sectionId, element, fromGroup = false) {
         }
     }
 }
-
+// eslint-disable-next-line no-unused-vars
 function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
     var val = validateSection(currentSectionId);
 
@@ -608,6 +608,7 @@ function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
         }
     }
 }
+
 
 function checkRequired() {
     // Const farmingType = document.getElementById('farming-type-selection');
