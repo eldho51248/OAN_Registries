@@ -29,55 +29,6 @@ $(document).ready(function () {
     });
     var landIndex = landMaxIndex + 1;
 
-    // Console.log(incomeSourceData);
-    // VirtualSelect.init({
-    //     ele: `#hh_income_type`,
-    //     options: incomeSourceData,
-    //     search: true,
-    //     multiple: true,
-    //     additionalClasses: 'custom-multi-select',
-    // });
-
-    // if (cropInfoData && cropInfoData.length > 0) {
-    //     cropInfoData.forEach(function(cropInfo) {
-    //         VirtualSelect.init({
-    //             ele: `#crop_illness_types_${cropInfo['index']}`,
-    //             options: cropIllnessType,
-    //             search: true,
-    //             multiple: true,
-    //             selectedValue: cropInfo.illness_type,
-    //         });
-    //     });
-    // }
-    // else {
-    //     VirtualSelect.init({
-    //         ele: `#crop_illness_types_0`,
-    //         options: cropIllnessType,
-    //         search: true,
-    //         multiple: true,
-    //     });
-    // }
-
-    // if (livestockInfoData && livestockInfoData.length > 0) {
-    //     livestockInfoData.forEach(function(livestockInfo) {
-    //         VirtualSelect.init({
-    //             ele: `#livestock_illness_types_${livestockInfo['index']}`,
-    //             options: livestockIllnessType,
-    //             search: true,
-    //             multiple: true,
-    //             selectedValue: livestockInfo.illness_type,
-    //         });
-    //     });
-    // }
-    // else {
-    //     VirtualSelect.init({
-    //         ele: `#livestock_illness_types_0`,
-    //         options: livestockIllnessType,
-    //         search: true,
-    //         multiple: true,
-    //     });
-    // }
-
     $("#add-crop-info").click(function () {
         var $template = $("#crop-hidden-template").html();
         var $formContainer = $("#section-content-crop");
@@ -189,6 +140,7 @@ $(document).ready(function () {
         if ((sanitizedValue.length !== 12 && sanitizedValue.length !== 0) || !isOnlyDigits) {
             uidInput.classList.add("uid_error");
             uidError.style.display = "block";
+            uidInput.setAttribute("required", "required");
         } else {
             uidInput.classList.remove("uid_error");
             uidError.style.display = "none";
@@ -201,6 +153,7 @@ $(document).ready(function () {
         if ((sanitizedValue.length !== 29 && sanitizedValue.length !== 0) || !isOnlyDigits) {
             ridInput.classList.add("rid_error");
             ridError.style.display = "block";
+            uidInput.setAttribute("required", "required");
         } else {
             ridInput.classList.remove("rid_error");
             ridError.style.display = "none";
@@ -451,6 +404,18 @@ function validateInput(inputElement) {
     }
 }
 
+// Function validateElement(element) {
+//     if (element.tagName === "SELECT") {
+//         validateSelect(element);
+//     } else if (element.tagName === "INPUT") {
+//         if (element.type === "radio") {
+//             validateRadio(element.name);
+//         } else {
+//             validateInput(element);
+//         }
+//     }
+// }
+
 // eslint-disable-next-line no-unused-vars
 function validateElement(element) {
     // Check if the element is a select or an input field
@@ -470,24 +435,118 @@ function validateUID() {
     return isValid;
 }
 
+function validateRID() {
+    console.log("Check RID");
+    const rid = document.getElementById("rid_input");
+    const ridError = document.getElementById("rid_error");
+    const isValid = rid.value.length === 29 && /^\d+$/.test(rid.value);
+    rid.classList.toggle("is-invalid", !isValid);
+    ridError.style.display = isValid ? "none" : "block";
+    console.log(rid.value.length);
+    return isValid;
+}
+
+function validateRadioButtons(radioName, section) {
+    const radioGroup = section.querySelectorAll(`input[name="${radioName}"]`);
+    const radioChecked = Array.from(radioGroup).some((radio) => radio.checked);
+
+    radioGroup.forEach((radio) => {
+        // Add or remove the invalid-radio class based on whether any radio is checked
+        if (!radioChecked) {
+            radio.classList.add("invalid-radio");
+        } else {
+            radio.classList.remove("invalid-radio");
+        }
+
+        // Attach an event listener to each radio button to remove the invalid-radio class when checked
+        radio.addEventListener("change", function () {
+            radioGroup.forEach((radio) => radio.classList.remove("invalid-radio"));
+        });
+    });
+
+    return radioChecked;
+}
+
+// Function validateSection(sectionId) {
+//     const section = document.getElementById(sectionId);
+//     const requiredFields = section.querySelectorAll("[required]");
+//     let valid = true;
+
+//     requiredFields.forEach((field) => {
+//         var isFieldValid;
+//         if (field.type === "radio") {
+//             // Validate radio buttons in this section
+//             isFieldValid = validateRadioButtons(field.name, section);
+//         } else {
+//             isFieldValid = field.value.trim() !== "";
+//         }
+
+//         var fieldName = field.getAttribute("name");
+//         if (fieldName.includes("{9999}")) {
+//             return;
+//         }
+
+//         if (field.type !== "radio") {
+//             field.classList.toggle("is-invalid", !isFieldValid);
+//         }
+//         valid = valid && isFieldValid;
+
+//         if (sectionId === "id-section" && fieldName === "uid") {
+//             valid = valid && validateUID();
+//         }
+//     });
+
+//     return valid;
+// }
+
 function validateSection(sectionId) {
     const section = document.getElementById(sectionId);
     const requiredFields = section.querySelectorAll("[required]");
+    const uidError = document.getElementById("uid_error");
+    const ridError = document.getElementById("rid_error");
+
     let valid = true;
 
     requiredFields.forEach((field) => {
-        const isFieldValid = field.value.trim();
-        var fieldName = field.getAttribute("name");
+        let isFieldValid = false; // Initialize isFieldValid to avoid pre-commit error
+
+        // Add radio button validation logic
+        if (field.type === "radio") {
+            // Validate radio buttons in this section
+            isFieldValid = validateRadioButtons(field.name, section);
+        } else {
+            // Validate non-radio fields
+            isFieldValid = field.value.trim() !== "";
+        }
+
+        const fieldName = field.getAttribute("name");
         if (fieldName.includes("{9999}")) {
             return;
         }
 
-        field.classList.toggle("is-invalid", !isFieldValid);
+        // Apply 'is-invalid' class for non-radio fields
+        if (field.type !== "radio") {
+            field.classList.toggle("is-invalid", !isFieldValid);
+        }
+
         valid = valid && isFieldValid;
+
+        // Additional UID and RID validation for 'id-section'
         if (sectionId === "id-section" && fieldName === "uid") {
             valid = valid && validateUID();
         }
+        if (sectionId === "id-section" && fieldName === "rid") {
+            valid = valid && validateRID();
+        }
     });
+
+    // Check for UID and RID error display
+    if (uidError && uidError.style.display === "block") {
+        valid = false;
+    }
+    if (ridError && ridError.style.display === "block") {
+        valid = false;
+    }
 
     return valid;
 }
@@ -536,15 +595,12 @@ function showSection(sectionId, element, fromGroup = false) {
         }
     }
 }
-
 // eslint-disable-next-line no-unused-vars
 function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
     var val = validateSection(currentSectionId);
-    // Val = true
 
     if (val) {
         var activeLink = document.querySelector(".sidebar .nav-link.active");
-        // Console.log(activeLink);
         var nextLink = activeLink.parentElement.nextElementSibling.querySelector(".nav-link");
         if (nextLink) {
             nextLink.classList.remove("disabled");
@@ -552,6 +608,7 @@ function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
         }
     }
 }
+
 function checkRequired() {
     // Const farmingType = document.getElementById('farming-type-selection');
     // const selectedOptionText = farmingType.options[farmingType.selectedIndex].text
