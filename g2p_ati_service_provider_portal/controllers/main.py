@@ -1381,7 +1381,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             model_id = request.env["ir.model"].sudo().search([("model", "=", "res.partner")])
 
             additional_info = beneficiary.additional_g2p_info
-           
+
             # Check if additional_info is a string and needs to be converted to a dictionary
             if isinstance(additional_info, str):
                 try:

@@ -29,55 +29,7 @@ $(document).ready(function () {
     });
     var landIndex = landMaxIndex + 1;
 
-    // Console.log(incomeSourceData);
-    // VirtualSelect.init({
-    //     ele: `#hh_income_type`,
-    //     options: incomeSourceData,
-    //     search: true,
-    //     multiple: true,
-    //     additionalClasses: 'custom-multi-select',
-    // });
-
-    // if (cropInfoData && cropInfoData.length > 0) {
-    //     cropInfoData.forEach(function(cropInfo) {
-    //         VirtualSelect.init({
-    //             ele: `#crop_illness_types_${cropInfo['index']}`,
-    //             options: cropIllnessType,
-    //             search: true,
-    //             multiple: true,
-    //             selectedValue: cropInfo.illness_type,
-    //         });
-    //     });
-    // }
-    // else {
-    //     VirtualSelect.init({
-    //         ele: `#crop_illness_types_0`,
-    //         options: cropIllnessType,
-    //         search: true,
-    //         multiple: true,
-    //     });
-    // }
-
-    // if (livestockInfoData && livestockInfoData.length > 0) {
-    //     livestockInfoData.forEach(function(livestockInfo) {
-    //         VirtualSelect.init({
-    //             ele: `#livestock_illness_types_${livestockInfo['index']}`,
-    //             options: livestockIllnessType,
-    //             search: true,
-    //             multiple: true,
-    //             selectedValue: livestockInfo.illness_type,
-    //         });
-    //     });
-    // }
-    // else {
-    //     VirtualSelect.init({
-    //         ele: `#livestock_illness_types_0`,
-    //         options: livestockIllnessType,
-    //         search: true,
-    //         multiple: true,
-    //     });
-    // }
-
+ 
     $("#add-crop-info").click(function () {
         var $template = $("#crop-hidden-template").html();
         var $formContainer = $("#section-content-crop");
@@ -189,6 +141,7 @@ $(document).ready(function () {
         if ((sanitizedValue.length !== 12 && sanitizedValue.length !== 0) || !isOnlyDigits) {
             uidInput.classList.add("uid_error");
             uidError.style.display = "block";
+            uidInput.setAttribute("required", "required");
         } else {
             uidInput.classList.remove("uid_error");
             uidError.style.display = "none";
@@ -201,11 +154,14 @@ $(document).ready(function () {
         if ((sanitizedValue.length !== 29 && sanitizedValue.length !== 0) || !isOnlyDigits) {
             ridInput.classList.add("rid_error");
             ridError.style.display = "block";
+            uidInput.setAttribute("required", "required");
+
         } else {
             ridInput.classList.remove("rid_error");
             ridError.style.display = "none";
         }
     });
+
 
     // Event listeners
     function handleNationalIdSelection() {
@@ -451,17 +407,17 @@ function validateInput(inputElement) {
     }
 }
 
-// function validateElement(element) {
-//     if (element.tagName === "SELECT") {
-//         validateSelect(element);
-//     } else if (element.tagName === "INPUT") {
-//         if (element.type === "radio") {
-//             validateRadio(element.name);
-//         } else {
-//             validateInput(element);
-//         }
-//     }
-// }
+function validateElement(element) {
+    if (element.tagName === "SELECT") {
+        validateSelect(element);
+    } else if (element.tagName === "INPUT") {
+        if (element.type === "radio") {
+            validateRadio(element.name);
+        } else {
+            validateInput(element);
+        }
+    }
+}
 
 function validateUID() {
     const uid = document.getElementById("uid_input");
@@ -469,6 +425,17 @@ function validateUID() {
     const isValid = uid.value.length === 12 && /^\d+$/.test(uid.value);
     uid.classList.toggle("is-invalid", !isValid);
     uidError.style.display = isValid ? "none" : "block";
+    return isValid;
+}
+
+function validateRID() {
+    console.log("Check RID")
+    const rid = document.getElementById("rid_input");
+    const ridError = document.getElementById("rid_error");
+    const isValid = rid.value.length === 29 && /^\d+$/.test(rid.value);
+    rid.classList.toggle("is-invalid", !isValid);
+    ridError.style.display = isValid ? "none" : "block";
+    console.log(rid.value.length)
     return isValid;
 }
 
@@ -493,38 +460,89 @@ function validateRadioButtons(radioName, section) {
     return radioChecked;
 }
 
+// function validateSection(sectionId) {
+//     const section = document.getElementById(sectionId);
+//     const requiredFields = section.querySelectorAll("[required]");
+//     let valid = true;
+
+//     requiredFields.forEach((field) => {
+//         var isFieldValid;
+//         if (field.type === "radio") {
+//             // Validate radio buttons in this section
+//             isFieldValid = validateRadioButtons(field.name, section);
+//         } else {
+//             isFieldValid = field.value.trim() !== "";
+//         }
+
+//         var fieldName = field.getAttribute("name");
+//         if (fieldName.includes("{9999}")) {
+//             return;
+//         }
+
+//         if (field.type !== "radio") {
+//             field.classList.toggle("is-invalid", !isFieldValid);
+//         }
+//         valid = valid && isFieldValid;
+
+//         if (sectionId === "id-section" && fieldName === "uid") {
+//             valid = valid && validateUID();
+//         }
+//     });
+
+//     return valid;
+// }
+
 function validateSection(sectionId) {
     const section = document.getElementById(sectionId);
     const requiredFields = section.querySelectorAll("[required]");
+    const uidError = document.getElementById("uid_error");
+    const ridError = document.getElementById("rid_error");
+
     let valid = true;
 
     requiredFields.forEach((field) => {
-        var isFieldValid;
+        let isFieldValid = false;  // Initialize isFieldValid to avoid pre-commit error
+
+        // Add radio button validation logic
         if (field.type === "radio") {
             // Validate radio buttons in this section
             isFieldValid = validateRadioButtons(field.name, section);
         } else {
+            // Validate non-radio fields
             isFieldValid = field.value.trim() !== "";
         }
 
-        var fieldName = field.getAttribute("name");
+        const fieldName = field.getAttribute("name");
         if (fieldName.includes("{9999}")) {
             return;
         }
 
+        // Apply 'is-invalid' class for non-radio fields
         if (field.type !== "radio") {
             field.classList.toggle("is-invalid", !isFieldValid);
         }
+
         valid = valid && isFieldValid;
 
+        // Additional UID and RID validation for 'id-section'
         if (sectionId === "id-section" && fieldName === "uid") {
             valid = valid && validateUID();
         }
+        if (sectionId === "id-section" && fieldName === "rid") {
+            valid = valid && validateRID();
+        }
     });
+
+    // Check for UID and RID error display
+    if (uidError && uidError.style.display === "block") {
+        valid = false;
+    }
+    if (ridError && ridError.style.display === "block") {
+        valid = false;
+    }
 
     return valid;
 }
-
 
 
 // Let previousSection = "id-section";
@@ -572,18 +590,18 @@ function showSection(sectionId, element, fromGroup = false) {
     }
 }
 
-// function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
-//     var val = validateSection(currentSectionId);
+    function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
+        var val = validateSection(currentSectionId);
 
-//     if (val) {
-//         var activeLink = document.querySelector(".sidebar .nav-link.active");
-//         var nextLink = activeLink.parentElement.nextElementSibling.querySelector(".nav-link");
-//         if (nextLink) {
-//             nextLink.classList.remove("disabled");
-//             showSection(nextSectionId, nextLink, fromGroup);
-//         }
-//     }
-// }
+        if (val) {
+            var activeLink = document.querySelector(".sidebar .nav-link.active");
+            var nextLink = activeLink.parentElement.nextElementSibling.querySelector(".nav-link");
+            if (nextLink) {
+                nextLink.classList.remove("disabled");
+                showSection(nextSectionId, nextLink, fromGroup);
+            }
+        }
+    }
 
 function checkRequired() {
     // Const farmingType = document.getElementById('farming-type-selection');
