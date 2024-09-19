@@ -444,8 +444,6 @@ function validateSelect(selectElement) {
     }
 }
 
-
-
 function validateInput(inputElement) {
     const value = inputElement.value;
     if (value.trim() !== "") {
@@ -465,7 +463,6 @@ function validateElement(element) {
     }
 }
 
-
 function validateUID() {
     const uid = document.getElementById("uid_input");
     const uidError = document.getElementById("uid_error");
@@ -474,8 +471,6 @@ function validateUID() {
     uidError.style.display = isValid ? "none" : "block";
     return isValid;
 }
-
-
 
 function validateSection(sectionId) {
     const section = document.getElementById(sectionId);
@@ -511,19 +506,19 @@ function validateSection(sectionId) {
 
 function validateRadioButtons(radioName, section) {
     const radioGroup = section.querySelectorAll(`input[name="${radioName}"]`);
-    const radioChecked = Array.from(radioGroup).some(radio => radio.checked);
+    const radioChecked = Array.from(radioGroup).some((radio) => radio.checked);
 
-    radioGroup.forEach(radio => {
+    radioGroup.forEach((radio) => {
         // Add or remove the invalid-radio class based on whether any radio is checked
         if (!radioChecked) {
-            radio.classList.add('invalid-radio');
+            radio.classList.add("invalid-radio");
         } else {
-            radio.classList.remove('invalid-radio');
+            radio.classList.remove("invalid-radio");
         }
 
         // Attach an event listener to each radio button to remove the invalid-radio class when checked
-        radio.addEventListener('change', function() {
-            radioGroup.forEach(radio => radio.classList.remove('invalid-radio'));
+        radio.addEventListener("change", function () {
+            radioGroup.forEach((radio) => radio.classList.remove("invalid-radio"));
         });
     });
 
@@ -575,7 +570,6 @@ function showSection(sectionId, element, fromGroup = false) {
     }
 }
 
-
 function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
     var val = validateSection(currentSectionId);
 
@@ -588,7 +582,6 @@ function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
         }
     }
 }
-
 
 function checkRequired() {
     // Const farmingType = document.getElementById('farming-type-selection');
@@ -622,7 +615,6 @@ document.addEventListener("DOMContentLoaded", function () {
     toggleFieldBasedOnRadio("is_member_of_coop_union", "coop-union-field");
     toggleFieldBasedOnRadio("in_farmer_cluster", "primary-commodity-field");
     toggleFieldBasedOnRadio("in_farmer_cluster", "role-in-cluster-field");
-
 
     // Attach event listeners to the radio buttons
     const primaryCoopRadios = document.querySelectorAll('input[name="is_member_of_primary_coop"]');

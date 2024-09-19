@@ -19,11 +19,14 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
         # domain = []
         # domain.append(("is_group", "=", True))
         user_id = request.env.user.id
-        
-        
-        households = request.env["res.partner"].sudo().search([("is_group", "=", True),("create_uid", "=", user_id)])
+
+        households = (
+            request.env["res.partner"].sudo().search([("is_group", "=", True), ("create_uid", "=", user_id)])
+        )
         individuals = (
-            request.env["res.partner"].sudo().search([("is_group", "=", False), ("is_farmer", "=", "yes"),("create_uid", "=", user_id)])
+            request.env["res.partner"]
+            .sudo()
+            .search([("is_group", "=", False), ("is_farmer", "=", "yes"), ("create_uid", "=", user_id)])
         )
 
         return request.render(
@@ -448,9 +451,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     )
     def group_update(self, _id, **kw):
         try:
-           
             group = request.env["res.partner"].sudo().browse(_id)
-           
 
             if not group:
                 return request.render(
@@ -481,8 +482,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             relationship_with_hhh = request.env["g2p.group.membership.kind"].sudo().search([])
 
             model_id = request.env["ir.model"].sudo().search([("model", "=", "res.partner")])
-
-            
 
             land_model_id = request.env["ir.model"].sudo().search([("model", "=", "g2p.land.information")])
             crop_model_id = request.env["ir.model"].sudo().search([("model", "=", "g2p.crop.information")])
@@ -637,11 +636,10 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             household_head_id = ""
             for indiv in members.individual:
-                if indiv.hh_is_household_head == 'yes' and indiv.is_farmer == "yes":
+                if indiv.hh_is_household_head == "yes" and indiv.is_farmer == "yes":
                     household_head_id = indiv
 
-
-            head_individual =  request.env["res.partner"].sudo().browse(int(household_head_id))
+            head_individual = request.env["res.partner"].sudo().browse(int(household_head_id))
             additional_info = head_individual.additional_g2p_info
 
             if isinstance(additional_info, str):
@@ -652,32 +650,28 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     additional_info = {}
 
             # Initialize variables
-            other_kebele = ''
-            other_woreda = ''
-            other_primary_coop = ''
-            other_coop_union = ''
-            other_income = ''
+            other_kebele = ""
+            other_woreda = ""
+            other_primary_coop = ""
+            other_coop_union = ""
+            other_income = ""
 
             # Check if additional_info is a dictionary and populate variables accordingly
             if isinstance(additional_info, dict):
                 if "Kebele" in additional_info:
-                    other_kebele = additional_info.get("Kebele", '')
+                    other_kebele = additional_info.get("Kebele", "")
 
                 if "Woreda" in additional_info:
-                    other_woreda = additional_info.get("Woreda", '')
+                    other_woreda = additional_info.get("Woreda", "")
 
                 if "Primary Cooperative" in additional_info:
-                    other_primary_coop = additional_info.get("Primary Cooperative", '')
+                    other_primary_coop = additional_info.get("Primary Cooperative", "")
 
                 if "Cooperative Union" in additional_info:
-                    other_coop_union = additional_info.get("Cooperative Union", '')
+                    other_coop_union = additional_info.get("Cooperative Union", "")
 
                 if "Household Income" in additional_info:
-                    other_income = additional_info.get("Household Income", '')
-
-
-
-
+                    other_income = additional_info.get("Household Income", "")
 
             return request.render(
                 "g2p_ati_service_provider_portal.ati_update_group_form_template",
@@ -727,9 +721,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     "livestock_is_diseased_selections": livestock_is_diseased_selections,
                     "other_kebele": other_kebele,
                     "other_woreda": other_woreda,
-                    "other_primary_coop":other_primary_coop,
-                    "other_coop_union":other_coop_union,
-                    "other_income":other_income
+                    "other_primary_coop": other_primary_coop,
+                    "other_coop_union": other_coop_union,
+                    "other_income": other_income,
                 },
             )
         except Exception as e:
@@ -1387,7 +1381,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             model_id = request.env["ir.model"].sudo().search([("model", "=", "res.partner")])
 
             additional_info = beneficiary.additional_g2p_info
-            print("add info json",type(additional_info))
+            print("add info json", type(additional_info))
             # Check if additional_info is a string and needs to be converted to a dictionary
             if isinstance(additional_info, str):
                 try:
@@ -1397,30 +1391,28 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     additional_info = {}
 
             # Initialize variables
-            other_kebele = ''
-            other_woreda = ''
-            other_primary_coop = ''
-            other_coop_union = ''
-            other_income = ''
+            other_kebele = ""
+            other_woreda = ""
+            other_primary_coop = ""
+            other_coop_union = ""
+            other_income = ""
 
             # Check if additional_info is a dictionary and populate variables accordingly
             if isinstance(additional_info, dict):
                 if "Kebele" in additional_info:
-                    other_kebele = additional_info.get("Kebele", '')
+                    other_kebele = additional_info.get("Kebele", "")
 
                 if "Woreda" in additional_info:
-                    other_woreda = additional_info.get("Woreda", '')
+                    other_woreda = additional_info.get("Woreda", "")
 
                 if "Primary Cooperative" in additional_info:
-                    other_primary_coop = additional_info.get("Primary Cooperative", '')
+                    other_primary_coop = additional_info.get("Primary Cooperative", "")
 
                 if "Cooperative Union" in additional_info:
-                    other_coop_union = additional_info.get("Cooperative Union", '')
+                    other_coop_union = additional_info.get("Cooperative Union", "")
 
                 if "Household Income" in additional_info:
-                    other_income = additional_info.get("Household Income", '')
-
-
+                    other_income = additional_info.get("Household Income", "")
 
             # Handling phone numbers
             primary_phone, secondary_phone, other_phone = "", "", ""
@@ -1543,7 +1535,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     "has_finance_access": has_finance_access,
                     "financial_access": financial_access,
                     "source_of_income": source_of_income,
-                    
                     "have_national_id_selection_id": have_national_id_selection_id,
                     "household_head_selection_id": household_head_selection_id,
                     "farming_type_selection_id": farming_type_selection_id,
@@ -1564,9 +1555,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     "has_finance_access_selection_id": has_finance_access_selection_id,
                     "other_kebele": other_kebele,
                     "other_woreda": other_woreda,
-                    "other_primary_coop":other_primary_coop,
-                    "other_coop_union":other_coop_union,
-                    "other_income":other_income
+                    "other_primary_coop": other_primary_coop,
+                    "other_coop_union": other_coop_union,
+                    "other_income": other_income,
                 },
             )
         except Exception as e:
@@ -1932,104 +1923,96 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 {"error_message": f"An error occurred: {e}"},
             )
 
-    def handle_other_info(self,kw):
+    def handle_other_info(self, kw):
         other_info = {}
 
-        #house hold income
+        # house hold income
         income_ids = request.httprequest.form.getlist("hh_income_type")
-        searched_income_id = request.env['g2p.hh.income'].sudo().search([
-            '|',  
-            ('name', '=', 'Others'),
-            ('name', '=', 'Other')
-        ]).id
+        searched_income_id = (
+            request.env["g2p.hh.income"]
+            .sudo()
+            .search(["|", ("name", "=", "Others"), ("name", "=", "Other")])
+            .id
+        )
 
         if str(searched_income_id) in request.httprequest.form.getlist("hh_income_type"):
-
             other_income_details = kw.get("other_income_details")
             if other_income_details:
-                other_info['Household Income'] = other_income_details
+                other_info["Household Income"] = other_income_details
 
-
-
-        #woreda
+        # woreda
 
         woreda_id = kw.get("woreda")
         other_woreda = kw.get("other_woreda")
-        
-        searched_woreda_id = request.env['g2p.woreda'].sudo().search([
-            '|',
-            ('name', '=', 'Others'),
-            ('name', '=', 'Other')
-        ]).id
+
+        searched_woreda_id = (
+            request.env["g2p.woreda"].sudo().search(["|", ("name", "=", "Others"), ("name", "=", "Other")]).id
+        )
 
         if searched_woreda_id == int(woreda_id):
             if other_woreda:
-                other_info['Woreda'] = other_woreda
+                other_info["Woreda"] = other_woreda
 
-
-        #kebele
+        # kebele
         kebele_id = kw.get("kebele")
-        print("kebele id",kebele_id)
+        print("kebele id", kebele_id)
         other_kebele = kw.get("other_kebele")
-        print("other_kebele id",other_kebele)
-        
-        searched_kebele_id = request.env['g2p.kebele'].sudo().search([
-            '|',
-            ('name', '=', 'Others'),
-            ('name', '=', 'Other'),
-        ]).id
+        print("other_kebele id", other_kebele)
+
+        searched_kebele_id = (
+            request.env["g2p.kebele"]
+            .sudo()
+            .search(
+                [
+                    "|",
+                    ("name", "=", "Others"),
+                    ("name", "=", "Other"),
+                ]
+            )
+            .id
+        )
 
         print("searched_kebele", searched_kebele_id)
 
         if searched_kebele_id == int(kebele_id):
             if other_kebele:
-                other_info['Kebele'] = other_kebele
+                other_info["Kebele"] = other_kebele
 
-
-        
-        #primary coop
+        # primary coop
         primary_coop_ids = kw.get("name_of_primary_coop")
-        print("primary coop",primary_coop_ids)
-        searched_primary_coop_id = request.env['g2p.primary.cooperative'].sudo().search([
-            '|',
-            ('name', '=', 'Others'),
-            ('name', '=', 'Other')
-        ]).id
+        print("primary coop", primary_coop_ids)
+        searched_primary_coop_id = (
+            request.env["g2p.primary.cooperative"]
+            .sudo()
+            .search(["|", ("name", "=", "Others"), ("name", "=", "Other")])
+            .id
+        )
 
         if str(searched_primary_coop_id) in primary_coop_ids:
             other_primary_coop = kw.get("other_primary_coop")
             if other_primary_coop:
-                other_info['Primary Cooperative'] = other_primary_coop
+                other_info["Primary Cooperative"] = other_primary_coop
 
-        print("searched primary coop",searched_primary_coop_id)
+        print("searched primary coop", searched_primary_coop_id)
 
-
-        #coop union
+        # coop union
         coop_union_ids = kw.get("name_of_coop_union")
-        print("coop_union coop",coop_union_ids)
-        searched_coop_union_id = request.env['g2p.cooperative.union'].sudo().search([
-            '|',
-            ('name', '=', 'Others'),
-            ('name', '=', 'Other')
-        ]).id
+        print("coop_union coop", coop_union_ids)
+        searched_coop_union_id = (
+            request.env["g2p.cooperative.union"]
+            .sudo()
+            .search(["|", ("name", "=", "Others"), ("name", "=", "Other")])
+            .id
+        )
 
         if str(searched_coop_union_id) in coop_union_ids:
             other_coop_union = kw.get("other_coop_union")
             if other_coop_union:
-                other_info['Cooperative Union'] = other_coop_union
+                other_info["Cooperative Union"] = other_coop_union
 
-        print("searched primary coop",searched_coop_union_id)
+        print("searched primary coop", searched_coop_union_id)
 
-
-
-     
-
-        print("other_info is",other_info)
-
-
-
-
-        
+        print("other_info is", other_info)
 
         return json.dumps(other_info)
 
@@ -2221,7 +2204,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     @http.route("/serviceprovider/individual", type="http", auth="user", website=True)
     def individual_list(self, **kw):
         user_id = request.env.user.id
-        
+
         individual = (
             request.env["res.partner"]
             .sudo()
@@ -2231,8 +2214,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     ("is_registrant", "=", True),
                     ("is_group", "=", False),
                     ("is_farmer", "=", "yes"),
-                    ("create_uid", "=", user_id)
-                    
+                    ("create_uid", "=", user_id),
                 ]
             )
         )
@@ -2248,7 +2230,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     @http.route("/serviceprovider/group", type="http", auth="user", website=True)
     def group_list(self, **kw):
         user_id = request.env.user.id
-        
+
         groups = (
             request.env["res.partner"]
             .sudo()
@@ -2257,7 +2239,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     ("active", "=", True),
                     ("is_registrant", "=", True),
                     ("is_group", "=", True),
-                    ("create_uid", "=", user_id)
+                    ("create_uid", "=", user_id),
                 ]
             )
         )
@@ -2443,16 +2425,14 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         except Exception as e:
             _logger.error("ERROR LOG IN INDIVIDUAL%s", e)
             return json.dumps({"error": "Failed to add family member"})
-        
-
 
     @http.route(
-    "/serviceprovider/member/delete/",
-    type="http",
-    auth="user",
-    website=True,
-    csrf=False,
-)
+        "/serviceprovider/member/delete/",
+        type="http",
+        auth="user",
+        website=True,
+        csrf=False,
+    )
     def delete_family_member(self, **kw):
         res = dict()
         try:
@@ -2467,21 +2447,16 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             if not group_rec.exists():
                 return json.dumps({"error": "Group not found"})
 
-           
             if member.is_farmer == "no":
-               
-           
-                group_membership = request.env["g2p.group.membership"].sudo().search([
-                    ('group', '=', group_id),
-                    ('individual', '=', member_id)
-                ])
+                group_membership = (
+                    request.env["g2p.group.membership"]
+                    .sudo()
+                    .search([("group", "=", group_id), ("individual", "=", member_id)])
+                )
                 if group_membership:
                     group_membership.unlink()
 
                 member.unlink()
-            
-
-            
 
             # member_list = []
             # for membership in group_rec.group_membership_ids:
@@ -2600,7 +2575,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             kebele = self._convert_to_int(kw.get("kebele"))
 
             additional_info = kw.get("additional_info", {})
-            print("additio info type is ",type(additional_info))
+            print("additio info type is ", type(additional_info))
             additional_info_json = json.loads(additional_info)
             # print("additonal json type",type(additional_info_json))
 
@@ -2612,8 +2587,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             vals["crop_information_ids"] = self._prepare_crop_information(kw.get("cropRecords"))
             vals["livestock_information_ids"] = self._livestock_information(kw.get("livestockRecord"))
             vals["phone_number_ids"] = self._prepare_phone_numbers(kw, region, zone, woreda, kebele, vals)
-
-
 
             # Socioeconomic data
             self._prepare_socioeconomic_data(kw, vals)

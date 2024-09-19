@@ -197,7 +197,7 @@
                                                                     </label>
                                                                 </div>
                                                             </div> -->
-                                                            
+
 
                                                             <select
                                                                 class="form-select"
@@ -216,7 +216,7 @@
                                                                     </option>
                                                                 </t>
                                                             </select>
-                                                            
+
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6 col-md-6 col-sm-12">
@@ -830,10 +830,17 @@
 
                                                     <div class="row">
 
-                                                        <div class="col-lg-4" id="otherWoredaField" style="display: none;">
+                                                        <div
+                                                            class="col-lg-4"
+                                                            id="otherWoredaField"
+                                                            style="display: none;"
+                                                        >
                                                             <div class="s_website_form_field lmargin-input">
                                                                 <label class="s_website_form_label">
-                                                                    <span class="s_website_form_label_content" style="color: #666666;">
+                                                                    <span
+                                                                        class="s_website_form_label_content"
+                                                                        style="color: #666666;"
+                                                                    >
                                                                         Please Specify the Woreda
                                                                     </span>
                                                                 </label>
@@ -886,10 +893,17 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-4" id="otherKebeleField" style="display: none;">
+                                                        <div
+                                                            class="col-lg-4"
+                                                            id="otherKebeleField"
+                                                            style="display: none;"
+                                                        >
                                                             <div class="s_website_form_field lmargin-input">
                                                                 <label class="s_website_form_label">
-                                                                    <span class="s_website_form_label_content" style="color: #666666;">
+                                                                    <span
+                                                                        class="s_website_form_label_content"
+                                                                        style="color: #666666;"
+                                                                    >
                                                                         Please Specify the Kebele
                                                                     </span>
                                                                 </label>
@@ -1337,7 +1351,10 @@
                                                         <div class="col-lg-6">
                                                             <div class="s_website_form_field">
                                                                 <label class="s_website_form_label">
-                                                                    <span class="s_website_form_label_content" style="color: #666666;">
+                                                                    <span
+                                                                        class="s_website_form_label_content"
+                                                                        style="color: #666666;"
+                                                                    >
                                                                         Source of Income
                                                                     </span>
                                                                 </label>
@@ -1351,7 +1368,10 @@
                                                                     style="width: 100%;"
                                                                     data-none-selected-text="Select Source of Income"
                                                                 >
-                                                                    <t t-foreach="source_of_income" t-as="option">
+                                                                    <t
+                                                                        t-foreach="source_of_income"
+                                                                        t-as="option"
+                                                                    >
                                                                         <option
                                                                             t-att-value="option.id"
                                                                             t-att-selected="'selected' if option.id in (beneficiary.hh_income_type.ids or []) else None"
@@ -1359,14 +1379,21 @@
                                                                             <t t-esc="option.name" />
                                                                         </option>
                                                                     </t>
-                                                                   
+
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-6" id="otherIncomeField" style="display: none;">
+                                                        <div
+                                                            class="col-lg-6"
+                                                            id="otherIncomeField"
+                                                            style="display: none;"
+                                                        >
                                                             <div class="s_website_form_field">
                                                                 <label class="s_website_form_label">
-                                                                    <span class="s_website_form_label_content" style="color: #666666;">
+                                                                    <span
+                                                                        class="s_website_form_label_content"
+                                                                        style="color: #666666;"
+                                                                    >
                                                                         Please Specify
                                                                     </span>
                                                                 </label>
@@ -1486,10 +1513,17 @@
 
                                                     <div class="row">
 
-                                                        <div class="col-lg-4" id="otherPrimaryCoopField" style="display: none;">
+                                                        <div
+                                                            class="col-lg-4"
+                                                            id="otherPrimaryCoopField"
+                                                            style="display: none;"
+                                                        >
                                                             <div class="s_website_form_field">
                                                                 <label class="s_website_form_label">
-                                                                    <span class="s_website_form_label_content" style="color: #666666;">
+                                                                    <span
+                                                                        class="s_website_form_label_content"
+                                                                        style="color: #666666;"
+                                                                    >
                                                                         Please Specify the Primary Cooperative
                                                                     </span>
                                                                 </label>
@@ -1499,7 +1533,6 @@
                                                                     name="other_primary_coop"
                                                                     placeholder="Please specify"
                                                                     t-att-value="other_primary_coop"
-                                                                   
                                                                 />
                                                             </div>
                                                         </div>
@@ -1594,10 +1627,17 @@
 
                                                     <div class="row">
 
-                                                        <div class="col-lg-4" id="otherCoopUnionField" style="display: none;">
+                                                        <div
+                                                            class="col-lg-4"
+                                                            id="otherCoopUnionField"
+                                                            style="display: none;"
+                                                        >
                                                             <div class="s_website_form_field">
                                                                 <label class="s_website_form_label">
-                                                                    <span class="s_website_form_label_content" style="color: #666666;">
+                                                                    <span
+                                                                        class="s_website_form_label_content"
+                                                                        style="color: #666666;"
+                                                                    >
                                                                         Please Specify the Cooperative Union
                                                                     </span>
                                                                 </label>
@@ -1607,7 +1647,6 @@
                                                                     name="other_coop_union"
                                                                     placeholder="Please specify"
                                                                     t-att-value="other_coop_union"
-                                                                  
                                                                 />
                                                             </div>
                                                         </div>

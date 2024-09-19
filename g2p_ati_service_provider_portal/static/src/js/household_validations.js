@@ -91,8 +91,8 @@ function deleteMember(button) {
         $.ajax({
             url: "/serviceprovider/member/delete/",
             type: "POST",
-            data: { member_id: memberId , group_id: groupId},  // Send data as form-encoded
-            success: function(data) {
+            data: {member_id: memberId, group_id: groupId}, // Send data as form-encoded
+            success: function (data) {
                 if (data.success) {
                     console.log("heeyyyyy");
                     const row = $(button).closest("tr");
@@ -103,18 +103,13 @@ function deleteMember(button) {
                     alert("Error: " + data.error);
                 }
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
                 console.error("Error:", textStatus, errorThrown);
                 alert("An error occurred while deleting the family member.");
-            }
+            },
         });
     }
 }
-
-
-
-    
-
 
 const farmerCount = 0;
 
@@ -416,7 +411,11 @@ function showModalSection(nextSectionId, currentSectionId, direction) {
     // eslint-disable-next-line no-undef
     var val = validateSection(currentSectionId);
     if (direction === "prev") {
+<<<<<<< HEAD
         val = true;
+=======
+        var val = true;
+>>>>>>> 070fc42 (pre-commit changes)
     }
 
     // Val = true;
