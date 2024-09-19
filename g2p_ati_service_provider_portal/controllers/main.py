@@ -1985,7 +1985,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         # kebele
         kebele_id = kw.get("kebele")
         other_kebele = kw.get("other_kebele")
-        
 
         searched_kebele_id = (
             request.env["g2p.kebele"]
@@ -2017,8 +2016,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             other_primary_coop = kw.get("other_primary_coop")
             if other_primary_coop:
                 other_info["Primary Cooperative"] = other_primary_coop
-
-       
 
         # coop union
         coop_union_ids = kw.get("name_of_coop_union")
@@ -2595,7 +2592,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             kebele = self._convert_to_int(kw.get("kebele"))
 
             additional_info = kw.get("additional_info", {})
-            print("additio info type is ", type(additional_info))
             additional_info_json = json.loads(additional_info)
             # print("additonal json type",type(additional_info_json))
 
@@ -2619,7 +2615,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             # Additional details
             vals["is_farmer"] = "yes"
-            print(type(additional_info_json))
             vals["additional_g2p_info"] = additional_info_json
 
             individual = request.env["res.partner"].sudo().create(vals)
