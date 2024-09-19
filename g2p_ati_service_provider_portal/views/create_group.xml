@@ -301,6 +301,46 @@
                                                             </div>
                                                         </div>
                                                     </div>
+
+                                                    <div class="row">
+                                                        <!-- Other Woreda Input Field -->
+                                                        <div class="col-lg-5">
+                                                            <div class="s_website_form_field lmargin-input" style="margin-right: -10%; display: none;" id="otherModalWoredaField">
+                                                                <label class="s_website_form_label">
+                                                                    <span class="s_website_form_label_content">
+                                                                        Please Specify Woreda
+                                                                    </span>
+                                                                </label>
+                                                                <input
+                                                                    type="text"
+                                                                    class="form-control"
+                                                                    id="other_woreda"
+                                                                    name="other_woreda_details"
+                                                                    placeholder="Please specify"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    
+                                                        <!-- Other Kebele Input Field -->
+                                                        <div class="col-lg-5">
+                                                            <div class="s_website_form_field lmargin-input" style="margin-right: -10%; display: none;" id="otherModalKebeleField">
+                                                                <label class="s_website_form_label">
+                                                                    <span class="s_website_form_label_content">
+                                                                        Please Specify Kebele
+                                                                    </span>
+                                                                </label>
+                                                                <input
+                                                                    type="text"
+                                                                    class="form-control"
+                                                                    id="other_kebele"
+                                                                    name="other_kebele_details"
+                                                                    placeholder="Please specify"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+
                                                 </div>
 
                                                 <div class="section-footer d-flex justify-content-end">
@@ -1576,8 +1616,25 @@
                                                                                             />
                                                                                         </option>
                                                                                     </t>
+                                                                                    
 
                                                                                 </select>
+                                                                            </div>
+                                                                        </div>
+                                                                       
+
+                                                                        <div class="col-lg-6" id="otherModalIncomeField" style="display: none;">
+                                                                            <div class="s_website_form_field">
+                                                                                <label class="s_website_form_label">
+                                                                                    <span class="s_website_form_label_content" style="color: #666666;">Please Specify your source of income</span>
+                                                                                </label>
+                                                                                <input
+                                                                                    type="text"
+                                                                                    class="form-control"
+                                                                                    id = "other_modal_income"
+                                                                                    name="other_modal_income_details"
+                                                                                    placeholder="Please specify"
+                                                                                />
                                                                             </div>
                                                                         </div>
 
@@ -1714,6 +1771,24 @@
                                                                     </div>
                                                                     <div class="row">
                                                                         <div class="col-lg-6">
+                                                                            <div class="s_website_form_field" style="display: none;" id="otherModalPrimaryCoopField">
+                                                                                <label class="s_website_form_label">
+                                                                                    <span class="s_website_form_label_content" style="color: #666666;">
+                                                                                        Please Specify Primary Cooperative
+                                                                                    </span>
+                                                                                </label>
+                                                                                <input
+                                                                                    type="text"
+                                                                                    class="form-control"
+                                                                                    id = "other_primary_coop"
+                                                                                    name="other_primary_coop_details"
+                                                                                    placeholder="Please specify"
+                                                                                />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-lg-6">
                                                                             <div class="s_website_form_field">
                                                                                 <label
                                                                                     class="s_website_form_label"
@@ -1800,6 +1875,24 @@
                                                                                         </option>
                                                                                     </t>
                                                                                 </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-lg-6">
+                                                                            <div class="s_website_form_field" style="display: none;" id="otherModalCoopUnionField">
+                                                                                <label class="s_website_form_label">
+                                                                                    <span class="s_website_form_label_content" style="color: #666666;">
+                                                                                        Please Specify Cooperative Union
+                                                                                    </span>
+                                                                                </label>
+                                                                                <input
+                                                                                    type="text"
+                                                                                    class="form-control"
+                                                                                    id = "other_coop_union"
+                                                                                    name="other__coop_union_details"
+                                                                                    placeholder="Please specify"
+                                                                                />
                                                                             </div>
                                                                         </div>
                                                                     </div>

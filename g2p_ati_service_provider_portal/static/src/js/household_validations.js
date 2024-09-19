@@ -391,7 +391,7 @@ function showNextModal(nextSectionId, currentSectionId) {
     // eslint-disable-next-line no-undef
     var val = validateSection("location-details");
 
-    // Var val = true;
+    val = true;
 
     if (val) {
         var activeLink = document.querySelector(".sidebar .nav-link.active");

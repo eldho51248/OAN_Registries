@@ -842,6 +842,7 @@
                                                                     class="form-control"
                                                                     name="other_woreda"
                                                                     placeholder="Please specify"
+                                                                    t-att-value="other_woreda"
                                                                 />
                                                             </div>
                                                         </div>
@@ -897,6 +898,7 @@
                                                                     class="form-control"
                                                                     name="other_kebele"
                                                                     placeholder="Please specify"
+                                                                    t-att-value="other_kebele"
                                                                 />
                                                             </div>
                                                         </div>
@@ -1373,6 +1375,7 @@
                                                                     class="form-control"
                                                                     name="other_income_details"
                                                                     placeholder="Please specify"
+                                                                    t-att-value="other_income"
                                                                 />
                                                             </div>
                                                         </div>
@@ -1495,6 +1498,7 @@
                                                                     class="form-control"
                                                                     name="other_primary_coop"
                                                                     placeholder="Please specify"
+                                                                    t-att-value="other_primary_coop"
                                                                    
                                                                 />
                                                             </div>
@@ -1602,6 +1606,7 @@
                                                                     class="form-control"
                                                                     name="other_coop_union"
                                                                     placeholder="Please specify"
+                                                                    t-att-value="other_coop_union"
                                                                   
                                                                 />
                                                             </div>
@@ -2427,7 +2432,7 @@
                                                                                     </select>
 
                                                                                 </div>
-                                                                                <div class="col-lg-6">
+                                                                                <!-- <div class="col-lg-6">
                                                                                     <div
                                                                                         class="s_website_form_field lmargin-input"
                                                                                         style="margin-right: -10%"
@@ -2458,7 +2463,7 @@
                                                                                             t-att-value="beneficiary.crop"
                                                                                         />
                                                                                     </div>
-                                                                                </div>
+                                                                                </div> -->
 
                                                                             </div>
 
@@ -2554,7 +2559,7 @@
 
                                                                                         </div>
 
-                                                                                        <div class="col-lg-6">
+                                                                                        <!-- <div class="col-lg-6">
                                                                                             <div
                                                                                                 class="s_website_form_field lmargin-input"
                                                                                                 style="margin-right: -10%"
@@ -2585,7 +2590,7 @@
                                                                                                     placeholder="DD-MM-YYYY"
                                                                                                 />
                                                                                             </div>
-                                                                                        </div>
+                                                                                        </div> -->
 
                                                                                     </div>
 

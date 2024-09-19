@@ -111,13 +111,57 @@ $('[data-bs-target="#memberDetailModal"]').on("click", function () {
 });
 
 $(document).on("click", "#member_submit", async function () {
-    console.log("Add member clicked");
+    console.log("Add memberrrrrr clicked");
+
+    var additional_info = {};
+
     var group = $("input[name='group_id']").val();
     var region = document.getElementById("region_selection").value;
     var zone = document.getElementById("zon_selection").value;
     console.log(zone);
     var woreda = document.getElementById("woreda_selection").value;
+    // var woredaId = parseInt(document.getElementById("woreda_selection").value, 10);
+    // console.log("wore selec",woreda);
+    // console.log("wore selec type",typeof woreda);
+
     var kebele = document.getElementById("kebele_selection").value;
+    // var kebeleId = parseInt(document.getElementById("kebele_selection").value, 10);
+    // console.log("keb sele",kebele);
+    // console.log("keb sele type",typeof kebele);
+
+    var other_woreda = "";
+    var other_kebele = "";
+//     var selectedWoredaOption = $("#woreda_selection option:selected");
+//     // Log the selected option
+//     console.log("Selected woreda option:", selectedWoredaOption);
+
+//     // Log the text of the selected option
+//     var woredaText = selectedWoredaOption.text();
+//     console.log("Selected woreda text:", woredaText);
+
+//     // Log the value of the selected option
+//     var woredaValue = selectedWoredaOption.val();
+//     console.log("Selected woreda value:", woredaValue); 
+
+// // Check the type of the value
+// console.log("Type of selected woreda value:", typeof woredaValue);
+    var woredaText = $("#woreda_selection option:selected").text().trim().toLowerCase();
+    
+    var kebeleText = $("#kebele_selection option:selected").text().trim().toLowerCase();
+
+    // Check for "other" or "others" in the text of primary_coop and coop_union
+    if (woredaText === "other" || woredaText === "others") {
+        other_woreda = $("#other_woreda").val();
+        additional_info["Woreda"] = other_woreda
+    }
+
+    if (kebeleText === "other" || kebeleText === "others") {
+        other_kebele = $("#other_kebele").val();
+        additional_info["Kebele"] = other_kebele
+    }
+    
+    
+
     var isHouseholdHead = document.getElementById("hh_is_household_head_id").value;
     var hasNationalId = document.getElementById("have-national-id-selection").value;
     var hasNationalIdCheck = document.getElementById("have-national-id-selection");
@@ -177,6 +221,94 @@ $(document).on("click", "#member_submit", async function () {
     //    Var financialSectors = document.getElementById("finance-selection").value;
 
     var incomeType = $("#farmerDetailModal #hh_income_type").val();
+    // console.log("incomeType:", incomeType);  // Check what the array contains
+
+
+    // incomeType.forEach(function(type) {
+    //     console.log("Income Type Value:", type);
+    // });
+
+
+    //to check income
+
+    var other_income_type = "";
+    var incomeTypeText = $("#farmerDetailModal #hh_income_type option:selected").map(function() {
+        return $(this).text().trim(); 
+    }).get();
+    console.log("Income Type Text:", incomeTypeText); 
+    
+    if (incomeTypeText.some(type => type.toLowerCase() === "other" || type.toLowerCase() === "others")) {
+        other_income_type = $("#farmerDetailModal #other_modal_income").val();
+        additional_info["Household Income"] = other_income_type;
+        
+    }
+
+    var other_primary_coop = "";
+    var other_coop_union = "";
+
+    var primaryCoopText = $("#farmerDetailModal #name_of_primary_coop option:selected").text().trim().toLowerCase();
+    var coopUnionText = $("#farmerDetailModal #name_of_coop_union option:selected").text().trim().toLowerCase();
+
+    // Check for "other" or "others" in the text of primary_coop and coop_union
+    if (primaryCoopText === "other" || primaryCoopText === "others") {
+        other_primary_coop = $("#farmerDetailModal #other_primary_coop").val();
+        additional_info["Primary Cooperative"] = other_primary_coop
+    }
+
+    if (coopUnionText === "other" || coopUnionText === "others") {
+        other_coop_union = $("#farmerDetailModal #other_coop_union").val();
+        additional_info["Cooperative Union"] = other_coop_union
+    }
+
+    console.log("additonal",additional_info);
+    console.log("primary coop is",nameOfPrimaryCoop);
+    console.log("coop union is",nameOfCoopUnion);
+
+
+    
+
+
+    
+    
+
+    
+    // var primaryCoopLowerCase = nameOfPrimaryCoop.trim().toLowerCase();
+    // var coopUnionLowerCase = nameOfCoopUnion.trim().toLowerCase();
+
+
+    // if ("Others" in incomeType || "Other" in incomeType){
+    //     console.log("income");
+    //     other_income_type = document.getElementById("other_modal_income").value;
+    //     // other_income_type =  $("#farmerDetailModal #other_modal_income").val();
+
+    // }
+
+    // if (incomeType.some(type => type.toLowerCase() === "other" || type.toLowerCase() === "others")) {
+    //     other_income_type = $("#farmerDetailModal #other_modal_income").val();
+    //     console.log("Other Income Type Selected:", other_income_type);
+    // }
+    
+    // Check for "other" or "others" in primary_coop
+    // if (primaryCoopLowerCase === "other" || primaryCoopLowerCase === "others") {
+    //     console.log("prim");
+    //     other_primary_coop = document.getElementById("other_primary_coop").value;
+    //     // $("#farmerDetailModal #other_primary_coop").val();
+    // }
+    
+    // // Check for "other" or "others" in coop_union
+    // if (coopUnionLowerCase === "other" || coopUnionLowerCase === "others") {
+    //     console.log("uni");
+    //     other_coop_union = document.getElementById("other_coop_union").value;
+    //     // $("#farmerDetailModal #other_coop_union").val();
+    // }
+
+
+    console.log("woreda",other_woreda);
+    console.log("kebele",other_kebele);
+    console.log("income",other_income_type);
+    console.log(other_primary_coop);
+    console.log(other_coop_union);
+
     var cropWaterSource = $("#farmerDetailModal #crop_water_source").val();
     var livestockWaterSource = $("#farmerDetailModal #livestock_water_source").val();
     // Var isValid = true;
@@ -288,6 +420,7 @@ $(document).on("click", "#member_submit", async function () {
             livestockWaterSource: JSON.stringify(livestockWaterSource),
             matchinaryTypes: JSON.stringify(matchinaryTypes),
             financialSectors: JSON.stringify(financialSectors),
+            additional_info: JSON.stringify(additional_info),
             group_id: group,
             region: region,
             zone: zone,
@@ -534,10 +667,106 @@ $(document).on("click", "#update-member-btn", function () {
 //     checkOthersOption();
 // });
 
+// document.addEventListener('DOMContentLoaded', function() {
+//     function checkOthersOption(selectElementId, otherFieldId) {
+//         const selectElement = document.getElementById(selectElementId);
+//         const otherField = document.getElementById(otherFieldId);
+//         if (!selectElement || !otherField) {
+//             console.error(`Element with ID ${selectElementId} or ${otherFieldId} not found.`);
+//             return;
+//         }
+
+//         function toggleOtherField() {
+//             const selectedOptions = Array.from(selectElement.selectedOptions);
+//             const hasOthers = selectedOptions.some(option => {
+//                 const optionText = option.textContent.trim().toLowerCase();
+//                 return optionText === 'other' || optionText === 'others';
+//             });
+
+//             if (hasOthers) {
+//                 otherField.style.display = 'block';
+//             } else {
+//                 otherField.style.display = 'none';
+//             }
+//         }
+
+//         selectElement.addEventListener('change', toggleOtherField);
+
+        
+//         toggleOtherField();
+//     }
+
+//     function hideFieldOnNo(radioButtonsName, fieldId) {
+//         const radioButtons = document.querySelectorAll(`input[name="${radioButtonsName}"]`);
+//         const field = document.getElementById(fieldId);
+
+//         function handleToggle() {
+//             radioButtons.forEach(function (radioButton) {
+//                 if (radioButton.checked && radioButton.dataset.text === "No") {
+//                     field.style.display = 'none';
+//                 } else if (radioButton.checked && radioButton.dataset.text !== "No") {
+//                     toggleOtherField()
+//                 }
+//             });
+//         }
+
+//         // Initial check on page load
+//         handleToggle();
+
+//         // Add event listeners for change
+//         radioButtons.forEach(function (radioButton) {
+//             radioButton.addEventListener('change', handleToggle);
+//         });
+//     }
+
+//     // For primary cooperative
+//     hideFieldOnNo(
+//         'is_member_of_primary_coop',  // Name of the radio buttons group
+//         'otherPrimaryCoopField'       // ID of the field to hide
+//     );
+
+//     // For cooperative union
+//     hideFieldOnNo(
+//         'is_member_of_coop_union',    // Name of the radio buttons group
+//         'otherCoopUnionField'         // ID of the field to hide
+//     );
+
+//     // For primary cooperative
+//     hideFieldOnNo(
+//         'is_member_of_primary_coop',  // Name of the radio buttons group
+//         'otherModalPrimaryCoopField'       // ID of the field to hide
+//     );
+
+//     // For cooperative union
+//     hideFieldOnNo(
+//         'is_member_of_coop_union',    // Name of the radio buttons group
+//         'otherModalCoopUnionField'         // ID of the field to hide
+//     );
+
+
+
+
+  
+   
+//     checkOthersOption('incomeTypeSelect', 'otherIncomeField');
+//     checkOthersOption('woreda_selection', 'otherWoredaField'); 
+//     checkOthersOption('kebele_selection', 'otherKebeleField'); 
+//     checkOthersOption('name_of_primary_coop', 'otherPrimaryCoopField'); 
+//     checkOthersOption('name_of_coop_union', 'otherCoopUnionField'); 
+   
+    
+// });
+
+
 document.addEventListener('DOMContentLoaded', function() {
     function checkOthersOption(selectElementId, otherFieldId) {
         const selectElement = document.getElementById(selectElementId);
         const otherField = document.getElementById(otherFieldId);
+
+        if (!selectElement || !otherField) {
+            console.error(`Element with ID ${selectElementId} or ${otherFieldId} not found.`);
+            return;
+        }
 
         function toggleOtherField() {
             const selectedOptions = Array.from(selectElement.selectedOptions);
@@ -554,19 +783,138 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         selectElement.addEventListener('change', toggleOtherField);
-
-        
+        // Initial check on page load
         toggleOtherField();
     }
 
-   
+    function hideFieldOnNo(radioButtonsName, fieldId) {
+        const radioButtons = document.querySelectorAll(`input[name="${radioButtonsName}"]`);
+        const field = document.getElementById(fieldId);
+
+        if (!radioButtons || !field) {
+            console.error(`Element with name ${radioButtonsName} or ID ${fieldId} not found.`);
+            return;
+        }
+
+        function handleToggle() {
+            const selectedRadio = Array.from(radioButtons).find(radioButton => radioButton.checked);
+            if (selectedRadio && selectedRadio.dataset.text === "No") {
+                field.style.display = 'none';
+            } else {
+                field.style.display = 'block';
+                // Call checkOthersOption if the field is displayed
+                checkOthersOption('name_of_primary_coop', 'otherPrimaryCoopField'); 
+                checkOthersOption('name_of_coop_union', 'otherCoopUnionField'); 
+            }
+        }
+
+        // Initial check on page load
+        handleToggle();
+
+        // Add event listeners for change
+        radioButtons.forEach(function (radioButton) {
+            radioButton.addEventListener('change', handleToggle);
+        });
+    }
+
+    // For primary cooperative and cooperative union handling both "No" and "Other" logic
+    hideFieldOnNo('is_member_of_primary_coop', 'otherPrimaryCoopField'); 
+    hideFieldOnNo('is_member_of_coop_union', 'otherCoopUnionField'); 
+
+    // For other fields that need the "other" option handling
     checkOthersOption('incomeTypeSelect', 'otherIncomeField');
     checkOthersOption('woreda_selection', 'otherWoredaField'); 
     checkOthersOption('kebele_selection', 'otherKebeleField'); 
     checkOthersOption('name_of_primary_coop', 'otherPrimaryCoopField'); 
     checkOthersOption('name_of_coop_union', 'otherCoopUnionField'); 
-    
 });
+
+
+
+
+
+
+//Modal other fields
+document.addEventListener('DOMContentLoaded', function() {
+    // Function to handle the display of the 'Other' field for Woreda and Kebele
+    
+    function handleOtherFields(selectElementId, otherFieldId) {
+        const selectElement = document.getElementById(selectElementId);
+        const otherField = document.getElementById(otherFieldId);
+        const hasOthers = Array.from(selectElement.selectedOptions).some(option =>
+            option.textContent.trim().toLowerCase() === 'other' ||
+            option.textContent.trim().toLowerCase() === 'others'
+        );
+        if (!selectElement) {
+            console.error(`Element with ID ${selectElementId} not found.`);
+            return;  // Exit early if the select element is not found
+        }
+
+        if (!otherField) {
+            console.error(`Other field with ID ${otherFieldId} not found.`);
+            return;  // Exit early if the other field is not found
+        }
+        
+        if (hasOthers) {
+            otherField.style.display = 'block';
+        } else {
+            console.log("hiiii")
+            otherField.style.display = 'none';
+        }
+    }
+
+    // Event listener for each select element change
+    document.getElementById("woreda_selection").addEventListener("change", function() {
+        handleOtherFields("woreda_selection", "otherModalWoredaField");
+    });
+
+    document.getElementById("kebele_selection").addEventListener("change", function() {
+        handleOtherFields("kebele_selection", "otherModalKebeleField");
+    });
+
+    document.getElementById("hh_income_type").addEventListener("change", function() {
+        handleOtherFields("hh_income_type", "otherModalIncomeField");
+    });
+
+    document.getElementById("name_of_primary_coop").addEventListener("change", function() {
+        handleOtherFields("name_of_primary_coop", "otherModalPrimaryCoopField");
+    });
+
+    document.getElementById("name_of_coop_union").addEventListener("change", function() {
+        handleOtherFields("name_of_coop_union", "otherModalCoopUnionField");
+    });
+
+    // document.getElementById("woreda_selection").addEventListener("change", function() {
+    //     handleOtherFields("woreda_selection", "otherWoredaField");
+    // });
+
+    // document.getElementById("kebele_selection").addEventListener("change", function() {
+    //     handleOtherFields("kebele_selection", "otherKebeleField");
+    // });
+
+
+    handleOtherFields("woreda_selection", "otherModalWoredaField");
+    handleOtherFields("kebele_selection", "otherModalKebeleField");
+
+    // handleOtherFields('woreda_selection', 'otherWoredaField'); 
+    // handleOtherFields('kebele_selection', 'otherKebeleField'); 
+
+    
+
+
+    // Initial check when the modal is shown
+    $('#farmerDetailModal').on('shown.bs.modal', function () {
+        
+        handleOtherFields("hh_income_type", "otherModalIncomeField");
+        handleOtherFields("name_of_primary_coop", "otherModalPrimaryCoopField");
+        handleOtherFields("name_of_coop_union", "otherModalCoopUnionField");
+    });
+});
+
+
+
+
+
 
 
 
