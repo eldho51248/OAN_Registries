@@ -1882,7 +1882,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             livestock_info_data = self.get_livestock_info_data(kw)
             supporting_documents_ids = self.get_supporting_documents_ids(kw)
             additional_info_json = self.handle_other_info(kw)
-            print("additional_info is", additional_info_json)
             # Clean up existing data
             member.reg_ids.unlink()
             member.phone_number_ids.unlink()
@@ -1985,9 +1984,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
         # kebele
         kebele_id = kw.get("kebele")
-        print("kebele id", kebele_id)
         other_kebele = kw.get("other_kebele")
-        print("other_kebele id", other_kebele)
+        
 
         searched_kebele_id = (
             request.env["g2p.kebele"]
@@ -2002,15 +2000,12 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             .id
         )
 
-        print("searched_kebele", searched_kebele_id)
-
         if searched_kebele_id == int(kebele_id):
             if other_kebele:
                 other_info["Kebele"] = other_kebele
 
         # primary coop
         primary_coop_ids = kw.get("name_of_primary_coop")
-        print("primary coop", primary_coop_ids)
         searched_primary_coop_id = (
             request.env["g2p.primary.cooperative"]
             .sudo()
@@ -2023,11 +2018,10 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             if other_primary_coop:
                 other_info["Primary Cooperative"] = other_primary_coop
 
-        print("searched primary coop", searched_primary_coop_id)
+       
 
         # coop union
         coop_union_ids = kw.get("name_of_coop_union")
-        print("coop_union coop", coop_union_ids)
         searched_coop_union_id = (
             request.env["g2p.cooperative.union"]
             .sudo()
@@ -2039,10 +2033,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             other_coop_union = kw.get("other_coop_union")
             if other_coop_union:
                 other_info["Cooperative Union"] = other_coop_union
-
-        print("searched primary coop", searched_coop_union_id)
-
-        print("other_info is", other_info)
 
         return json.dumps(other_info)
 
