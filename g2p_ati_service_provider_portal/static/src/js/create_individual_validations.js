@@ -451,17 +451,17 @@ function validateInput(inputElement) {
     }
 }
 
-function validateElement(element) {
-    if (element.tagName === "SELECT") {
-        validateSelect(element);
-    } else if (element.tagName === "INPUT") {
-        if (element.type === "radio") {
-            validateRadio(element.name);
-        } else {
-            validateInput(element);
-        }
-    }
-}
+// function validateElement(element) {
+//     if (element.tagName === "SELECT") {
+//         validateSelect(element);
+//     } else if (element.tagName === "INPUT") {
+//         if (element.type === "radio") {
+//             validateRadio(element.name);
+//         } else {
+//             validateInput(element);
+//         }
+//     }
+// }
 
 function validateUID() {
     const uid = document.getElementById("uid_input");
@@ -472,13 +472,34 @@ function validateUID() {
     return isValid;
 }
 
+function validateRadioButtons(radioName, section) {
+    const radioGroup = section.querySelectorAll(`input[name="${radioName}"]`);
+    const radioChecked = Array.from(radioGroup).some((radio) => radio.checked);
+
+    radioGroup.forEach((radio) => {
+        // Add or remove the invalid-radio class based on whether any radio is checked
+        if (!radioChecked) {
+            radio.classList.add("invalid-radio");
+        } else {
+            radio.classList.remove("invalid-radio");
+        }
+
+        // Attach an event listener to each radio button to remove the invalid-radio class when checked
+        radio.addEventListener("change", function () {
+            radioGroup.forEach((radio) => radio.classList.remove("invalid-radio"));
+        });
+    });
+
+    return radioChecked;
+}
+
 function validateSection(sectionId) {
     const section = document.getElementById(sectionId);
     const requiredFields = section.querySelectorAll("[required]");
     let valid = true;
 
     requiredFields.forEach((field) => {
-        let isFieldValid;
+        var isFieldValid;
         if (field.type === "radio") {
             // Validate radio buttons in this section
             isFieldValid = validateRadioButtons(field.name, section);
@@ -504,26 +525,7 @@ function validateSection(sectionId) {
     return valid;
 }
 
-function validateRadioButtons(radioName, section) {
-    const radioGroup = section.querySelectorAll(`input[name="${radioName}"]`);
-    const radioChecked = Array.from(radioGroup).some((radio) => radio.checked);
 
-    radioGroup.forEach((radio) => {
-        // Add or remove the invalid-radio class based on whether any radio is checked
-        if (!radioChecked) {
-            radio.classList.add("invalid-radio");
-        } else {
-            radio.classList.remove("invalid-radio");
-        }
-
-        // Attach an event listener to each radio button to remove the invalid-radio class when checked
-        radio.addEventListener("change", function () {
-            radioGroup.forEach((radio) => radio.classList.remove("invalid-radio"));
-        });
-    });
-
-    return radioChecked;
-}
 
 // Let previousSection = "id-section";
 
@@ -570,18 +572,18 @@ function showSection(sectionId, element, fromGroup = false) {
     }
 }
 
-function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
-    var val = validateSection(currentSectionId);
+// function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
+//     var val = validateSection(currentSectionId);
 
-    if (val) {
-        var activeLink = document.querySelector(".sidebar .nav-link.active");
-        var nextLink = activeLink.parentElement.nextElementSibling.querySelector(".nav-link");
-        if (nextLink) {
-            nextLink.classList.remove("disabled");
-            showSection(nextSectionId, nextLink, fromGroup);
-        }
-    }
-}
+//     if (val) {
+//         var activeLink = document.querySelector(".sidebar .nav-link.active");
+//         var nextLink = activeLink.parentElement.nextElementSibling.querySelector(".nav-link");
+//         if (nextLink) {
+//             nextLink.classList.remove("disabled");
+//             showSection(nextSectionId, nextLink, fromGroup);
+//         }
+//     }
+// }
 
 function checkRequired() {
     // Const farmingType = document.getElementById('farming-type-selection');

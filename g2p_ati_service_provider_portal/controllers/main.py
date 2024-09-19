@@ -1381,7 +1381,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             model_id = request.env["ir.model"].sudo().search([("model", "=", "res.partner")])
 
             additional_info = beneficiary.additional_g2p_info
-            print("add info json", type(additional_info))
+           
             # Check if additional_info is a string and needs to be converted to a dictionary
             if isinstance(additional_info, str):
                 try:
@@ -1927,7 +1927,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         other_info = {}
 
         # house hold income
-        income_ids = request.httprequest.form.getlist("hh_income_type")
+        # income_ids = request.httprequest.form.getlist("hh_income_type")
         searched_income_id = (
             request.env["g2p.hh.income"]
             .sudo()
@@ -2434,7 +2434,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         csrf=False,
     )
     def delete_family_member(self, **kw):
-        res = dict()
+        # res = dict()
         try:
             member_id = int(kw.get("member_id"))
             group_id = int(kw.get("group_id"))
