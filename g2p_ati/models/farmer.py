@@ -58,9 +58,9 @@ class G2PFarmer(models.Model):
     )
     farming_type = fields.Selection(
         selection=[
-            ("crop_farming", "Crop farming"),
-            ("livestock_farming", "livestock Farming"),
-            ("mixed_farming", "mixed farming"),
+            ("crop_farming", "Crop Farming"),
+            ("livestock_farming", "Livestock Farming"),
+            ("mixed_farming", "Mixed Farming"),
         ]
     )
     is_disabled = fields.Selection(string="Are you disabled? ", selection=[("yes", "Yes"), ("no", "No")])

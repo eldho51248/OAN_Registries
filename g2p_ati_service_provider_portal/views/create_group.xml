@@ -588,6 +588,7 @@
                                                                                             t-att-data-text="option.name"
                                                                                             t-att-value="option.id"
                                                                                             required="required"
+                                                                                            oninput="validateElement(this)"
                                                                                         />
                                                                                         <label
                                                                                             class="form-check-label ms-2"
@@ -621,12 +622,18 @@
                                                                                         you have
                                                                                         a
                                                                                         national ID?</span>
+                                                                                    <span
+                                                                                        class="s_website_form_mark"
+                                                                                    >
+                                                                                        *
+                                                                                    </span>
                                                                                 </label>
                                                                                 <select
                                                                                     class="form-select"
                                                                                     name="has_national_id"
                                                                                     required="required"
                                                                                     id="have-national-id-selection"
+                                                                                    onchange="validateElement(this)"
                                                                                 >
                                                                                     <option value=" ">
                                                                                         Select</option>
@@ -698,6 +705,11 @@
                                                                                         style="color: #666666;"
                                                                                     >
                                                                                         RID
+                                                                                    </span>
+                                                                                    <span
+                                                                                        class="s_website_form_mark"
+                                                                                    >
+                                                                                        *
                                                                                     </span>
                                                                                 </label>
                                                                                 <input
@@ -1026,6 +1038,7 @@
                                                                                     class="form-control"
                                                                                     required="required"
                                                                                     placeholder="ስም ያስገቡ"
+                                                                                    oninput="validateElement(this)"
                                                                                 />
                                                                             </div>
                                                                         </div>
@@ -1059,6 +1072,7 @@
                                                                                     required="required"
                                                                                     class="form-control"
                                                                                     placeholder="ስም ያስገቡ"
+                                                                                    oninput="validateElement(this)"
                                                                                 />
                                                                             </div>
                                                                         </div>
@@ -1092,6 +1106,7 @@
                                                                                     required="required"
                                                                                     class="form-control"
                                                                                     placeholder="ስም ያስገቡ"
+                                                                                    oninput="validateElement(this)"
                                                                                 />
                                                                             </div>
                                                                         </div>
@@ -1167,6 +1182,7 @@
                                                                                             t-att-data-text="option.code"
                                                                                             t-att-value="option.value"
                                                                                             required="required"
+                                                                                            oninput="validateElement(this)"
                                                                                         />
                                                                                         <label
                                                                                             class="form-check-label ms-2"
@@ -1434,12 +1450,17 @@
                                                                                     >
                                                                                         Farming Type
                                                                                     </span>
+                                                                                    <span
+                                                                                        class="s_website_form_mark"
+                                                                                    >
+                                                                                        *
+                                                                                    </span>
                                                                                 </label>
                                                                                 <select
                                                                                     class="form-select"
                                                                                     name="farming_type"
                                                                                     required="required"
-                                                                                    onchange="validateElement(this)"
+                                                                                    onchange="validateElement(this); checkFarmingType(this, true);"
                                                                                     id="farming-type-selection"
                                                                                 >
                                                                                     <option value=" ">Select
@@ -1603,6 +1624,11 @@
                                                                                     >Source
                                                                                         of
                                                                                         Income</span>
+                                                                                    <span
+                                                                                        class="s_website_form_mark"
+                                                                                    >
+                                                                                        *
+                                                                                    </span>
 
                                                                                 </label>
 
@@ -1709,11 +1735,16 @@
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
                                                                                     >
-                                                                                        Is the
-                                                                                        Farmer a
-                                                                                        member of
+                                                                                        Are you
+                                                                                        a member
+                                                                                        of a
                                                                                         primary
                                                                                         cooperative?
+                                                                                    </span>
+                                                                                    <span
+                                                                                        class="s_website_form_mark membership_astrix"
+                                                                                    >
+                                                                                        *
                                                                                     </span>
                                                                                 </label>
                                                                                 <div class="d-flex flex-wrap">
@@ -1723,13 +1754,14 @@
                                                                                         class="form-check me-2"
                                                                                     >
                                                                                         <input
-                                                                                            class="form-check-input is-member-of-primary-coop-select"
+                                                                                            class="form-check-input is-member-of-primary-coop-select membership_required_field"
                                                                                             type="radio"
                                                                                             id="is_member_of_primary_coop"
                                                                                             name="is_member_of_primary_coop"
                                                                                             t-att-data-text="option.name"
                                                                                             t-att-value="option.id"
                                                                                             required="required"
+                                                                                            oninput="validateElement(this)"
                                                                                         />
                                                                                         <label
                                                                                             class="form-check-label ms-2"
@@ -1764,11 +1796,17 @@
                                                                                         primary
                                                                                         cooperative?
                                                                                     </span>
+                                                                                    <span
+                                                                                        class="s_website_form_mark"
+                                                                                    >
+                                                                                        *
+                                                                                    </span>
                                                                                 </label>
                                                                                 <select
                                                                                     class="form-select"
                                                                                     name="name_of_primary_coop"
                                                                                     id="name_of_primary_coop"
+                                                                                    onchange="validateElement(this)"
                                                                                 >
                                                                                     <option value=" ">Select
                                                                                         Primary
@@ -1829,9 +1867,14 @@
                                                                                         style="color: #666666;"
                                                                                     >
                                                                                         Are you a
-                                                                                        member of
+                                                                                        member of a
                                                                                         cooperative
                                                                                         union?
+                                                                                    </span>
+                                                                                    <span
+                                                                                        class="s_website_form_mark membership_astrix"
+                                                                                    >
+                                                                                        *
                                                                                     </span>
                                                                                 </label>
                                                                                 <div class="d-flex flex-wrap">
@@ -1841,13 +1884,14 @@
                                                                                         class="form-check me-2"
                                                                                     >
                                                                                         <input
-                                                                                            class="form-check-input is-member-of-coop-union-select"
+                                                                                            class="form-check-input is-member-of-coop-union-select membership_required_field"
                                                                                             type="radio"
                                                                                             id="is_member_of_coop_union"
                                                                                             name="is_member_of_coop_union"
                                                                                             t-att-data-text="option.name"
                                                                                             t-att-value="option.id"
                                                                                             required="required"
+                                                                                            oninput="validateElement(this)"
                                                                                         />
                                                                                         <label
                                                                                             class="form-check-label ms-2"
@@ -1882,11 +1926,17 @@
                                                                                         cooperative
                                                                                         union?
                                                                                     </span>
+                                                                                    <span
+                                                                                        class="s_website_form_mark"
+                                                                                    >
+                                                                                        *
+                                                                                    </span>
                                                                                 </label>
                                                                                 <select
                                                                                     class="form-select"
                                                                                     name="name_of_coop_union"
                                                                                     id="name_of_coop_union"
+                                                                                    onchange="validateElement(this)"
                                                                                 >
                                                                                     <option value=" ">Select
                                                                                         Cooperative
@@ -1946,11 +1996,16 @@
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
                                                                                     >
-                                                                                        Are you
-                                                                                        registered
-                                                                                        in a
-                                                                                        farmer
-                                                                                        cluster?
+                                                                                        Are you a
+                                                                                        member of a
+                                                                                        Farmer
+                                                                                        Production
+                                                                                        Cluster (FPC)?
+                                                                                    </span>
+                                                                                    <span
+                                                                                        class="s_website_form_mark membership_astrix"
+                                                                                    >
+                                                                                        *
                                                                                     </span>
                                                                                 </label>
                                                                                 <div class="form-group">
@@ -1963,13 +2018,14 @@
                                                                                             class="form-check me-2"
                                                                                         >
                                                                                             <input
-                                                                                                class="form-check-input is-member-of-farmer-cluster-select"
+                                                                                                class="form-check-input is-member-of-farmer-cluster-select membership_required_field"
                                                                                                 type="radio"
                                                                                                 id="in_farmer_cluster"
                                                                                                 name="in_farmer_cluster"
                                                                                                 t-att-data-text="option.name"
                                                                                                 t-att-value="option.id"
                                                                                                 required="required"
+                                                                                                oninput="validateElement(this)"
                                                                                             />
                                                                                             <label
                                                                                                 class="form-check-label ms-2"
@@ -2001,15 +2057,21 @@
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
                                                                                     >
-                                                                                        What is the
-                                                                                        primary
-                                                                                        commodity?
+                                                                                        What is the primary
+                                                                                        commodity produced
+                                                                                        by your FPC?
+                                                                                    </span>
+                                                                                    <span
+                                                                                        class="s_website_form_mark"
+                                                                                    >
+                                                                                        *
                                                                                     </span>
                                                                                 </label>
                                                                                 <select
                                                                                     class="form-select"
                                                                                     name="primary_commodity"
                                                                                     id="primary_commodity"
+                                                                                    onchange="validateElement(this)"
                                                                                 >
                                                                                     <option value=" ">Select
                                                                                         Primary
@@ -2046,13 +2108,19 @@
                                                                                     >
                                                                                         What is your
                                                                                         role in the
-                                                                                        cluster?
+                                                                                        FPC?
+                                                                                    </span>
+                                                                                    <span
+                                                                                        class="s_website_form_mark"
+                                                                                    >
+                                                                                        *
                                                                                     </span>
                                                                                 </label>
                                                                                 <select
                                                                                     class="form-select"
                                                                                     name="role_in_cluster"
                                                                                     id="role_in_cluster"
+                                                                                    onchange="validateElement(this)"
                                                                                 >
                                                                                     <option value=" ">Select
                                                                                         Role
@@ -2152,14 +2220,14 @@
                                                                                                         Type
                                                                                                     </span>
                                                                                                     <span
-                                                                                                        class="s_website_form_mark"
+                                                                                                        class="s_website_form_mark land_astrix"
                                                                                                     >
                                                                                                         *
                                                                                                     </span>
                                                                                                 </label>
                                                                                                 <select
                                                                                                     id="land_selection"
-                                                                                                    class="form-select"
+                                                                                                    class="form-select land_required_field"
                                                                                                     name="land_ownership_type_0"
                                                                                                     onchange="validateElement(this)"
                                                                                                     required="required"
@@ -2203,7 +2271,7 @@
                                                                                                         Hectares)
                                                                                                     </span>
                                                                                                     <span
-                                                                                                        class="s_website_form_mark"
+                                                                                                        class="s_website_form_mark land_astrix"
                                                                                                     >
                                                                                                         *
                                                                                                     </span>
@@ -2212,7 +2280,7 @@
                                                                                                     type="text"
                                                                                                     id="total_land_area"
                                                                                                     name="total_land_area_0"
-                                                                                                    class="form-control"
+                                                                                                    class="form-control land_required_field"
                                                                                                     required="required"
                                                                                                     oninput="validateElement(this)"
                                                                                                     placeholder="Enter Land Area"
@@ -2230,10 +2298,10 @@
                                                                                                         style="color: #666666;"
                                                                                                     >
                                                                                                         Land
-                                                                                                        ID
+                                                                                                        ID (Parcel ID)
                                                                                                     </span>
                                                                                                     <span
-                                                                                                        class="s_website_form_mark"
+                                                                                                        class="s_website_form_mark land_astrix"
                                                                                                     >
                                                                                                         *
                                                                                                     </span>
@@ -2242,7 +2310,7 @@
                                                                                                     type="text"
                                                                                                     id="land_id"
                                                                                                     name="land_id_0"
-                                                                                                    class="form-control"
+                                                                                                    class="form-control land_required_field"
                                                                                                     required="required"
                                                                                                     oninput="validateElement(this)"
                                                                                                     placeholder="Enter Land ID"
@@ -2261,6 +2329,11 @@
                                                                                                     >
                                                                                                         Land
                                                                                                         Certificate
+                                                                                                    </span>
+                                                                                                    <span
+                                                                                                        class="s_website_form_mark land_astrix"
+                                                                                                    >
+                                                                                                        *
                                                                                                     </span>
 
                                                                                                 </label>
@@ -2286,8 +2359,9 @@
                                                                                                         type="file"
                                                                                                         id="land_certificate_0"
                                                                                                         name="land_certificate_0"
-                                                                                                        class="form-control"
+                                                                                                        class="form-control land_required_field"
                                                                                                         onchange="updateFileName(this)"
+                                                                                                        required="required"
                                                                                                     />
 
                                                                                                 </div>
@@ -2356,14 +2430,14 @@
                                                                                                         Type
                                                                                                     </span>
                                                                                                     <span
-                                                                                                        class="s_website_form_mark"
+                                                                                                        class="s_website_form_mark land_astrix"
                                                                                                     >
                                                                                                         *
                                                                                                     </span>
                                                                                                 </label>
                                                                                                 <select
                                                                                                     id="land_selection"
-                                                                                                    class="form-select"
+                                                                                                    class="form-select land_required_field"
                                                                                                     t-att-name="'land_ownership_type_' + str({9999})"
                                                                                                     onchange="validateElement(this)"
                                                                                                     required="required"
@@ -2404,7 +2478,7 @@
                                                                                                         Hectares)
                                                                                                     </span>
                                                                                                     <span
-                                                                                                        class="s_website_form_mark"
+                                                                                                        class="s_website_form_mark land_astrix"
                                                                                                     >
                                                                                                         *
                                                                                                     </span>
@@ -2413,7 +2487,7 @@
                                                                                                     type="text"
                                                                                                     id="total_land_area"
                                                                                                     t-att-name="'total_land_area_' + str({9999})"
-                                                                                                    class="form-control"
+                                                                                                    class="form-control land_required_field"
                                                                                                     required="required"
                                                                                                     oninput="validateElement(this)"
                                                                                                     placeholder="Enter Land Area"
@@ -2430,10 +2504,10 @@
                                                                                                         style="color: #666666;"
                                                                                                     >
                                                                                                         Land
-                                                                                                        ID
+                                                                                                        ID (Parcel ID)
                                                                                                     </span>
                                                                                                     <span
-                                                                                                        class="s_website_form_mark"
+                                                                                                        class="s_website_form_mark land_astrix"
                                                                                                     >
                                                                                                         *
                                                                                                     </span>
@@ -2442,7 +2516,7 @@
                                                                                                     type="text"
                                                                                                     id="land_id"
                                                                                                     t-att-name="'land_id_' + str({9999})"
-                                                                                                    class="form-control"
+                                                                                                    class="form-control land_required_field"
                                                                                                     required="required"
                                                                                                     oninput="validateElement(this)"
                                                                                                     placeholder="Enter Land ID"
@@ -2461,6 +2535,11 @@
                                                                                                     >
                                                                                                         Land
                                                                                                         Certificate
+                                                                                                    </span>
+                                                                                                    <span
+                                                                                                        class="s_website_form_mark land_astrix"
+                                                                                                    >
+                                                                                                        *
                                                                                                     </span>
                                                                                                 </label>
                                                                                                 <div>
@@ -2485,8 +2564,9 @@
                                                                                                         type="file"
                                                                                                         t-att-id="'land_certificate_' + str({9999})"
                                                                                                         t-att-name="'land_certificate_' + str({9999})"
-                                                                                                        class="form-control"
+                                                                                                        class="form-control land_required_field"
                                                                                                         onchange="updateFileName(this)"
+                                                                                                        required="required"
                                                                                                     />
                                                                                                 </div>
                                                                                             </div>
@@ -2536,14 +2616,14 @@
                                                                         type="button"
                                                                         class="btn btn-outline-secondary"
                                                                         onclick="showModalSection('membership-details', 'land-information',  'prev')"
-                                                                        id="some-button-or-link"
+                                                                        id="land-previous"
                                                                     ><span>
                                                                         &#x276E;</span> PREVIOUS </button>
                                                                     <button
                                                                         type="button"
                                                                         class="btn btn-primary"
                                                                         onclick="showModalSection('crop-information', 'land-information',  'next')"
-                                                                        id="some-button-or-link"
+                                                                        id="land-next"
                                                                     >NEXT <span>
                                                                         &#x276F;</span>
                                                                     </button>
@@ -2581,6 +2661,11 @@
                                                                                         source for
                                                                                         crop
                                                                                         production?
+                                                                                    </span>
+                                                                                    <span
+                                                                                        class="s_website_form_mark"
+                                                                                    >
+                                                                                        *
                                                                                     </span>
 
                                                                                 </label>
@@ -2644,7 +2729,7 @@
                                                                                                         class="s_website_form_label_content"
                                                                                                         style="color: #666666;"
                                                                                                     >
-                                                                                                        Which
+                                                                                                        What
                                                                                                         commodity
                                                                                                         do
                                                                                                         you
@@ -2695,9 +2780,9 @@
                                                                                                             class="s_website_form_label_content"
                                                                                                             style="color: #666666;"
                                                                                                         >
-                                                                                                            Crop
-                                                                                                            Planted
-                                                                                                            Date
+                                                                                                            When was
+                                                                                                            this crop
+                                                                                                            planted?
                                                                                                         </span>
                                                                                                         <span
                                                                                                             class="s_website_form_mark"
@@ -2707,9 +2792,10 @@
                                                                                                     <input
                                                                                                         type="date"
                                                                                                         id="crop_planted_date"
-                                                                                                        name="crop_planted_date"
+                                                                                                        name="crop_planted_date_0"
                                                                                                         required="required"
                                                                                                         class="form-control date-picker"
+                                                                                                        oninput="validateElement(this)"
                                                                                                     />
                                                                                                 </div>
                                                                                             </div>
@@ -2771,7 +2857,7 @@
                                                                                                         class="s_website_form_label_content"
                                                                                                         style="color: #666666;"
                                                                                                     >
-                                                                                                        Which
+                                                                                                        What
                                                                                                         commodity
                                                                                                         do
                                                                                                         you
@@ -2821,9 +2907,9 @@
                                                                                                             class="s_website_form_label_content"
                                                                                                             style="color: #666666;"
                                                                                                         >
-                                                                                                            Crop
-                                                                                                            Planted
-                                                                                                            Date
+                                                                                                            When was
+                                                                                                            this crop
+                                                                                                            planted?
                                                                                                         </span>
                                                                                                         <span
                                                                                                             class="s_website_form_mark"
@@ -2833,9 +2919,10 @@
                                                                                                     <input
                                                                                                         type="date"
                                                                                                         id="crop_planted_date"
-                                                                                                        t-att-name="'crops_planted_date_' + str({9999})"
+                                                                                                        t-att-name="'crop_planted_date_' + str({9999})"
                                                                                                         required="required"
                                                                                                         class="form-control date-picker"
+                                                                                                        oninput="validateElement(this)"
                                                                                                     />
                                                                                                 </div>
                                                                                             </div>
@@ -2887,14 +2974,14 @@
                                                                         type="button"
                                                                         class="btn btn-outline-secondary"
                                                                         onclick="showModalSection('land-information', 'crop-information',  'prev')"
-                                                                        id="some-button-or-link"
+                                                                        id="crop-previous"
                                                                     ><span>
                                                                         &#x276E;</span> PREVIOUS </button>
                                                                     <button
                                                                         type="button"
                                                                         class="btn btn-primary"
                                                                         onclick="showModalSection('livestock-information', 'crop-information',  'next')"
-                                                                        id="some-button-or-link"
+                                                                        id="crop-next"
                                                                     >NEXT <span>
                                                                         &#x276F;</span>
                                                                     </button>
@@ -2937,6 +3024,11 @@
                                                                                         source for
                                                                                         livestock
                                                                                         production?
+                                                                                    </span>
+                                                                                    <span
+                                                                                        class="s_website_form_mark"
+                                                                                    >
+                                                                                        *
                                                                                     </span>
                                                                                 </label>
                                                                                 <select
@@ -3268,14 +3360,14 @@
                                                                         type="button"
                                                                         class="btn btn-outline-secondary"
                                                                         onclick="showModalSection('crop-information', 'livestock-information',  'prev')"
-                                                                        id="some-button-or-link"
+                                                                        id="livestock-previous"
                                                                     ><span>
                                                                         &#x276E;</span> PREVIOUS </button>
                                                                     <button
                                                                         type="button"
                                                                         class="btn btn-primary"
                                                                         onclick="showModalSection('agricultural-input', 'livestock-information',  'next')"
-                                                                        id="some-button-or-link"
+                                                                        id="livestock-next"
                                                                     >NEXT <span>
                                                                         &#x276F;</span>
                                                                     </button>
@@ -3312,9 +3404,9 @@
                                                                                     <span
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
-                                                                                    >Have
-                                                                                        you used any
-                                                                                        fertilizers?</span>
+                                                                                    >Do
+                                                                                        you use fertiliser
+                                                                                        on your farm?</span>
                                                                                     <span
                                                                                         class="s_website_form_mark"
                                                                                     >
@@ -3325,6 +3417,7 @@
                                                                                     name="have_used_fertilizer"
                                                                                     onchange="validateElement(this)"
                                                                                     id="have-used-fertilizer-selection"
+                                                                                    required="required"
                                                                                 >
                                                                                     <option value=" ">
                                                                                         Select</option>
@@ -3351,9 +3444,9 @@
                                                                                     <span
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
-                                                                                    >Have
-                                                                                        you used any
-                                                                                        pesticides?</span>
+                                                                                    >Do
+                                                                                    you use pesticide
+                                                                                    on your farm?</span>
                                                                                     <span
                                                                                         class="s_website_form_mark"
                                                                                     >
@@ -3364,6 +3457,7 @@
                                                                                     name="have_used_pesticide"
                                                                                     onchange="validateElement(this)"
                                                                                     id="have-used-pesticide-selection"
+                                                                                    required="required"
                                                                                 >
                                                                                     <option value=" ">
                                                                                         Select</option>
@@ -3394,9 +3488,9 @@
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
                                                                                     >
-                                                                                        Have
-                                                                                        you used any
-                                                                                        insecticides?</span>
+                                                                                    Do
+                                                                                    you use insecticide
+                                                                                    on your farm?</span>
                                                                                     <span
                                                                                         class="s_website_form_mark"
                                                                                     >
@@ -3407,6 +3501,7 @@
                                                                                     name="have_used_insecticide"
                                                                                     onchange="validateElement(this)"
                                                                                     id="have-used-insecticide-selection"
+                                                                                    required="required"
                                                                                 >
                                                                                     <option value=" ">
                                                                                         Select</option>
@@ -3433,10 +3528,10 @@
                                                                                     <span
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
-                                                                                    >Have
-                                                                                        you used any
-                                                                                        improved
-                                                                                        seeds?</span>
+                                                                                    >Do
+                                                                                    you use
+                                                                                    imporoved seeds
+                                                                                    on your farm?</span>
                                                                                     <span
                                                                                         class="s_website_form_mark"
                                                                                     >
@@ -3448,6 +3543,7 @@
                                                                                     name="have_used_improved_seed"
                                                                                     onchange="validateElement(this)"
                                                                                     id="have-used-improved-seed-selection"
+                                                                                    required="required"
                                                                                 >
                                                                                     <option value=" ">
                                                                                         Select</option>
@@ -3478,7 +3574,7 @@
                                                                         type="button"
                                                                         class="btn btn-outline-secondary"
                                                                         onclick="showModalSection('livestock-information', 'agricultural-input',  'prev')"
-                                                                        id="some-button-or-link"
+                                                                        id="agricultural-previous"
                                                                     >
                                                                         <span>&#x276E;</span>
                                                                         PREVIOUS </button>
@@ -3526,6 +3622,11 @@
                                                                                         use
                                                                                         machinery?
                                                                                     </span>
+                                                                                    <span
+                                                                                        class="s_website_form_mark"
+                                                                                    >
+                                                                                        *
+                                                                                    </span>
 
                                                                                 </label>
                                                                                 <select
@@ -3571,6 +3672,11 @@
                                                                                         kind of
                                                                                         machinery do
                                                                                         you use?
+                                                                                    </span>
+                                                                                    <span
+                                                                                        class="s_website_form_mark"
+                                                                                    >
+                                                                                        *
                                                                                     </span>
 
                                                                                 </label>
@@ -3627,6 +3733,11 @@
                                                                                         to financial
                                                                                         services?
                                                                                     </span>
+                                                                                    <span
+                                                                                        class="s_website_form_mark"
+                                                                                    >
+                                                                                        *
+                                                                                    </span>
 
                                                                                 </label>
                                                                                 <select
@@ -3634,6 +3745,7 @@
                                                                                     name="has_finance_access"
                                                                                     onchange="validateElement(this)"
                                                                                     id="access-to-finance-selection"
+                                                                                    required="required"
                                                                                 >
                                                                                     <option value=" ">
                                                                                         Select
@@ -3675,6 +3787,11 @@
                                                                                         you
                                                                                         have?
                                                                                     </span>
+                                                                                    <span
+                                                                                        class="s_website_form_mark"
+                                                                                    >
+                                                                                        *
+                                                                                    </span>
                                                                                 </label>
                                                                                 <select
                                                                                     class="selectpicker form-control"
@@ -3711,7 +3828,7 @@
                                                                         type="button"
                                                                         class="btn btn-outline-secondary"
                                                                         onclick="showModalSection('agricultural-input', 'access-to-resource',  'prev')"
-                                                                        id="some-button-or-link"
+                                                                        id="resource-previous"
                                                                     ><span>
                                                                         &#x276E;</span> PREVIOUS </button>
                                                                     <button
@@ -3868,6 +3985,199 @@
                                                 </div>
 
 
+                                            </div>
+                                             <div
+                                                class="modal fade"
+                                                id="editFamilyMemberModal"
+                                                tabindex="-1"
+                                                role="dialog"
+                                                aria-labelledby="EditMemberTitle"
+                                                aria-hidden="true"
+                                            >
+                                                <div
+                                                    class="modal-dialog modal-dialog-centered"
+                                                    role="document"
+                                                >
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5
+                                                                class="modal-title"
+                                                                id="editFamilyMemberTitle"
+                                                            >Edit
+                                                                Family Member</h5>
+                                                            <button
+                                                                type="button"
+                                                                class="btn-close"
+                                                                data-bs-dismiss="modal"
+                                                                aria-label="Close"
+                                                            />
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form id="editFamilyMemberForm">
+                                                                <div class="container-fluid px-5">
+                                                                    <div class="row pt-3 pb-1">
+                                                                        <div class="col-4">
+                                                                            <label
+                                                                                for="edit_given_name"
+                                                                                class="form-label"
+                                                                            >Given
+                                                                                Name</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                class="form-control"
+                                                                                id="edit_given_name"
+                                                                                name="given_name"
+                                                                                required="required"
+                                                                            />
+                                                                        </div>
+                                                                        <div class="col-4">
+                                                                            <label
+                                                                                for="edit_fathers_name"
+                                                                                class="form-label"
+                                                                            >Father's
+                                                                                Name</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                class="form-control"
+                                                                                id="edit_fathers_name"
+                                                                                name="fathers_name"
+                                                                                required="required"
+                                                                            />
+                                                                        </div>
+                                                                        <div class="col-4">
+                                                                            <label
+                                                                                for="edit_grandfathers_name"
+                                                                                class="form-label"
+                                                                            >Grandfather's
+                                                                                Name</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                class="form-control"
+                                                                                id="edit_grandfathers_name"
+                                                                                name="grandfathers_name"
+                                                                                required="required"
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row pt-3 pb-1">
+                                                                        <div class="col-4">
+                                                                            <label
+                                                                                for="edit_birthdate"
+                                                                                class="form-label"
+                                                                            >Date
+                                                                                of Birth</label>
+                                                                            <input
+                                                                                type="date"
+                                                                                class="form-control"
+                                                                                id="edit_birthdate"
+                                                                                name="birthdate"
+                                                                                required="required"
+                                                                            />
+                                                                        </div>
+                                                                        <div class="col-4">
+                                                                            <label
+                                                                                for="edit_gender"
+                                                                                class="form-label"
+                                                                            >
+                                                                                Gender</label>
+                                                                            <div id="edit_gender">
+                                                                                <div
+                                                                                    class="form-check form-check-inline"
+                                                                                >
+                                                                                    <input
+                                                                                        class="form-check-input"
+                                                                                        type="radio"
+                                                                                        name="gender"
+                                                                                        id="edit_gender_male"
+                                                                                        value="male"
+                                                                                        required="required"
+                                                                                    />
+                                                                                    <label
+                                                                                        class="form-check-label"
+                                                                                        for="edit_gender_male"
+                                                                                    >
+                                                                                        Male</label>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="form-check form-check-inline"
+                                                                                >
+                                                                                    <input
+                                                                                        class="form-check-input"
+                                                                                        type="radio"
+                                                                                        name="gender"
+                                                                                        id="edit_gender_female"
+                                                                                        value="female"
+                                                                                        required="required"
+                                                                                    />
+                                                                                    <label
+                                                                                        class="form-check-label"
+                                                                                        for="edit_gender_female"
+                                                                                    >
+                                                                                        Female</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-4">
+
+                                                                            <label
+                                                                                class="s_website_form_label"
+                                                                            >
+                                                                                <span
+                                                                                    class="s_website_form_label_content"
+                                                                                    style="color: #666666;"
+                                                                                >
+                                                                                    Relationship
+                                                                                </span>
+                                                                            </label>
+                                                                            <select
+                                                                                class="form-select"
+                                                                                name="relation_with_household_head"
+                                                                                required="required"
+                                                                                onchange="validateElement(this)"
+                                                                                id="relation_with_hh_selection"
+                                                                            >
+                                                                                <option value=" ">Select
+                                                                                    Relation
+                                                                                </option>
+                                                                                <t
+                                                                                    t-foreach="realationship_with_hhh"
+                                                                                    t-as="option"
+                                                                                >
+                                                                                    <option
+                                                                                        t-att-value="option.id"
+                                                                                    >
+                                                                                        <t
+                                                                                            t-esc="option.name"
+                                                                                        />
+                                                                                    </option>
+                                                                                </t>
+                                                                            </select>
+
+
+                                                                        </div>
+
+
+                                                                    </div>
+
+
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button
+                                                                type="button"
+                                                                class="btn btn-secondary"
+                                                                data-bs-dismiss="modal"
+                                                            >Close</button>
+                                                            <button
+                                                                id="update-member-btn"
+                                                                t-attf-store="{{ indi }}"
+                                                                type="button"
+                                                                class="btn btn-primary"
+                                                            >Update</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div
                                                 class="modal fade"
@@ -4199,15 +4509,18 @@
                                 type="text/javascript"
                                 src="/g2p_ati_service_provider_portal/static/src/js/language_validations.js"
                             />
+                            <script
+                                type="text/javascript"
+                                src="/g2p_ati_service_provider_portal/static/src/js/farming_type.js"
+                            />
 
                             <script>
                                 function updateFileName(input) {
-                                var inputId = input.getAttribute('id');
-                                var label = document.querySelector(label[for="${inputId}"]);
-                                var uploadText = label.querySelector('.upload-text');
-                                var fileName = input.files.length > 0 ? input.files[0].name :
-                                'Upload';
-                                uploadText.textContent = fileName;
+                                    var inputId = input.getAttribute('id');
+                                    var label = document.querySelector(`label[for="${inputId}"]`);
+                                    var uploadText = label.querySelector('.upload-text');
+                                    var fileName = input.files.length > 0 ? input.files[0].name : 'Upload';
+                                    uploadText.textContent = fileName;
                                 }
                             </script>
 

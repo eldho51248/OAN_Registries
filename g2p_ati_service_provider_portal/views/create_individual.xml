@@ -1047,7 +1047,7 @@
                                                                 name="farming_type"
                                                                 required="required"
                                                                 onchange="validateElement(this)"
-                                                                id="farming-type-selection"
+                                                                id="farming-type-selection-ind"
                                                             >
                                                                 <option value=" ">Select Farming
                                                                     Type</option>
