@@ -87,7 +87,6 @@
         name="Update Requests"
         action="edit_request_action"
         sequence="100000"
-        groups="g2p_ati.group_data_validator"
         parent="g2p_registry_base.g2p_main_menu_root"
     />
 

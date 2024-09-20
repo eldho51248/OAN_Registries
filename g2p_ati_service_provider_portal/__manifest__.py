@@ -2,16 +2,18 @@
 {
     "name": "OpenG2P Service Provider: ATI",
     "category": "G2P",
-    "version": "17.0.1.3.0",
+    "version": "17.0.1.2.0",
     "sequence": 1,
     "author": "OpenG2P",
     "website": "https://openg2p.org",
-    "license": "LGPL-3",
+    "license": "Other OSI approved licence",
+    "development_status": "Alpha",
     "depends": [
         "g2p_social_registry",
         "g2p_service_provider_beneficiary_management",
         "g2p_registry_base",
         "g2p_service_provider_portal_base",
+        "g2p_ati",
         "portal",
     ],
     "data": [

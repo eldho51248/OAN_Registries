@@ -167,8 +167,8 @@
                                     <th class="fixed-width-column">Kebele <i
                                                 class="fas fa-sort fa-2xl"
                                             /></th>
-                                    <th class="fixed-width-column">Last Updated <i
-                                                class="fas fa-sort fa-lg"
+                                    <th class="fixed-width-column last-updated-header">Last Updated <i
+                                                class="fas fa-sort fa-3x"
                                             /></th>
                                     <!-- <th class="fixed-width-column">Enumerator</th> -->
                                     <th class="status-column">Status <i class="fas fa-sort fa-3x" /></th>
@@ -199,7 +199,7 @@
                                             <t t-out="group['kebele']['name']" />
                                         </td>
                                         <td class="fixed-width-column">
-                                            <t t-out="group.write_date.date()" />
+                                            <t t-out="group['write_date']" />
                                         </td>
                                         <td class="status-column">
                                             <div class="status-icon">

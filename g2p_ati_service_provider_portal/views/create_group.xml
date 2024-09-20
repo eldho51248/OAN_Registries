@@ -3854,6 +3854,199 @@
 
 
                                             </div>
+                                             <div
+                                                class="modal fade"
+                                                id="editFamilyMemberModal"
+                                                tabindex="-1"
+                                                role="dialog"
+                                                aria-labelledby="EditMemberTitle"
+                                                aria-hidden="true"
+                                            >
+                                                <div
+                                                    class="modal-dialog modal-dialog-centered"
+                                                    role="document"
+                                                >
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5
+                                                                class="modal-title"
+                                                                id="editFamilyMemberTitle"
+                                                            >Edit
+                                                                Family Member</h5>
+                                                            <button
+                                                                type="button"
+                                                                class="btn-close"
+                                                                data-bs-dismiss="modal"
+                                                                aria-label="Close"
+                                                            />
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form id="editFamilyMemberForm">
+                                                                <div class="container-fluid px-5">
+                                                                    <div class="row pt-3 pb-1">
+                                                                        <div class="col-4">
+                                                                            <label
+                                                                                for="edit_given_name"
+                                                                                class="form-label"
+                                                                            >Given
+                                                                                Name</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                class="form-control"
+                                                                                id="edit_given_name"
+                                                                                name="given_name"
+                                                                                required="required"
+                                                                            />
+                                                                        </div>
+                                                                        <div class="col-4">
+                                                                            <label
+                                                                                for="edit_fathers_name"
+                                                                                class="form-label"
+                                                                            >Father's
+                                                                                Name</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                class="form-control"
+                                                                                id="edit_fathers_name"
+                                                                                name="fathers_name"
+                                                                                required="required"
+                                                                            />
+                                                                        </div>
+                                                                        <div class="col-4">
+                                                                            <label
+                                                                                for="edit_grandfathers_name"
+                                                                                class="form-label"
+                                                                            >Grandfather's
+                                                                                Name</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                class="form-control"
+                                                                                id="edit_grandfathers_name"
+                                                                                name="grandfathers_name"
+                                                                                required="required"
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row pt-3 pb-1">
+                                                                        <div class="col-4">
+                                                                            <label
+                                                                                for="edit_birthdate"
+                                                                                class="form-label"
+                                                                            >Date
+                                                                                of Birth</label>
+                                                                            <input
+                                                                                type="date"
+                                                                                class="form-control"
+                                                                                id="edit_birthdate"
+                                                                                name="birthdate"
+                                                                                required="required"
+                                                                            />
+                                                                        </div>
+                                                                        <div class="col-4">
+                                                                            <label
+                                                                                for="edit_gender"
+                                                                                class="form-label"
+                                                                            >
+                                                                                Gender</label>
+                                                                            <div id="edit_gender">
+                                                                                <div
+                                                                                    class="form-check form-check-inline"
+                                                                                >
+                                                                                    <input
+                                                                                        class="form-check-input"
+                                                                                        type="radio"
+                                                                                        name="gender"
+                                                                                        id="edit_gender_male"
+                                                                                        value="male"
+                                                                                        required="required"
+                                                                                    />
+                                                                                    <label
+                                                                                        class="form-check-label"
+                                                                                        for="edit_gender_male"
+                                                                                    >
+                                                                                        Male</label>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="form-check form-check-inline"
+                                                                                >
+                                                                                    <input
+                                                                                        class="form-check-input"
+                                                                                        type="radio"
+                                                                                        name="gender"
+                                                                                        id="edit_gender_female"
+                                                                                        value="female"
+                                                                                        required="required"
+                                                                                    />
+                                                                                    <label
+                                                                                        class="form-check-label"
+                                                                                        for="edit_gender_female"
+                                                                                    >
+                                                                                        Female</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-4">
+
+                                                                            <label
+                                                                                class="s_website_form_label"
+                                                                            >
+                                                                                <span
+                                                                                    class="s_website_form_label_content"
+                                                                                    style="color: #666666;"
+                                                                                >
+                                                                                    Relationship
+                                                                                </span>
+                                                                            </label>
+                                                                            <select
+                                                                                class="form-select"
+                                                                                name="relation_with_household_head"
+                                                                                required="required"
+                                                                                onchange="validateElement(this)"
+                                                                                id="relation_with_hh_selection"
+                                                                            >
+                                                                                <option value=" ">Select
+                                                                                    Relation
+                                                                                </option>
+                                                                                <t
+                                                                                    t-foreach="realationship_with_hhh"
+                                                                                    t-as="option"
+                                                                                >
+                                                                                    <option
+                                                                                        t-att-value="option.id"
+                                                                                    >
+                                                                                        <t
+                                                                                            t-esc="option.name"
+                                                                                        />
+                                                                                    </option>
+                                                                                </t>
+                                                                            </select>
+
+
+                                                                        </div>
+
+
+                                                                    </div>
+
+
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button
+                                                                type="button"
+                                                                class="btn btn-secondary"
+                                                                data-bs-dismiss="modal"
+                                                            >Close</button>
+                                                            <button
+                                                                id="update-member-btn"
+                                                                t-attf-store="{{ indi }}"
+                                                                type="button"
+                                                                class="btn btn-primary"
+                                                            >Update</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div
                                                 class="modal fade"
                                                 id="familyMemberModal"

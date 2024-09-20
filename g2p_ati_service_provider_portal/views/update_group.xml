@@ -376,13 +376,16 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
+                                                                    <t t-set="counter" t-value="1" />
                                                                     <t t-if="farmer_member_ids">
                                                                         <t
                                                                             t-foreach="farmer_member_ids"
                                                                             t-as="individual"
                                                                         >
                                                                             <tr>
-                                                                                <td style="color:#b3b3b3;" />
+                                                                                <td style="color:#b3b3b3;">
+                                                                                    <t t-out="counter" />
+                                                                                </td>
                                                                                 <td
                                                                                     style="color:#078148; font: normal normal 600 13px/16px Inter;"
                                                                                 >
@@ -442,6 +445,10 @@
                                                                                     </button>
                                                                                 </td>
                                                                             </tr>
+                                                                            <t
+                                                                                t-set="counter"
+                                                                                t-value="counter + 1"
+                                                                            />
                                                                         </t>
                                                                     </t>
                                                                     <t t-if="not farmer_member_ids">
@@ -670,7 +677,7 @@
                                                                                 style="display: none;color: red;"
                                                                             >
                                                                                 UID must be exactly
-                                                                                12 characters long.
+                                                                                12 dIgits only.
                                                                             </div>
                                                                             <div
                                                                                 class="s_website_form_field"
@@ -701,6 +708,7 @@
                                                                                     placeholder="RID"
                                                                                     required="required"
                                                                                 />
+
                                                                                 <div
                                                                                     class="error-message"
                                                                                     id="rid_error"
@@ -3787,6 +3795,8 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
+                                                                    <t t-set="counter" t-value="1" />
+
                                                                     <t t-if="member_ids">
                                                                         <t
                                                                             t-foreach="member_ids"
@@ -3795,7 +3805,9 @@
                                                                             <tr
                                                                                 t-att-data-member-id="individual.id"
                                                                             >
-                                                                                <td style="color:#b3b3b3;" />
+                                                                                <td style="color:#b3b3b3;">
+                                                                                    <t t-out="counter" />
+                                                                                </td>
                                                                                 <td
                                                                                     style="color:#078148; font: normal normal 600 13px/16px Inter;"
                                                                                 >
@@ -3845,6 +3857,10 @@
                                                                                     </button>
                                                                                 </td>
                                                                             </tr>
+                                                                               <t
+                                                                                t-set="counter"
+                                                                                t-value="counter + 1"
+                                                                            />
                                                                         </t>
 
                                                                     </t>
@@ -3896,7 +3912,6 @@
                                                     <button
                                                         id="beneficiary_submit"
                                                         type="button"
-                                                        onclick="customvalidateFormGroup(true);"
                                                         class="btn btn-primary"
                                                         style="width: 90px;"
                                                     >
