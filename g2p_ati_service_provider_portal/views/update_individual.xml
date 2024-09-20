@@ -3497,7 +3497,7 @@
                             <script
                                 type="text/javascript"
                                 src="/g2p_ati_service_provider_portal/static/src/js/language_validations.js"
-                            />                            
+                            />
 
                             <script>
                                 function updateFileName(input) {

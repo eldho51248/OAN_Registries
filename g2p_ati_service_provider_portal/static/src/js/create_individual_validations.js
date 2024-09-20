@@ -153,7 +153,7 @@ $(document).ready(function () {
         if ((sanitizedValue.length !== 29 && sanitizedValue.length !== 0) || !isOnlyDigits) {
             ridInput.classList.add("rid_error");
             ridError.style.display = "block";
-            uidInput.setAttribute("required", "required");
+            ridInput.setAttribute("required", "required");
         } else {
             ridInput.classList.remove("rid_error");
             ridError.style.display = "none";
@@ -188,6 +188,7 @@ $(document).ready(function () {
             ridInput.removeAttribute("required");
         }
         uidError.style.display = "none";
+        ridError.style.display = "none";
     }
 
     function handlePhoneNumberSelection() {
