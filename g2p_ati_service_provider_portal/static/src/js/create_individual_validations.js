@@ -153,9 +153,6 @@ $(document).ready(function () {
         if ((sanitizedValue.length !== 29 && sanitizedValue.length !== 0) || !isOnlyDigits) {
             ridInput.classList.add("rid_error");
             ridError.style.display = "block";
-
-            uidInput.setAttribute("required", "required");
-
             ridInput.setAttribute("required", "required");
 
         } else {
@@ -184,7 +181,7 @@ $(document).ready(function () {
             uidDiv.style.display = "none";
             uidInput.removeAttribute("required");
             ridDiv.style.display = "block";
-            // RidInput.setAttribute("required", "required");
+            ridInput.setAttribute("required", "required");
         } else {
             uidDiv.style.display = "none";
             uidInput.removeAttribute("required");
@@ -442,56 +439,21 @@ function validateElement(element) {
     }
 }
 
-// Function validateUID() {
-//     const uid = document.getElementById("uid_input");
-//     const uidError = document.getElementById("uid_error");
-//     const isValid = uid.value.length === 12 && /^\d+$/.test(uid.value);
-//     uid.classList.toggle("is-invalid", !isValid);
-//     uidError.style.display = isValid ? "none" : "block";
-//     return isValid;
-// }
-
-// Function validateSection(sectionId) {
-//     const section = document.getElementById(sectionId);
-//     const requiredFields = section.querySelectorAll("[required]");
-//     let valid = true;
-
-//     requiredFields.forEach((field) => {
-//         const isFieldValid = field.value.trim();
-//         var fieldName = field.getAttribute("name");
-//         if (fieldName.includes("{9999}")) {
-//             return;
-//         }
-
-//         field.classList.toggle("is-invalid", !isFieldValid);
-//         valid = valid && isFieldValid;
-//         if (sectionId === "id-section" && fieldName === "uid") {
-//             valid = valid && validateUID();
-//         }
-//     });
-
-//     return valid;
-// }
-
-function validateRID() {
-    console.log("Check RID");
-    const rid = document.getElementById("rid_input");
-    const ridError = document.getElementById("rid_error");
-    const isValid = rid.value.length === 29 && /^\d+$/.test(rid.value);
-    rid.classList.toggle("is-invalid", !isValid);
-    ridError.style.display = isValid ? "none" : "block";
-    console.log(rid.value.length);
+function validateUID() {
+    const uid = document.getElementById("uid_input");
+    const uidError = document.getElementById("uid_error");
+    const isValid = uid.value.length === 12 && /^\d+$/.test(uid.value);
+    uid.classList.toggle("is-invalid", !isValid);
+    uidError.style.display = isValid ? "none" : "block";
     return isValid;
 }
 
 function validateRID() {
-    console.log("Check RID");
     const rid = document.getElementById("rid_input");
     const ridError = document.getElementById("rid_error");
     const isValid = rid.value.length === 29 && /^\d+$/.test(rid.value);
     rid.classList.toggle("is-invalid", !isValid);
     ridError.style.display = isValid ? "none" : "block";
-    console.log(rid.value.length);
     return isValid;
 }
 
@@ -516,37 +478,6 @@ function validateRadioButtons(radioName, section) {
     return radioChecked;
 }
 
-// Function validateSection(sectionId) {
-//     const section = document.getElementById(sectionId);
-//     const requiredFields = section.querySelectorAll("[required]");
-//     let valid = true;
-
-//     requiredFields.forEach((field) => {
-//         var isFieldValid;
-//         if (field.type === "radio") {
-//             // Validate radio buttons in this section
-//             isFieldValid = validateRadioButtons(field.name, section);
-//         } else {
-//             isFieldValid = field.value.trim() !== "";
-//         }
-
-//         var fieldName = field.getAttribute("name");
-//         if (fieldName.includes("{9999}")) {
-//             return;
-//         }
-
-//         if (field.type !== "radio") {
-//             field.classList.toggle("is-invalid", !isFieldValid);
-//         }
-//         valid = valid && isFieldValid;
-
-//         if (sectionId === "id-section" && fieldName === "uid") {
-//             valid = valid && validateUID();
-//         }
-//     });
-
-//     return valid;
-// }
 
 function validateSection(sectionId) {
     const section = document.getElementById(sectionId);

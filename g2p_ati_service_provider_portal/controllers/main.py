@@ -628,50 +628,53 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             members = group.group_membership_ids
             farmer_member_ids = []
             member_ids = []
-            for ind in members.individual:
-                if ind.is_farmer == "yes":
-                    farmer_member_ids.append(ind)
-                else:
-                    member_ids.append(ind)
-
-            household_head_id = ""
-            for indiv in members.individual:
-                if indiv.hh_is_household_head == "yes" and indiv.is_farmer == "yes":
-                    household_head_id = indiv
-
-            head_individual = request.env["res.partner"].sudo().browse(int(household_head_id))
-            additional_info = head_individual.additional_g2p_info
-
-            if isinstance(additional_info, str):
-                try:
-                    additional_info = json.loads(additional_info)
-                except json.JSONDecodeError:
-                    # Handle JSON decoding error if the string is not valid JSON
-                    additional_info = {}
-
-            # Initialize variables
             other_kebele = ""
             other_woreda = ""
             other_primary_coop = ""
             other_coop_union = ""
             other_income = ""
+            if members:
+                for ind in members.individual:
+                    if ind.is_farmer == "yes":
+                        farmer_member_ids.append(ind)
+                    else:
+                        member_ids.append(ind)
 
-            # Check if additional_info is a dictionary and populate variables accordingly
-            if isinstance(additional_info, dict):
-                if "Kebele" in additional_info:
-                    other_kebele = additional_info.get("Kebele", "")
+                household_head_id = ""
+                for indiv in members.individual:
+                    if indiv.hh_is_household_head == "yes" and indiv.is_farmer == "yes":
+                        household_head_id = indiv
 
-                if "Woreda" in additional_info:
-                    other_woreda = additional_info.get("Woreda", "")
+                head_individual = request.env["res.partner"].sudo().browse(int(household_head_id))
+                additional_info = head_individual.additional_g2p_info
 
-                if "Primary Cooperative" in additional_info:
-                    other_primary_coop = additional_info.get("Primary Cooperative", "")
+                if isinstance(additional_info, str):
+                    try:
+                        additional_info = json.loads(additional_info)
+                    except json.JSONDecodeError:
+                        # Handle JSON decoding error if the string is not valid JSON
+                        additional_info = {}
 
-                if "Cooperative Union" in additional_info:
-                    other_coop_union = additional_info.get("Cooperative Union", "")
+                # Initialize variables
 
-                if "Household Income" in additional_info:
-                    other_income = additional_info.get("Household Income", "")
+
+                # Check if additional_info is a dictionary and populate variables accordingly
+                if isinstance(additional_info, dict):
+                    if "Kebele" in additional_info:
+                        other_kebele = additional_info.get("Kebele", "")
+
+                    if "Woreda" in additional_info:
+                        other_woreda = additional_info.get("Woreda", "")
+
+                    if "Primary Cooperative" in additional_info:
+                        other_primary_coop = additional_info.get("Primary Cooperative", "")
+
+                    if "Cooperative Union" in additional_info:
+                        other_coop_union = additional_info.get("Cooperative Union", "")
+
+                    if "Household Income" in additional_info:
+                        other_income = additional_info.get("Household Income", "")
+
 
             return request.render(
                 "g2p_ati_service_provider_portal.ati_update_group_form_template",
