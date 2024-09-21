@@ -298,6 +298,7 @@
         sequence="500"
         parent="g2p_configuration_menu_root_main"
     />
+
     <menuitem
         id="menu_gender_type_main"
         name="Gender Types"
@@ -306,13 +307,7 @@
         sequence="10"
     />
 
-     <menuitem
-        id="menu_gender_type_main"
-        name="Group Mme"
-        action="g2p_registry_individual.action_gender_type"
-        parent="g2p_configuration_menu_root_main"
-        sequence="10"
-    />
+
      <menuitem
         id="menu_group_membership_kind_main"
         name="Group Membership Kind"

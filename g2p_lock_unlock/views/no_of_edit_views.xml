@@ -6,7 +6,7 @@
         <field name="model">no.of.edits</field>
         <field name="arch" type="xml">
             <tree editable="top" class="text-left">
-            <field name="edit_amount" string="number of eddits allowed" />
+            <field name="edit_amount" string="Number of edits allowed" />
             </tree>
         </field>
     </record>
