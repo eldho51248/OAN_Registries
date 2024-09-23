@@ -2416,6 +2416,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 if membership.individual.is_farmer == "yes":
                     continue
                 else:
+                    kind_name = membership.kind.name if membership.kind else None
                     member_list.append(
                         {
                             "id": membership.individual.id,
@@ -2424,7 +2425,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                             "gender": membership.individual.gender,
                             "active": membership.individual.active,
                             "group_id": membership.group.id,
-                            "kind": membership.individual.group_membership_ids.kind.ids,
+                            "kind": kind_name,
                         }
                     )
 
