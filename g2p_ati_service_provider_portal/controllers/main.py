@@ -638,14 +638,14 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                         farmer_member_ids.append(ind)
                     else:
                         member_ids.append(ind)
-
+                additional_info = " "
                 household_head_id = ""
                 for indiv in members.individual:
                     if indiv.hh_is_household_head == "yes" and indiv.is_farmer == "yes":
                         household_head_id = indiv
-
-                head_individual = request.env["res.partner"].sudo().browse(int(household_head_id))
-                additional_info = head_individual.additional_g2p_info
+                if household_head_id:
+                    head_individual = request.env["res.partner"].sudo().browse(int(household_head_id))
+                    additional_info = head_individual.additional_g2p_info
 
                 if isinstance(additional_info, str):
                     try:
@@ -672,7 +672,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
                     if "Household Income" in additional_info:
                         other_income = additional_info.get("Household Income", "")
-
             return request.render(
                 "g2p_ati_service_provider_portal.ati_update_group_form_template",
                 {
