@@ -2374,6 +2374,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         csrf=False,
     )
     def add_family_member_submit(self, **kw):
+        print("heloooo")
         res = dict()
         try:
             group_id = kw.get("group_id")
@@ -2389,6 +2390,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             gf_name_eng = kw.get("gf_name_eng")
             relationship = int(kw.get("Relationship"))
             relationship = [(6, 0, [relationship])]
+            print("relationship is",relationship)
 
             name = f"{given_name} {family_name} {gf_name_eng}"
 
@@ -2403,19 +2405,28 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 "is_group": False,
             }
             individual = request.env["res.partner"].sudo().create(partner_data)
+            print("Created individual:", individual)
 
             group_membership_vals = [
                 (0, 0, {"individual": individual.id, "group": group_rec.id, "kind": relationship})
             ]
+            print("mem vals",group_membership_vals)
 
             group_rec.write({"group_membership_ids": group_membership_vals})
+            print("successful")
 
             member_list = []
+
+            print("list")
 
             for membership in group_rec.group_membership_ids:
                 if membership.individual.is_farmer == "yes":
                     continue
                 else:
+                    print("membership is",membership.kind)
+                    kind_name = membership.kind.name if membership.kind else None
+                    print("kind name is",kind_name)
+                    print('active',membership.individual.active)
                     member_list.append(
                         {
                             "id": membership.individual.id,
@@ -2424,9 +2435,10 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                             "gender": membership.individual.gender,
                             "active": membership.individual.active,
                             "group_id": membership.group.id,
-                            "kind": membership.individual.group_membership_ids.kind.ids,
+                            "kind": kind_name,
                         }
                     )
+            print("member list",member_list)
 
             res["member_list"] = member_list
 
@@ -2923,6 +2935,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     def member_create(self, **kw):
         res = dict()
         try:
+            print("does tis work")
             # head_name = kw.get("household_name")
             head_individual = None
             # Group creation
