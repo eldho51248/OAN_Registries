@@ -239,7 +239,7 @@
                                                                 class="form-control"
                                                                 placeholder="UID"
                                                                 t-att-value="uid"
-                                                                 required="required"
+                                                                required="required"
                                                             />
                                                         </div>
                                                         <div
@@ -1592,7 +1592,7 @@
                                                                             t-att-data-text="option.name"
                                                                             t-att-value="option.id"
                                                                             t-att-checked="option.id == is_member_of_cooperative_union_selection_id"
-                                                                             required="required"
+                                                                            required="required"
                                                                             oninput="validateElement(this)"
                                                                         />
                                                                         <label
@@ -1914,7 +1914,7 @@
                                                                                             Hectares)
                                                                                         </span>
                                                                                         <span
-                                                                                              class="s_website_form_mark land_astrix"
+                                                                                            class="s_website_form_mark land_astrix"
                                                                                         >
                                                                                             *</span>
                                                                                     </label>
@@ -2059,7 +2059,7 @@
                                                                                                     Type
                                                                                                 </span>
                                                                                                 <span
-                                                                                                   class="s_website_form_mark land_astrix"
+                                                                                                    class="s_website_form_mark land_astrix"
                                                                                                 >
                                                                                                     *</span>
                                                                                             </label>
@@ -2134,7 +2134,7 @@
                                                                                                     ID
                                                                                                 </span>
                                                                                                 <span
-                                                                                                      class="s_website_form_mark land_astrix"
+                                                                                                    class="s_website_form_mark land_astrix"
                                                                                                 >
                                                                                                     *</span>
                                                                                             </label>
@@ -2355,7 +2355,6 @@
                                                                                     <label
                                                                                         t-att-for="'land_certificate_' + str({9999})"
                                                                                         class="custom-file-upload"
-
                                                                                     >
                                                                                         <span
                                                                                             class="upload-text"
@@ -2433,8 +2432,8 @@
                                                 style="display: none;"
                                             >
                                              <div
-                                                class="section-content crop-mixed-err-msg error-message s_website_form_field"
-                                                style="display: none;color: red;"
+                                                    class="section-content crop-mixed-err-msg error-message s_website_form_field"
+                                                    style="display: none;color: red;"
                                                 >
                                                 This section is only for Crop or Mixed farming types.
                                             </div>
@@ -2541,7 +2540,6 @@
                                                                                             <label
                                                                                         class="s_website_form_label"
                                                                                         for="crop_date"
-
                                                                                     >
                                                                                                 <span
                                                                                             class="s_website_form_label_content"
@@ -2663,7 +2661,6 @@
                                                                                         <div class="col-6">
                                                                                             <label
                                                                                                 class="s_website_form_label"
-
                                                                                             >
                                                                                                 <span
                                                                                                     class="s_website_form_label_content"
@@ -2854,9 +2851,9 @@
                                                 style="display: none;"
                                             >
                                             <div
-                                                class="section-content livestock-err-msg error-message s_website_form_field"
-                                                style="display: none;color: red;"
-                                            >
+                                                    class="section-content livestock-err-msg error-message s_website_form_field"
+                                                    style="display: none;color: red;"
+                                                >
                                             This section is only for Livestock or Mixed farming types.
                                             </div>
 
@@ -3477,9 +3474,9 @@
                                                 style="display: none;"
                                             >
                                              <div
-                                                class="section-content crop-mixed-err-msg error-message s_website_form_field"
-                                                style="display: none;color: red;"
-                                            >
+                                                    class="section-content crop-mixed-err-msg error-message s_website_form_field"
+                                                    style="display: none;color: red;"
+                                                >
                                             This section is only for Crop or Mixed farming types.
                                             </div>
                                                 <div class="section-content crop-mixed-farming-type">

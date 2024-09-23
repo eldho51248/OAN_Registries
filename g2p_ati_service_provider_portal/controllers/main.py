@@ -452,7 +452,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     def group_update(self, _id, **kw):
         try:
             group = request.env["res.partner"].sudo().browse(_id)
-            print("group is",group)
             if not group:
                 return request.render(
                     "g2p_service_provider_beneficiary_management.error_template",
@@ -656,7 +655,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                         additional_info = {}
 
                 # Initialize variables
-
 
                 # Check if additional_info is a dictionary and populate variables accordingly
                 if isinstance(additional_info, dict):
@@ -2431,7 +2429,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     )
 
             res["member_list"] = member_list
-            print(res)
             return json.dumps(res)
 
         except Exception as e:
@@ -2501,7 +2498,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         return membership_kind.id
 
     def process_land(self, kw, vals):
-        print("processing land")
         land_records = json.loads(kw.get("landRecords", "[]"))
 
         land_info_data = []
@@ -2557,15 +2553,13 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                                 {
                                     "backend_id": backend_id,
                                     "name": land_certificate.get("filename"),
-                                    # "data": binary_data,
-                                    # "tags_ids": [(4, doc_tag.id)],
+                                    "data": binary_data,
+                                    "tags_ids": [(4, doc_tag.id)],
                                 }
                             )
                         )
-                        print(storage_file)
                         land_info_dict["land_certificate"] = storage_file.id
                         supporting_documents_ids.append((4, storage_file.id))
-                    print("suporting docs",supporting_documents_ids)
                     land_info_data.append((0, 0, land_info_dict))
                 break  # Exit the loop since the index is identified for this record
         # return
@@ -2590,19 +2584,15 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             additional_info = kw.get("additional_info", {})
             additional_info_json = json.loads(additional_info)
-            # print("additonal json type",(additional_info_json))
 
             group_rec = self._get_or_create_group(kw, region, zone, woreda, kebele)
-            print(group_rec)
 
             vals = self._prepare_individual_vals(kw, region, zone, woreda, kebele)
             vals = self.process_land(kw, vals)
-            print("1", vals)
 
             vals["crop_information_ids"] = self._prepare_crop_information(kw.get("cropRecords"))
             vals["livestock_information_ids"] = self._livestock_information(kw.get("livestockRecord"))
             vals["phone_number_ids"] = self._prepare_phone_numbers(kw, region, zone, woreda, kebele, vals)
-            print("2", vals)
             # Socioeconomic data
             self._prepare_socioeconomic_data(kw, vals)
 
@@ -2611,7 +2601,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             # Financial Service
             self._prepare_financial_agricultural_service(kw, vals)
-            print(vals)
             # Additional details
             vals["is_farmer"] = "yes"
             vals["additional_g2p_info"] = additional_info_json

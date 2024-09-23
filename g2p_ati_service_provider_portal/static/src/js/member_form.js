@@ -391,7 +391,6 @@ $(document).on("click", "#member_submit", async function () {
         },
         dataType: "json",
         success: function (response) {
-
             console.log("Ajax request successful");
             console.log("Response:", response);
             if (response.member_list) {

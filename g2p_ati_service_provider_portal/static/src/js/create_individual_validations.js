@@ -154,7 +154,6 @@ $(document).ready(function () {
             ridInput.classList.add("rid_error");
             ridError.style.display = "block";
             ridInput.setAttribute("required", "required");
-
         } else {
             ridInput.classList.remove("rid_error");
             ridError.style.display = "none";
@@ -478,13 +477,11 @@ function validateRadioButtons(radioName, section) {
     return radioChecked;
 }
 
-
 function validateSection(sectionId) {
     const section = document.getElementById(sectionId);
     const requiredFields = section.querySelectorAll("[required]");
     const uidError = document.getElementById("uid_error");
     const ridError = document.getElementById("rid_error");
-
 
     let valid = true;
 
@@ -506,7 +503,6 @@ function validateSection(sectionId) {
             return;
         }
 
-
         // Apply 'is-invalid' class for non-radio fields
         if (field.type !== "radio") {
             field.classList.toggle("is-invalid", !isFieldValid);
@@ -517,12 +513,11 @@ function validateSection(sectionId) {
         // Additional UID and RID validation for 'id-section'
 
         if (sectionId === "id-section" && fieldName === "uid") {
-              valid = valid && validateUID();
-          }
+            valid = valid && validateUID();
+        }
         if (sectionId === "id-section" && fieldName === "rid") {
             valid = valid && validateRID();
         }
-
     });
     if (uidError.style.display === "block") {
         valid = false;
