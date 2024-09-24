@@ -594,8 +594,6 @@ function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
     }
 }
 
-
-
 // Function toggleFieldBasedOnRadio(inputName, fieldIdToToggle, selectElementId, toggleValue = "Yes") {
 //     const radios = document.querySelectorAll(`input[name="${inputName}"]`);
 //     let shouldShowField = false;
