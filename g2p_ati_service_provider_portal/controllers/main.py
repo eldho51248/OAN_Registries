@@ -452,7 +452,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     def group_update(self, _id, **kw):
         try:
             group = request.env["res.partner"].sudo().browse(_id)
-
             if not group:
                 return request.render(
                     "g2p_service_provider_beneficiary_management.error_template",
@@ -639,14 +638,14 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                         farmer_member_ids.append(ind)
                     else:
                         member_ids.append(ind)
-
+                additional_info = " "
                 household_head_id = ""
                 for indiv in members.individual:
                     if indiv.hh_is_household_head == "yes" and indiv.is_farmer == "yes":
                         household_head_id = indiv
-
-                head_individual = request.env["res.partner"].sudo().browse(int(household_head_id))
-                additional_info = head_individual.additional_g2p_info
+                if household_head_id:
+                    head_individual = request.env["res.partner"].sudo().browse(int(household_head_id))
+                    additional_info = head_individual.additional_g2p_info
 
                 if isinstance(additional_info, str):
                     try:
@@ -673,7 +672,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
                     if "Household Income" in additional_info:
                         other_income = additional_info.get("Household Income", "")
-
             return request.render(
                 "g2p_ati_service_provider_portal.ati_update_group_form_template",
                 {
@@ -2417,6 +2415,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 if membership.individual.is_farmer == "yes":
                     continue
                 else:
+                    kind_name = membership.kind.name if membership.kind else None
                     member_list.append(
                         {
                             "id": membership.individual.id,
@@ -2425,12 +2424,11 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                             "gender": membership.individual.gender,
                             "active": membership.individual.active,
                             "group_id": membership.group.id,
-                            "kind": membership.individual.group_membership_ids.kind.ids,
+                            "kind": kind_name,
                         }
                     )
 
             res["member_list"] = member_list
-
             return json.dumps(res)
 
         except Exception as e:
@@ -2562,7 +2560,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                         )
                         land_info_dict["land_certificate"] = storage_file.id
                         supporting_documents_ids.append((4, storage_file.id))
-
                     land_info_data.append((0, 0, land_info_dict))
                 break  # Exit the loop since the index is identified for this record
         # return
@@ -2587,7 +2584,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             additional_info = kw.get("additional_info", {})
             additional_info_json = json.loads(additional_info)
-            # print("additonal json type",type(additional_info_json))
 
             group_rec = self._get_or_create_group(kw, region, zone, woreda, kebele)
 
@@ -2597,7 +2593,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             vals["crop_information_ids"] = self._prepare_crop_information(kw.get("cropRecords"))
             vals["livestock_information_ids"] = self._livestock_information(kw.get("livestockRecord"))
             vals["phone_number_ids"] = self._prepare_phone_numbers(kw, region, zone, woreda, kebele, vals)
-
             # Socioeconomic data
             self._prepare_socioeconomic_data(kw, vals)
 
@@ -2606,7 +2601,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             # Financial Service
             self._prepare_financial_agricultural_service(kw, vals)
-
             # Additional details
             vals["is_farmer"] = "yes"
             vals["additional_g2p_info"] = additional_info_json
@@ -2697,13 +2691,11 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         for key, field in other_fields.items():
             if kw.get(field):
                 vals[key] = kw.get(field)
-
         # National ID and Registration
         self._prepare_national_id(kw, vals)
 
         # Handle individual details
         self._process_individual_details(vals, kw)
-
         # Handle socio-economic data
         self._process_socio_economic_data(vals, kw)
 
