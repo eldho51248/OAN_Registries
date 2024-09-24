@@ -657,7 +657,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
                 # Initialize variables
 
-
                 # Check if additional_info is a dictionary and populate variables accordingly
                 if isinstance(additional_info, dict):
                     if "Kebele" in additional_info:
@@ -674,7 +673,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
                     if "Household Income" in additional_info:
                         other_income = additional_info.get("Household Income", "")
-
 
             return request.render(
                 "g2p_ati_service_provider_portal.ati_update_group_form_template",

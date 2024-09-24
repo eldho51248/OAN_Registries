@@ -353,8 +353,27 @@
                                                                         *</span>
                                                                 </label>
 
+                                                                 <select
+                                                                    class="form-select"
+                                                                    id="hh_is_household_head"
+                                                                    name="hh_is_household_head"
+                                                                    required="required"
+                                                                >
+                                                                    <t
+                                                                        t-foreach="hh_is_household_head"
+                                                                        t-as="option"
+                                                                    >
+                                                                        <option
+                                                                            t-att-value="option.id"
+                                                                            t-att-selected="option.id == household_head_selection_id"
+                                                                        >
+                                                                            <t t-esc="option.name" />
+                                                                        </option>
+                                                                    </t>
+                                                                </select>
 
-                                                                <div class="d-flex flex-wrap">
+
+                                                                <!-- <div class="d-flex flex-wrap">
                                                                     <div
                                                                         t-foreach="hh_is_household_head"
                                                                         t-as="option"
@@ -377,7 +396,7 @@
                                                                             <t t-esc="option.name" />
                                                                         </label>
                                                                     </div>
-                                                                </div>
+                                                                </div> -->
 
 
                                                             </div>
@@ -1443,7 +1462,26 @@
                                                                         primary cooperative?
                                                                     </span>
                                                                 </label>
-                                                                <div class="d-flex flex-wrap">
+
+
+                                                                <select
+                                                                    class="form-select is-member-of-primary-coop-select"
+                                                                    id="is_member_of_primary_coop"
+                                                                    name="is_member_of_primary_coop"
+                                                                    required="required"
+                                                                >
+    <t t-foreach="is_member_of_primary_cooperative" t-as="option">
+        <option
+                                                                            t-att-value="option.id"
+                                                                            t-att-selected="option.id == is_member_of_primary_cooperative_selection_id"
+                                                                        >
+            <t t-esc="option.name" />
+        </option>
+    </t>
+</select>
+
+
+                                                                <!-- <div class="d-flex flex-wrap">
                                                                     <div
                                                                         t-foreach="is_member_of_primary_cooperative"
                                                                         t-as="option"
@@ -1464,7 +1502,7 @@
                                                                             <t t-esc="option.name" />
                                                                         </label>
                                                                     </div>
-                                                                </div>
+                                                                </div> -->
 
 
                                                             </div>
@@ -1530,6 +1568,7 @@
                                                                 <input
                                                                     type="text"
                                                                     class="form-control"
+                                                                    id="other_primary_coop"
                                                                     name="other_primary_coop"
                                                                     placeholder="Please specify"
                                                                     t-att-value="other_primary_coop"
@@ -1557,7 +1596,24 @@
                                                                         union?
                                                                     </span>
                                                                 </label>
-                                                                <div class="d-flex flex-wrap">
+
+                                                                <select
+                                                                    class="form-select"
+                                                                    id="is_member_of_coop_union"
+                                                                    name="is_member_of_coop_union"
+                                                                    required="required"
+                                                                >
+        <t t-foreach="is_member_of_cooperative_union" t-as="option">
+            <option
+                                                                            t-att-value="option.id"
+                                                                            t-att-selected="option.id == is_member_of_cooperative_union_selection_id"
+                                                                        >
+                <t t-esc="option.name" />
+            </option>
+        </t>
+    </select>
+
+                                                                <!-- <div class="d-flex flex-wrap">
                                                                     <div
                                                                         t-foreach="is_member_of_cooperative_union"
                                                                         t-as="option"
@@ -1578,11 +1634,12 @@
                                                                             <t t-esc="option.name" />
                                                                         </label>
                                                                     </div>
-                                                                </div>
+                                                                </div> -->
 
 
                                                             </div>
                                                         </div>
+
                                                         <div class="col-lg-6">
                                                             <div
                                                                 class="s_website_form_field"
@@ -1644,6 +1701,7 @@
                                                                 <input
                                                                     type="text"
                                                                     class="form-control"
+                                                                    id="other_coop_union"
                                                                     name="other_coop_union"
                                                                     placeholder="Please specify"
                                                                     t-att-value="other_coop_union"
@@ -1670,7 +1728,24 @@
                                                                     </span>
                                                                 </label>
                                                                 <div class="form-group">
-                                                                    <div class="d-flex flex-wrap">
+
+                                                                <select
+                                                                        class="form-select"
+                                                                        id="in_farmer_cluster"
+                                                                        name="in_farmer_cluster"
+                                                                        required="required"
+                                                                    >
+    <t t-foreach="is_member_in_farmer_cluster" t-as="option">
+        <option
+                                                                                t-att-value="option.id"
+                                                                                t-att-selected="option.id == is_member_in_farmer_cluster_selection_id"
+                                                                            >
+            <t t-esc="option.name" />
+        </option>
+    </t>
+</select>
+
+                                                                    <!-- <div class="d-flex flex-wrap">
                                                                         <div
                                                                             t-foreach="is_member_in_farmer_cluster"
                                                                             t-as="option"
@@ -1691,7 +1766,9 @@
                                                                                 <t t-esc="option.name" />
                                                                             </label>
                                                                         </div>
-                                                                    </div>
+                                                                    </div> -->
+
+
                                                                 </div>
 
                                                             </div>
@@ -2472,7 +2549,6 @@
                                                                                 <div class="col-6">
                                                                                             <label
                                                                                         class="s_website_form_label"
-
                                                                                     >
                                                                                                 <span
                                                                                             class="s_website_form_label_content"
@@ -2595,7 +2671,6 @@
                                                                                         <div class="col-6">
                                                                                             <label
                                                                                                 class="s_website_form_label"
-
                                                                                             >
                                                                                                 <span
                                                                                                     class="s_website_form_label_content"
