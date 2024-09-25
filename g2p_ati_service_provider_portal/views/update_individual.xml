@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template
         id="ati_individual_registrant_update_form_template"
@@ -154,7 +154,8 @@
                                                 <div class="row section-content">
                                                     <div class="col-lg-6 col-md-6 col-sm-12">
                                                         <div class="s_website_form_field">
-                                                            <label class="s_website_form_label" for="name">
+                                                            <label class="s_website_form_label"
+                                                                for="name">
                                                                 <span
                                                                     class="s_website_form_label_content"
                                                                     style="color: #666666;"
@@ -167,7 +168,13 @@
 
                                                             <!-- <div class="d-flex flex-wrap">
                                                                 <div t-foreach="has_national_id" t-as="option" class="form-check me-2">
-                                                                    <input class="form-check-input " type="radio" name="has_national_id" onchange="validateElement(this)" id="have-national-id-selection" t-att-data-text="option.name" t-att-value="option.id" t-att-checked="option.id == have_national_id_selection_id" />
+                                                                    <input class="form-check-input " type="radio" name="has_national_id"
+                                                            onchange="validateElement(this)"
+                                                            id="have-national-id-selection"
+                                                            t-att-data-text="option.name"
+                                                            t-att-value="option.id"
+                                                            t-att-checked="option.id ==
+                                                            have_national_id_selection_id" />
                                                                     <label class="form-check-label ms-2" t-att-for="option.id">
                                                                         <t t-esc="option.name" />
                                                                     </label>
@@ -182,7 +189,8 @@
                                                                 id="have-national-id-selection"
                                                             >
                                                                 <option value=" ">Select</option>
-                                                                <t t-foreach="has_national_id" t-as="option">
+                                                                <t t-foreach="has_national_id"
+                                                                    t-as="option">
                                                                     <option
                                                                         t-att-value="option.id"
                                                                         t-att-selected="option.id == have_national_id_selection_id"
@@ -199,7 +207,8 @@
                                                             id="uid-div"
                                                             style="display: none;"
                                                         >
-                                                            <label class="s_website_form_label" for="name">
+                                                            <label class="s_website_form_label"
+                                                                for="name">
                                                                 <span
                                                                     class="s_website_form_label_content"
                                                                     style="color: #666666;"
@@ -228,7 +237,8 @@
                                                             id="rid-div"
                                                             style="display: none;"
                                                         >
-                                                            <label class="s_website_form_label" for="name">
+                                                            <label class="s_website_form_label"
+                                                                for="name">
                                                                 <span
                                                                     class="s_website_form_label_content"
                                                                     style="color: #666666;"
@@ -249,13 +259,14 @@
                                                                 id="rid_error"
                                                                 style="display: none;color: red;"
                                                             >
-                                                            RID must be exactly
-                                                            29 digits only.
+                                                                RID must be exactly
+                                                                29 digits only.
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="section-footer d-flex justify-content-end">
+                                                <div
+                                                    class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-outline-secondary next-btn"
@@ -282,7 +293,8 @@
                                                                         class="s_website_form_label_content"
                                                                     >Primary
                                                                         Language</span>
-                                                                    <span class="s_website_form_mark">
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <div class="row">
@@ -304,7 +316,8 @@
                                                                                     t-att-value="option.id"
                                                                                     t-att-selected="option.id == beneficiary.primary_Language.id"
                                                                                 >
-                                                                                    <t t-esc="option.name" />
+                                                                                    <t
+                                                                                        t-esc="option.name" />
                                                                                 </option>
                                                                             </t>
                                                                         </select>
@@ -320,7 +333,8 @@
                                                                     >
                                                                         Is the farmer the head of
                                                                         the household?</span>
-                                                                    <span class="s_website_form_mark">
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <select
@@ -343,7 +357,12 @@
                                                                 </select>
                                                                 <!-- <div class="d-flex flex-wrap">
                                                                     <div t-foreach="hh_is_household_head" t-as="option" class="form-check me-2">
-                                                                        <input class="form-check-input" type="radio" id="hh_is_household_head" name="hh_is_household_head" t-att-data-text="option.name" t-att-value="option.id" t-att-checked="option.id == household_head_selection_id" required="required" />
+                                                                        <input class="form-check-input" type="radio" id="hh_is_household_head" name="hh_is_household_head"
+                                                                t-att-data-text="option.name"
+                                                                t-att-value="option.id"
+                                                                t-att-checked="option.id ==
+                                                                household_head_selection_id"
+                                                                required="required" />
                                                                         <label class="form-check-label ms-2" t-att-for="option.id">
                                                                             <t t-esc="option.name" />
                                                                         </label>
@@ -369,7 +388,8 @@
                                                                         Name</span>
                                                                     <span style="color:green;">
                                                                         (English)</span>
-                                                                    <span class="s_website_form_mark">
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <input
@@ -401,7 +421,8 @@
                                                                     </span>
                                                                     <span style="color:green;">
                                                                         (English)</span>
-                                                                    <span class="s_website_form_mark">
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <input
@@ -433,7 +454,8 @@
                                                                     </span>
                                                                     <span style="color:green;">
                                                                         (English)</span>
-                                                                    <span class="s_website_form_mark">
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <input
@@ -472,7 +494,8 @@
                                                                         id="other-given-name"
                                                                         style="color:green;"
                                                                     >(Other)</span>
-                                                                    <span class="s_website_form_mark">
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <input
@@ -506,7 +529,8 @@
                                                                         id="other-father-name"
                                                                         style="color:green;"
                                                                     >(Other)</span>
-                                                                    <span class="s_website_form_mark">
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <input
@@ -540,7 +564,8 @@
                                                                         id="other-gf-name"
                                                                         style="color:green;"
                                                                     >(Other)</span>
-                                                                    <span class="s_website_form_mark">
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <input
@@ -665,7 +690,8 @@
                                                             class="col-lg-12 container-fluid heading-header"
                                                             style="background-color: #f0fff0;"
                                                         >
-                                                            <span class="heading-text" style="color: green;">
+                                                            <span class="heading-text"
+                                                                style="color: green;">
                                                                 Basic Details</span>
                                                         </div>
                                                     </div>
@@ -680,7 +706,8 @@
                                                                         class="s_website_form_label_content"
                                                                     >
                                                                         Region</span>
-                                                                    <span class="s_website_form_mark">
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <div class="row">
@@ -701,7 +728,8 @@
                                                                                     t-att-value="option.id"
                                                                                     t-att-selected="option.id == beneficiary.region.id"
                                                                                 >
-                                                                                    <t t-esc="option.name" />
+                                                                                    <t
+                                                                                        t-esc="option.name" />
                                                                                 </option>
                                                                             </t>
                                                                         </select>
@@ -719,7 +747,8 @@
                                                                         class="s_website_form_label_content"
                                                                     >
                                                                         Zone</span>
-                                                                    <span class="s_website_form_mark">
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <div class="row">
@@ -732,12 +761,14 @@
                                                                             required="required"
                                                                         >
                                                                             <option value=" ">Select</option>
-                                                                            <t t-foreach="zone" t-as="option">
+                                                                            <t t-foreach="zone"
+                                                                                t-as="option">
                                                                                 <option
                                                                                     t-att-value="option.id"
                                                                                     t-att-selected="option.id == beneficiary.zone.id"
                                                                                 >
-                                                                                    <t t-esc="option.name" />
+                                                                                    <t
+                                                                                        t-esc="option.name" />
                                                                                 </option>
                                                                             </t>
                                                                         </select>
@@ -755,7 +786,8 @@
                                                                         class="s_website_form_label_content"
                                                                     >
                                                                         Woreda</span>
-                                                                    <span class="s_website_form_mark">
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <div class="row">
@@ -776,7 +808,8 @@
                                                                                     t-att-value="option.id"
                                                                                     t-att-selected="option.id == beneficiary.woreda.id"
                                                                                 >
-                                                                                    <t t-esc="option.name" />
+                                                                                    <t
+                                                                                        t-esc="option.name" />
                                                                                 </option>
                                                                             </t>
                                                                         </select>
@@ -791,7 +824,8 @@
                                                             id="otherWoredaField"
                                                             style="display: none;"
                                                         >
-                                                            <div class="s_website_form_field lmargin-input">
+                                                            <div
+                                                                class="s_website_form_field lmargin-input">
                                                                 <label class="s_website_form_label">
                                                                     <span
                                                                         class="s_website_form_label_content"
@@ -819,7 +853,8 @@
                                                                         class="s_website_form_label_content"
                                                                     >
                                                                         Kebele</span>
-                                                                    <span class="s_website_form_mark">
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <div class="row">
@@ -840,7 +875,8 @@
                                                                                     t-att-value="option.id"
                                                                                     t-att-selected="option.id == beneficiary.kebele.id"
                                                                                 >
-                                                                                    <t t-esc="option.name" />
+                                                                                    <t
+                                                                                        t-esc="option.name" />
                                                                                 </option>
                                                                             </t>
                                                                         </select>
@@ -853,7 +889,8 @@
                                                             id="otherKebeleField"
                                                             style="display: none;"
                                                         >
-                                                            <div class="s_website_form_field lmargin-input">
+                                                            <div
+                                                                class="s_website_form_field lmargin-input">
                                                                 <label class="s_website_form_label">
                                                                     <span
                                                                         class="s_website_form_label_content"
@@ -889,7 +926,8 @@
                                                                         of
                                                                         Birth
                                                                     </span>
-                                                                    <span class="s_website_form_mark">
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <input
@@ -911,7 +949,8 @@
                                                                         class="s_website_form_label_content"
                                                                     >
                                                                         Gender</span>
-                                                                    <span class="s_website_form_mark">
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <div class="d-flex flex-wrap">
@@ -957,7 +996,8 @@
                                                                         Do you have a personal phone
                                                                         number?
                                                                     </span>
-                                                                    <span class="s_website_form_mark">
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <select
@@ -1001,7 +1041,8 @@
                                                                     >
                                                                         Primary Phone Number
                                                                     </span>
-                                                                    <span class="s_website_form_mark">
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <input
@@ -1036,7 +1077,8 @@
                                                                     >
                                                                         Other Phone Number
                                                                     </span>
-                                                                    <span class="s_website_form_mark">
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <input
@@ -1115,7 +1157,8 @@
                                                                         class="s_website_form_label_content"
                                                                     >
                                                                         Do you have a disability?</span>
-                                                                    <span class="s_website_form_mark">
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <select
@@ -1154,7 +1197,8 @@
                                                                     >
                                                                         Farming Type
                                                                     </span>
-                                                                    <span class="s_website_form_mark">
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <select
@@ -1166,7 +1210,8 @@
                                                                 >
                                                                     <option value=" ">Select Farming
                                                                         Type</option>
-                                                                    <t t-foreach="farming_type" t-as="option">
+                                                                    <t t-foreach="farming_type"
+                                                                        t-as="option">
                                                                         <option
                                                                             t-att-value="option.id"
                                                                             t-att-selected="option.id == farming_type_selection_id"
@@ -1179,7 +1224,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="section-footer d-flex justify-content-end">
+                                                <div
+                                                    class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-outline-secondary"
@@ -1204,7 +1250,8 @@
                                                                         style="color: #666666;"
                                                                     >Marital
                                                                         Status</span>
-                                                                    <span class="s_website_form_mark">
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <select
@@ -1238,7 +1285,8 @@
                                                                         style="color: #666666;"
                                                                     >Education
                                                                         Level</span>
-                                                                    <span class="s_website_form_mark">
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <select
@@ -1278,7 +1326,8 @@
                                                                     </span>
                                                                     <span
                                                                         class="s_website_form_mark"
-                                                                    > *</span>
+                                                                    >
+                                                                        *</span>
                                                                 </label>
                                                                 <select
                                                                     id="incomeTypeSelect"
@@ -1329,7 +1378,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="section-footer d-flex justify-content-end">
+                                                <div
+                                                    class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-outline-secondary"
@@ -1356,15 +1406,16 @@
                                                                         class="s_website_form_label_content"
                                                                         style="color: #666666;"
                                                                     >
-                                                                    Are you
-                                                                    a member
-                                                                    of a
-                                                                    primary
-                                                                    cooperative?
+                                                                        Are you
+                                                                        a member
+                                                                        of a
+                                                                        primary
+                                                                        cooperative?
                                                                     </span>
                                                                     <span
                                                                         class="s_website_form_mark membership_astrix"
-                                                                    > *</span>
+                                                                    >
+                                                                        *</span>
                                                                 </label>
                                                                 <select
                                                                     class="form-select is-member-of-primary-coop-select"
@@ -1406,7 +1457,8 @@
                                                                     </span>
                                                                     <span
                                                                         class="s_website_form_mark"
-                                                                    > *</span>
+                                                                    >
+                                                                        *</span>
                                                                 </label>
                                                                 <select
                                                                     class="form-select"
@@ -1443,7 +1495,8 @@
                                                                         class="s_website_form_label_content"
                                                                         style="color: #666666;"
                                                                     >
-                                                                        Please Specify the Primary Cooperative
+                                                                        Please Specify the Primary
+                                                                        Cooperative
                                                                     </span>
                                                                 </label>
                                                                 <input
@@ -1474,7 +1527,8 @@
                                                                     </span>
                                                                     <span
                                                                         class="s_website_form_mark membership_astrix"
-                                                                    > *</span>
+                                                                    >
+                                                                        *</span>
                                                                 </label>
                                                                 <select
                                                                     class="form-select"
@@ -1515,7 +1569,8 @@
                                                                     </span>
                                                                     <span
                                                                         class="s_website_form_mark"
-                                                                    > *</span>
+                                                                    >
+                                                                        *</span>
                                                                 </label>
                                                                 <select
                                                                     class="form-select"
@@ -1553,7 +1608,8 @@
                                                                         class="s_website_form_label_content"
                                                                         style="color: #666666;"
                                                                     >
-                                                                        Please Specify the Cooperative Union
+                                                                        Please Specify the
+                                                                        Cooperative Union
                                                                     </span>
                                                                 </label>
                                                                 <input
@@ -1578,15 +1634,16 @@
                                                                         class="s_website_form_label_content"
                                                                         style="color: #666666;"
                                                                     >
-                                                                          Are you a
-                                                                    member of a
-                                                                    Farmer
-                                                                    Production
-                                                                    Cluster (FPC)?
+                                                                        Are you a
+                                                                        member of a
+                                                                        Farmer
+                                                                        Production
+                                                                        Cluster (FPC)?
                                                                     </span>
                                                                     <span
                                                                         class="s_website_form_mark membership_astrix"
-                                                                    > *</span>
+                                                                    >
+                                                                        *</span>
                                                                 </label>
                                                                 <div class="form-group">
                                                                     <select
@@ -1603,7 +1660,8 @@
                                                                                 t-att-value="option.id"
                                                                                 t-att-selected="option.id == is_member_in_farmer_cluster_selection_id"
                                                                             >
-                                                                                <t t-esc="option.name" />
+                                                                                <t
+                                                                                    t-esc="option.name" />
                                                                             </option>
                                                                         </t>
                                                                     </select>
@@ -1626,13 +1684,14 @@
                                                                         class="s_website_form_label_content"
                                                                         style="color: #666666;"
                                                                     >
-                                                                       What is the primary
-                                                                    commodity produced
-                                                                    by your FPC?
+                                                                        What is the primary
+                                                                        commodity produced
+                                                                        by your FPC?
                                                                     </span>
                                                                     <span
                                                                         class="s_website_form_mark"
-                                                                    > *</span>
+                                                                    >
+                                                                        *</span>
                                                                 </label>
                                                                 <select
                                                                     class="form-select"
@@ -1670,13 +1729,14 @@
                                                                         class="s_website_form_label_content"
                                                                         style="color: #666666;"
                                                                     >
-                                                                       What is your
-                                                                    role in the
-                                                                    FPC?
+                                                                        What is your
+                                                                        role in the
+                                                                        FPC?
                                                                     </span>
                                                                     <span
                                                                         class="s_website_form_mark"
-                                                                    > *</span>
+                                                                    >
+                                                                        *</span>
                                                                 </label>
                                                                 <select
                                                                     class="form-select"
@@ -1701,7 +1761,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="section-footer d-flex justify-content-end">
+                                                <div
+                                                    class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-outline-secondary"
@@ -1720,7 +1781,8 @@
                                                     <div id="section-content-land">
                                                         <t t-if="not land_info_data">
                                                             <div id="land-section-content">
-                                                                <div class="container-fluid pl-3 pr-5">
+                                                                <div
+                                                                    class="container-fluid pl-3 pr-5">
                                                                     <hr class="land-separator" />
                                                                 </div>
                                                                 <div
@@ -1728,7 +1790,8 @@
                                                                     id="land-section-repeat"
                                                                     data-index="0"
                                                                 >
-                                                                    <div class="container-fluid px-5">
+                                                                    <div
+                                                                        class="container-fluid px-5">
                                                                         <div class="row pt-3 pb-1">
                                                                             <div
                                                                                 class="row col-11 land_container2"
@@ -1756,7 +1819,8 @@
                                                                                         onchange="validateElement(this)"
                                                                                         required="required"
                                                                                     >
-                                                                                        <option value="">
+                                                                                        <option
+                                                                                            value="">
                                                                                             Select
                                                                                             Type</option>
                                                                                         <t
@@ -1880,7 +1944,8 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="container-fluid pl-3 pr-5">
+                                                                    <div
+                                                                        class="container-fluid pl-3 pr-5">
                                                                         <hr class="land-separator" />
                                                                     </div>
                                                                 </div>
@@ -1888,25 +1953,30 @@
                                                         </t>
                                                         <t t-else="">
                                                             <div id="land-section-content">
-                                                                <div class="container-fluid pl-3 pr-5">
+                                                                <div
+                                                                    class="container-fluid pl-3 pr-5">
                                                                     <hr class="land-separator" />
                                                                 </div>
                                                                 <t
                                                                     t-foreach="land_info_data"
                                                                     t-as="land_info"
                                                                 >
-                                                                    <t t-options='{"t-key": "index"}'>
+                                                                    <t
+                                                                        t-options='{"t-key": "index"}'>
                                                                         <div
                                                                             class="land-section-wrapper"
                                                                             id="land-section-repeat"
                                                                             t-att-data-index="land_info['index']"
                                                                         >
-                                                                            <div class="container-fluid px-5">
-                                                                                <div class="row pt-3 pb-1">
+                                                                            <div
+                                                                                class="container-fluid px-5">
+                                                                                <div
+                                                                                    class="row pt-3 pb-1">
                                                                                     <div
                                                                                         class="row col-11 land_container2"
                                                                                     >
-                                                                                        <div class="col-3">
+                                                                                        <div
+                                                                                            class="col-3">
                                                                                             <label
                                                                                                 class="s_website_form_label"
                                                                                             >
@@ -1949,7 +2019,8 @@
                                                                                                 </t>
                                                                                             </select>
                                                                                         </div>
-                                                                                        <div class="col-3">
+                                                                                        <div
+                                                                                            class="col-3">
                                                                                             <label
                                                                                                 class="s_website_form_mark land_astrix"
                                                                                             >
@@ -1979,7 +2050,8 @@
                                                                                                 placeholder="Enter Land Area"
                                                                                             />
                                                                                         </div>
-                                                                                        <div class="col-3">
+                                                                                        <div
+                                                                                            class="col-3">
                                                                                             <label
                                                                                                 class="s_website_form_label"
                                                                                             >
@@ -2006,7 +2078,8 @@
                                                                                                 placeholder="Enter Land ID"
                                                                                             />
                                                                                         </div>
-                                                                                        <div class="col-3">
+                                                                                        <div
+                                                                                            class="col-3">
                                                                                             <label
                                                                                                 class="s_website_form_label"
                                                                                             >
@@ -2047,7 +2120,8 @@
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div class="col-1 my-3">
+                                                                                    <div
+                                                                                        class="col-1 my-3">
                                                                                         <button
                                                                                             type="button"
                                                                                             class="btn btn-outline-secondary btn-sm my-3 "
@@ -2063,14 +2137,16 @@
                                                                             <div
                                                                                 class="container-fluid pl-3 pr-5"
                                                                             >
-                                                                                <hr class="land-separator" />
+                                                                                <hr
+                                                                                    class="land-separator" />
                                                                             </div>
                                                                         </div>
                                                                     </t>
                                                                 </t>
                                                             </div>
                                                         </t>
-                                                        <div id="land-hidden-template" style="display: none;">
+                                                        <div id="land-hidden-template"
+                                                            style="display: none;">
                                                             <div
                                                                 class="land-section-wrapper"
                                                                 id="land-section-repeat"
@@ -2218,12 +2294,14 @@
                                                                                 class="btn btn-outline-secondary btn-sm my-3 "
                                                                                 onclick="deleteLand(this)"
                                                                             >
-                                                                                <i class="fas fa-trash-alt" />
+                                                                                <i
+                                                                                    class="fas fa-trash-alt" />
                                                                             </button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="container-fluid pl-3 pr-5">
+                                                                <div
+                                                                    class="container-fluid pl-3 pr-5">
                                                                     <hr class="land-separator" />
                                                                 </div>
                                                             </div>
@@ -2241,7 +2319,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="section-footer d-flex justify-content-end">
+                                                <div
+                                                    class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-outline-secondary"
@@ -2260,7 +2339,8 @@
                                                     class="section-content crop-mixed-err-msg error-message s_website_form_field"
                                                     style="display: none;color: red;"
                                                 >
-                                                This section is only for Crop or Mixed farming types.
+                                                    This section is only for Crop or Mixed farming
+                                                    types.
                                                 </div>
                                                 <div class="section-content crop-mixed-farming-type">
                                                     <div class="row">
@@ -2275,7 +2355,8 @@
                                                                         production?</span>
                                                                     <span
                                                                         class="s_website_form_mark"
-                                                                    > *</span>
+                                                                    >
+                                                                        *</span>
                                                                 </label>
                                                                 <select
                                                                     class="selectpicker"
@@ -2286,7 +2367,8 @@
                                                                     style="width: 100%;"
                                                                     data-none-selected-text="Select Water Source"
                                                                 >
-                                                                    <t t-foreach="water_source" t-as="option">
+                                                                    <t t-foreach="water_source"
+                                                                        t-as="option">
                                                                         <option
                                                                             t-att-value="option.id"
                                                                             t-att-selected="'selected' if option.id in (beneficiary.crop_water_sources.ids or []) else None"
@@ -2301,7 +2383,8 @@
                                                     <div id="section-content-crop">
                                                         <t t-if="not crop_info_data">
                                                             <div id="crop-section-content">
-                                                                <div class="container-fluid pl-3 pr-5">
+                                                                <div
+                                                                    class="container-fluid pl-3 pr-5">
                                                                     <hr class="land-separator" />
                                                                 </div>
                                                                 <div
@@ -2309,7 +2392,8 @@
                                                                     id="crop-section-repeat"
                                                                     data-index="0"
                                                                 >
-                                                                    <div class="container-fluid px-5">
+                                                                    <div
+                                                                        class="container-fluid px-5">
                                                                         <div class="row pt-3 pb-1">
                                                                             <div
                                                                                 class="row col-11 land_container2"
@@ -2338,7 +2422,8 @@
                                                                                         onchange="validateElement(this)"
                                                                                         required="required"
                                                                                     >
-                                                                                        <option value=" ">
+                                                                                        <option
+                                                                                            value=" ">
                                                                                             Select
                                                                                             Commodity</option>
                                                                                         <t
@@ -2364,12 +2449,15 @@
                                                                                             class="s_website_form_label_content"
                                                                                             style="color: #666666;"
                                                                                         >
-                                                                                                   When was this crop planted?
+                                                                                            When was
+                                                                                            this
+                                                                                            crop
+                                                                                            planted?
                                                                                         </span>
                                                                                         <span
                                                                                             class="s_website_form_mark"
                                                                                         >
-                                                                                                    *</span>
+                                                                                            *</span>
                                                                                     </label>
                                                                                     <input
                                                                                         type="date"
@@ -2395,7 +2483,8 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="container-fluid pl-3 pr-5">
+                                                                    <div
+                                                                        class="container-fluid pl-3 pr-5">
                                                                         <hr class="land-separator" />
                                                                     </div>
                                                                 </div>
@@ -2403,25 +2492,30 @@
                                                         </t>
                                                         <t t-else="">
                                                             <div id="crop-section-content">
-                                                                <div class="container-fluid pl-3 pr-5">
+                                                                <div
+                                                                    class="container-fluid pl-3 pr-5">
                                                                     <hr class="land-separator" />
                                                                 </div>
                                                                 <t
                                                                     t-foreach="crop_info_data"
                                                                     t-as="crop_info"
                                                                 >
-                                                                    <t t-options='{"t-key": "index"}'>
+                                                                    <t
+                                                                        t-options='{"t-key": "index"}'>
                                                                         <div
                                                                             class="crop-section-wrapper"
                                                                             id="crop-section-repeat"
                                                                             t-att-data-index="crop_info['index']"
                                                                         >
-                                                                            <div class="container-fluid px-5">
-                                                                                <div class="row pt-3 pb-1">
+                                                                            <div
+                                                                                class="container-fluid px-5">
+                                                                                <div
+                                                                                    class="row pt-3 pb-1">
                                                                                     <div
                                                                                         class="row col-11 land_container2"
                                                                                     >
-                                                                                        <div class="col-6">
+                                                                                        <div
+                                                                                            class="col-6">
                                                                                             <label
                                                                                                 class="s_website_form_label"
                                                                                             >
@@ -2466,7 +2560,8 @@
                                                                                                 </t>
                                                                                             </select>
                                                                                         </div>
-                                                                                        <div class="col-6">
+                                                                                        <div
+                                                                                            class="col-6">
                                                                                             <label
                                                                                                 class="s_website_form_label"
                                                                                             >
@@ -2474,7 +2569,9 @@
                                                                                                     class="s_website_form_label_content"
                                                                                                     style="color: #666666;"
                                                                                                 >
-                                                                                                   Crop Planted Date
+                                                                                                    Crop
+                                                                                                    Planted
+                                                                                                    Date
                                                                                                 </span>
                                                                                                 <span
                                                                                                     class="s_website_form_mark"
@@ -2493,7 +2590,8 @@
                                                                                             />
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div class="col-1 my-3">
+                                                                                    <div
+                                                                                        class="col-1 my-3">
                                                                                         <button
                                                                                             type="button"
                                                                                             class="btn btn-outline-secondary btn-sm my-3 "
@@ -2509,14 +2607,16 @@
                                                                             <div
                                                                                 class="container-fluid pl-3 pr-5"
                                                                             >
-                                                                                <hr class="land-separator" />
+                                                                                <hr
+                                                                                    class="land-separator" />
                                                                             </div>
                                                                         </div>
                                                                     </t>
                                                                 </t>
                                                             </div>
                                                         </t>
-                                                        <div id="crop-hidden-template" style="display: none;">
+                                                        <div id="crop-hidden-template"
+                                                            style="display: none;">
                                                             <div
                                                                 class="crop-section-wrapper"
                                                                 id="crop-section-repeat"
@@ -2551,7 +2651,8 @@
                                                                                     onchange="validateElement(this)"
                                                                                     required="required"
                                                                                 >
-                                                                                    <option value=" ">
+                                                                                    <option
+                                                                                        value=" ">
                                                                                         Select
                                                                                         Commodity</option>
                                                                                     <t
@@ -2577,7 +2678,9 @@
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
                                                                                     >
-                                                                                        When was this crop planted?
+                                                                                        When was
+                                                                                        this crop
+                                                                                        planted?
                                                                                     </span>
                                                                                     <span
                                                                                         class="s_website_form_mark"
@@ -2602,12 +2705,14 @@
                                                                                 class="btn btn-outline-secondary btn-sm my-3 "
                                                                                 onclick="deleteCrop(this)"
                                                                             >
-                                                                                <i class="fas fa-trash-alt" />
+                                                                                <i
+                                                                                    class="fas fa-trash-alt" />
                                                                             </button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="container-fluid pl-3 pr-5">
+                                                                <div
+                                                                    class="container-fluid pl-3 pr-5">
                                                                     <hr class="land-separator" />
                                                                 </div>
                                                             </div>
@@ -2625,7 +2730,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="section-footer d-flex justify-content-end">
+                                                <div
+                                                    class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-outline-secondary"
@@ -2644,7 +2750,8 @@
                                                     class="section-content livestock-err-msg error-message s_website_form_field"
                                                     style="display: none;color: red;"
                                                 >
-                                            This section is only for Livestock or Mixed farming types.
+                                                    This section is only for Livestock or Mixed
+                                                    farming types.
                                                 </div>
                                                 <div class="section-content livestock-farming-type">
                                                     <div class="row">
@@ -2661,7 +2768,8 @@
                                                                     </span>
                                                                     <span
                                                                         class="s_website_form_mark"
-                                                                    > *</span>
+                                                                    >
+                                                                        *</span>
                                                                 </label>
                                                                 <select
                                                                     class="selectpicker"
@@ -2672,7 +2780,8 @@
                                                                     style="width: 100%;"
                                                                     data-none-selected-text="Select Water Source"
                                                                 >
-                                                                    <t t-foreach="water_source" t-as="option">
+                                                                    <t t-foreach="water_source"
+                                                                        t-as="option">
                                                                         <option
                                                                             t-att-value="option.id"
                                                                             t-att-selected="'selected' if option.id in (beneficiary.livestock_water_sources.ids or []) else None"
@@ -2687,7 +2796,8 @@
                                                     <div id="section-content-livestock">
                                                         <t t-if="not livestock_info_data">
                                                             <div id="livestock-section-content">
-                                                                <div class="container-fluid pl-3 pr-5">
+                                                                <div
+                                                                    class="container-fluid pl-3 pr-5">
                                                                     <hr class="land-separator" />
                                                                 </div>
                                                                 <div
@@ -2695,7 +2805,8 @@
                                                                     id="livestock-section-repeat"
                                                                     data-index="0"
                                                                 >
-                                                                    <div class="container-fluid px-5">
+                                                                    <div
+                                                                        class="container-fluid px-5">
                                                                         <div class="row pt-3 pb-1">
                                                                             <div
                                                                                 class="row col-11 land_container2"
@@ -2725,7 +2836,8 @@
                                                                                         onchange="validateElement(this)"
                                                                                         required="required"
                                                                                     >
-                                                                                        <option value=" ">
+                                                                                        <option
+                                                                                            value=" ">
                                                                                             Select
                                                                                             Animal
                                                                                             Type</option>
@@ -2785,7 +2897,8 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="container-fluid pl-3 pr-5">
+                                                                    <div
+                                                                        class="container-fluid pl-3 pr-5">
                                                                         <hr class="land-separator" />
                                                                     </div>
                                                                 </div>
@@ -2793,25 +2906,30 @@
                                                         </t>
                                                         <t t-else="">
                                                             <div id="livestock-section-content">
-                                                                <div class="container-fluid pl-3 pr-5">
+                                                                <div
+                                                                    class="container-fluid pl-3 pr-5">
                                                                     <hr class="land-separator" />
                                                                 </div>
                                                                 <t
                                                                     t-foreach="livestock_info_data"
                                                                     t-as="livestock_info"
                                                                 >
-                                                                    <t t-options='{"t-key": "index"}'>
+                                                                    <t
+                                                                        t-options='{"t-key": "index"}'>
                                                                         <div
                                                                             class="livestock-section-wrapper"
                                                                             id="livestock-section-repeat"
                                                                             t-att-data-index="livestock_info['index']"
                                                                         >
-                                                                            <div class="container-fluid px-5">
-                                                                                <div class="row pt-3 pb-1">
+                                                                            <div
+                                                                                class="container-fluid px-5">
+                                                                                <div
+                                                                                    class="row pt-3 pb-1">
                                                                                     <div
                                                                                         class="row col-11 land_container2"
                                                                                     >
-                                                                                        <div class="col-6">
+                                                                                        <div
+                                                                                            class="col-6">
                                                                                             <label
                                                                                                 class="s_website_form_label"
                                                                                             >
@@ -2860,7 +2978,8 @@
                                                                                                 </t>
                                                                                             </select>
                                                                                         </div>
-                                                                                        <div class="col-6">
+                                                                                        <div
+                                                                                            class="col-6">
                                                                                             <label
                                                                                                 class="s_website_form_label"
                                                                                             >
@@ -2892,7 +3011,8 @@
                                                                                             />
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div class="col-1 my-3">
+                                                                                    <div
+                                                                                        class="col-1 my-3">
                                                                                         <button
                                                                                             type="button"
                                                                                             class="btn btn-outline-secondary btn-sm my-3 "
@@ -2908,7 +3028,8 @@
                                                                             <div
                                                                                 class="container-fluid pl-3 pr-5"
                                                                             >
-                                                                                <hr class="land-separator" />
+                                                                                <hr
+                                                                                    class="land-separator" />
                                                                             </div>
                                                                         </div>
                                                                     </t>
@@ -2925,7 +3046,8 @@
                                                                     id="livestock-section-repeat"
                                                                     t-att-data-index="{9999}"
                                                                 >
-                                                                    <div class="container-fluid px-5">
+                                                                    <div
+                                                                        class="container-fluid px-5">
                                                                         <div class="row pt-3 pb-1">
                                                                             <div
                                                                                 class="row col-11 land_container2"
@@ -2955,7 +3077,8 @@
                                                                                         onchange="validateElement(this)"
                                                                                         required="required"
                                                                                     >
-                                                                                        <option value=" ">
+                                                                                        <option
+                                                                                            value=" ">
                                                                                             Select
                                                                                             Animal
                                                                                             Type</option>
@@ -3015,7 +3138,8 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="container-fluid pl-3 pr-5">
+                                                                    <div
+                                                                        class="container-fluid pl-3 pr-5">
                                                                         <hr class="land-separator" />
                                                                     </div>
                                                                 </div>
@@ -3034,7 +3158,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="section-footer d-flex justify-content-end">
+                                                <div
+                                                    class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-outline-secondary"
@@ -3053,7 +3178,8 @@
                                                     class="section-content crop-mixed-err-msg error-message s_website_form_field"
                                                     style="display: none;color: red;"
                                                 >
-                                                    This section is only for Crop or Mixed farming types.
+                                                    This section is only for Crop or Mixed farming
+                                                    types.
                                                 </div>
                                                 <div class="section-content crop-mixed-farming-type">
                                                     <div class="row">
@@ -3064,9 +3190,10 @@
                                                                         class="s_website_form_label_content"
                                                                         style="color: #666666;"
                                                                     >Do
-                                                                    you use fertiliser
-                                                                    on your farm?</span>
-                                                                    <span class="s_website_form_mark">
+                                                                        you use fertiliser
+                                                                        on your farm?</span>
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <select
@@ -3098,9 +3225,10 @@
                                                                         class="s_website_form_label_content"
                                                                         style="color: #666666;"
                                                                     >Do
-                                                                    you use pesticide
-                                                                    on your farm?</span>
-                                                                    <span class="s_website_form_mark">
+                                                                        you use pesticide
+                                                                        on your farm?</span>
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <select
@@ -3134,9 +3262,10 @@
                                                                         class="s_website_form_label_content"
                                                                         style="color: #666666;"
                                                                     >Do
-                                                                    you use insecticide
-                                                                    on your farm?</span>
-                                                                    <span class="s_website_form_mark">
+                                                                        you use insecticide
+                                                                        on your farm?</span>
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <select
@@ -3168,10 +3297,11 @@
                                                                         class="s_website_form_label_content"
                                                                         style="color: #666666;"
                                                                     >Do
-                                                                    you use
-                                                                    improved seeds
-                                                                    on your farm?</span>
-                                                                    <span class="s_website_form_mark">
+                                                                        you use
+                                                                        improved seeds
+                                                                        on your farm?</span>
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <select
@@ -3220,7 +3350,8 @@
                                                     class="section-content crop-mixed-err-msg error-message s_website_form_field"
                                                     style="display: none;color: red;"
                                                 >
-                                            This section is only for Crop or Mixed farming types.
+                                                    This section is only for Crop or Mixed farming
+                                                    types.
                                                 </div>
                                                 <div class="section-content crop-mixed-farming-type">
                                                     <div class="row">
@@ -3234,7 +3365,8 @@
                                                                         you
                                                                         use
                                                                         machinery?</span>
-                                                                    <span class="s_website_form_mark">
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <select
@@ -3275,7 +3407,8 @@
                                                                         you use?</span>
                                                                     <span
                                                                         class="s_website_form_mark"
-                                                                    > *</span>
+                                                                    >
+                                                                        *</span>
                                                                 </label>
                                                                 <select
                                                                     class="selectpicker form-control"
@@ -3303,7 +3436,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="section-footer d-flex justify-content-end">
+                                                <div
+                                                    class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-outline-secondary"
@@ -3331,7 +3465,8 @@
                                                                         have access to financial
                                                                         services?
                                                                     </span>
-                                                                    <span class="s_website_form_mark">
+                                                                    <span
+                                                                        class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <select
@@ -3372,7 +3507,8 @@
                                                                         have?</span>
                                                                     <span
                                                                         class="s_website_form_mark"
-                                                                    > *</span>
+                                                                    >
+                                                                        *</span>
                                                                 </label>
                                                                 <select
                                                                     class="selectpicker form-control"
@@ -3400,7 +3536,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="section-footer d-flex justify-content-end">
+                                                <div
+                                                    class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-outline-secondary"
@@ -3449,7 +3586,8 @@
                                 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
                                 rel="stylesheet"
                             />
-                            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" />
+                            <script
+                                src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" />
                             <script
                                 src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"
                                 integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g=="
