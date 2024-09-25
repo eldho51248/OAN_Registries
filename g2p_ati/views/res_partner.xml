@@ -62,7 +62,7 @@
 				<attribute name="invisible">1</attribute>
 			</xpath>
 			<xpath expr="//field[@name='registration_date']" position="before">
-				<field name="has_national_id" invisible="is_farmer!='yes'"/>
+				<field name="has_national_id" invisible="is_farmer!='yes'" />
 				<!-- <field name="registration_date" readonly="1" /> -->
 				<field name="rejection_reason" invisible="state!='rejected'" />
 			</xpath>
@@ -174,7 +174,7 @@
 					</group>
 					<group name="socio_economic_data" string="Social Economic Data">
 						<field name="hh_is_household_head" />
-						<field name="hh_income_type" create="False" widget="many2many_tags" invisible="is_farmer!='yes'"/>
+						<field name="hh_income_type" create="False" widget="many2many_tags" invisible="is_farmer!='yes'" />
 						<field name="education" invisible="is_farmer!='yes'" />
 						<field name="martial_status" invisible="is_farmer!='yes'" />
 					</group>

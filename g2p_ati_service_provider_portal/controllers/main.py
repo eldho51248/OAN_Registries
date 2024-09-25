@@ -1351,7 +1351,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             # Preparing data for rendering
             land_info_data = self._prepare_land_info_data(beneficiary, ownership_type_selections)
-            print("land info",land_info_data)
             crop_info_data, serialized_crop_info_data = self._prepare_crop_info_data(beneficiary)
             livestock_info_data, serialized_livestock_info_data = self._prepare_livestock_info_data(
                 beneficiary
@@ -1612,7 +1611,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
     def _prepare_land_info_data(self, beneficiary, ownership_type_selections):
         land_info_data = []
-        print
         for index, land_info in enumerate(beneficiary.land_information_ids, start=1):
             ownership_selection_id = False
             for choice in ownership_type_selections:
@@ -1625,7 +1623,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     "total_land_area": land_info.total_land_area,
                     "land_id": land_info.land_id,
                     "ownership_type_selection_id": ownership_selection_id,
-
                 }
             )
         return land_info_data
@@ -2376,7 +2373,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         csrf=False,
     )
     def add_family_member_submit(self, **kw):
-        print("heloooo")
         res = dict()
         try:
             group_id = kw.get("group_id")
@@ -2392,7 +2388,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             gf_name_eng = kw.get("gf_name_eng")
             relationship = int(kw.get("Relationship"))
             relationship = [(6, 0, [relationship])]
-            print("relationship is",relationship)
+            print("relationship is", relationship)
 
             name = f"{given_name} {family_name} {gf_name_eng}"
 
@@ -2412,14 +2408,10 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             group_membership_vals = [
                 (0, 0, {"individual": individual.id, "group": group_rec.id, "kind": relationship})
             ]
-            print("mem vals",group_membership_vals)
 
             group_rec.write({"group_membership_ids": group_membership_vals})
-            print("successful")
 
             member_list = []
-
-            print("list")
 
             for membership in group_rec.group_membership_ids:
                 if membership.individual.is_farmer == "yes":
@@ -2437,7 +2429,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                             "kind": kind_name,
                         }
                     )
-            print("member list",member_list)
 
             res["member_list"] = member_list
             return json.dumps(res)
@@ -2454,7 +2445,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         csrf=False,
     )
     def delete_family_member(self, **kw):
-                # res = dict()
+        # res = dict()
         try:
             member_id = int(kw.get("member_id"))
             group_id = int(kw.get("group_id"))
@@ -2484,7 +2475,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         except Exception as e:
             _logger.error("ERROR LOG IN DELETE FAMILY MEMBER: %s", e)
             return json.dumps({"error": f"An error occurred while deleting the member: {str(e)}"})
-
 
     def get_membership_kind(self, relationship):
         if relationship == "Wife":
@@ -2624,7 +2614,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                             "name": membership.individual.name,
                             "age": membership.individual.age,
                             "gender": membership.individual.gender,
-                            "hh_is_household_head":membership.individual.hh_is_household_head,
+                            "hh_is_household_head": membership.individual.hh_is_household_head,
                             "group_id": membership.group.id,
                         }
                     )
@@ -2869,23 +2859,23 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             vals["finance_accesses"] = [
                 (6, 0, [int(id) for id in json.loads(kw.get("financialSectors", "[]"))])
             ]
-            
-        if vals.get('farming_type') != 'livestock_farming':
+
+        if vals.get("farming_type") != "livestock_farming":
             if kw.get("usedFertilizer"):
                 vals["do_you_use_fertilizer"] = self._get_selection_value(
                     "ir.model.fields.selection", kw.get("usedFertilizer")
                 )
-            
+
             if kw.get("usedInsecticide"):
                 vals["do_you_use_insecticide"] = self._get_selection_value(
                     "ir.model.fields.selection", kw.get("usedInsecticide")
                 )
-            
+
             if kw.get("usedPesticide"):
                 vals["do_you_use_pesticide"] = self._get_selection_value(
                     "ir.model.fields.selection", kw.get("usedPesticide")
                 )
-            
+
             if kw.get("usedImprovedSeed"):
                 vals["do_you_use_improved_seed"] = self._get_selection_value(
                     "ir.model.fields.selection", kw.get("usedImprovedSeed")

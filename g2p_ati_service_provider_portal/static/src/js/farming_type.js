@@ -53,10 +53,10 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
     }
 
     if (selectedFarmingType === "Crop Farming") {
-         Array.from(livestockRequiredFields).forEach((element) => {
+        Array.from(livestockRequiredFields).forEach((element) => {
             element.removeAttribute("required", "required");
         });
-        
+
         if (fromGroup) {
             cropNext.setAttribute(
                 "onclick",
@@ -74,7 +74,6 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
             const livestock = document.getElementsByClassName("livestock-farming-type");
             Array.from(livestock).forEach((section) => {
                 section.style.display = "none";
-
             });
             const errMsg = document.getElementsByClassName("livestock-err-msg");
             Array.from(errMsg).forEach((section) => {
@@ -128,7 +127,6 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
             const livestock = document.getElementsByClassName("livestock-farming-type");
             Array.from(livestock).forEach((section) => {
                 section.style.display = "block";
-
             });
             const errMsgLive = document.getElementsByClassName("livestock-err-msg");
             Array.from(errMsgLive).forEach((section) => {
@@ -157,8 +155,6 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
             const livestock = document.getElementsByClassName("livestock-farming-type");
             Array.from(livestock).forEach((section) => {
                 section.style.display = "block";
-
-
             });
             const errMsgLive = document.getElementsByClassName("livestock-err-msg");
             Array.from(errMsgLive).forEach((section) => {

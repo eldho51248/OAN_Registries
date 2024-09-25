@@ -164,7 +164,7 @@
                                                                     national ID?</span>
                                                                 <span class="s_website_form_mark"> *</span>
                                                             </label>
-                                                            
+
                                                             <!-- <div class="d-flex flex-wrap">
                                                                 <div t-foreach="has_national_id" t-as="option" class="form-check me-2">
                                                                     <input class="form-check-input " type="radio" name="has_national_id" onchange="validateElement(this)" id="have-national-id-selection" t-att-data-text="option.name" t-att-value="option.id" t-att-checked="option.id == have_national_id_selection_id" />
@@ -1863,8 +1863,6 @@
                                                                                             id="land_certificate_0"
                                                                                             name="land_certificate_0"
                                                                                             class="form-control land_required_field"
-                                                                                            
-                                                                                            
                                                                                         />
                                                                                     </div>
                                                                                 </div>
@@ -2045,7 +2043,6 @@
                                                                                                     t-att-id="'land_certificate_' + str(land_info['index'])"
                                                                                                     t-att-name="'land_certificate_' + str(land_info['index'])"
                                                                                                     class="form-control land_required_field"
-                                                                                                   
                                                                                                 />
                                                                                             </div>
                                                                                         </div>
@@ -2211,7 +2208,6 @@
                                                                                         t-att-id="'land_certificate_' + str({9999})"
                                                                                         t-att-name="'land_certificate_' + str({9999})"
                                                                                         class="form-control land_required_field"
-                                                                                       
                                                                                     />
                                                                                 </div>
                                                                             </div>
@@ -2728,7 +2724,6 @@
                                                                                         name="livestock_types_0"
                                                                                         onchange="validateElement(this)"
                                                                                         required="required"
-                                                                                        
                                                                                     >
                                                                                         <option value=" ">
                                                                                             Select
@@ -3468,8 +3463,8 @@
                                 src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.14/js/bootstrap-select.min.js"
                             />
                             <script type="text/javascript"> var primaryLanguageData = JSON.parse('<t
-                                t-esc="primary_language_js"
-                            />'); </script>
+                                    t-esc="primary_language_js"
+                                />'); </script>
                             <script
                                 type="text/javascript"
                                 src="/g2p_ati_service_provider_portal/static/src/js/virtual-select.min.js"

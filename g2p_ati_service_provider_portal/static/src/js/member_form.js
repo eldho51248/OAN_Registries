@@ -116,7 +116,7 @@ $(document).on("click", "#member_submit", async function () {
     var additional_info = {};
 
     var group = $("input[name='group_id']").val();
-    
+
     var region = document.getElementById("region_selection").value;
     var zone = document.getElementById("zon_selection").value;
     console.log(zone);
@@ -189,8 +189,6 @@ $(document).on("click", "#member_submit", async function () {
     var primaryComodity = document.getElementById("primary_commodity").value;
     var roleInCluster = document.getElementById("role_in_cluster").value;
 
-
-    
     var usedFertilizer = document.getElementById("have-used-fertilizer-selection").value;
     var usedInsecticide = document.getElementById("have-used-insecticide-selection").value;
     var usedPesticide = document.getElementById("have-used-pesticide-selection").value;
@@ -198,8 +196,6 @@ $(document).on("click", "#member_submit", async function () {
 
     var accessToMachinary = document.getElementById("access-to-machinery-selection").value;
     var matchinaryTypes = $("#farmerDetailModal #machinery-types-select").val();
-
-   
 
     var accessToFinance = document.getElementById("access-to-finance-selection").value;
     var financialSectors = $("#farmerDetailModal #finance-selection").val();
@@ -340,9 +336,7 @@ $(document).on("click", "#member_submit", async function () {
 
     $(".form-control, .form-select").removeClass("is-invalid");
 
-    console.log(`here is the group: ${group}`)
-
-
+    console.log(`here is the group: ${group}`);
 
     $.ajax({
         url: "/serviceprovider/individual/create/",
