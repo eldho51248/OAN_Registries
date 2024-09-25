@@ -2620,6 +2620,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                             "name": membership.individual.name,
                             "age": membership.individual.age,
                             "gender": membership.individual.gender,
+                            "hh_is_household_head":membership.individual.hh_is_household_head,
                             "group_id": membership.group.id,
                         }
                     )

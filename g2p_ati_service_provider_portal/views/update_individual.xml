@@ -3467,9 +3467,8 @@
                                 src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.14/js/bootstrap-select.min.js"
                             />
                             <script type="text/javascript"> var primaryLanguageData = JSON.parse('<t
-                                    t-esc="primary_language_js"
-                                />
-'); </script>
+                                t-esc="primary_language_js"
+                            />'); </script>
                             <script
                                 type="text/javascript"
                                 src="/g2p_ati_service_provider_portal/static/src/js/virtual-select.min.js"

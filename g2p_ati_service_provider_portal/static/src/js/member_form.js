@@ -426,7 +426,7 @@ $(document).on("click", "#member_submit", async function () {
                             <td style="color:#704880; font: normal normal 600 13px/16px Inter;">${member.name}</td>
                             <td>${member.age}</td>
                             <td>${member.gender}</td>
-                            <td>${member.relationship}</td>
+                            <td>${member.hh_is_household_head}</td>
 
                             <td>
                                  <a href="/serviceprovider/individual/update/${member.id}" class="btn btn-icon rounded-0 edit-btn" title="Edit">

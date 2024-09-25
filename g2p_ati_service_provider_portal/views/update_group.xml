@@ -459,18 +459,10 @@
                                                                                     <t
                                                                                         t-if="individual['hh_is_household_head'] == 'yes'"
                                                                                     >
-                                                                                        <input
-                                                                                            type="checkbox"
-                                                                                            checked="checked"
-                                                                                            class="hh-checkbox"
-                                                                                        />
+                                                                                    <p>Yes</p>
                                                                                     </t>
                                                                                     <t t-else="">
-                                                                                        <input
-                                                                                            type="checkbox"
-                                                                                            disabled="disabled"
-                                                                                            class="hh-checkbox"
-                                                                                        />
+                                                                                        <p>No</p>
                                                                                     </t>
                                                                                 </td>
 
