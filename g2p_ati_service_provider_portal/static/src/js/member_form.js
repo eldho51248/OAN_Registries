@@ -190,27 +190,11 @@ $(document).on("click", "#member_submit", async function () {
     var roleInCluster = document.getElementById("role_in_cluster").value;
 
 
-    var selectedOption = farmingTypeSelection.options[farmingTypeSelection.selectedIndex];
-    var selectedFarmingType = selectedOption.textContent.trim();
-
-    var usedFertilizer;
-    var usedInsecticide;
-    var usedPesticide;
-    var usedImprovedSeed;
-   
-   
-    if (selectedFarmingType === "Livestock Farming") {
-        usedFertilizer = false;
-        usedInsecticide = false;
-        usedPesticide = false;
-        usedImprovedSeed = false;
-        
-    } else {
-        usedFertilizer = document.getElementById("have-used-fertilizer-selection").value;
-        usedInsecticide = document.getElementById("have-used-insecticide-selection").value;
-        usedPesticide = document.getElementById("have-used-pesticide-selection").value;
-        usedImprovedSeed = document.getElementById("have-used-improved-seed-selection").value;
-    }
+    
+    var usedFertilizer = document.getElementById("have-used-fertilizer-selection").value;
+    var usedInsecticide = document.getElementById("have-used-insecticide-selection").value;
+    var usedPesticide = document.getElementById("have-used-pesticide-selection").value;
+    var usedImprovedSeed = document.getElementById("have-used-improved-seed-selection").value;
 
     var accessToMachinary = document.getElementById("access-to-machinery-selection").value;
     var matchinaryTypes = $("#farmerDetailModal #machinery-types-select").val();
