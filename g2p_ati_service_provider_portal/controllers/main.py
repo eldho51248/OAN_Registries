@@ -2400,6 +2400,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 "gender": kw.get("gender"),
                 "is_registrant": True,
                 "is_group": False,
+                "is_farmer": "no"
             }
             individual = request.env["res.partner"].sudo().create(partner_data)
 
@@ -2449,6 +2450,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             group_id = int(kw.get("group_id"))
             member = request.env["res.partner"].sudo().browse(member_id)
             group_rec = request.env["res.partner"].sudo().browse(group_id)
+            
+            _logger.info(f"here in the delete {member_id}")
 
             if not member.exists():
                 return json.dumps({"error": "Member not found"})
@@ -2456,23 +2459,45 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             if not group_rec.exists():
                 return json.dumps({"error": "Group not found"})
 
-            if member.is_farmer == "no":
+            if member.hh_is_household_head !="yes":
                 group_membership = (
                     request.env["g2p.group.membership"]
                     .sudo()
                     .search([("group", "=", group_id), ("individual", "=", member_id)])
                 )
+                
                 if group_membership:
+                    _logger.info("here before removing the group_membership ")
                     group_membership.unlink()
+                
+                
+                        
+                if member.is_farmer!="yes":
+                    member.unlink()
+                    return json.dumps({
+                            'success': True,
+                            'message': 'Family member removed and successfully deleted.'
+                        })
+                else:
+                    return json.dumps({
+                            'success': True,
+                            'message': 'Farmer family member removed from household, but record will remain as individual'
+                        })
+                    
+                    
+            else:
+                  return json.dumps({
+                        "error": "Household head can't be removed."
+                    })
+                
 
-                member.unlink()
-
-            # res["member_list"] = member_list
-            # return json.dumps(res)
+           
 
         except Exception as e:
             _logger.error("ERROR LOG IN DELETE FAMILY MEMBER: %s", e)
             return json.dumps({"error": f"An error occurred while deleting the member: {str(e)}"})
+
+
 
 
     def get_membership_kind(self, relationship):
@@ -2530,7 +2555,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                         "land_id": land_id,
                     }
 
-                    # Process land certificate if it exists and is not empty
+                    Process land certificate if it exists and is not empty
                     land_certificate = record.get(f"land_certificate_{index}")
                     if land_certificate:
                         content = land_certificate.get("content")

@@ -490,6 +490,7 @@
                                                                                         type="button"
                                                                                         class="btn btn-outline-secondary btn-sm my-3"
                                                                                         onclick="deleteMember(this)"
+                                                                                        t-attf-store="{{ individual.id }}"
                                                                                     >
                                                                                         <i
                                                                                             class="fas fa-trash-alt"
