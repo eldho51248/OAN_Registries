@@ -2531,29 +2531,29 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     }
 
                     # Process land certificate if it exists and is not empty
-                #     land_certificate = record.get(f"land_certificate_{index}")
-                #     if land_certificate:
-                #         content = land_certificate.get("content")
-                #         binary_data = bytes(content, "latin1")
-                #         storage_file = (
-                #             request.env["storage.file"]
-                #             .sudo()
-                #             .create(
-                #                 {
-                #                     "backend_id": backend_id,
-                #                     "name": land_certificate.get("filename"),
-                #                     "data": binary_data,
-                #                     "tags_ids": [(4, doc_tag.id)],
-                #                 }
-                #             )
-                #         )
-                #         land_info_dict["land_certificate"] = storage_file.id
-                #         supporting_documents_ids.append((4, storage_file.id))
-                #     land_info_data.append((0, 0, land_info_dict))
-                # break  # Exit the loop since the index is identified for this record
+                    land_certificate = record.get(f"land_certificate_{index}")
+                    if land_certificate:
+                        content = land_certificate.get("content")
+                        binary_data = bytes(content, "latin1")
+                        storage_file = (
+                            request.env["storage.file"]
+                            .sudo()
+                            .create(
+                                {
+                                    "backend_id": backend_id,
+                                    "name": land_certificate.get("filename"),
+                                    "data": binary_data,
+                                    "tags_ids": [(4, doc_tag.id)],
+                                }
+                            )
+                        )
+                        land_info_dict["land_certificate"] = storage_file.id
+                        supporting_documents_ids.append((4, storage_file.id))
+                    land_info_data.append((0, 0, land_info_dict))
+                break  # Exit the loop since the index is identified for this record
         # return
-        # vals["land_information_ids"] = land_info_data
-        # vals["supporting_documents_ids"] = supporting_documents_ids
+        vals["land_information_ids"] = land_info_data
+        vals["supporting_documents_ids"] = supporting_documents_ids
         return vals
 
     @http.route(
