@@ -452,7 +452,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     def group_update(self, _id, **kw):
         try:
             group = request.env["res.partner"].sudo().browse(_id)
-
             if not group:
                 return request.render(
                     "g2p_service_provider_beneficiary_management.error_template",
@@ -628,51 +627,51 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             members = group.group_membership_ids
             farmer_member_ids = []
             member_ids = []
-            for ind in members.individual:
-                if ind.is_farmer == "yes":
-                    farmer_member_ids.append(ind)
-                else:
-                    member_ids.append(ind)
-
-            household_head_id = ""
-            for indiv in members.individual:
-                if indiv.hh_is_household_head == "yes" and indiv.is_farmer == "yes":
-                    household_head_id = indiv
-
-            head_individual = request.env["res.partner"].sudo().browse(int(household_head_id))
-            additional_info = head_individual.additional_g2p_info
-
-            if isinstance(additional_info, str):
-                try:
-                    additional_info = json.loads(additional_info)
-                except json.JSONDecodeError:
-                    # Handle JSON decoding error if the string is not valid JSON
-                    additional_info = {}
-
-            # Initialize variables
             other_kebele = ""
             other_woreda = ""
             other_primary_coop = ""
             other_coop_union = ""
             other_income = ""
+            if members:
+                for ind in members.individual:
+                    if ind.is_farmer == "yes":
+                        farmer_member_ids.append(ind)
+                    else:
+                        member_ids.append(ind)
+                additional_info = " "
+                household_head_id = ""
+                for indiv in members.individual:
+                    if indiv.hh_is_household_head == "yes" and indiv.is_farmer == "yes":
+                        household_head_id = indiv
+                if household_head_id:
+                    head_individual = request.env["res.partner"].sudo().browse(int(household_head_id))
+                    additional_info = head_individual.additional_g2p_info
 
-            # Check if additional_info is a dictionary and populate variables accordingly
-            if isinstance(additional_info, dict):
-                if "Kebele" in additional_info:
-                    other_kebele = additional_info.get("Kebele", "")
+                if isinstance(additional_info, str):
+                    try:
+                        additional_info = json.loads(additional_info)
+                    except json.JSONDecodeError:
+                        # Handle JSON decoding error if the string is not valid JSON
+                        additional_info = {}
 
-                if "Woreda" in additional_info:
-                    other_woreda = additional_info.get("Woreda", "")
+                # Initialize variables
 
-                if "Primary Cooperative" in additional_info:
-                    other_primary_coop = additional_info.get("Primary Cooperative", "")
+                # Check if additional_info is a dictionary and populate variables accordingly
+                if isinstance(additional_info, dict):
+                    if "Kebele" in additional_info:
+                        other_kebele = additional_info.get("Kebele", "")
 
-                if "Cooperative Union" in additional_info:
-                    other_coop_union = additional_info.get("Cooperative Union", "")
+                    if "Woreda" in additional_info:
+                        other_woreda = additional_info.get("Woreda", "")
 
-                if "Household Income" in additional_info:
-                    other_income = additional_info.get("Household Income", "")
+                    if "Primary Cooperative" in additional_info:
+                        other_primary_coop = additional_info.get("Primary Cooperative", "")
 
+                    if "Cooperative Union" in additional_info:
+                        other_coop_union = additional_info.get("Cooperative Union", "")
+
+                    if "Household Income" in additional_info:
+                        other_income = additional_info.get("Household Income", "")
             return request.render(
                 "g2p_ati_service_provider_portal.ati_update_group_form_template",
                 {
@@ -2423,10 +2422,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 if membership.individual.is_farmer == "yes":
                     continue
                 else:
-                    print("membership is",membership.kind)
                     kind_name = membership.kind.name if membership.kind else None
-                    print("kind name is",kind_name)
-                    print('active',membership.individual.active)
                     member_list.append(
                         {
                             "id": membership.individual.id,
@@ -2441,7 +2437,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             print("member list",member_list)
 
             res["member_list"] = member_list
-
             return json.dumps(res)
 
         except Exception as e:
@@ -2456,7 +2451,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         csrf=False,
     )
     def delete_family_member(self, **kw):
-        # res = dict()
+                # res = dict()
         try:
             member_id = int(kw.get("member_id"))
             group_id = int(kw.get("group_id"))
@@ -2480,24 +2475,13 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
                 member.unlink()
 
-            # member_list = []
-            # for membership in group_rec.group_membership_ids:
-            #     if membership.individual.is_farmer == "yes":
-            #         continue
-            #     member_list.append({
-            #         "id": membership.individual.id,
-            #         "name": membership.individual.name,
-            #         "gender": membership.individual.gender,
-            #         "active": membership.individual.active,
-            #         "group_id": membership.group.id,
-            #     })
-
             # res["member_list"] = member_list
             # return json.dumps(res)
 
         except Exception as e:
             _logger.error("ERROR LOG IN DELETE FAMILY MEMBER: %s", e)
             return json.dumps({"error": f"An error occurred while deleting the member: {str(e)}"})
+
 
     def get_membership_kind(self, relationship):
         if relationship == "Wife":
@@ -2573,7 +2557,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                         )
                         land_info_dict["land_certificate"] = storage_file.id
                         supporting_documents_ids.append((4, storage_file.id))
-
                     land_info_data.append((0, 0, land_info_dict))
                 break  # Exit the loop since the index is identified for this record
         # return
@@ -2598,7 +2581,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             additional_info = kw.get("additional_info", {})
             additional_info_json = json.loads(additional_info)
-            # print("additonal json type",type(additional_info_json))
 
             group_rec = self._get_or_create_group(kw, region, zone, woreda, kebele)
 
@@ -2608,7 +2590,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             vals["crop_information_ids"] = self._prepare_crop_information(kw.get("cropRecords"))
             vals["livestock_information_ids"] = self._livestock_information(kw.get("livestockRecord"))
             vals["phone_number_ids"] = self._prepare_phone_numbers(kw, region, zone, woreda, kebele, vals)
-
             # Socioeconomic data
             self._prepare_socioeconomic_data(kw, vals)
 
@@ -2617,7 +2598,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             # Financial Service
             self._prepare_financial_agricultural_service(kw, vals)
-
             # Additional details
             vals["is_farmer"] = "yes"
             vals["additional_g2p_info"] = additional_info_json
@@ -2708,13 +2688,11 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         for key, field in other_fields.items():
             if kw.get(field):
                 vals[key] = kw.get(field)
-
         # National ID and Registration
         self._prepare_national_id(kw, vals)
 
         # Handle individual details
         self._process_individual_details(vals, kw)
-
         # Handle socio-economic data
         self._process_socio_economic_data(vals, kw)
 
@@ -2886,19 +2864,27 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             vals["finance_accesses"] = [
                 (6, 0, [int(id) for id in json.loads(kw.get("financialSectors", "[]"))])
             ]
-
-        vals["do_you_use_fertilizer"] = self._get_selection_value(
-            "ir.model.fields.selection", kw.get("usedFertilizer")
-        )
-        vals["do_you_use_insecticide"] = self._get_selection_value(
-            "ir.model.fields.selection", kw.get("usedInsecticide")
-        )
-        vals["do_you_use_pesticide"] = self._get_selection_value(
-            "ir.model.fields.selection", kw.get("usedPesticide")
-        )
-        vals["do_you_use_improved_seed"] = self._get_selection_value(
-            "ir.model.fields.selection", kw.get("usedImprovedSeed")
-        )
+            
+        if vals.get('farming_type') != 'livestock_farming':
+            if kw.get("usedFertilizer"):
+                vals["do_you_use_fertilizer"] = self._get_selection_value(
+                    "ir.model.fields.selection", kw.get("usedFertilizer")
+                )
+            
+            if kw.get("usedInsecticide"):
+                vals["do_you_use_insecticide"] = self._get_selection_value(
+                    "ir.model.fields.selection", kw.get("usedInsecticide")
+                )
+            
+            if kw.get("usedPesticide"):
+                vals["do_you_use_pesticide"] = self._get_selection_value(
+                    "ir.model.fields.selection", kw.get("usedPesticide")
+                )
+            
+            if kw.get("usedImprovedSeed"):
+                vals["do_you_use_improved_seed"] = self._get_selection_value(
+                    "ir.model.fields.selection", kw.get("usedImprovedSeed")
+                )
 
         can_access_machinery = self._get_selection_value(
             "ir.model.fields.selection", kw.get("accessToMachinary")

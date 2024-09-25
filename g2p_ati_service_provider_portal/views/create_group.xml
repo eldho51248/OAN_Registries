@@ -574,32 +574,33 @@
                                                                                         *
                                                                                     </span>
                                                                                 </label>
-                                                                                <div class="d-flex flex-wrap">
-                                                                                    <div
-                                                                                        t-foreach="is_member_of_cooperative_union"
+
+
+                                                                                 <select
+                                                                                    class="form-select"
+                                                                                    id="hh_is_household_head_id"
+                                                                                    name="hh_is_household_head"
+                                                                                    required="required"
+                                                                                    onchange="validateElement(this)"
+                                                                                >
+                                                                                    <option value="">
+                                                                                        Select</option>
+                                                                                    <t
+                                                                                        t-foreach="hh_is_household_head"
                                                                                         t-as="option"
-                                                                                        class="form-check me-2"
                                                                                     >
-                                                                                        <input
-                                                                                            class="form-check-input is-member-of-coop-union-select"
-                                                                                            type="radio"
-                                                                                            id="hh_is_household_head_id"
-                                                                                            name="hh_is_household_head"
-                                                                                            t-att-data-text="option.name"
+                                                                                        <option
                                                                                             t-att-value="option.id"
-                                                                                            required="required"
-                                                                                            oninput="validateElement(this)"
-                                                                                        />
-                                                                                        <label
-                                                                                            class="form-check-label ms-2"
-                                                                                            t-att-for="option.id"
                                                                                         >
                                                                                             <t
                                                                                                 t-esc="option.name"
                                                                                             />
-                                                                                        </label>
-                                                                                    </div>
-                                                                                </div>
+                                                                                        </option>
+                                                                                    </t>
+                                                                                </select>
+
+
+
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1747,6 +1748,32 @@
                                                                                         *
                                                                                     </span>
                                                                                 </label>
+
+                                                                                     <select
+                                                                                    class="form-select"
+                                                                                    id="is_member_of_primary_coop"
+                                                                                    name="is_member_of_primary_coop"
+                                                                                    required="required"
+                                                                                >
+                                                                                    <option value="">
+                                                                                        Select</option>
+                                                                                    <t
+                                                                                        t-foreach="is_member_of_primary_cooperative"
+                                                                                        t-as="option"
+                                                                                    >
+                                                                                        <option
+                                                                                            t-att-value="option.id"
+                                                                                        >
+                                                                                            <t
+                                                                                                t-esc="option.name"
+                                                                                            />
+                                                                                        </option>
+                                                                                    </t>
+                                                                                </select>
+
+
+
+<!--
                                                                                 <div class="d-flex flex-wrap">
                                                                                     <div
                                                                                         t-foreach="is_member_of_primary_cooperative"
@@ -1772,7 +1799,7 @@
                                                                                             />
                                                                                         </label>
                                                                                     </div>
-                                                                                </div>
+                                                                                </div> -->
 
 
                                                                             </div>
@@ -1828,6 +1855,8 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
+
+
                                                                     <div class="row">
                                                                         <div class="col-lg-6">
                                                                             <div
@@ -1877,7 +1906,31 @@
                                                                                         *
                                                                                     </span>
                                                                                 </label>
-                                                                                <div class="d-flex flex-wrap">
+
+                                                                                  <select
+                                                                                    class="form-select"
+                                                                                    id="is_member_of_coop_union"
+                                                                                    name="is_member_of_coop_union"
+                                                                                    required="required"
+                                                                                >
+                                                                                    <option value="">
+                                                                                        Select</option>
+                                                                                    <t
+                                                                                        t-foreach="is_member_of_cooperative_union"
+                                                                                        t-as="option"
+                                                                                    >
+                                                                                        <option
+                                                                                            t-att-value="option.id"
+                                                                                        >
+                                                                                            <t
+                                                                                                t-esc="option.name"
+                                                                                            />
+                                                                                        </option>
+                                                                                    </t>
+                                                                                </select>
+
+
+                                                                                <!-- <div class="d-flex flex-wrap">
                                                                                     <div
                                                                                         t-foreach="is_member_of_cooperative_union"
                                                                                         t-as="option"
@@ -1902,7 +1955,7 @@
                                                                                             />
                                                                                         </label>
                                                                                     </div>
-                                                                                </div>
+                                                                                </div> -->
 
 
                                                                             </div>
@@ -2009,39 +2062,39 @@
                                                                                     </span>
                                                                                 </label>
                                                                                 <div class="form-group">
-                                                                                    <div
-                                                                                        class="d-flex flex-wrap"
+
+                                                                  <select
+                                                                                        class="form-select"
+                                                                                        id="in_farmer_cluster"
+                                                                                        name="in_farmer_cluster"
+                                                                                        required="required"
                                                                                     >
-                                                                                        <div
+                                                                        <option value="">
+                                                                                        Select</option>
+                                                                        <t
                                                                                             t-foreach="is_member_in_farmer_cluster"
                                                                                             t-as="option"
-                                                                                            class="form-check me-2"
                                                                                         >
-                                                                                            <input
-                                                                                                class="form-check-input is-member-of-farmer-cluster-select membership_required_field"
-                                                                                                type="radio"
-                                                                                                id="in_farmer_cluster"
-                                                                                                name="in_farmer_cluster"
-                                                                                                t-att-data-text="option.name"
-                                                                                                t-att-value="option.id"
-                                                                                                required="required"
-                                                                                                oninput="validateElement(this)"
-                                                                                            />
-                                                                                            <label
-                                                                                                class="form-check-label ms-2"
-                                                                                                t-att-for="option.id"
-                                                                                            >
-                                                                                                <t
-                                                                                                    t-esc="option.name"
-                                                                                                />
-                                                                                            </label>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
+                                                                            <option t-att-value="option.id">
+                                                                                <t t-esc="option.name" />
+                                                                            </option>
+                                                                        </t>
+                                                                    </select>
 
+<!--
+                                                                               <div class="d-flex flex-wrap">
+                                                                                    <div t-foreach="is_member_in_farmer_cluster" t-as="option" class="form-check me-2">
+                                                                                        <input class="form-check-input is-member-of-farmer-cluster-select membership_required_field" type="radio" id="in_farmer_cluster" name="in_farmer_cluster" t-att-data-text="option.name" t-att-value="option.id" required="required" oninput="validateElement(this)" />
+                                                                                        <label class="form-check-label ms-2" t-att-for="option.id">
+                                                                                            <t t-esc="option.name" />
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </div> -->
                                                                             </div>
+
                                                                         </div>
                                                                     </div>
+                                                                </div>
                                                                     <div class="row">
                                                                         <div class="col-lg-6">
                                                                             <div
