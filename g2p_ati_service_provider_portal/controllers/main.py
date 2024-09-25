@@ -2555,7 +2555,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                         "land_id": land_id,
                     }
 
-                    Process land certificate if it exists and is not empty
+                    # Process land certificate if it exists and is not empty
                     land_certificate = record.get(f"land_certificate_{index}")
                     if land_certificate:
                         content = land_certificate.get("content")
