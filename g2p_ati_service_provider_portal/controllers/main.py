@@ -2388,8 +2388,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             gf_name_eng = kw.get("gf_name_eng")
             relationship = int(kw.get("Relationship"))
             relationship = [(6, 0, [relationship])]
-            print("relationship is", relationship)
-
+           
             name = f"{given_name} {family_name} {gf_name_eng}"
 
             partner_data = {
@@ -2403,7 +2402,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 "is_group": False,
             }
             individual = request.env["res.partner"].sudo().create(partner_data)
-            print("Created individual:", individual)
+            
 
             group_membership_vals = [
                 (0, 0, {"individual": individual.id, "group": group_rec.id, "kind": relationship})
@@ -2916,7 +2915,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     def member_create(self, **kw):
         res = dict()
         try:
-            print("does tis work")
             # head_name = kw.get("household_name")
             head_individual = None
             # Group creation
