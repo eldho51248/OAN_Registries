@@ -2443,7 +2443,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         csrf=False,
     )
     def delete_family_member(self, **kw):
-        # res = dict()
+                # res = dict()
         try:
             member_id = int(kw.get("member_id"))
             group_id = int(kw.get("group_id"))
@@ -2467,24 +2467,13 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
                 member.unlink()
 
-            # member_list = []
-            # for membership in group_rec.group_membership_ids:
-            #     if membership.individual.is_farmer == "yes":
-            #         continue
-            #     member_list.append({
-            #         "id": membership.individual.id,
-            #         "name": membership.individual.name,
-            #         "gender": membership.individual.gender,
-            #         "active": membership.individual.active,
-            #         "group_id": membership.group.id,
-            #     })
-
             # res["member_list"] = member_list
             # return json.dumps(res)
 
         except Exception as e:
             _logger.error("ERROR LOG IN DELETE FAMILY MEMBER: %s", e)
             return json.dumps({"error": f"An error occurred while deleting the member: {str(e)}"})
+
 
     def get_membership_kind(self, relationship):
         if relationship == "Wife":
@@ -2542,29 +2531,29 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     }
 
                     # Process land certificate if it exists and is not empty
-                    land_certificate = record.get(f"land_certificate_{index}")
-                    if land_certificate:
-                        content = land_certificate.get("content")
-                        binary_data = bytes(content, "latin1")
-                        storage_file = (
-                            request.env["storage.file"]
-                            .sudo()
-                            .create(
-                                {
-                                    "backend_id": backend_id,
-                                    "name": land_certificate.get("filename"),
-                                    "data": binary_data,
-                                    "tags_ids": [(4, doc_tag.id)],
-                                }
-                            )
-                        )
-                        land_info_dict["land_certificate"] = storage_file.id
-                        supporting_documents_ids.append((4, storage_file.id))
-                    land_info_data.append((0, 0, land_info_dict))
-                break  # Exit the loop since the index is identified for this record
+                #     land_certificate = record.get(f"land_certificate_{index}")
+                #     if land_certificate:
+                #         content = land_certificate.get("content")
+                #         binary_data = bytes(content, "latin1")
+                #         storage_file = (
+                #             request.env["storage.file"]
+                #             .sudo()
+                #             .create(
+                #                 {
+                #                     "backend_id": backend_id,
+                #                     "name": land_certificate.get("filename"),
+                #                     "data": binary_data,
+                #                     "tags_ids": [(4, doc_tag.id)],
+                #                 }
+                #             )
+                #         )
+                #         land_info_dict["land_certificate"] = storage_file.id
+                #         supporting_documents_ids.append((4, storage_file.id))
+                #     land_info_data.append((0, 0, land_info_dict))
+                # break  # Exit the loop since the index is identified for this record
         # return
-        vals["land_information_ids"] = land_info_data
-        vals["supporting_documents_ids"] = supporting_documents_ids
+        # vals["land_information_ids"] = land_info_data
+        # vals["supporting_documents_ids"] = supporting_documents_ids
         return vals
 
     @http.route(
@@ -2867,19 +2856,27 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             vals["finance_accesses"] = [
                 (6, 0, [int(id) for id in json.loads(kw.get("financialSectors", "[]"))])
             ]
-
-        vals["do_you_use_fertilizer"] = self._get_selection_value(
-            "ir.model.fields.selection", kw.get("usedFertilizer")
-        )
-        vals["do_you_use_insecticide"] = self._get_selection_value(
-            "ir.model.fields.selection", kw.get("usedInsecticide")
-        )
-        vals["do_you_use_pesticide"] = self._get_selection_value(
-            "ir.model.fields.selection", kw.get("usedPesticide")
-        )
-        vals["do_you_use_improved_seed"] = self._get_selection_value(
-            "ir.model.fields.selection", kw.get("usedImprovedSeed")
-        )
+            
+        if vals.get('farming_type') != 'livestock_farming':
+            if kw.get("usedFertilizer"):
+                vals["do_you_use_fertilizer"] = self._get_selection_value(
+                    "ir.model.fields.selection", kw.get("usedFertilizer")
+                )
+            
+            if kw.get("usedInsecticide"):
+                vals["do_you_use_insecticide"] = self._get_selection_value(
+                    "ir.model.fields.selection", kw.get("usedInsecticide")
+                )
+            
+            if kw.get("usedPesticide"):
+                vals["do_you_use_pesticide"] = self._get_selection_value(
+                    "ir.model.fields.selection", kw.get("usedPesticide")
+                )
+            
+            if kw.get("usedImprovedSeed"):
+                vals["do_you_use_improved_seed"] = self._get_selection_value(
+                    "ir.model.fields.selection", kw.get("usedImprovedSeed")
+                )
 
         can_access_machinery = self._get_selection_value(
             "ir.model.fields.selection", kw.get("accessToMachinary")

@@ -116,6 +116,7 @@ $(document).on("click", "#member_submit", async function () {
     var additional_info = {};
 
     var group = $("input[name='group_id']").val();
+    
     var region = document.getElementById("region_selection").value;
     var zone = document.getElementById("zon_selection").value;
     console.log(zone);
@@ -187,12 +188,34 @@ $(document).on("click", "#member_submit", async function () {
     var inFarmerCluster = document.getElementById("in_farmer_cluster").value;
     var primaryComodity = document.getElementById("primary_commodity").value;
     var roleInCluster = document.getElementById("role_in_cluster").value;
-    var usedFertilizer = document.getElementById("have-used-fertilizer-selection").value;
-    var usedInsecticide = document.getElementById("have-used-insecticide-selection").value;
-    var usedPesticide = document.getElementById("have-used-pesticide-selection").value;
-    var usedImprovedSeed = document.getElementById("have-used-improved-seed-selection").value;
+
+
+    var selectedOption = farmingTypeSelection.options[farmingTypeSelection.selectedIndex];
+    var selectedFarmingType = selectedOption.textContent.trim();
+
+    var usedFertilizer;
+    var usedInsecticide;
+    var usedPesticide;
+    var usedImprovedSeed;
+   
+   
+    if (selectedFarmingType === "Livestock Farming") {
+        usedFertilizer = false;
+        usedInsecticide = false;
+        usedPesticide = false;
+        usedImprovedSeed = false;
+        
+    } else {
+        usedFertilizer = document.getElementById("have-used-fertilizer-selection").value;
+        usedInsecticide = document.getElementById("have-used-insecticide-selection").value;
+        usedPesticide = document.getElementById("have-used-pesticide-selection").value;
+        usedImprovedSeed = document.getElementById("have-used-improved-seed-selection").value;
+    }
+
     var accessToMachinary = document.getElementById("access-to-machinery-selection").value;
     var matchinaryTypes = $("#farmerDetailModal #machinery-types-select").val();
+
+   
 
     var accessToFinance = document.getElementById("access-to-finance-selection").value;
     var financialSectors = $("#farmerDetailModal #finance-selection").val();
@@ -332,6 +355,10 @@ $(document).on("click", "#member_submit", async function () {
     //    Var landRecords = JSON.stringify(landRecords)
 
     $(".form-control, .form-select").removeClass("is-invalid");
+
+    console.log(`here is the group: ${group}`)
+
+
 
     $.ajax({
         url: "/serviceprovider/individual/create/",
