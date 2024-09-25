@@ -6,7 +6,7 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
     const membershipAstrix = document.getElementsByClassName("membership_astrix");
     const landRequiredFields = document.getElementsByClassName("land_required_field");
     const landAstrix = document.getElementsByClassName("land_astrix");
-
+    const livestockRequiredFields = document.getElementsByClassName("livestock_required_field");
     const landNext = document.getElementById("land-next");
     const cropNext = document.getElementById("crop-next");
     const livestockNext = document.getElementById("livestock-next");
@@ -53,7 +53,15 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
     }
 
     if (selectedFarmingType === "Crop Farming") {
+         Array.from(livestockRequiredFields).forEach((element) => {
+            element.removeAttribute("required", "required");
+        });
+        
         if (fromGroup) {
+            cropNext.setAttribute(
+                "onclick",
+                "showModalSection('agricultural-input', 'crop-information',  'next')"
+            );
             cropNext.setAttribute(
                 "onclick",
                 "showModalSection('agricultural-input', 'crop-information',  'next')"
@@ -66,6 +74,7 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
             const livestock = document.getElementsByClassName("livestock-farming-type");
             Array.from(livestock).forEach((section) => {
                 section.style.display = "none";
+
             });
             const errMsg = document.getElementsByClassName("livestock-err-msg");
             Array.from(errMsg).forEach((section) => {
@@ -119,6 +128,7 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
             const livestock = document.getElementsByClassName("livestock-farming-type");
             Array.from(livestock).forEach((section) => {
                 section.style.display = "block";
+
             });
             const errMsgLive = document.getElementsByClassName("livestock-err-msg");
             Array.from(errMsgLive).forEach((section) => {
@@ -147,6 +157,8 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
             const livestock = document.getElementsByClassName("livestock-farming-type");
             Array.from(livestock).forEach((section) => {
                 section.style.display = "block";
+
+
             });
             const errMsgLive = document.getElementsByClassName("livestock-err-msg");
             Array.from(errMsgLive).forEach((section) => {

@@ -1351,6 +1351,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             # Preparing data for rendering
             land_info_data = self._prepare_land_info_data(beneficiary, ownership_type_selections)
+            print("land info",land_info_data)
             crop_info_data, serialized_crop_info_data = self._prepare_crop_info_data(beneficiary)
             livestock_info_data, serialized_livestock_info_data = self._prepare_livestock_info_data(
                 beneficiary
@@ -1611,6 +1612,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
     def _prepare_land_info_data(self, beneficiary, ownership_type_selections):
         land_info_data = []
+        print
         for index, land_info in enumerate(beneficiary.land_information_ids, start=1):
             ownership_selection_id = False
             for choice in ownership_type_selections:
@@ -1623,6 +1625,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     "total_land_area": land_info.total_land_area,
                     "land_id": land_info.land_id,
                     "ownership_type_selection_id": ownership_selection_id,
+
                 }
             )
         return land_info_data
@@ -2580,6 +2583,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             kebele = self._convert_to_int(kw.get("kebele"))
 
             additional_info = kw.get("additional_info", {})
+
             additional_info_json = json.loads(additional_info)
 
             group_rec = self._get_or_create_group(kw, region, zone, woreda, kebele)

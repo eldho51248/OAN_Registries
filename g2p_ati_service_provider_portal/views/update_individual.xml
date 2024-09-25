@@ -164,6 +164,7 @@
                                                                     national ID?</span>
                                                                 <span class="s_website_form_mark"> *</span>
                                                             </label>
+                                                            
                                                             <!-- <div class="d-flex flex-wrap">
                                                                 <div t-foreach="has_national_id" t-as="option" class="form-check me-2">
                                                                     <input class="form-check-input " type="radio" name="has_national_id" onchange="validateElement(this)" id="have-national-id-selection" t-att-data-text="option.name" t-att-value="option.id" t-att-checked="option.id == have_national_id_selection_id" />
@@ -172,6 +173,7 @@
                                                                     </label>
                                                                 </div>
                                                             </div> -->
+
                                                             <select
                                                                 class="form-select"
                                                                 name="has_national_id"
@@ -1861,8 +1863,8 @@
                                                                                             id="land_certificate_0"
                                                                                             name="land_certificate_0"
                                                                                             class="form-control land_required_field"
-                                                                                            onchange="updateFileName(this)"
-                                                                                            required="required"
+                                                                                            
+                                                                                            
                                                                                         />
                                                                                     </div>
                                                                                 </div>
@@ -2043,8 +2045,7 @@
                                                                                                     t-att-id="'land_certificate_' + str(land_info['index'])"
                                                                                                     t-att-name="'land_certificate_' + str(land_info['index'])"
                                                                                                     class="form-control land_required_field"
-                                                                                                    onchange="updateFileName(this)"
-                                                                                                    required="required"
+                                                                                                   
                                                                                                 />
                                                                                             </div>
                                                                                         </div>
@@ -2210,8 +2211,7 @@
                                                                                         t-att-id="'land_certificate_' + str({9999})"
                                                                                         t-att-name="'land_certificate_' + str({9999})"
                                                                                         class="form-control land_required_field"
-                                                                                        onchange="updateFileName(this)"
-                                                                                        required="required"
+                                                                                       
                                                                                     />
                                                                                 </div>
                                                                             </div>
@@ -2724,10 +2724,11 @@
                                                                                     </label>
                                                                                     <select
                                                                                         id="livestock_selection"
-                                                                                        class="form-select"
+                                                                                        class="form-select livestock_required_field"
                                                                                         name="livestock_types_0"
                                                                                         onchange="validateElement(this)"
                                                                                         required="required"
+                                                                                        
                                                                                     >
                                                                                         <option value=" ">
                                                                                             Select
@@ -2769,7 +2770,7 @@
                                                                                         type="text"
                                                                                         id="number_of_livestock"
                                                                                         name="number_of_livestock_0"
-                                                                                        class="form-control"
+                                                                                        class="form-control livestock_required_field"
                                                                                         required="required"
                                                                                         oninput="validateElement(this)"
                                                                                         placeholder="Enter Amount"
@@ -2838,7 +2839,7 @@
                                                                                             </label>
                                                                                             <select
                                                                                                 id="livestock_selection"
-                                                                                                class="form-select"
+                                                                                                class="form-select livestock_required_field"
                                                                                                 t-att-name="'livestock_types_' + str(livestock_info['index'])"
                                                                                                 onchange="validateElement(this)"
                                                                                                 required="required"
@@ -2888,7 +2889,7 @@
                                                                                                 type="text"
                                                                                                 id="number_of_livestock"
                                                                                                 t-att-name="'number_of_livestock_' + str(livestock_info['index'])"
-                                                                                                class="form-control"
+                                                                                                class="form-control livestock_required_field"
                                                                                                 required="required"
                                                                                                 t-att-value="livestock_info['number_of_livestock']"
                                                                                                 oninput="validateElement(this)"
@@ -2954,7 +2955,7 @@
                                                                                     </label>
                                                                                     <select
                                                                                         id="livestock_selection"
-                                                                                        class="form-select"
+                                                                                        class="form-select livestock_required_field"
                                                                                         t-att-name="'livestock_types_' + str({9999})"
                                                                                         onchange="validateElement(this)"
                                                                                         required="required"
@@ -2999,7 +3000,7 @@
                                                                                         type="text"
                                                                                         id="number_of_livestock"
                                                                                         t-att-name="'number_of_livestock_' + str({9999})"
-                                                                                        class="form-control"
+                                                                                        class="form-control livestock_required_field"
                                                                                         required="required"
                                                                                         oninput="validateElement(this)"
                                                                                         placeholder="Enter Amount"
@@ -3511,6 +3512,7 @@
                                 uploadText.textContent = fileName;
                                 }
                             </script>
+
                             <script>
                                 $(document).ready(function () {
                                 $('.selectpicker').selectpicker();
