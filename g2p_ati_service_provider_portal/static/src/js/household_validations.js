@@ -179,7 +179,6 @@ $(document).on("click", "#hh_member_update", function () {
             }
             console.log(response.kind);
             modal.find("#edit_relation_with_hh_selection").val(response.kind);
-           
 
             console.log();
             var ele = document.getElementById("update-member-btn");
@@ -225,7 +224,7 @@ $(document).on("click", "#update-member-btn", function () {
         gf_name_eng: modal.find("#edit_grandfathers_name").val(),
         birthdate: modal.find("#edit_birthdate").val(),
         gender: modal.find("input[name='gender']:checked").val(),
-        Relationship: relationship
+        Relationship: relationship,
     };
 
     // Console.log("Sending data:", data);
@@ -265,7 +264,6 @@ $(document).on("click", "#update-member-btn", function () {
                     `;
                     tableBody.append(newRowHtml);
                 });
-                
 
                 // Hide the modal after successful submission
                 $("#editFamilyMemberModal").modal("hide");

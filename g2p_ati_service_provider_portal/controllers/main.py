@@ -2270,20 +2270,17 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         )
 
     @http.route(
-    "/serviceprovider/member/update/",
-    type="http",
-    auth="user",
-    website=True,
-    csrf=False,
-)
+        "/serviceprovider/member/update/",
+        type="http",
+        auth="user",
+        website=True,
+        csrf=False,
+    )
     def update_member(self, **kw):
         member_id = kw.get("member_id")
-        print("member_id", member_id)
-        print("hi")
-        
+
         try:
             group_id = kw.get("group_id")
-            print("group id",group_id)
             if not group_id:
                 return json.dumps({"error": "Group ID is required"})
 
@@ -2296,12 +2293,10 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             # Initialize kind_name to be populated from group membership
             kind_name = None
-            
+
             # Search for the membership of this individual in the group
             for membership in group_rec.group_membership_ids:
-                print("hey")
                 if membership.individual.id == int(member_id):
-                    print("halo")
                     kind_name = membership.kind.id if membership.kind else None
                     break
 
@@ -2316,7 +2311,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     "kind": kind_name,  # Populate the kind name
                     "id": beneficiary.id,
                 }
-                print("existing",exist_value)
                 return json.dumps(exist_value)
 
         except Exception as e:
@@ -2345,9 +2339,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             relationship = int(kw.get("Relationship"))
             relationship = [(6, 0, [relationship])]
-            print("rel",relationship)
-
-            
 
             if member:
                 given_name = kw.get("given_name")
@@ -2370,16 +2361,19 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
                 member.sudo().write(partner_data)
 
-                existing_membership = request.env["g2p.group.membership"].sudo().search([
-                    ('individual', '=', member.id),
-                    ('group', '=', group_rec.id)
-                ])
+                existing_membership = (
+                    request.env["g2p.group.membership"]
+                    .sudo()
+                    .search([("individual", "=", member.id), ("group", "=", group_rec.id)])
+                )
 
                 # Update
                 if existing_membership:
-                    existing_membership.write({
-                        "kind": relationship  # Update kind for existing membership
-                    })
+                    existing_membership.write(
+                        {
+                            "kind": relationship  # Update kind for existing membership
+                        }
+                    )
 
                 member_list = []
 
@@ -2388,7 +2382,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                         continue
                     else:
                         kind_name = membership.kind.name if membership.kind else None
-                        print("kind_name is",kind_name)
+                        print("kind_name is", kind_name)
                         member_list.append(
                             {
                                 "id": membership.individual.id,
@@ -2397,7 +2391,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                                     membership.individual.age,
                                 ),  # Ensure date is serialized
                                 "gender": membership.individual.gender,
-                                "kind":kind_name,
+                                "kind": kind_name,
                                 "active": membership.individual.active,
                                 "group_id": membership.group.id,
                             }
