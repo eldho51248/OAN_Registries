@@ -2278,10 +2278,30 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     )
     def update_member(self, **kw):
         member_id = kw.get("member_id")
-        try:
-            beneficiary = request.env["res.partner"].sudo().browse(int(member_id))
-            # relationship_role = request.env["g2p.group.membership.kind"].sudo().search()
 
+        try:
+            group_id = kw.get("group_id")
+
+            if not group_id:
+                return json.dumps({"error": "Group ID is required"})
+
+            group_rec = request.env["res.partner"].sudo().browse(int(group_id))
+            if not group_rec.exists():
+                return json.dumps({"error": "Group not found"})
+
+            # Fetch the member (beneficiary) record
+            beneficiary = request.env["res.partner"].sudo().browse(int(member_id))
+
+            # Initialize kind_name to be populated from group membership
+            kind_name = None
+
+            # Search for the membership of this individual in the group
+            for membership in group_rec.group_membership_ids:
+                if membership.individual.id == int(member_id):
+                    kind_name = membership.kind.id if membership.kind else None
+                    break
+
+            # If the beneficiary is found, populate the existing values
             if beneficiary:
                 exist_value = {
                     "given_name": beneficiary.given_name,
@@ -2289,12 +2309,14 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     "gf_name_eng": beneficiary.gf_name_eng,
                     "dob": str(beneficiary.birthdate),
                     "gender": beneficiary.gender,
+                    "kind": kind_name,  # Populate the kind name
                     "id": beneficiary.id,
                 }
                 return json.dumps(exist_value)
 
         except Exception as e:
             _logger.error("ERROR LOG IN UPDATE MEMBER%s", e)
+            return json.dumps({"error": "Failed to retrieve member data"})
 
     @http.route(
         "/serviceprovider/family_member/update/submit/",
@@ -2316,6 +2338,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             if not group_rec.exists():
                 return json.dumps({"error": "Group not found"})
 
+            relationship = int(kw.get("Relationship"))
+            relationship = [(6, 0, [relationship])]
+            
             if member:
                 given_name = kw.get("given_name")
                 family_name = kw.get("family_name")
@@ -2337,21 +2362,34 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
                 member.sudo().write(partner_data)
 
+                existing_membership = request.env["g2p.group.membership"].sudo().search([
+                    ('individual', '=', member.id),
+                    ('group', '=', group_rec.id)
+                ])
+
+                # Update
+                if existing_membership:
+                    existing_membership.write({
+                        "kind": relationship  # Update kind for existing membership
+                    })
+
                 member_list = []
 
                 for membership in group_rec.group_membership_ids:
                     if membership.individual.is_farmer == "yes":
                         continue
                     else:
+                        kind_name = membership.kind.name if membership.kind else None
+                        
                         member_list.append(
                             {
                                 "id": membership.individual.id,
                                 "name": membership.individual.name,
-                                "birthdate": str(
-                                    membership.individual.birthdate
+                                "age": str(
+                                    membership.individual.age,
                                 ),  # Ensure date is serialized
                                 "gender": membership.individual.gender,
-                                # "relationship":membership.individual.kind,
+                                "kind":kind_name,
                                 "active": membership.individual.active,
                                 "group_id": membership.group.id,
                             }
@@ -2444,7 +2482,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         csrf=False,
     )
     def delete_family_member(self, **kw):
-                # res = dict()
+        # res = dict()
         try:
             member_id = int(kw.get("member_id"))
             group_id = int(kw.get("group_id"))
@@ -2496,9 +2534,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         except Exception as e:
             _logger.error("ERROR LOG IN DELETE FAMILY MEMBER: %s", e)
             return json.dumps({"error": f"An error occurred while deleting the member: {str(e)}"})
-
-
-
 
     def get_membership_kind(self, relationship):
         if relationship == "Wife":
@@ -2597,6 +2632,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             kebele = self._convert_to_int(kw.get("kebele"))
 
             additional_info = kw.get("additional_info", {})
+
             additional_info_json = json.loads(additional_info)
 
             group_rec = self._get_or_create_group(kw, region, zone, woreda, kebele)
@@ -2637,6 +2673,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                             "name": membership.individual.name,
                             "age": membership.individual.age,
                             "gender": membership.individual.gender,
+                            "hh_is_household_head": membership.individual.hh_is_household_head,
                             "group_id": membership.group.id,
                         }
                     )
@@ -2881,23 +2918,23 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             vals["finance_accesses"] = [
                 (6, 0, [int(id) for id in json.loads(kw.get("financialSectors", "[]"))])
             ]
-            
-        if vals.get('farming_type') != 'livestock_farming':
+
+        if vals.get("farming_type") != "livestock_farming":
             if kw.get("usedFertilizer"):
                 vals["do_you_use_fertilizer"] = self._get_selection_value(
                     "ir.model.fields.selection", kw.get("usedFertilizer")
                 )
-            
+
             if kw.get("usedInsecticide"):
                 vals["do_you_use_insecticide"] = self._get_selection_value(
                     "ir.model.fields.selection", kw.get("usedInsecticide")
                 )
-            
+
             if kw.get("usedPesticide"):
                 vals["do_you_use_pesticide"] = self._get_selection_value(
                     "ir.model.fields.selection", kw.get("usedPesticide")
                 )
-            
+
             if kw.get("usedImprovedSeed"):
                 vals["do_you_use_improved_seed"] = self._get_selection_value(
                     "ir.model.fields.selection", kw.get("usedImprovedSeed")

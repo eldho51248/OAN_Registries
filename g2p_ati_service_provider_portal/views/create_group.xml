@@ -430,18 +430,10 @@
                                                                                 <t
                                                                                     t-if="individual['hh_is_household_head'] == 'yes'"
                                                                                 >
-                                                                                    <input
-                                                                                        type="checkbox"
-                                                                                        checked="checked"
-                                                                                        class="hh-checkbox"
-                                                                                    />
+                                                                                    <p>Yes</p>
                                                                                 </t>
                                                                                 <t t-else="">
-                                                                                    <input
-                                                                                        type="checkbox"
-                                                                                        disabled="disabled"
-                                                                                        class="hh-checkbox"
-                                                                                    />
+                                                                                    <p>No</p>
                                                                                 </t>
                                                                             </td>
 
@@ -576,7 +568,7 @@
                                                                                 </label>
 
 
-                                                                                 <select
+                                                                                <select
                                                                                     class="form-select"
                                                                                     id="hh_is_household_head_id"
                                                                                     name="hh_is_household_head"
@@ -598,7 +590,6 @@
                                                                                         </option>
                                                                                     </t>
                                                                                 </select>
-
 
 
                                                                             </div>
@@ -720,14 +711,15 @@
                                                                                     class="form-control"
                                                                                     placeholder="RID"
                                                                                 />
-                                                                                 <div
+                                                                                <div
                                                                                     class="error-message"
                                                                                     id="rid_error"
                                                                                     style="display: none;color: red;"
                                                                                 >
-                                                                                RID must be exactly
-                                                                                29 digits only.
-                                                                            </div>
+                                                                                    RID must be
+                                                                                    exactly
+                                                                                    29 digits only.
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1674,7 +1666,10 @@
                                                                                     <span
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
-                                                                                    >Please Specify your source of income</span>
+                                                                                    >Please
+                                                                                        Specify your
+                                                                                        source of
+                                                                                        income</span>
                                                                                 </label>
                                                                                 <input
                                                                                     type="text"
@@ -1749,7 +1744,7 @@
                                                                                     </span>
                                                                                 </label>
 
-                                                                                     <select
+                                                                                <select
                                                                                     class="form-select"
                                                                                     id="is_member_of_primary_coop"
                                                                                     name="is_member_of_primary_coop"
@@ -1770,6 +1765,7 @@
                                                                                         </option>
                                                                                     </t>
                                                                                 </select>
+
 
 
 
@@ -1842,7 +1838,10 @@
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
                                                                                     >
-                                                                                        Please Specify Primary Cooperative
+                                                                                        Please
+                                                                                        Specify
+                                                                                        Primary
+                                                                                        Cooperative
                                                                                     </span>
                                                                                 </label>
                                                                                 <input
@@ -1878,7 +1877,7 @@
                                                                                     </span>
                                                                                 </label>
 
-                                                                                  <select
+                                                                                <select
                                                                                     class="form-select"
                                                                                     id="is_member_of_coop_union"
                                                                                     name="is_member_of_coop_union"
@@ -1901,7 +1900,8 @@
                                                                                 </select>
 
 
-                                                                                
+
+                    
 
                                                                             </div>
                                                                         </div>
@@ -1970,7 +1970,10 @@
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
                                                                                     >
-                                                                                        Please Specify Cooperative Union
+                                                                                        Please
+                                                                                        Specify
+                                                                                        Cooperative
+                                                                                        Union
                                                                                     </span>
                                                                                 </label>
                                                                                 <input
@@ -1998,7 +2001,8 @@
                                                                                         member of a
                                                                                         Farmer
                                                                                         Production
-                                                                                        Cluster (FPC)?
+                                                                                        Cluster
+                                                                                        (FPC)?
                                                                                     </span>
                                                                                     <span
                                                                                         class="s_website_form_mark membership_astrix"
@@ -2008,31 +2012,37 @@
                                                                                 </label>
                                                                                 <div class="form-group">
 
-                                                                  <select
+                                                                                    <select
                                                                                         class="form-select"
                                                                                         id="in_farmer_cluster"
                                                                                         name="in_farmer_cluster"
                                                                                         required="required"
                                                                                     >
-                                                                        <option value="">
-                                                                                        Select</option>
-                                                                        <t
+                                                                                        <option value="">
+                                                                                            Select</option>
+                                                                                        <t
                                                                                             t-foreach="is_member_in_farmer_cluster"
                                                                                             t-as="option"
                                                                                         >
-                                                                            <option t-att-value="option.id">
-                                                                                <t t-esc="option.name" />
-                                                                            </option>
-                                                                        </t>
-                                                                    </select>
+                                                                                            <option
+                                                                                                t-att-value="option.id"
+                                                                                            >
+                                                                                                <t
+                                                                                                    t-esc="option.name"
+                                                                                                />
+                                                                                            </option>
+                                                                                        </t>
+                                                                                    </select>
+
 
 
 
                                                                             </div>
 
+
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
                                                                     <div class="row">
                                                                         <div class="col-lg-6">
                                                                             <div
@@ -2048,8 +2058,10 @@
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
                                                                                     >
-                                                                                        What is the primary
-                                                                                        commodity produced
+                                                                                        What is the
+                                                                                        primary
+                                                                                        commodity
+                                                                                        produced
                                                                                         by your FPC?
                                                                                     </span>
                                                                                     <span
@@ -2289,7 +2301,9 @@
                                                                                                         style="color: #666666;"
                                                                                                     >
                                                                                                         Land
-                                                                                                        ID (Parcel ID)
+                                                                                                        ID
+                                                                                                        (Parcel
+                                                                                                        ID)
                                                                                                     </span>
                                                                                                     <span
                                                                                                         class="s_website_form_mark land_astrix"
@@ -2495,7 +2509,9 @@
                                                                                                         style="color: #666666;"
                                                                                                     >
                                                                                                         Land
-                                                                                                        ID (Parcel ID)
+                                                                                                        ID
+                                                                                                        (Parcel
+                                                                                                        ID)
                                                                                                     </span>
                                                                                                     <span
                                                                                                         class="s_website_form_mark land_astrix"
@@ -2771,8 +2787,10 @@
                                                                                                             class="s_website_form_label_content"
                                                                                                             style="color: #666666;"
                                                                                                         >
-                                                                                                            When was
-                                                                                                            this crop
+                                                                                                            When
+                                                                                                            was
+                                                                                                            this
+                                                                                                            crop
                                                                                                             planted?
                                                                                                         </span>
                                                                                                         <span
@@ -2898,8 +2916,10 @@
                                                                                                             class="s_website_form_label_content"
                                                                                                             style="color: #666666;"
                                                                                                         >
-                                                                                                            When was
-                                                                                                            this crop
+                                                                                                            When
+                                                                                                            was
+                                                                                                            this
+                                                                                                            crop
                                                                                                             planted?
                                                                                                         </span>
                                                                                                         <span
@@ -3396,8 +3416,10 @@
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
                                                                                     >Do
-                                                                                        you use fertiliser
-                                                                                        on your farm?</span>
+                                                                                        you use
+                                                                                        fertiliser
+                                                                                        on your
+                                                                                        farm?</span>
                                                                                     <span
                                                                                         class="s_website_form_mark"
                                                                                     >
@@ -3436,8 +3458,10 @@
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
                                                                                     >Do
-                                                                                    you use pesticide
-                                                                                    on your farm?</span>
+                                                                                        you use
+                                                                                        pesticide
+                                                                                        on your
+                                                                                        farm?</span>
                                                                                     <span
                                                                                         class="s_website_form_mark"
                                                                                     >
@@ -3479,9 +3503,11 @@
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
                                                                                     >
-                                                                                    Do
-                                                                                    you use insecticide
-                                                                                    on your farm?</span>
+                                                                                        Do
+                                                                                        you use
+                                                                                        insecticide
+                                                                                        on your
+                                                                                        farm?</span>
                                                                                     <span
                                                                                         class="s_website_form_mark"
                                                                                     >
@@ -3520,9 +3546,11 @@
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
                                                                                     >Do
-                                                                                    you use
-                                                                                    imporoved seeds
-                                                                                    on your farm?</span>
+                                                                                        you use
+                                                                                        imporoved
+                                                                                        seeds
+                                                                                        on your
+                                                                                        farm?</span>
                                                                                     <span
                                                                                         class="s_website_form_mark"
                                                                                     >
@@ -3977,7 +4005,7 @@
 
 
                                             </div>
-                                             <div
+                                            <div
                                                 class="modal fade"
                                                 id="editFamilyMemberModal"
                                                 tabindex="-1"
@@ -4125,13 +4153,13 @@
                                                                                 name="relation_with_household_head"
                                                                                 required="required"
                                                                                 onchange="validateElement(this)"
-                                                                                id="relation_with_hh_selection"
+                                                                                id="edit_relation_with_hh_selection"
                                                                             >
                                                                                 <option value=" ">Select
                                                                                     Relation
                                                                                 </option>
                                                                                 <t
-                                                                                    t-foreach="realationship_with_hhh"
+                                                                                    t-foreach="relationship_with_hhh"
                                                                                     t-as="option"
                                                                                 >
                                                                                     <option
@@ -4507,11 +4535,12 @@
 
                             <script>
                                 function updateFileName(input) {
-                                    var inputId = input.getAttribute('id');
-                                    var label = document.querySelector(`label[for="${inputId}"]`);
-                                    var uploadText = label.querySelector('.upload-text');
-                                    var fileName = input.files.length > 0 ? input.files[0].name : 'Upload';
-                                    uploadText.textContent = fileName;
+                                var inputId = input.getAttribute('id');
+                                var label = document.querySelector(`label[for="${inputId}"]`);
+                                var uploadText = label.querySelector('.upload-text');
+                                var fileName = input.files.length > 0 ? input.files[0].name :
+                                'Upload';
+                                uploadText.textContent = fileName;
                                 }
                             </script>
 
