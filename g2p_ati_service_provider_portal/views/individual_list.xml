@@ -232,7 +232,7 @@
                         </table>
                     </div>
 
-                    <div id="page-buttons" class="pagination justify-content-center">
+                    <div id="page-buttons" class="pagination justify-content-center pb-4">
                     </div>
 
                 </div>
@@ -242,6 +242,7 @@
                 <div id="page-buttons" class="pagination justify-content-center">
 
                 </div>
+                
                 <script
                     type="text/javascript"
                     src="/g2p_ati_service_provider_portal/static/src/js/table_pagination_and_row.js"

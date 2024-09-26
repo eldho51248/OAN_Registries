@@ -2400,6 +2400,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 "gender": kw.get("gender"),
                 "is_registrant": True,
                 "is_group": False,
+                "is_farmer": "no"
             }
             individual = request.env["res.partner"].sudo().create(partner_data)
 
@@ -2443,12 +2444,14 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         csrf=False,
     )
     def delete_family_member(self, **kw):
-        # res = dict()
+                # res = dict()
         try:
             member_id = int(kw.get("member_id"))
             group_id = int(kw.get("group_id"))
             member = request.env["res.partner"].sudo().browse(member_id)
             group_rec = request.env["res.partner"].sudo().browse(group_id)
+            
+            _logger.info(f"here in the delete {member_id}")
 
             if not member.exists():
                 return json.dumps({"error": "Member not found"})
@@ -2456,35 +2459,46 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             if not group_rec.exists():
                 return json.dumps({"error": "Group not found"})
 
-            if member.is_farmer == "no":
+            if member.hh_is_household_head !="yes":
                 group_membership = (
                     request.env["g2p.group.membership"]
                     .sudo()
                     .search([("group", "=", group_id), ("individual", "=", member_id)])
                 )
+                
                 if group_membership:
+                    _logger.info("here before removing the group_membership ")
                     group_membership.unlink()
+                
+                
+                        
+                if member.is_farmer!="yes":
+                    member.unlink()
+                    return json.dumps({
+                            'success': True,
+                            'message': 'Family member removed and successfully deleted.'
+                        })
+                else:
+                    return json.dumps({
+                            'success': True,
+                            'message': 'Farmer family member removed from household, but record will remain as individual'
+                        })
+                    
+                    
+            else:
+                  return json.dumps({
+                        "error": "Household head can't be removed."
+                    })
+                
 
-                member.unlink()
-
-            # member_list = []
-            # for membership in group_rec.group_membership_ids:
-            #     if membership.individual.is_farmer == "yes":
-            #         continue
-            #     member_list.append({
-            #         "id": membership.individual.id,
-            #         "name": membership.individual.name,
-            #         "gender": membership.individual.gender,
-            #         "active": membership.individual.active,
-            #         "group_id": membership.group.id,
-            #     })
-
-            # res["member_list"] = member_list
-            # return json.dumps(res)
+           
 
         except Exception as e:
             _logger.error("ERROR LOG IN DELETE FAMILY MEMBER: %s", e)
             return json.dumps({"error": f"An error occurred while deleting the member: {str(e)}"})
+
+
+
 
     def get_membership_kind(self, relationship):
         if relationship == "Wife":
@@ -2867,19 +2881,27 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             vals["finance_accesses"] = [
                 (6, 0, [int(id) for id in json.loads(kw.get("financialSectors", "[]"))])
             ]
-
-        vals["do_you_use_fertilizer"] = self._get_selection_value(
-            "ir.model.fields.selection", kw.get("usedFertilizer")
-        )
-        vals["do_you_use_insecticide"] = self._get_selection_value(
-            "ir.model.fields.selection", kw.get("usedInsecticide")
-        )
-        vals["do_you_use_pesticide"] = self._get_selection_value(
-            "ir.model.fields.selection", kw.get("usedPesticide")
-        )
-        vals["do_you_use_improved_seed"] = self._get_selection_value(
-            "ir.model.fields.selection", kw.get("usedImprovedSeed")
-        )
+            
+        if vals.get('farming_type') != 'livestock_farming':
+            if kw.get("usedFertilizer"):
+                vals["do_you_use_fertilizer"] = self._get_selection_value(
+                    "ir.model.fields.selection", kw.get("usedFertilizer")
+                )
+            
+            if kw.get("usedInsecticide"):
+                vals["do_you_use_insecticide"] = self._get_selection_value(
+                    "ir.model.fields.selection", kw.get("usedInsecticide")
+                )
+            
+            if kw.get("usedPesticide"):
+                vals["do_you_use_pesticide"] = self._get_selection_value(
+                    "ir.model.fields.selection", kw.get("usedPesticide")
+                )
+            
+            if kw.get("usedImprovedSeed"):
+                vals["do_you_use_improved_seed"] = self._get_selection_value(
+                    "ir.model.fields.selection", kw.get("usedImprovedSeed")
+                )
 
         can_access_machinery = self._get_selection_value(
             "ir.model.fields.selection", kw.get("accessToMachinary")
