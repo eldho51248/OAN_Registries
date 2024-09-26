@@ -81,31 +81,36 @@ function addFamilyMember() {
     }
 }
 
-// eslint-disable-next-line no-unused-vars
+
 function deleteMember(button) {
     const memberId = $(button).attr("store");
     var groupId = $("input[name='group_id']").val();
+
     console.log("memberID is ", memberId);
 
     if (confirm("Are you sure you want to delete this family member?")) {
         $.ajax({
             url: "/serviceprovider/member/delete/",
             type: "POST",
-            data: {member_id: memberId, group_id: groupId}, // Send data as form-encoded
+            data: { member_id: memberId, group_id: groupId },
             success: function (data) {
+                data = JSON.parse(data);
                 if (data.success) {
-                    console.log("heeyyyyy");
+
+                    console.log("in the the the here")
                     const row = $(button).closest("tr");
                     row.remove();
-                    alert("Family member deleted successfully.");
-                } else {
-                    console.log("undefined is here");
-                    alert("Error: " + data.error);
+                    alert(data.message);
+                } 
+                
+                else {
+                    console.log("Delete failed:", data);
+                    alert("Error: " + (data.error));
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error("Error:", textStatus, errorThrown);
-                alert("An error occurred while deleting the family member.");
+                alert("An error occurred while deleting the family member: " + errorThrown);
             },
         });
     }

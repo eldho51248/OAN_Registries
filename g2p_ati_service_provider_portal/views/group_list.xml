@@ -225,7 +225,7 @@
                             </table>
                         </div>
 
-                        <div id="page-buttons" class="pagination justify-content-center">
+                        <div id="page-buttons" class="pagination justify-content-center pb-4">
                         </div>
 
                     </div>
