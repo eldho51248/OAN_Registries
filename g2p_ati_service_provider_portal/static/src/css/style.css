@@ -478,6 +478,36 @@ input:valid {
     border-color: green;
 } */
 
+/* Base input styles */
+input.form-control {
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Style for valid input */
+input.is-valid {
+    border-color: #28a745; /* Green border for valid input */
+    
+}
+
+/* Style for invalid input */
+input.is-invalid {
+    border-color: #dc3545; /* Red border for invalid input */
+    
+}
+
+/* Error message styling */
+.error-message {
+    color: #dc3545; /* Red color for error messages */
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+
 .header-container {
     height: 110px;
 }
