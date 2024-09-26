@@ -7,6 +7,7 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
     const landRequiredFields = document.getElementsByClassName("land_required_field");
     const landAstrix = document.getElementsByClassName("land_astrix");
     const livestockRequiredFields = document.getElementsByClassName("livestock_required_field");
+    const cropMixedRequiredFields = document.getElementsByClassName("crop_mixed_required_field");
     const landNext = document.getElementById("land-next");
     const cropNext = document.getElementById("crop-next");
     const livestockNext = document.getElementById("livestock-next");
@@ -21,6 +22,9 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
         });
         Array.from(membershipRequiredFields).forEach((element) => {
             element.setAttribute("required", "required");
+        });
+        Array.from(livestockRequiredFields).forEach((element) => {
+            element.removeAttribute("required", "required");
         });
 
         // Land Information
@@ -86,6 +90,9 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
             element.textContent = "";
         });
         Array.from(membershipRequiredFields).forEach((element) => {
+            element.removeAttribute("required");
+        });
+        Array.from(cropMixedRequiredFields).forEach((element) => {
             element.removeAttribute("required");
         });
 
