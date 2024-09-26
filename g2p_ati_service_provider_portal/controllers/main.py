@@ -2382,7 +2382,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                         continue
                     else:
                         kind_name = membership.kind.name if membership.kind else None
-                       
+
                         member_list.append(
                             {
                                 "id": membership.individual.id,
