@@ -213,7 +213,7 @@
                                                                 <span class="s_website_form_mark"> *</span>
                                                             </label>
                                                             <input
-                                                                type="input"
+                                                                type="text"
                                                                 id="uid_input"
                                                                 name="uid"
                                                                 class="form-control"
