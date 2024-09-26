@@ -76,16 +76,13 @@ function hideToast() {
 }
 
 function resetFormFields() {
+    
+    console.log("Resetting form fields..."); 
     // Reset text inputs, email, and password fields
-    $(
-        "#farmerDetailModal input[type='text'], #farmerDetailModal input[type='email'], #farmerDetailModal input[type='password']"
-    ).val("");
+    $("#farmerDetailModal input[type='text'], #farmerDetailModal input[type='email'], #farmerDetailModal input[type='password']").val("");
 
     // Uncheck checkboxes and radio buttons
-    $("#farmerDetailModal input[type='checkbox'], #farmerDetailModal input[type='radio']").prop(
-        "checked",
-        false
-    );
+    $("#farmerDetailModal input[type='checkbox'], #farmerDetailModal input[type='radio']").prop("checked", false);
 
     // Reset select dropdowns to the first option
     $("#farmerDetailModal select").prop("selectedIndex", 0).trigger("change");
@@ -95,20 +92,30 @@ function resetFormFields() {
 
     // Reset number and date fields to their default state
     $("#farmerDetailModal input[type='number'], #farmerDetailModal input[type='date']").val("");
+
+    // Clear textarea fields
+    $("#farmerDetailModal textarea").val("");
+
+    // Reset any additional inputs or fields as necessary
+    
+    $("#farmerDetailModal input[type='file']").val("");
 }
+
 
 // eslint-disable-next-line no-unused-vars
 function resetFormFieldsMember() {
     $("#familyMemberModal input, #familyMemberModal select").val("");
+    $("#familyMemberModal input[type='radio']").prop("checked", false);
+    
 }
 
 // Replace button
-$('[data-bs-target="#memberDetailModal"]').on("click", function () {
-    $("#update-member-btn").replaceWith(
-        '<div id="member_submit" type="button" class="btn btn-primary create-new">Add</div>'
-    );
-    resetFormFields();
-});
+// $('[data-bs-target="#memberDetailModal"]').on("click", function () {
+//     $("#update-member-btn").replaceWith(
+//         '<div id="member_submit" type="button" class="btn btn-primary create-new">Add</div>'
+//     );
+//     resetFormFields();
+// });
 
 $(document).on("click", "#member_submit", async function () {
     console.log("Add memberrrrrr clicked");
@@ -399,10 +406,13 @@ $(document).on("click", "#member_submit", async function () {
             console.log("Ajax request successful");
             console.log("Response:", response);
             if (response.member_list) {
+                resetFormFields();
                 var member_list = response.member_list;
                 if (member_list) {
-                    resetFormFields();
+ 
                     modal.modal("hide");
+                    resetFormFields();
+
                     console.log("member_list[0].group_id :", member_list[0].group_id);
                     $("input[name='group_id']").val(member_list[0].group_id);
                     $(".no_list").css("display", "none");
