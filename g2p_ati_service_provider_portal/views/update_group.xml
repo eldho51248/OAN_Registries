@@ -495,6 +495,7 @@
                                                                                         type="button"
                                                                                         class="btn btn-outline-secondary btn-sm my-3"
                                                                                         onclick="deleteMember(this)"
+                                                                                        t-attf-store="{{ individual.id }}"
                                                                                     >
                                                                                         <i
                                                                                             class="fas fa-trash-alt"
@@ -647,8 +648,6 @@
                                                                                         </option>
                                                                                     </t>
                                                                                 </select>
-
-
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1803,7 +1802,9 @@
                                                                                     </span>
                                                                                 </label>
 
-                                                                                <select
+
+                                                                               <select
+
                                                                                     class="form-select"
                                                                                     id="is_member_of_primary_coop"
                                                                                     name="is_member_of_primary_coop"
@@ -1928,7 +1929,9 @@
                                                                                     </span>
                                                                                 </label>
 
-                                                                                <select
+
+                                                                                  <select
+
                                                                                     class="form-select"
                                                                                     id="is_member_of_coop_union"
                                                                                     name="is_member_of_coop_union"
@@ -1949,7 +1952,6 @@
                                                                                         </option>
                                                                                     </t>
                                                                                 </select>
-
 
                                                                             </div>
                                                                         </div>
@@ -2061,33 +2063,30 @@
                                                                                         *
                                                                                     </span>
                                                                                 </label>
-                                                                                <div
-                                                                                    class="form-group">
 
-                                                                                    <select
+                                                                                <div class="form-group">
+
+                                                                                <select
+
                                                                                         class="form-select"
                                                                                         id="in_farmer_cluster"
                                                                                         name="in_farmer_cluster"
                                                                                         required="required"
                                                                                     >
 
-
-                                                                                        <option
-                                                                                            value="">
-                                                                                            Select</option>
-                                                                                        <t
+                                                                        <option value="">
+                                                                                        Select</option>
+                                                                        <t
                                                                                             t-foreach="is_member_in_farmer_cluster"
                                                                                             t-as="option"
                                                                                         >
+                                                                            <option t-att-value="option.id">
+                                                                                <t t-esc="option.name" />
+                                                                            </option>
+                                                                        </t>
+                                                                    </select>
 
-                                                                                            <option
-                                                                                                t-att-value="option.id"
-                                                                                            >
-                                                                                                <t
-                                                                                                    t-esc="option.name" />
-                                                                                            </option>
-                                                                                        </t>
-                                                                                    </select>
+
 
 
                                                                                 </div>
