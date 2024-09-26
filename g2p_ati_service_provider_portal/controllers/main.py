@@ -2270,18 +2270,42 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         )
 
     @http.route(
-        "/serviceprovider/member/update/",
-        type="http",
-        auth="user",
-        website=True,
-        csrf=False,
-    )
+    "/serviceprovider/member/update/",
+    type="http",
+    auth="user",
+    website=True,
+    csrf=False,
+)
     def update_member(self, **kw):
         member_id = kw.get("member_id")
+        print("member_id", member_id)
+        print("hi")
+        
         try:
-            beneficiary = request.env["res.partner"].sudo().browse(int(member_id))
-            # relationship_role = request.env["g2p.group.membership.kind"].sudo().search()
+            group_id = kw.get("group_id")
+            print("group id",group_id)
+            if not group_id:
+                return json.dumps({"error": "Group ID is required"})
 
+            group_rec = request.env["res.partner"].sudo().browse(int(group_id))
+            if not group_rec.exists():
+                return json.dumps({"error": "Group not found"})
+
+            # Fetch the member (beneficiary) record
+            beneficiary = request.env["res.partner"].sudo().browse(int(member_id))
+
+            # Initialize kind_name to be populated from group membership
+            kind_name = None
+            
+            # Search for the membership of this individual in the group
+            for membership in group_rec.group_membership_ids:
+                print("hey")
+                if membership.individual.id == int(member_id):
+                    print("halo")
+                    kind_name = membership.kind.id if membership.kind else None
+                    break
+
+            # If the beneficiary is found, populate the existing values
             if beneficiary:
                 exist_value = {
                     "given_name": beneficiary.given_name,
@@ -2289,12 +2313,15 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     "gf_name_eng": beneficiary.gf_name_eng,
                     "dob": str(beneficiary.birthdate),
                     "gender": beneficiary.gender,
+                    "kind": kind_name,  # Populate the kind name
                     "id": beneficiary.id,
                 }
+                print("existing",exist_value)
                 return json.dumps(exist_value)
 
         except Exception as e:
             _logger.error("ERROR LOG IN UPDATE MEMBER%s", e)
+            return json.dumps({"error": "Failed to retrieve member data"})
 
     @http.route(
         "/serviceprovider/family_member/update/submit/",
@@ -2315,6 +2342,12 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             group_rec = request.env["res.partner"].sudo().browse(int(group_id))
             if not group_rec.exists():
                 return json.dumps({"error": "Group not found"})
+
+            relationship = int(kw.get("Relationship"))
+            relationship = [(6, 0, [relationship])]
+            print("rel",relationship)
+
+            
 
             if member:
                 given_name = kw.get("given_name")
@@ -2337,21 +2370,34 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
                 member.sudo().write(partner_data)
 
+                existing_membership = request.env["g2p.group.membership"].sudo().search([
+                    ('individual', '=', member.id),
+                    ('group', '=', group_rec.id)
+                ])
+
+                # Update
+                if existing_membership:
+                    existing_membership.write({
+                        "kind": relationship  # Update kind for existing membership
+                    })
+
                 member_list = []
 
                 for membership in group_rec.group_membership_ids:
                     if membership.individual.is_farmer == "yes":
                         continue
                     else:
+                        kind_name = membership.kind.name if membership.kind else None
+                        print("kind_name is",kind_name)
                         member_list.append(
                             {
                                 "id": membership.individual.id,
                                 "name": membership.individual.name,
-                                "birthdate": str(
-                                    membership.individual.birthdate
+                                "age": str(
+                                    membership.individual.age,
                                 ),  # Ensure date is serialized
                                 "gender": membership.individual.gender,
-                                # "relationship":membership.individual.kind,
+                                "kind":kind_name,
                                 "active": membership.individual.active,
                                 "group_id": membership.group.id,
                             }

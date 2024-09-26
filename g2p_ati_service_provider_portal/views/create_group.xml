@@ -4220,13 +4220,13 @@
                                                                                 name="relation_with_household_head"
                                                                                 required="required"
                                                                                 onchange="validateElement(this)"
-                                                                                id="relation_with_hh_selection"
+                                                                                id="edit_relation_with_hh_selection"
                                                                             >
                                                                                 <option value=" ">Select
                                                                                     Relation
                                                                                 </option>
                                                                                 <t
-                                                                                    t-foreach="realationship_with_hhh"
+                                                                                    t-foreach="relationship_with_hhh"
                                                                                     t-as="option"
                                                                                 >
                                                                                     <option
