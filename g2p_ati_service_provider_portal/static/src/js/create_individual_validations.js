@@ -115,50 +115,58 @@ $(document).ready(function () {
         }
     }
 
+    // function formatInputWithSpaces(inputElement) {
+    //     inputElement.addEventListener("input", function () {
+    //         const value = inputElement.value.replace(/\s+/g, "");
+    //         const formattedValue = value.match(/.{1,4}/g)?.join(" ") || "";
+    //         inputElement.value = formattedValue;
+    //     });
+    // }
+
     function formatInputWithSpaces(inputElement) {
         inputElement.addEventListener("input", function () {
-            const value = inputElement.value.replace(/\s+/g, "");
-            const formattedValue = value.match(/.{1,4}/g)?.join(" ") || "";
-            inputElement.value = formattedValue;
+            const value = inputElement.value.replace(/\s+/g, ""); // Remove spaces
+            const formattedValue = value.match(/.{1,4}/g)?.join(" ") || ""; // Add spaces every 4 digits
+            inputElement.value = formattedValue; // Set formatted value back to input
         });
     }
 
     // Apply the function to both UID and RID inputs
 
-    const ridInput = document.getElementById("rid_input");
-    const uidInput = document.getElementById("uid_input");
-    const uidError = document.getElementById("uid_error");
-    const ridError = document.getElementById("rid_error");
+    // const ridInput = document.getElementById("rid_input");
+    // const uidInput = document.getElementById("uid_input");
+    // const uidError = document.getElementById("uid_error");
+    // const ridError = document.getElementById("rid_error");
 
-    formatInputWithSpaces(uidInput);
-    formatInputWithSpaces(ridInput);
+    // formatInputWithSpaces(uidInput);
+    // formatInputWithSpaces(ridInput);
 
-    uidInput.addEventListener("input", function () {
-        const sanitizedValue = uidInput.value.replace(/\s+/g, "");
-        const isOnlyDigits = /^\d*$/.test(sanitizedValue);
+    // uidInput.addEventListener("input", function () {
+    //     const sanitizedValue = uidInput.value.replace(/\s+/g, "");
+    //     const isOnlyDigits = /^\d*$/.test(sanitizedValue);
 
-        if ((sanitizedValue.length !== 12 && sanitizedValue.length !== 0) || !isOnlyDigits) {
-            uidInput.classList.add("uid_error");
-            uidError.style.display = "block";
-            uidInput.setAttribute("required", "required");
-        } else {
-            uidInput.classList.remove("uid_error");
-            uidError.style.display = "none";
-        }
-    });
+    //     if ((sanitizedValue.length !== 12 && sanitizedValue.length !== 0) || !isOnlyDigits) {
+    //         uidInput.classList.add("uid_error");
+    //         uidError.style.display = "block";
+    //         uidInput.setAttribute("required", "required");
+    //     } else {
+    //         uidInput.classList.remove("uid_error");
+    //         uidError.style.display = "none";
+    //     }
+    // });
 
-    ridInput.addEventListener("input", function () {
-        const sanitizedValue = ridInput.value.replace(/\s+/g, "");
-        const isOnlyDigits = /^\d*$/.test(sanitizedValue);
-        if ((sanitizedValue.length !== 29 && sanitizedValue.length !== 0) || !isOnlyDigits) {
-            ridInput.classList.add("rid_error");
-            ridError.style.display = "block";
-            ridInput.setAttribute("required", "required");
-        } else {
-            ridInput.classList.remove("rid_error");
-            ridError.style.display = "none";
-        }
-    });
+    // ridInput.addEventListener("input", function () {
+    //     const sanitizedValue = ridInput.value.replace(/\s+/g, "");
+    //     const isOnlyDigits = /^\d*$/.test(sanitizedValue);
+    //     if ((sanitizedValue.length !== 29 && sanitizedValue.length !== 0) || !isOnlyDigits) {
+    //         ridInput.classList.add("rid_error");
+    //         ridError.style.display = "block";
+    //         ridInput.setAttribute("required", "required");
+    //     } else {
+    //         ridInput.classList.remove("rid_error");
+    //         ridError.style.display = "none";
+    //     }
+    // });
 
     // Event listeners
     function handleNationalIdSelection() {
@@ -438,25 +446,69 @@ function validateElement(element) {
     }
 }
 
+// function validateUID() {
+//     const uid = document.getElementById("uid_input");
+//     const uidError = document.getElementById("uid_error");
+//     const isValid = uid.value.length === 12 && /^\d+$/.test(uid.value);
+//     uid.classList.toggle("is-invalid", !isValid);
+//     uid.classList.toggle("is-valid", isValid); // Add this line
+//     uidError.style.display = isValid ? "none" : "block";
+//     return isValid;
+// }
+
 function validateUID() {
-    const uid = document.getElementById("uid_input");
+    const uidInput = document.getElementById("uid_input");
     const uidError = document.getElementById("uid_error");
-    const isValid = uid.value.length === 12 && /^\d+$/.test(uid.value);
-    uid.classList.toggle("is-invalid", !isValid);
-    uid.classList.toggle("is-valid", isValid); // Add this line
-    uidError.style.display = isValid ? "none" : "block";
-    return isValid;
+
+    const sanitizedValue = uidInput.value.replace(/\s+/g, ""); // Remove spaces for validation
+    const isValid = sanitizedValue.length === 12 && /^\d+$/.test(sanitizedValue); // Check length and digits
+
+    uidInput.classList.toggle("is-invalid", !isValid);
+    uidInput.classList.toggle("is-valid", isValid); // Add 'is-valid' for correct styling
+
+    uidError.style.display = isValid ? "none" : "block"; // Show or hide error message
+
+    return isValid; // Return validation result
 }
 
+// function validateRID() {
+//     const rid = document.getElementById("rid_input");
+//     const ridError = document.getElementById("rid_error");
+//     const isValid = rid.value.length === 29 && /^\d+$/.test(rid.value);
+//     rid.classList.toggle("is-invalid", !isValid);
+//     rid.classList.toggle("is-valid", isValid); // Add this line
+//     ridError.style.display = isValid ? "none" : "block";
+//     return isValid;
+// }
+
 function validateRID() {
-    const rid = document.getElementById("rid_input");
+    const ridInput = document.getElementById("rid_input");
     const ridError = document.getElementById("rid_error");
-    const isValid = rid.value.length === 29 && /^\d+$/.test(rid.value);
-    rid.classList.toggle("is-invalid", !isValid);
-    rid.classList.toggle("is-valid", isValid); // Add this line
-    ridError.style.display = isValid ? "none" : "block";
-    return isValid;
+
+    const sanitizedValue = ridInput.value.replace(/\s+/g, ""); // Remove spaces for validation
+    const isValid = sanitizedValue.length === 29 && /^\d+$/.test(sanitizedValue); // Check length and digits
+
+    ridInput.classList.toggle("is-invalid", !isValid);
+    ridInput.classList.toggle("is-valid", isValid); // Add 'is-valid' for correct styling
+
+    ridError.style.display = isValid ? "none" : "block"; // Show or hide error message
+
+    return isValid; // Return validation result
 }
+
+
+// Apply the function to both UID and RID inputs
+const uidInput = document.getElementById("uid_input");
+const ridInput = document.getElementById("rid_input");
+
+formatInputWithSpaces(uidInput);
+formatInputWithSpaces(ridInput);
+
+// Add event listeners for real-time validation
+uidInput.addEventListener("input", validateUID);
+ridInput.addEventListener("input", validateRID);
+
+
 
 
 function validateRadioButtons(radioName, section) {
@@ -480,64 +532,88 @@ function validateRadioButtons(radioName, section) {
     return radioChecked;
 }
 
+// function validateSection(sectionId) {
+//     const section = document.getElementById(sectionId);
+//     const requiredFields = section.querySelectorAll("[required]");
+//     const uidError = document.getElementById("uid_error");
+//     const ridError = document.getElementById("rid_error");
+
+//     let valid = true;
+
+//     requiredFields.forEach((field) => {
+//         let isFieldValid = false; // Initialize isFieldValid to avoid pre-commit error
+
+//         // Add radio button validation logic
+//         if (field.type === "radio") {
+//             // Validate radio buttons in this section
+//             isFieldValid = validateRadioButtons(field.name, section);
+//         } else {
+//             // Validate non-radio fields
+//             isFieldValid = field.value.trim() !== "";
+//         }
+
+//         const fieldName = field.getAttribute("name");
+
+//         if (fieldName.includes("{9999}")) {
+//             return;
+//         }
+
+//         // Apply 'is-invalid' class for non-radio fields
+//         if (field.type !== "radio") {
+//             field.classList.toggle("is-invalid", !isFieldValid);
+//         }
+
+//         valid = valid && isFieldValid;
+
+//         // Additional UID and RID validation for 'id-section'
+
+//         if (sectionId === "id-section" && fieldName === "uid") {
+//             valid = valid && validateUID();
+//         }
+//         if (sectionId === "id-section" && fieldName === "rid") {
+//             valid = valid && validateRID();
+//         }
+//     });
+//     if (uidError.style.display === "block") {
+//         valid = false;
+//     }
+//     if (ridError.style.display === "block") {
+//         valid = false;
+//     }
+
+//     // Check for UID and RID error display
+//     if (uidError && uidError.style.display === "block") {
+//         valid = false;
+//     }
+//     if (ridError && ridError.style.display === "block") {
+//         valid = false;
+//     }
+
+//     return valid;
+// }
+
+
 function validateSection(sectionId) {
     const section = document.getElementById(sectionId);
     const requiredFields = section.querySelectorAll("[required]");
-    const uidError = document.getElementById("uid_error");
-    const ridError = document.getElementById("rid_error");
-
-    let valid = true;
+    
+    let valid = true; // Start with a valid state
 
     requiredFields.forEach((field) => {
-        let isFieldValid = false; // Initialize isFieldValid to avoid pre-commit error
-
-        // Add radio button validation logic
-        if (field.type === "radio") {
-            // Validate radio buttons in this section
-            isFieldValid = validateRadioButtons(field.name, section);
-        } else {
-            // Validate non-radio fields
-            isFieldValid = field.value.trim() !== "";
+        const isValidField = field.value.trim() !== ""; // Simple validation for non-radio fields
+        field.classList.toggle("is-invalid", !isValidField); // Highlight invalid fields
+        valid = valid && isValidField; // Combine validity state
+        
+        // Special UID and RID validation for the 'id-section'
+        if (sectionId === "id-section" && field.name === "uid") {
+            valid = valid && validateUID(); // Check UID
         }
-
-        const fieldName = field.getAttribute("name");
-
-        if (fieldName.includes("{9999}")) {
-            return;
-        }
-
-        // Apply 'is-invalid' class for non-radio fields
-        if (field.type !== "radio") {
-            field.classList.toggle("is-invalid", !isFieldValid);
-        }
-
-        valid = valid && isFieldValid;
-
-        // Additional UID and RID validation for 'id-section'
-
-        if (sectionId === "id-section" && fieldName === "uid") {
-            valid = valid && validateUID();
-        }
-        if (sectionId === "id-section" && fieldName === "rid") {
-            valid = valid && validateRID();
+        if (sectionId === "id-section" && field.name === "rid") {
+            valid = valid && validateRID(); // Check RID
         }
     });
-    if (uidError.style.display === "block") {
-        valid = false;
-    }
-    if (ridError.style.display === "block") {
-        valid = false;
-    }
 
-    // Check for UID and RID error display
-    if (uidError && uidError.style.display === "block") {
-        valid = false;
-    }
-    if (ridError && ridError.style.display === "block") {
-        valid = false;
-    }
-
-    return valid;
+    return valid; // Return overall section validity
 }
 
 // Let previousSection = "id-section";
@@ -584,18 +660,33 @@ function showSection(sectionId, element, fromGroup = false) {
     }
 }
 // eslint-disable-next-line no-unused-vars
-function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
-    var val = validateSection(currentSectionId);
+// function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
+//     var val = validateSection(currentSectionId);
 
-    if (val) {
-        var activeLink = document.querySelector(".sidebar .nav-link.active");
-        var nextLink = activeLink.parentElement.nextElementSibling.querySelector(".nav-link");
+//     if (val) {
+//         var activeLink = document.querySelector(".sidebar .nav-link.active");
+//         var nextLink = activeLink.parentElement.nextElementSibling.querySelector(".nav-link");
+//         if (nextLink) {
+//             nextLink.classList.remove("disabled");
+//             showSection(nextSectionId, nextLink, fromGroup);
+//         }
+//     }
+// }
+
+
+function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
+    const isSectionValid = validateSection(currentSectionId);
+
+    if (isSectionValid) {
+        const activeLink = document.querySelector(".sidebar .nav-link.active");
+        const nextLink = activeLink.parentElement.nextElementSibling.querySelector(".nav-link");
         if (nextLink) {
             nextLink.classList.remove("disabled");
-            showSection(nextSectionId, nextLink, fromGroup);
+            showSection(nextSectionId, nextLink, fromGroup); // Move to next section if valid
         }
     }
 }
+
 
 // Function toggleFieldBasedOnRadio(inputName, fieldIdToToggle, selectElementId, toggleValue = "Yes") {
 //     const radios = document.querySelectorAll(`input[name="${inputName}"]`);
