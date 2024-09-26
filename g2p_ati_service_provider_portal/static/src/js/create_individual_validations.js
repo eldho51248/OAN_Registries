@@ -443,6 +443,7 @@ function validateUID() {
     const uidError = document.getElementById("uid_error");
     const isValid = uid.value.length === 12 && /^\d+$/.test(uid.value);
     uid.classList.toggle("is-invalid", !isValid);
+    uid.classList.toggle("is-valid", isValid); // Add this line
     uidError.style.display = isValid ? "none" : "block";
     return isValid;
 }
@@ -452,9 +453,11 @@ function validateRID() {
     const ridError = document.getElementById("rid_error");
     const isValid = rid.value.length === 29 && /^\d+$/.test(rid.value);
     rid.classList.toggle("is-invalid", !isValid);
+    rid.classList.toggle("is-valid", isValid); // Add this line
     ridError.style.display = isValid ? "none" : "block";
     return isValid;
 }
+
 
 function validateRadioButtons(radioName, section) {
     const radioGroup = section.querySelectorAll(`input[name="${radioName}"]`);
