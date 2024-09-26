@@ -2281,6 +2281,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
         try:
             group_id = kw.get("group_id")
+
             if not group_id:
                 return json.dumps({"error": "Group ID is required"})
 
@@ -2339,9 +2340,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             relationship = int(kw.get("Relationship"))
             relationship = [(6, 0, [relationship])]
-
             
-
             if member:
                 given_name = kw.get("given_name")
                 family_name = kw.get("family_name")
