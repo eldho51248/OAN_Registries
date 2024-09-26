@@ -2442,7 +2442,7 @@
                                                                                                 </label>
                                                                                                 <select
                                                                                                     id="land_selection"
-                                                                                                    class="form-select land_required_field"
+                                                                                                    class="form-select"
                                                                                                     t-att-name="'land_ownership_type_' + str({9999})"
                                                                                                     onchange="validateElement(this)"
                                                                                                     required="required"
@@ -2492,7 +2492,7 @@
                                                                                                     type="text"
                                                                                                     id="total_land_area"
                                                                                                     t-att-name="'total_land_area_' + str({9999})"
-                                                                                                    class="form-control land_required_field"
+                                                                                                    class="form-control"
                                                                                                     required="required"
                                                                                                     oninput="validateElement(this)"
                                                                                                     placeholder="Enter Land Area"
@@ -2523,7 +2523,7 @@
                                                                                                     type="text"
                                                                                                     id="land_id"
                                                                                                     t-att-name="'land_id_' + str({9999})"
-                                                                                                    class="form-control land_required_field"
+                                                                                                    class="form-control"
                                                                                                     required="required"
                                                                                                     oninput="validateElement(this)"
                                                                                                     placeholder="Enter Land ID"
@@ -2571,7 +2571,7 @@
                                                                                                         type="file"
                                                                                                         t-att-id="'land_certificate_' + str({9999})"
                                                                                                         t-att-name="'land_certificate_' + str({9999})"
-                                                                                                        class="form-control land_required_field"
+                                                                                                        class="form-control"
                                                                                                         onchange="updateFileName(this)"
                                                                                                         required="required"
                                                                                                     />

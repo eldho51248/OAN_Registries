@@ -100,6 +100,8 @@ function resetFormFields() {
 // eslint-disable-next-line no-unused-vars
 function resetFormFieldsMember() {
     $("#familyMemberModal input, #familyMemberModal select").val("");
+    $("#familyMemberModal input[type='radio']").prop("checked", false);
+    
 }
 
 // Replace button

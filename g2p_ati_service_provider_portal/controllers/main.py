@@ -2689,7 +2689,10 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         return int(value.strip()) if value and value.strip() else None
 
     def _get_or_create_group(self, kw, region, zone, woreda, kebele):
-        head_name = kw.get("given_name")
+        given_name = kw.get("given_name")
+        father_name = kw.get("family_name")
+        family_name = kw.get("gf_name_eng")
+        head_name = " ".join(filter(None, [given_name, father_name, family_name]))
         if kw.get("group_id"):
             return request.env["res.partner"].sudo().browse(int(kw.get("group_id")))
         elif head_name:
