@@ -2038,6 +2038,7 @@
                                                                                             t-foreach="is_member_in_farmer_cluster"
                                                                                             t-as="option"
                                                                                         >
+<<<<<<< HEAD
                                                                                             <option
                                                                                                 t-att-value="option.id"
                                                                                             >
@@ -2047,6 +2048,19 @@
                                                                                             </option>
                                                                                         </t>
                                                                                     </select>
+=======
+                                                                            <option t-att-value="option.id">
+                                                                                <t t-esc="option.name" />
+                                                                            </option>
+                                                                        </t>
+                                                                    </select>
+
+
+
+
+
+
+>>>>>>> 7e9c903 (pre-commit fixes)
 
 
                                                                                 </div>

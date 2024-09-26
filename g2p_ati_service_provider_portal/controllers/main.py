@@ -2340,6 +2340,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             relationship = int(kw.get("Relationship"))
             relationship = [(6, 0, [relationship])]
 
+            
+
             if member:
                 given_name = kw.get("given_name")
                 family_name = kw.get("family_name")
@@ -2361,19 +2363,16 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
                 member.sudo().write(partner_data)
 
-                existing_membership = (
-                    request.env["g2p.group.membership"]
-                    .sudo()
-                    .search([("individual", "=", member.id), ("group", "=", group_rec.id)])
-                )
+                existing_membership = request.env["g2p.group.membership"].sudo().search([
+                    ('individual', '=', member.id),
+                    ('group', '=', group_rec.id)
+                ])
 
                 # Update
                 if existing_membership:
-                    existing_membership.write(
-                        {
-                            "kind": relationship  # Update kind for existing membership
-                        }
-                    )
+                    existing_membership.write({
+                        "kind": relationship  # Update kind for existing membership
+                    })
 
                 member_list = []
 
@@ -2382,7 +2381,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                         continue
                     else:
                         kind_name = membership.kind.name if membership.kind else None
-
+                        
                         member_list.append(
                             {
                                 "id": membership.individual.id,
@@ -2391,7 +2390,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                                     membership.individual.age,
                                 ),  # Ensure date is serialized
                                 "gender": membership.individual.gender,
-                                "kind": kind_name,
+                                "kind":kind_name,
                                 "active": membership.individual.active,
                                 "group_id": membership.group.id,
                             }
