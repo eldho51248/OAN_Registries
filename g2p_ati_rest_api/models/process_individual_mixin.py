@@ -6,7 +6,7 @@ class ProcessIndividualMixin(models.AbstractModel):
 
     def _process_individual(self, individual):
         res = super()._process_individual(individual)
-        fields_to_check = ["gf_name_eng", "given_name_am", "family_name_am", "addl_name_am"]
+        fields_to_check = ["gf_name_eng", "first_name_amh", "family_name_amh", "gf_name_amh"]
 
         for field in fields_to_check:
             value = individual.model_dump().get(field)
