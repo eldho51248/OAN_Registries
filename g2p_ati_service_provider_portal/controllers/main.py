@@ -1629,20 +1629,18 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     "land_id": land_info.land_id,
                     "ownership_type_selection_id": ownership_selection_id,
                     # "land_certificate": {
-                    #     "name":  land_info.land_certificate.name,
-                    #     "content": base64.b64decode(land_info.land_certificate.data)
-                    # }
+            
                         
                         
                 })
                 
-            if land_info.land_certificate:
-                land_info_data.append({
-                    "land_certificate": {
-                        "name": land_info.land_certificate.name,
-                        "content": base64.b64decode(land_info.land_certificate.data)
-                    }
-                })
+            # if land_info.land_certificate:
+            #     land_info_data.append({
+            #         "land_certificate": {
+            #             "name": land_info.land_certificate.name,
+            #             "content": base64.b64decode(land_info.land_certificate.data)
+            #         }
+            #     })
 
                 
                 
