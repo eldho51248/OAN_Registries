@@ -509,24 +509,24 @@ input.is-invalid {
 
 
 .header-container {
-    height: 110px;
+    padding-bottom: 2px;
 }
 
 .header-container .nav .main-logo,
 .footer-container .nav .main-logo {
-    width: 272px;
-    height: 100px;
-    margin-top: 0px;
-    margin-bottom: 15px;
-    opacity: 1;
-    margin-left: -115px;
+    width: 175px;
+    height: 81px;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    /* opacity: 1; */
+    margin-left: -48px;
 }
 
 .header-container .nav {
     top: 0px;
     left: 0px;
-    width: 1180px;
-    height: 100px;
+    width: 1313px !important;
+    height: auto !important;
     border: none;
     background: #ffffff 0% 0% no-repeat padding-box;
     /* display: flex; */
@@ -697,3 +697,15 @@ input[type="file"] {
 .list-row {
     background-color: #2dac64 !important;
 }
+
+
+hr {
+
+    margin: 0px;
+}
+
+
+.header-container .nav , .footer-container .nav{
+    align-items: center !important;
+}
+

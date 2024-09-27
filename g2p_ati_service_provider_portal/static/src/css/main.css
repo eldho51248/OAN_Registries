@@ -261,7 +261,7 @@ form-group .ssp-login-box .card-body {
     left: 0px;
     /* margin-left: 139px;
     margin-right: 152px; */
-    width: 1180px;
+    width: 1313px;
     height: 90px;
     border: none;
     background: #ffffff 0% 0% no-repeat padding-box;
@@ -450,7 +450,7 @@ a:hover {
 .footer-container {
     left: 0px;
     width: 100%;
-    height: 190px;
+    height:100px !important; 
     background: #ffffff 0% 0% no-repeat padding-box;
     opacity: 1;
 }
@@ -459,17 +459,18 @@ a:hover {
     left: 0px;
     margin-left: 139px;
     margin-right: 139px;
-    width: 1180px;
+    width: 1313px !important;
     border: none;
     background: #ffffff 0% 0% no-repeat padding-box;
     display: flex;
     justify-content: space-between;
+    align-items: center !important;
     opacity: 1;
 }
 .footer-container .nav .main-logo {
     width: 272px;
     height: 58px;
-    margin-top: 36px;
+    /* margin-top: 36px; */
     opacity: 1;
 }
 .footer-container .nav .list-container {
@@ -522,8 +523,8 @@ a:hover {
     /* width: 1366px; */
     height: 100%;
     display: block;
-    padding-top: 30px;
-    padding-bottom: 30px;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
     opacity: 1;
 }
 
@@ -597,7 +598,7 @@ li div p {
     margin-bottom: 0px;
     height: 26px;
     text-align: left;
-    font: normal 600 22px/26px Inter;
+    font: normal 600 18px/22px Inter !important;
     letter-spacing: 0px;
     color: #484848;
     opacity: 1;

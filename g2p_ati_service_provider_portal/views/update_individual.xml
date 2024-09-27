@@ -1861,6 +1861,8 @@
                                                                                             id="land_certificate_0"
                                                                                             name="land_certificate_0"
                                                                                             class="form-control land_required_field"
+                                                                                            onchange="updateFileName(this)"
+                                                                                            t-att-value="land_info['land_certificate']['content']"
                                                                                         />
                                                                                     </div>
                                                                                 </div>
@@ -2041,6 +2043,7 @@
                                                                                                     t-att-id="'land_certificate_' + str(land_info['index'])"
                                                                                                     t-att-name="'land_certificate_' + str(land_info['index'])"
                                                                                                     class="form-control land_required_field"
+                                                                                                    onchange="updateFileName(this)"
                                                                                                 />
                                                                                             </div>
                                                                                         </div>
@@ -2206,6 +2209,8 @@
                                                                                         t-att-id="'land_certificate_' + str({9999})"
                                                                                         t-att-name="'land_certificate_' + str({9999})"
                                                                                         class="form-control land_required_field"
+                                                                                        onchange="updateFileName(this)"
+
                                                                                     />
                                                                                 </div>
                                                                             </div>
@@ -3505,13 +3510,28 @@
                             <script>
                                 function updateFileName(input) {
                                 var inputId = input.getAttribute('id');
-                                var label = document.querySelector(label[for="${inputId}"]);
+                                var label = document.querySelector(`label[for="${inputId}"]`);
                                 var uploadText = label.querySelector('.upload-text');
                                 var fileName = input.files.length > 0 ? input.files[0].name :
                                 'Upload';
                                 uploadText.textContent = fileName;
                                 }
                             </script>
+
+                            <!-- <script>
+                                function updateFileName(input) {
+                                var inputId = input.getAttribute('id');
+                                var label = document.querySelector(label[for="${inputId}"]);
+                                var uploadText = label.querySelector('.upload-text');
+
+                                console.log("in herrerererererererer")
+                                console.log(input.files[0].fileName)
+
+                                var fileName = input.files.length > 0 ? input.files[0].fileName :
+                                'Upload';
+                                uploadText.textContent = fileName;
+                                }
+                            </script> -->
 
                             <script>
                                 $(document).ready(function () {

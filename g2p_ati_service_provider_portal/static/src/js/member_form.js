@@ -106,6 +106,8 @@ function resetFormFields() {
 function resetFormFieldsMember() {
     $("#familyMemberModal input, #familyMemberModal select").val("");
     $("#familyMemberModal input[type='radio']").prop("checked", false);
+    $("#livestock_water_source").val([]).trigger('change');
+
     
 }
 
@@ -259,6 +261,7 @@ $(document).on("click", "#member_submit", async function () {
                     const base64String = event.target.result.split(",")[1];
                     resolve(base64String);
                 };
+
                 reader.onerror = function (error) {
                     reject(error);
                 };
@@ -309,7 +312,7 @@ $(document).on("click", "#member_submit", async function () {
 
     // Invoke the async function to collect land records
     var landRecords = await collectLandRecords();
-    console.log(landRecords);
+    console.log(` these are the land records${landRecords}`);
 
     const cropRecords = [];
 

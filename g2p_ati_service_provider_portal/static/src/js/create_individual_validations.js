@@ -220,6 +220,13 @@ $(document).ready(function () {
         const selectElement = document.getElementById("have-national-id-selection");
         const uidDiv = document.getElementById("uid-div");
         const ridDiv = document.getElementById("rid-div");
+        
+        const uidInput = document.getElementById("uid_input");
+        const ridInput = document.getElementById("rid_input");
+        const uidError = document.getElementById("uid_error");
+        const ridError = document.getElementById("rid_error");
+
+
         // Const ridInput = document.getElementById("rid_input");
         // Const uidInput = document.getElementById("uid_input");
         const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
@@ -246,7 +253,9 @@ $(document).ready(function () {
         ridError.style.display = "none";
     }
 
-    function handlePhoneNumberSelection() {
+
+
+   function handlePhoneNumberSelection() {
         const selectElement = document.getElementById("have-phone-no-selection");
         const primaryPhoneDiv = document.getElementById("primary-div");
         const otherPhoneDiv = document.getElementById("other-div");
@@ -714,6 +723,8 @@ function showSection(sectionId, element, fromGroup = false) {
 
 
 function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
+
+    console.log("in here")
     const isSectionValid = validateSection(currentSectionId);
 
     if (isSectionValid) {

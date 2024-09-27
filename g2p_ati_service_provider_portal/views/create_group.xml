@@ -392,11 +392,10 @@
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
                                                                         >
                                                                             Gender</th>
-                                                                        <th
+                                                                        <th class="text-center"
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >Is
-                                                                            Household Head</th>
-                                                                        <th
+                                                                        >Household Head</th>
+                                                                        <th class="text-center"
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
                                                                         >
                                                                             Actions</th>
@@ -426,16 +425,19 @@
                                                                                     t-out="individual['gender']"
                                                                                 />
                                                                             </td>
-                                                                            <td>
-                                                                                <t
-                                                                                    t-if="individual['hh_is_household_head'] == 'yes'"
-                                                                                >
-                                                                                    <p>Yes</p>
-                                                                                </t>
-                                                                                <t t-else="">
-                                                                                    <p>No</p>
-                                                                                </t>
-                                                                            </td>
+
+                                                                               <td class="fw-bold text-center">
+                                                                                    <t
+                                                                                        t-if="individual['hh_is_household_head'] == 'yes'"
+                                                                                    >
+                                                                                         <span style="background-color: #06916b; font-size: 0.75rem;" class="rounded-pill text-white  py-1 px-2">Yes</span>
+                                                                                    </t>
+                                                                                    <t t-else="">
+                                                                                        <span style="background-color: red; font-size: 0.75rem;" class=" rounded-pill text-white py-1 px-2">No</span>
+                                                                                    </t>
+                                                                                </td>
+
+                                                                        
 
                                                                             <td>
                                                                                 <a
@@ -449,7 +451,7 @@
                                                                                         />
                                                                                     </div>
                                                                                 </a>
-                                                                                <button
+                                                                                <!-- <button
                                                                                     type="button"
                                                                                     class="btn btn-outline-secondary btn-sm my-3"
                                                                                     onclick="deleteMember(this)"
@@ -457,7 +459,7 @@
                                                                                     <i
                                                                                         class="fas fa-trash-alt"
                                                                                     />
-                                                                                </button>
+                                                                                </button> -->
                                                                             </td>
                                                                         </tr>
                                                                     </t>
@@ -3943,7 +3945,8 @@
                                                                                 >
                                                                                     <i class="fa fa-pencil" />
                                                                                 </button>
-                                                                                <button
+                                                                               
+                                                                                <!-- <button
                                                                                     type="button"
                                                                                     class="btn btn-outline-secondary btn-sm my-3"
                                                                                     onclick="deleteMember(this)"
@@ -3951,7 +3954,8 @@
                                                                                     <i
                                                                                         class="fas fa-trash-alt"
                                                                                     />
-                                                                                </button>
+                                                                                </button> -->
+
                                                                             </td>
                                                                         </tr>
                                                                     </t>
