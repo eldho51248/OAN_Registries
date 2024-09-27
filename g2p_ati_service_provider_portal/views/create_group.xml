@@ -155,7 +155,7 @@
                                                                             required="required"
                                                                             onchange="validateElement(this)"
                                                                         >
-                                                                            <option value=" ">Select
+                                                                            <option value="">Select
 
                                                                             </option>
                                                                             <t
@@ -198,7 +198,7 @@
                                                                             required="required"
                                                                             onchange="validateElement(this)"
                                                                         >
-                                                                            <option value=" ">Select
+                                                                            <option value="">Select
 
                                                                             </option>
                                                                             <t t-foreach="zone" t-as="option">
@@ -239,7 +239,7 @@
                                                                             required="required"
                                                                             onchange="validateElement(this)"
                                                                         >
-                                                                            <option value=" ">Select
+                                                                            <option value="">Select
 
                                                                             </option>
                                                                             <t
@@ -282,7 +282,7 @@
                                                                             required="required"
                                                                             onchange="validateElement(this)"
                                                                         >
-                                                                            <option value=" ">Select
+                                                                            <option value="">Select
 
                                                                             </option>
                                                                             <t
@@ -392,11 +392,10 @@
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
                                                                         >
                                                                             Gender</th>
-                                                                        <th
+                                                                        <th class="text-center"
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >Is
-                                                                            Household Head</th>
-                                                                        <th
+                                                                        >Household Head</th>
+                                                                        <th class="text-center"
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
                                                                         >
                                                                             Actions</th>
@@ -426,16 +425,19 @@
                                                                                     t-out="individual['gender']"
                                                                                 />
                                                                             </td>
-                                                                            <td>
-                                                                                <t
-                                                                                    t-if="individual['hh_is_household_head'] == 'yes'"
-                                                                                >
-                                                                                    <p>Yes</p>
-                                                                                </t>
-                                                                                <t t-else="">
-                                                                                    <p>No</p>
-                                                                                </t>
-                                                                            </td>
+
+                                                                               <td class="fw-bold text-center">
+                                                                                    <t
+                                                                                        t-if="individual['hh_is_household_head'] == 'yes'"
+                                                                                    >
+                                                                                         <span style="background-color: #06916b; font-size: 0.75rem;" class="rounded-pill text-white  py-1 px-2">Yes</span>
+                                                                                    </t>
+                                                                                    <t t-else="">
+                                                                                        <span style="background-color: red; font-size: 0.75rem;" class=" rounded-pill text-white py-1 px-2">No</span>
+                                                                                    </t>
+                                                                                </td>
+
+                                                                        
 
                                                                             <td>
                                                                                 <a
@@ -449,7 +451,7 @@
                                                                                         />
                                                                                     </div>
                                                                                 </a>
-                                                                                <button
+                                                                                <!-- <button
                                                                                     type="button"
                                                                                     class="btn btn-outline-secondary btn-sm my-3"
                                                                                     onclick="deleteMember(this)"
@@ -457,7 +459,7 @@
                                                                                     <i
                                                                                         class="fas fa-trash-alt"
                                                                                     />
-                                                                                </button>
+                                                                                </button> -->
                                                                             </td>
                                                                         </tr>
                                                                     </t>
@@ -627,7 +629,7 @@
                                                                                     id="have-national-id-selection"
                                                                                     onchange="validateElement(this)"
                                                                                 >
-                                                                                    <option value=" ">
+                                                                                    <option value="">
                                                                                         Select</option>
                                                                                     <t
                                                                                         t-foreach="has_national_id"
@@ -667,7 +669,7 @@
                                                                                         *</span>
                                                                                 </label>
                                                                                 <input
-                                                                                    type="input"
+                                                                                    type="text"
                                                                                     id="uid_input"
                                                                                     name="uid"
                                                                                     class="form-control"
@@ -1456,7 +1458,7 @@
                                                                                     onchange="validateElement(this); checkFarmingType(this, true);"
                                                                                     id="farming-type-selection"
                                                                                 >
-                                                                                    <option value=" ">Select
+                                                                                    <option value="">Select
                                                                                         Farming Type
                                                                                     </option>
                                                                                     <t
@@ -1544,7 +1546,7 @@
                                                                                     onchange="validateElement(this)"
                                                                                     id="marital-status-selection"
                                                                                 >
-                                                                                    <option value=" ">Select
+                                                                                    <option value="">Select
                                                                                         Marital
                                                                                         Status</option>
                                                                                     <t
@@ -1585,7 +1587,7 @@
                                                                                     onchange="validateElement(this)"
                                                                                     id="education-level-selection"
                                                                                 >
-                                                                                    <option value=" ">Select
+                                                                                    <option value="">Select
                                                                                         Education
                                                                                         Level</option>
                                                                                     <t
@@ -1802,7 +1804,7 @@
                                                                                     id="name_of_primary_coop"
                                                                                     onchange="validateElement(this)"
                                                                                 >
-                                                                                    <option value=" ">Select
+                                                                                    <option value="">Select
                                                                                         Primary
                                                                                         Cooperative
                                                                                     </option>
@@ -1936,7 +1938,7 @@
                                                                                     id="name_of_coop_union"
                                                                                     onchange="validateElement(this)"
                                                                                 >
-                                                                                    <option value=" ">Select
+                                                                                    <option value="">Select
                                                                                         Cooperative
                                                                                         Union
                                                                                     </option>
@@ -2076,7 +2078,7 @@
                                                                                     id="primary_commodity"
                                                                                     onchange="validateElement(this)"
                                                                                 >
-                                                                                    <option value=" ">Select
+                                                                                    <option value="">Select
                                                                                         Primary
                                                                                         Commodity
                                                                                     </option>
@@ -2125,7 +2127,7 @@
                                                                                     id="role_in_cluster"
                                                                                     onchange="validateElement(this)"
                                                                                 >
-                                                                                    <option value=" ">Select
+                                                                                    <option value="">Select
                                                                                         Role
                                                                                     </option>
                                                                                     <t
@@ -2442,7 +2444,7 @@
                                                                                                 </label>
                                                                                                 <select
                                                                                                     id="land_selection"
-                                                                                                    class="form-select land_required_field"
+                                                                                                    class="form-select"
                                                                                                     t-att-name="'land_ownership_type_' + str({9999})"
                                                                                                     onchange="validateElement(this)"
                                                                                                     required="required"
@@ -2492,7 +2494,7 @@
                                                                                                     type="text"
                                                                                                     id="total_land_area"
                                                                                                     t-att-name="'total_land_area_' + str({9999})"
-                                                                                                    class="form-control land_required_field"
+                                                                                                    class="form-control"
                                                                                                     required="required"
                                                                                                     oninput="validateElement(this)"
                                                                                                     placeholder="Enter Land Area"
@@ -2523,7 +2525,7 @@
                                                                                                     type="text"
                                                                                                     id="land_id"
                                                                                                     t-att-name="'land_id_' + str({9999})"
-                                                                                                    class="form-control land_required_field"
+                                                                                                    class="form-control"
                                                                                                     required="required"
                                                                                                     oninput="validateElement(this)"
                                                                                                     placeholder="Enter Land ID"
@@ -2571,7 +2573,7 @@
                                                                                                         type="file"
                                                                                                         t-att-id="'land_certificate_' + str({9999})"
                                                                                                         t-att-name="'land_certificate_' + str({9999})"
-                                                                                                        class="form-control land_required_field"
+                                                                                                        class="form-control"
                                                                                                         onchange="updateFileName(this)"
                                                                                                         required="required"
                                                                                                     />
@@ -2756,7 +2758,7 @@
                                                                                                     required="required"
                                                                                                 >
                                                                                                     <option
-                                                                                                        value=" "
+                                                                                                        value=""
                                                                                                     >
                                                                                                         Select
                                                                                                         Commodity
@@ -2885,7 +2887,7 @@
                                                                                                     required="required"
                                                                                                 >
                                                                                                     <option
-                                                                                                        value=" "
+                                                                                                        value=""
                                                                                                     >
                                                                                                         Select
                                                                                                         Commodity
@@ -3126,7 +3128,7 @@
                                                                                                     onchange="validateElement(this)"
                                                                                                 >
                                                                                                     <option
-                                                                                                        value=" "
+                                                                                                        value=""
                                                                                                     >
                                                                                                         Select
                                                                                                         Animal
@@ -3262,7 +3264,7 @@
                                                                                                         onchange="validateElement(this)"
                                                                                                     >
                                                                                                         <option
-                                                                                                            value=" "
+                                                                                                            value=""
                                                                                                         >
                                                                                                             Select
                                                                                                             Animal
@@ -3432,7 +3434,7 @@
                                                                                     id="have-used-fertilizer-selection"
                                                                                     required="required"
                                                                                 >
-                                                                                    <option value=" ">
+                                                                                    <option value="">
                                                                                         Select</option>
                                                                                     <t
                                                                                         t-foreach="do_you_use_fertilizer"
@@ -3474,7 +3476,7 @@
                                                                                     id="have-used-pesticide-selection"
                                                                                     required="required"
                                                                                 >
-                                                                                    <option value=" ">
+                                                                                    <option value="">
                                                                                         Select</option>
                                                                                     <t
                                                                                         t-foreach="do_you_use_pesticide"
@@ -3520,7 +3522,7 @@
                                                                                     id="have-used-insecticide-selection"
                                                                                     required="required"
                                                                                 >
-                                                                                    <option value=" ">
+                                                                                    <option value="">
                                                                                         Select</option>
                                                                                     <t
                                                                                         t-foreach="do_you_use_insecticide"
@@ -3564,7 +3566,7 @@
                                                                                     id="have-used-improved-seed-selection"
                                                                                     required="required"
                                                                                 >
-                                                                                    <option value=" ">
+                                                                                    <option value="">
                                                                                         Select</option>
                                                                                     <t
                                                                                         t-foreach="do_you_use_improved_seed"
@@ -3655,7 +3657,7 @@
                                                                                     onchange="validateElement(this)"
                                                                                     id="access-to-machinery-selection"
                                                                                 >
-                                                                                    <option value=" ">
+                                                                                    <option value="">
                                                                                         Select
                                                                                     </option>
                                                                                     <t
@@ -3766,7 +3768,7 @@
                                                                                     id="access-to-finance-selection"
                                                                                     required="required"
                                                                                 >
-                                                                                    <option value=" ">
+                                                                                    <option value="">
                                                                                         Select
                                                                                     </option>
                                                                                     <t
@@ -3943,7 +3945,8 @@
                                                                                 >
                                                                                     <i class="fa fa-pencil" />
                                                                                 </button>
-                                                                                <button
+                                                                               
+                                                                                <!-- <button
                                                                                     type="button"
                                                                                     class="btn btn-outline-secondary btn-sm my-3"
                                                                                     onclick="deleteMember(this)"
@@ -3951,7 +3954,8 @@
                                                                                     <i
                                                                                         class="fas fa-trash-alt"
                                                                                     />
-                                                                                </button>
+                                                                                </button> -->
+
                                                                             </td>
                                                                         </tr>
                                                                     </t>
@@ -4155,7 +4159,7 @@
                                                                                 onchange="validateElement(this)"
                                                                                 id="edit_relation_with_hh_selection"
                                                                             >
-                                                                                <option value=" ">Select
+                                                                                <option value="">Select
                                                                                     Relation
                                                                                 </option>
                                                                                 <t
@@ -4394,7 +4398,7 @@
                                                                             onchange="validateElement(this)"
                                                                             id="relation_with_hh_selection"
                                                                         >
-                                                                            <option value=" ">Select
+                                                                            <option value="">Select
                                                                                 Relation
                                                                             </option>
                                                                             <t

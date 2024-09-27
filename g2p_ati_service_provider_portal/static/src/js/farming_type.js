@@ -14,6 +14,7 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
     const livestockPrev = document.getElementById("livestock-previous");
     const resourcePrev = document.getElementById("resource-previous");
     const agriPrev = document.getElementById("agricultural-previous");
+    const addLineLivestockField = document.getElementsByClassName("addline_livestock_field");
 
     if (selectedFarmingType === "Crop Farming" || selectedFarmingType === "Mixed Farming") {
         // Membership
@@ -95,6 +96,10 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
         Array.from(cropMixedRequiredFields).forEach((element) => {
             element.removeAttribute("required");
         });
+        Array.from(addLineLivestockField).forEach((element) => {
+            element.setAttribute("required");
+        });
+
 
         // Land Information
         Array.from(landAstrix).forEach((element) => {

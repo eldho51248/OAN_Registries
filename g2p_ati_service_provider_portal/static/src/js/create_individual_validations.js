@@ -115,6 +115,14 @@ $(document).ready(function () {
         }
     }
 
+    // function formatInputWithSpaces(inputElement) {
+    //     inputElement.addEventListener("input", function () {
+    //         const value = inputElement.value.replace(/\s+/g, "");
+    //         const formattedValue = value.match(/.{1,4}/g)?.join(" ") || "";
+    //         inputElement.value = formattedValue;
+    //     });
+    // }
+
     function formatInputWithSpaces(inputElement) {
         inputElement.addEventListener("input", function () {
             const value = inputElement.value.replace(/\s+/g, "");
@@ -122,6 +130,17 @@ $(document).ready(function () {
             inputElement.value = formattedValue;
         });
     }
+
+    //this is the one with the problem
+
+//     const uidInput = document.getElementById("uid_input");
+// const ridInput = document.getElementById("rid_input");
+// const uidError = document.getElementById("uid_error");
+// const ridError = document.getElementById("rid_error");
+
+// // Apply space formatting to both UID and RID inputs
+// formatInputWithSpaces(uidInput);
+// formatInputWithSpaces(ridInput);
 
     // Apply the function to both UID and RID inputs
 
@@ -140,7 +159,7 @@ $(document).ready(function () {
         if ((sanitizedValue.length !== 12 && sanitizedValue.length !== 0) || !isOnlyDigits) {
             uidInput.classList.add("uid_error");
             uidError.style.display = "block";
-            uidInput.setAttribute("required", "required");
+            // uidInput.setAttribute("required", "required");
         } else {
             uidInput.classList.remove("uid_error");
             uidError.style.display = "none";
@@ -153,18 +172,61 @@ $(document).ready(function () {
         if ((sanitizedValue.length !== 29 && sanitizedValue.length !== 0) || !isOnlyDigits) {
             ridInput.classList.add("rid_error");
             ridError.style.display = "block";
-            ridInput.setAttribute("required", "required");
+            // ridInput.setAttribute("required", "required");
         } else {
             ridInput.classList.remove("rid_error");
             ridError.style.display = "none";
         }
     });
 
+
+    // this is the one that doesn't work
+
+//     // Validation for UID input field
+// uidInput.addEventListener("input", function () {
+//     const sanitizedValue = uidInput.value.replace(/\s+/g, ""); // Remove spaces
+//     const isOnlyDigits = /^\d*$/.test(sanitizedValue); // Check if only digits
+
+//     // If not 12 digits or contains non-digit characters, show error
+//     if ((sanitizedValue.length !== 12 && sanitizedValue.length !== 0) || !isOnlyDigits) {
+//         uidInput.classList.add("is-invalid");
+//         uidError.style.display = "block";
+//     } else {
+//         uidInput.classList.remove("is-invalid");
+//         uidError.style.display = "none";
+//     }
+// });
+
+// // Validation for RID input field
+// ridInput.addEventListener("input", function () {
+//     const sanitizedValue = ridInput.value.replace(/\s+/g, ""); // Remove spaces
+//     const isOnlyDigits = /^\d*$/.test(sanitizedValue); // Check if only digits
+
+//     // If not 29 digits or contains non-digit characters, show error
+//     if ((sanitizedValue.length !== 29 && sanitizedValue.length !== 0) || !isOnlyDigits) {
+//         ridInput.classList.add("is-invalid");
+//         ridError.style.display = "block";
+//     } else {
+//         ridInput.classList.remove("is-invalid");
+//         ridError.style.display = "none";
+//     }
+// });
+
+
+   
+    
     // Event listeners
     function handleNationalIdSelection() {
         const selectElement = document.getElementById("have-national-id-selection");
         const uidDiv = document.getElementById("uid-div");
         const ridDiv = document.getElementById("rid-div");
+        
+        const uidInput = document.getElementById("uid_input");
+        const ridInput = document.getElementById("rid_input");
+        const uidError = document.getElementById("uid_error");
+        const ridError = document.getElementById("rid_error");
+
+
         // Const ridInput = document.getElementById("rid_input");
         // Const uidInput = document.getElementById("uid_input");
         const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
@@ -191,7 +253,9 @@ $(document).ready(function () {
         ridError.style.display = "none";
     }
 
-    function handlePhoneNumberSelection() {
+
+
+   function handlePhoneNumberSelection() {
         const selectElement = document.getElementById("have-phone-no-selection");
         const primaryPhoneDiv = document.getElementById("primary-div");
         const otherPhoneDiv = document.getElementById("other-div");
@@ -441,20 +505,56 @@ function validateElement(element) {
 function validateUID() {
     const uid = document.getElementById("uid_input");
     const uidError = document.getElementById("uid_error");
-    const isValid = uid.value.length === 12 && /^\d+$/.test(uid.value);
+    // const isValid = uid.value.length === 12 && /^\d+$/.test(uid.value);
+    const isValid = uid.value.replace(/\s+/g, "").length === 12 && /^\d+$/.test(uid.value.replace(/\s+/g, ""));
     uid.classList.toggle("is-invalid", !isValid);
+    // uid.classList.toggle("is-valid", isValid); // Add this line
     uidError.style.display = isValid ? "none" : "block";
     return isValid;
 }
 
+// Helper functions for validating UID and RID
+// function validateUID() {
+//     const uid = document.getElementById("uid_input");
+//     const uidError = document.getElementById("uid_error");
+//     const isValid = uid.value.replace(/\s+/g, "").length === 12 && /^\d+$/.test(uid.value.replace(/\s+/g, ""));
+//     uid.classList.toggle("is-invalid", !isValid);
+//     uidError.style.display = isValid ? "none" : "block";
+//     return isValid;
+// }
+
+// function validateRID() {
+//     const rid = document.getElementById("rid_input");
+//     const ridError = document.getElementById("rid_error");
+//     const isValid = rid.value.replace(/\s+/g, "").length === 29 && /^\d+$/.test(rid.value.replace(/\s+/g, ""));
+//     rid.classList.toggle("is-invalid", !isValid);
+//     ridError.style.display = isValid ? "none" : "block";
+//     return isValid;
+// }
+
+
 function validateRID() {
     const rid = document.getElementById("rid_input");
     const ridError = document.getElementById("rid_error");
-    const isValid = rid.value.length === 29 && /^\d+$/.test(rid.value);
+    // const isValid = rid.value.length === 29 && /^\d+$/.test(rid.value);
+    const isValid = rid.value.replace(/\s+/g, "").length === 29 && /^\d+$/.test(rid.value.replace(/\s+/g, ""));
     rid.classList.toggle("is-invalid", !isValid);
+    // rid.classList.toggle("is-valid", isValid); // Add this line
     ridError.style.display = isValid ? "none" : "block";
     return isValid;
 }
+
+
+
+// Apply the function to both UID and RID inputs
+
+
+// Add event listeners for real-time validation
+// uidInput.addEventListener("input", validateUID);
+// ridInput.addEventListener("input", validateRID);
+
+
+
 
 function validateRadioButtons(radioName, section) {
     const radioGroup = section.querySelectorAll(`input[name="${radioName}"]`);
@@ -537,6 +637,33 @@ function validateSection(sectionId) {
     return valid;
 }
 
+
+// function validateSection(sectionId) {
+//     const section = document.getElementById(sectionId);
+//     const requiredFields = section.querySelectorAll("[required]");
+//     let valid = true;
+
+//     requiredFields.forEach((field) => {
+//         if (field.value.trim() === "") {
+//             field.classList.add("is-invalid");
+//             valid = false;
+//         } else {
+//             field.classList.remove("is-invalid");
+//         }
+
+//         // Special validation for UID and RID in 'id-section'
+//         if (sectionId === "id-section" && field.name === "uid") {
+//             valid = valid && validateUID();
+//         }
+//         if (sectionId === "id-section" && field.name === "rid") {
+//             valid = valid && validateRID();
+//         }
+//     });
+
+//     return valid;
+// }
+
+
 // Let previousSection = "id-section";
 
 function showSection(sectionId, element, fromGroup = false) {
@@ -581,18 +708,35 @@ function showSection(sectionId, element, fromGroup = false) {
     }
 }
 // eslint-disable-next-line no-unused-vars
-function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
-    var val = validateSection(currentSectionId);
+// function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
+//     var val = validateSection(currentSectionId);
 
-    if (val) {
-        var activeLink = document.querySelector(".sidebar .nav-link.active");
-        var nextLink = activeLink.parentElement.nextElementSibling.querySelector(".nav-link");
+//     if (val) {
+//         var activeLink = document.querySelector(".sidebar .nav-link.active");
+//         var nextLink = activeLink.parentElement.nextElementSibling.querySelector(".nav-link");
+//         if (nextLink) {
+//             nextLink.classList.remove("disabled");
+//             showSection(nextSectionId, nextLink, fromGroup);
+//         }
+//     }
+// }
+
+
+function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
+
+    console.log("in here")
+    const isSectionValid = validateSection(currentSectionId);
+
+    if (isSectionValid) {
+        const activeLink = document.querySelector(".sidebar .nav-link.active");
+        const nextLink = activeLink.parentElement.nextElementSibling.querySelector(".nav-link");
         if (nextLink) {
             nextLink.classList.remove("disabled");
-            showSection(nextSectionId, nextLink, fromGroup);
+            showSection(nextSectionId, nextLink, fromGroup); // Move to next section if valid
         }
     }
 }
+
 
 // Function toggleFieldBasedOnRadio(inputName, fieldIdToToggle, selectElementId, toggleValue = "Yes") {
 //     const radios = document.querySelectorAll(`input[name="${inputName}"]`);

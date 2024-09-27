@@ -129,5 +129,9 @@
             </div>
             <link rel="stylesheet" href="/g2p_ati_service_provider_portal/static/src/css/style.css" />
         </xpath>
+
+        <xpath expr="//div[hasclass('main-container')]" position="attributes">
+            <attribute name="style">padding-top: 0px !important; padding-bottom: 0px !important;</attribute>
+        </xpath>
     </template>
 </odoo>

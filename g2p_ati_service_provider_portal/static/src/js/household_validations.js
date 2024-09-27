@@ -82,39 +82,39 @@ function addFamilyMember() {
 }
 
 
-function deleteMember(button) {
-    const memberId = $(button).attr("store");
-    var groupId = $("input[name='group_id']").val();
+// function deleteMember(button) {
+//     const memberId = $(button).attr("store");
+//     var groupId = $("input[name='group_id']").val();
 
-    console.log("memberID is ", memberId);
+//     console.log("memberID is ", memberId);
 
-    if (confirm("Are you sure you want to delete this family member?")) {
-        $.ajax({
-            url: "/serviceprovider/member/delete/",
-            type: "POST",
-            data: { member_id: memberId, group_id: groupId },
-            success: function (data) {
-                data = JSON.parse(data);
-                if (data.success) {
+//     if (confirm("Are you sure you want to delete this family member?")) {
+//         $.ajax({
+//             url: "/serviceprovider/member/delete/",
+//             type: "POST",
+//             data: { member_id: memberId, group_id: groupId },
+//             success: function (data) {
+//                 data = JSON.parse(data);
+//                 if (data.success) {
 
-                    console.log("in the the the here")
-                    const row = $(button).closest("tr");
-                    row.remove();
-                    alert(data.message);
-                } 
+//                     console.log("in the the the here")
+//                     const row = $(button).closest("tr");
+//                     row.remove();
+//                     alert(data.message);
+//                 } 
                 
-                else {
-                    console.log("Delete failed:", data);
-                    alert("Error: " + (data.error));
-                }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.error("Error:", textStatus, errorThrown);
-                alert("An error occurred while deleting the family member: " + errorThrown);
-            },
-        });
-    }
-}
+//                 else {
+//                     console.log("Delete failed:", data);
+//                     alert("Error: " + (data.error));
+//                 }
+//             },
+//             error: function (jqXHR, textStatus, errorThrown) {
+//                 console.error("Error:", textStatus, errorThrown);
+//                 alert("An error occurred while deleting the family member: " + errorThrown);
+//             },
+//         });
+//     }
+// }
 
 const farmerCount = 0;
 
@@ -315,6 +315,8 @@ $(document).on("click", "#family_member_submit", function () {
             if (response.member_list) {
                 // eslint-disable-next-line no-undef
                 resetFormFieldsMember();
+
+             
                 // Update the table with the new member list
                 var tableBody = $("#familylist tbody");
                 tableBody.empty();
@@ -374,8 +376,16 @@ function showNextModal(nextSectionId, currentSectionId) {
     }
 }
 
+
+
+
+
+
 // eslint-disable-next-line no-unused-vars
 function showModalSection(nextSectionId, currentSectionId, direction) {
+
+
+
     // eslint-disable-next-line no-undef
     var val = validateSection(currentSectionId);
     if (direction === "prev") {

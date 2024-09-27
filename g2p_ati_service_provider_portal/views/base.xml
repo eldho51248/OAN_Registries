@@ -6,29 +6,31 @@
         inherit_id="g2p_service_provider_portal_base.base"
         priority="200"
     >
-        <!-- Include custom CSS -->
         <xpath expr="//header" position="inside">
             <link rel="stylesheet" href="/g2p_ati_service_provider_portal/static/src/css/style.css" />
         </xpath>
 
-        <!-- Change the header logo image, apply the custom CSS class -->
+   
+
         <xpath expr="//header//img[@class='main-logo']" position="attributes">
             <attribute name="src">/g2p_ati_service_provider_portal/static/src/img/logo@2x.png</attribute>
             <attribute name="class">main-logo custom-logo</attribute>
         </xpath>
 
-        <!-- Change the footer logo image, apply the custom CSS class -->
         <xpath expr="//footer//img[@class='main-logo']" position="attributes">
             <attribute name="src">/g2p_ati_service_provider_portal/static/src/img/logo@2x.png</attribute>
             <attribute name="class">main-logo custom-logo</attribute>
         </xpath>
 
-        <!-- Hide the search box -->
+
+         <xpath expr="//div[hasclass('footer-container')]" position="attributes">
+            <attribute name="style">height: 100px !important;</attribute>
+        </xpath>
+
         <xpath expr="//div[hasclass('search-box')]" position="attributes">
             <attribute name="style">display: none;</attribute>
         </xpath>
 
-        <!-- Hide the copyright text -->
         <xpath expr="//div[hasclass('copyright')]" position="attributes">
             <attribute name="style">display: none;</attribute>
         </xpath>

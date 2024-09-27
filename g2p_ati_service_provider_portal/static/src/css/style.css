@@ -41,6 +41,11 @@ input[type="radio"].invalid-radio {
     outline-offset: -2px; /* Adjust to bring the outline closer to the radio button */
 }
 
+.is-valid {
+    border-color: green; /* Example: green border for valid inputs */
+}
+
+
 .s_website_form_field {
     /* font: normal normal normal 14px / 17px Inter; */
     padding-left: 20px;
@@ -473,25 +478,55 @@ input:valid {
     border-color: green;
 } */
 
+/* Base input styles */
+input.form-control {
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Style for valid input */
+input.is-valid {
+    border-color: #28a745; /* Green border for valid input */
+    
+}
+
+/* Style for invalid input */
+input.is-invalid {
+    border-color: #dc3545; /* Red border for invalid input */
+    
+}
+
+/* Error message styling */
+.error-message {
+    color: #dc3545; /* Red color for error messages */
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+
 .header-container {
-    height: 110px;
+    padding-bottom: 2px;
 }
 
 .header-container .nav .main-logo,
 .footer-container .nav .main-logo {
-    width: 272px;
-    height: 100px;
-    margin-top: 0px;
-    margin-bottom: 15px;
-    opacity: 1;
-    margin-left: -115px;
+    width: 175px;
+    height: 81px;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    /* opacity: 1; */
+    margin-left: -48px;
 }
 
 .header-container .nav {
     top: 0px;
     left: 0px;
-    width: 1180px;
-    height: 100px;
+    width: 1313px !important;
+    height: auto !important;
     border: none;
     background: #ffffff 0% 0% no-repeat padding-box;
     /* display: flex; */
@@ -662,3 +697,15 @@ input[type="file"] {
 .list-row {
     background-color: #2dac64 !important;
 }
+
+
+hr {
+
+    margin: 0px;
+}
+
+
+.header-container .nav , .footer-container .nav{
+    align-items: center !important;
+}
+

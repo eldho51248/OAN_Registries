@@ -182,12 +182,12 @@ li a {
 }
 
 .table-title {
-    color: #000;
-    font: Inter;
+    font-family: "Inter", sans-serif;
     /* font-family: Roboto; */
     /* font-size: 16px; */
     /* font-style: normal; */
-    font-weight: bold;
+    font-weight: light;
+    color: #6C757D;
     /* line-height: normal; */
     margin-top: 40px;
 }
@@ -225,9 +225,9 @@ li a {
 }
 
 .count-text {
-    font: Inter;
+    /* font: Inter; */
     color: #078148;
-    font-weight: light;
+    font-weight: bold;
 }
 
 .view-button {
