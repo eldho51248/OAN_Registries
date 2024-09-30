@@ -261,9 +261,7 @@ $(document).on("click", "#update-member-btn", function () {
                                 <button type="button" class="btn btn-icon rounded-0" id="hh_member_update" store="${member.id}" title="Edit">
                                     <i class="fa fa-pencil"></i>
                                 </button>
-                                <button type="button" class="btn btn-outline-secondary btn-sm my-3" onclick="deleteMember(this)">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
+                               
                             </td>
                         </tr>
                     `;
@@ -334,9 +332,7 @@ $(document).on("click", "#family_member_submit", function () {
                                 <button type="button" class="btn btn-icon rounded-0" id="hh_member_update" store="${member.id}" title="Edit">
                                     <i class="fa fa-pencil"></i>
                                 </button>
-                                <button type="button" class="btn btn-outline-secondary btn-sm my-3" onclick="deleteMember(this)">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
+                                
                             </td>
                         </tr>
                     `;

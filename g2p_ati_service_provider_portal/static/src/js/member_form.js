@@ -439,9 +439,7 @@ $(document).on("click", "#member_submit", async function () {
                                  <a href="/serviceprovider/individual/update/${member.id}" class="btn btn-icon rounded-0 edit-btn" title="Edit">
                                     <i class="fa fa-pencil"></i>
                                 </a>
-                                <button type="button" class="btn btn-outline-secondary btn-sm my-3" onclick="deleteMember(this)">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
+                                
                             </td>
                             </tr>
                             `;
