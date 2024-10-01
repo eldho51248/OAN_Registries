@@ -1615,27 +1615,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
         return [selection_ids, selection_id]
     
-    def base64_to_file(base64_string):
-        try:
-            # Decode the base64 string
-            decoded_bytes = base64.b64decode(base64_string)
-            
-            # Extract MIME type
-            mime_type = guess_type(decoded_bytes)[0]
-            if not mime_type:
-                mime_type = 'application/octet-stream'
-            
-            # Create a BytesIO object from the decoded bytes
-            file_like_object = BytesIO(decoded_bytes)
-            
-            # Create a File object
-            file_object = File(file_like_object, name='decoded_file', type=mime_type)
-            
-            return file_object
-        
-        except Exception as e:
-            print(f"An error occurred: {str(e)}")
-            return None
+ 
     
     def _prepare_land_info_data(self, beneficiary, ownership_type_selections):
         land_info_data = []
