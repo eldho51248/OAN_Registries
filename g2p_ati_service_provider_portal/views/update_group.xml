@@ -9,7 +9,7 @@
     >
 
         <xpath expr="//div[hasclass('main-container')]" position="replace">
-            <div class="main-container">
+            <div style="padding-top: 15px !important; padding-bottom: 0px !important;" class="main-container">
                 <div class="container-adjuster">
                     <h5 class="all-title">Update Household</h5>
                     <div class="form-template">
@@ -4118,6 +4118,7 @@
                                                         CANCEL
                                                     </button>
                                                     <button
+                                                        onclick="location.reload()"
                                                         id="beneficiary_submit"
                                                         type="button"
                                                         class="btn btn-primary"
