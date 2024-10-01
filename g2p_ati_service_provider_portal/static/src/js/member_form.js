@@ -246,6 +246,10 @@ $(document).on("click", "#member_submit", async function () {
         additional_info["Cooperative Union"] = other_coop_union;
     }
 
+    console.log("add info",additional_info);
+    console.log("add info type", typeof additional_info);
+
+
     var cropWaterSource = $("#farmerDetailModal #crop_water_source").val();
     var livestockWaterSource = $("#farmerDetailModal #livestock_water_source").val();
     // Var isValid = true;

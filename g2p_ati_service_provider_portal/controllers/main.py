@@ -2704,8 +2704,12 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             kebele = self._convert_to_int(kw.get("kebele"))
 
             additional_info = kw.get("additional_info", {})
+            # try:
+            #     additional_info_json = json.loads(additional_info)
+            # except json.JSONDecodeError as e:
+            #     additional_info_json = {}
 
-            additional_info_json = json.loads(additional_info)
+           
 
             group_rec = self._get_or_create_group(kw, region, zone, woreda, kebele)
             
@@ -2729,7 +2733,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             self._prepare_financial_agricultural_service(kw, vals)
             # Additional details
             vals["is_farmer"] = "yes"
-            vals["additional_g2p_info"] = additional_info_json
+            vals["additional_g2p_info"] = additional_info
 
             individual = request.env["res.partner"].sudo().create(vals)
 
