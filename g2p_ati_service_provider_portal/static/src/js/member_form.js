@@ -121,6 +121,13 @@ function resetFormFieldsMember() {
 
 $(document).on("click", "#member_submit", async function () {
     console.log("Add memberrrrrr clicked");
+
+    const isSectionValid = validateSection('access-to-resource');
+
+    if (!isSectionValid){
+        return
+    }
+
     $(this).prop('disabled', true);
 
 

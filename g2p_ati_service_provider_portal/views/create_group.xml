@@ -551,9 +551,16 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="section-content">
-                                                                    <div class="">
-                                                                        <div class="col-lg-4">
+                                                            
+                                                                        
+                                                                        
+                                                                        
+                                                                        <div class="row">
+                                                                        <div
+                                                                            class="col-lg-6 col-md-6 col-sm-12"
+                                                                        >
                                                                             <div class="s_website_form_field">
+                                                                           
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                 >
@@ -594,11 +601,13 @@
                                                                                         </option>
                                                                                     </t>
                                                                                 </select>
-
-
-                                                                            </div>
-                                                                        </div>
                                                                     </div>
+                                                                    </div>
+                                                                    </div>
+
+
+
+
                                                                     <div class="container-fluid pl-3 pr-5">
                                                                         <hr class="land-separator" />
                                                                     </div>
@@ -3031,7 +3040,7 @@
                                                                                 Information
                                                                             </span>
                                                                         </div>
-                                                                        <div class="col-6">
+                                                                        <div class="col-lg-6">
                                                                             <div class="s_website_form_field">
                                                                                 <label
                                                                                     class="s_website_form_label"
