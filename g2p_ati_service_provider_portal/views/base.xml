@@ -1,16 +1,55 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <template
-        id="base_inh"
-        name="G2P Service Provider ATI Portal Base"
-        inherit_id="g2p_service_provider_portal_base.base"
-        priority="200"
-    >
+    <template id="base_inh" name="G2P Service Provider ATI Portal Base" inherit_id="g2p_service_provider_portal_base.base" priority="200">
         <xpath expr="//header" position="inside">
             <link rel="stylesheet" href="/g2p_ati_service_provider_portal/static/src/css/style.css" />
         </xpath>
 
-   
+
+
+        <xpath expr="//body" position="inside">
+
+            <div class="modal fade" id="successModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-sm" role="document">
+
+                    <div style="background-color: white; border-radius: 1rem" class="modal_container">
+                        <div class="modal-header">
+                            <h6 style="color: #06916b" class="modal-title">Updated Successfully!</h6>
+                        </div>
+                        <div class="modal-footer">
+                            <button style="background-color: #06916b !important" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <script>
+    $(document).ready(function() {
+        const cookieValue = getCookie('update_status');
+        if (cookieValue === 'successful') {
+            $('#successModal').modal('show');
+        }
+
+        $('#successModal').on('hidden.bs.modal', function () {
+            deleteCookie('update_status');
+        });
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        function deleteCookie(name) {
+            document.cookie = name + '=; Max-Age=0; path=/';
+        }
+    });
+            </script>
+
+
+        </xpath>
 
         <xpath expr="//header//img[@class='main-logo']" position="attributes">
             <attribute name="src">/g2p_ati_service_provider_portal/static/src/img/logo@2x.png</attribute>
@@ -23,7 +62,7 @@
         </xpath>
 
 
-         <xpath expr="//div[hasclass('footer-container')]" position="attributes">
+        <xpath expr="//div[hasclass('footer-container')]" position="attributes">
             <attribute name="style">height: 100px !important;</attribute>
         </xpath>
 

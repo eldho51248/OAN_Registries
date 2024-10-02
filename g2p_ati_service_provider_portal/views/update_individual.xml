@@ -8,9 +8,9 @@
         priority="200"
     >
         <xpath expr="//div[hasclass('main-container')]" position="replace">
-            <div class="main-container">
+            <div class="main-container" style="padding-top: 15px !important; padding-bottom: 0px !important;">
                 <div class="container-adjuster">
-                    <h5 class="all-title">Update Farmer</h5>
+                    <h5 style="font: normal 600 18px / 22px Inter !important;" class="all-title">Update Farmer</h5>
                     <div class="form-template">
                         <ol class="breadcrumb form-layout-breadcrumb">
                             <li class="breadcrumb-item">
@@ -1281,11 +1281,14 @@
                                                                     id="incomeTypeSelect"
                                                                     class="selectpicker form-control"
                                                                     name="hh_income_type"
+                                                                    required="required"
                                                                     multiple="multiple"
                                                                     data-live-search="true"
                                                                     data-style="btn-custom"
                                                                     style="width: 100%;"
                                                                     data-none-selected-text="Select Source of Income"
+                                                                    onchange="validateElement(this)"
+
                                                                 >
                                                                     <t
                                                                         t-foreach="source_of_income"
@@ -2287,6 +2290,8 @@
                                                                     data-style="btn-custom "
                                                                     style="width: 100%;"
                                                                     data-none-selected-text="Select Water Source"
+                                                                    required="required"
+                                                                    onchange="validateElement(this)"
                                                                 >
                                                                     <t t-foreach="water_source" t-as="option">
                                                                         <option
@@ -2679,6 +2684,8 @@
                                                                     data-live-search="true"
                                                                     data-style="btn-custom "
                                                                     style="width: 100%;"
+                                                                    required="required"
+                                                                    onchange="validateElement(this)"
                                                                     data-none-selected-text="Select Water Source"
                                                                 >
                                                                     <t t-foreach="water_source" t-as="option">
