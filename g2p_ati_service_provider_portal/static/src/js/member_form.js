@@ -76,13 +76,17 @@ function hideToast() {
 }
 
 function resetFormFields() {
-    
-    console.log("Resetting form fields..."); 
+    console.log("Resetting form fields...");
     // Reset text inputs, email, and password fields
-    $("#farmerDetailModal input[type='text'], #farmerDetailModal input[type='email'], #farmerDetailModal input[type='password']").val("");
+    $(
+        "#farmerDetailModal input[type='text'], #farmerDetailModal input[type='email'], #farmerDetailModal input[type='password']"
+    ).val("");
 
     // Uncheck checkboxes and radio buttons
-    $("#farmerDetailModal input[type='checkbox'], #farmerDetailModal input[type='radio']").prop("checked", false);
+    $("#farmerDetailModal input[type='checkbox'], #farmerDetailModal input[type='radio']").prop(
+        "checked",
+        false
+    );
 
     // Reset select dropdowns to the first option
     $("#farmerDetailModal select").prop("selectedIndex", 0).trigger("change");
@@ -97,18 +101,15 @@ function resetFormFields() {
     $("#farmerDetailModal textarea").val("");
 
     // Reset any additional inputs or fields as necessary
-    
+
     $("#farmerDetailModal input[type='file']").val("");
 }
-
 
 // eslint-disable-next-line no-unused-vars
 function resetFormFieldsMember() {
     $("#familyMemberModal input, #familyMemberModal select").val("");
     $("#familyMemberModal input[type='radio']").prop("checked", false);
-    $("#livestock_water_source").val([]).trigger('change');
-
-    
+    $("#livestock_water_source").val([]).trigger("change");
 }
 
 // Replace button
@@ -122,14 +123,13 @@ function resetFormFieldsMember() {
 $(document).on("click", "#member_submit", async function () {
     console.log("Add memberrrrrr clicked");
 
-    const isSectionValid = validateSection('access-to-resource');
+    const isSectionValid = validateSection("access-to-resource");
 
-    if (!isSectionValid){
-        return
+    if (!isSectionValid) {
+        return;
     }
 
-    $(this).prop('disabled', true);
-
+    $(this).prop("disabled", true);
 
     var additional_info = {};
 
@@ -255,9 +255,8 @@ $(document).on("click", "#member_submit", async function () {
         additional_info["Cooperative Union"] = other_coop_union;
     }
 
-    console.log("add info",additional_info);
+    console.log("add info", additional_info);
     console.log("add info type", typeof additional_info);
-
 
     var cropWaterSource = $("#farmerDetailModal #crop_water_source").val();
     var livestockWaterSource = $("#farmerDetailModal #livestock_water_source").val();
@@ -426,7 +425,6 @@ $(document).on("click", "#member_submit", async function () {
                 resetFormFields();
                 var member_list = response.member_list;
                 if (member_list) {
- 
                     modal.modal("hide");
                     resetFormFields();
 
@@ -441,13 +439,20 @@ $(document).on("click", "#member_submit", async function () {
                     member_list.forEach(function (member, index) {
                         $(".mem-list").css("display", "block");
                         var serialNumber = index + 1;
+                        var isHouseholdHead =
+                            member.hh_is_household_head === "yes"
+                                ? `<span style="background-color: #06916b; font-size: 0.75rem;" class="rounded-pill text-white py-1 px-2">Yes</span>`
+                                : `<span style="background-color: red; font-size: 0.75rem;" class="rounded-pill text-white py-1 px-2">No</span>`;
                         var newRowHtml = `
                             <tr data-member-id="${member.id}">
                             <td>${serialNumber}</td>
                             <td style="color:#704880; font: normal normal 600 13px/16px Inter;">${member.name}</td>
                             <td>${member.age}</td>
                             <td>${member.gender}</td>
-                            <td>${member.hh_is_household_head}</td>
+                            
+                            <td class="fw-bold text-center">
+                ${isHouseholdHead}
+            </td>
 
                             <td>
                                  <a href="/serviceprovider/individual/update/${member.id}" class="btn btn-icon rounded-0 edit-btn" title="Edit">
@@ -459,7 +464,7 @@ $(document).on("click", "#member_submit", async function () {
                             `;
                         tableBody.append(newRowHtml);
                     });
-                    $("#member_submit").prop('disabled', false);
+                    $("#member_submit").prop("disabled", false);
                 }
             } else {
                 console.error("Failed to create individual");

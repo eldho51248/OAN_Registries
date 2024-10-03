@@ -1387,7 +1387,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-6">
+                                                        <div class="col-lg-6" id="primary_coop_div">
                                                             <div
                                                                 class="s_website_form_field"
                                                                 style="display: none;"
@@ -1498,7 +1498,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-6">
+                                                        <div class="col-lg-6" id="coop_div">
                                                             <div
                                                                 class="s_website_form_field"
                                                                 style="display: none;"
@@ -1615,7 +1615,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-lg-6">
+                                                        <div class="col-lg-6"  id="commodity_div">
                                                             <div
                                                                 class="s_website_form_field"
                                                                 style="display: none;"
@@ -1658,7 +1658,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-6">
+                                                        <div class="col-lg-6" id="role_div">
                                                             <div
                                                                 class="s_website_form_field"
                                                                 style="display: none;"
@@ -3277,7 +3277,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-6">
+                                                        <div class="col-lg-6" id="machinery_div">
                                                             <div
                                                                 class="s_website_form_field"
                                                                 style="display: none;"
@@ -3373,7 +3373,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-6">
+                                                        <div class="col-lg-6" id="financial_div">
                                                             <div
                                                                 class="s_website_form_field"
                                                                 style="display: none;"
