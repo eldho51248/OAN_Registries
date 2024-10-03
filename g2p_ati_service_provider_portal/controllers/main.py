@@ -5,6 +5,7 @@ from io import BytesIO, FileIO
 from mimetypes import guess_type
 from odoo import http
 from odoo.http import request, Response
+from datetime import date
 
 from odoo.addons.g2p_service_provider_beneficiary_management.controllers.main import (
     G2PServiceProviderBeneficiaryManagement,
@@ -2497,6 +2498,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     def add_family_member_submit(self, **kw):
         res = dict()
         try:
+
+
             group_id = kw.get("group_id")
             if not group_id:
                 return json.dumps({"error": "Group ID is required"})
@@ -2513,6 +2516,16 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             name = f"{given_name} {family_name} {gf_name_eng}"
 
+            user = request.env.user
+
+            # Create the enumerator record associated with the current user
+            enumerator = request.env['g2p.enumerator'].create({
+                'name': user.name,
+                'enumerator_user_id': str(user.id),
+                'data_collection_date': date.today(),
+            })
+
+
             partner_data = {
                 "name": name,
                 "given_name": given_name,
@@ -2522,7 +2535,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 "gender": kw.get("gender"),
                 "is_registrant": True,
                 "is_group": False,
-                "is_farmer": "no"
+                "is_farmer": "no",
+                "enumerator_id":enumerator.id,
             }
             individual = request.env["res.partner"].sudo().create(partner_data)
 
@@ -2725,9 +2739,19 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             # except json.JSONDecodeError as e:
             #     additional_info_json = {}
 
+
+            user = request.env.user
+
+        # Create the enumerator record associated with the current user
+            enumerator = request.env['g2p.enumerator'].create({
+                'name': user.name,
+                'enumerator_user_id': str(user.id),
+                'data_collection_date': date.today(),
+            })
+
            
 
-            group_rec = self._get_or_create_group(kw, region, zone, woreda, kebele)
+            group_rec = self._get_or_create_group(kw, region, zone, woreda, kebele,enumerator)
             
             
             
@@ -2755,8 +2779,10 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             # Additional details
             vals["is_farmer"] = "yes"
             vals["additional_g2p_info"] = additional_info
+            vals["enumerator_id"] = enumerator.id
 
             individual = request.env["res.partner"].sudo().create(vals)
+
 
             # self._manage_group_membership(group_rec, individual)
             group_membership_vals = [(0, 0, {"individual": individual.id, "group": group_rec.id})]
@@ -2789,7 +2815,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     def _convert_to_int(self, value):
         return int(value.strip()) if value and value.strip() else None
 
-    def _get_or_create_group(self, kw, region, zone, woreda, kebele):
+    def _get_or_create_group(self, kw, region, zone, woreda, kebele,enumerator):
         given_name = kw.get("given_name")
         father_name = kw.get("family_name")
         family_name = kw.get("gf_name_eng")
@@ -2811,6 +2837,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                         "kind": group_type.id,
                         "is_registrant": True,
                         "is_group": True,
+                        "enumerator_id":enumerator.id
                     }
                 )
             )
