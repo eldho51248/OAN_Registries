@@ -436,7 +436,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             #         pass
             
             response = request.redirect("/serviceprovider/group")
-            response.set_cookie('update_status', 'successful', max_age=10) 
+            response.set_cookie('popup_status', 'successful', max_age=10)
+            response.set_cookie('popup_msg', 'Record Created Successfully!', max_age=10)
 
             return response
         except Exception:
@@ -2002,7 +2003,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             # request.session['update_success'] = True
             # return json.dumps({'status': 'success', 'message': 'Record updated successfully'})
             response = request.redirect(f"/serviceprovider/individual/update/{member.id}")
-            response.set_cookie('update_status', 'successful', max_age=10) 
+            response.set_cookie('popup_status', 'successful', max_age=10)
+            response.set_cookie('popup_msg', 'Record Updated Successfully!', max_age=10)
              
             return response
 
