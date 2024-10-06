@@ -1,36 +1,120 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <template
-        id="base_inh"
-        name="G2P Service Provider ATI Portal Base"
-        inherit_id="g2p_service_provider_portal_base.base"
-        priority="200"
-    >
-        <!-- Include custom CSS -->
-        <xpath expr="//header" position="inside">
-            <link rel="stylesheet" href="/g2p_ati_service_provider_portal/static/src/css/style.css" />
-        </xpath>
+  <template id="base_inh" name="G2P Service Provider ATI Portal Base" inherit_id="g2p_service_provider_portal_base.base" priority="200">
+    <xpath expr="//header" position="inside">
+      <link rel="stylesheet" href="/g2p_ati_service_provider_portal/static/src/css/style.css" />
+    </xpath>
 
-        <!-- Change the header logo image, apply the custom CSS class -->
-        <xpath expr="//header//img[@class='main-logo']" position="attributes">
-            <attribute name="src">/g2p_ati_service_provider_portal/static/src/img/logo@2x.png</attribute>
-            <attribute name="class">main-logo custom-logo</attribute>
-        </xpath>
 
-        <!-- Change the footer logo image, apply the custom CSS class -->
-        <xpath expr="//footer//img[@class='main-logo']" position="attributes">
-            <attribute name="src">/g2p_ati_service_provider_portal/static/src/img/logo@2x.png</attribute>
-            <attribute name="class">main-logo custom-logo</attribute>
-        </xpath>
 
-        <!-- Hide the search box -->
-        <xpath expr="//div[hasclass('search-box')]" position="attributes">
-            <attribute name="style">display: none;</attribute>
-        </xpath>
+    <xpath expr="//body" position="inside">
 
-        <!-- Hide the copyright text -->
-        <xpath expr="//div[hasclass('copyright')]" position="attributes">
-            <attribute name="style">display: none;</attribute>
-        </xpath>
-    </template>
+
+
+
+
+      <div class="modal fade" id="successModal" tabindex="-1" role="dialog">
+
+        <div style="margin: 0 auto !importnat;" class="modal-dialog modal-sm-down modal-md md-up" role="document">
+
+          <div style="background-color: white; border-radius: 1rem; text-align: center;" class=" py-5 modal_container">
+
+
+
+            <div class="py-4" style="margin: 0 auto !importnat;">
+
+              <img src="" class="popup_img" style="width: 15%; height: 15%;"/>
+
+              <h4 style="color: black !important;" class="mt-1 fw-bolder"></h4>
+              <p style="max-width-75%;" class="text-muted fs- popup_msg"></p>
+
+              <div class="border-0 justify-content-center">
+                <button style="background-color: black !important; border: none !important; color:white !important;" type="button" class="btn btn-secondary mt-2 fw-bold px-4 rounded-md" data-dismiss="modal">Close</button>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+
+
+      <script>
+
+            $(document).ready(function() {
+    const cookieValue = getCookie('popup_status');
+    if (cookieValue === 'successful' || cookieValue === 'error') {
+  
+      // Update image, h4 text, and popup_msg content
+      const imgElement = document.getElementById('successModal').querySelector('.popup_img');
+      const h4Element = document.getElementById('successModal').querySelector('h4');
+      const msgElement = document.getElementById('successModal').querySelector('.popup_msg');
+      const msg = getCookie('popup_msg');
+  
+      if (cookieValue === 'successful') {
+        imgElement.src = "/g2p_ati_service_provider_portal/static/src/img/ok.png";
+        h4Element.textContent = "Success!";
+        
+      } else {
+        imgElement.src = "/g2p_ati_service_provider_portal/static/src/img/no.png";
+        h4Element.textContent = "Error";
+      }
+      msgElement.textContent = msg.replace(/^"|"$/g, '');
+
+      $('#successModal').modal('show');
+
+    }
+
+
+  
+    $('#successModal').on('hidden.bs.modal', function () {
+      deleteCookie('popup_status');
+    });
+  
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+  
+    function deleteCookie(name) {
+      document.cookie = name + '=; Max-Age=0; path=/';
+    }
+  });
+
+      </script>
+
+
+
+
+
+
+
+    </xpath>
+
+    <xpath expr="//header//img[@class='main-logo']" position="attributes">
+      <attribute name="src">/g2p_ati_service_provider_portal/static/src/img/logo@2x.png</attribute>
+      <attribute name="class">main-logo custom-logo</attribute>
+    </xpath>
+
+    <xpath expr="//footer//img[@class='main-logo']" position="attributes">
+      <attribute name="src">/g2p_ati_service_provider_portal/static/src/img/logo@2x.png</attribute>
+      <attribute name="class">main-logo custom-logo</attribute>
+    </xpath>
+
+
+    <xpath expr="//div[hasclass('footer-container')]" position="attributes">
+      <attribute name="style">height: 100px !important;</attribute>
+    </xpath>
+
+    <xpath expr="//div[hasclass('search-box')]" position="attributes">
+      <attribute name="style">display: none;</attribute>
+    </xpath>
+
+    <xpath expr="//div[hasclass('copyright')]" position="attributes">
+      <attribute name="style">display: none;</attribute>
+    </xpath>
+  </template>
 </odoo>

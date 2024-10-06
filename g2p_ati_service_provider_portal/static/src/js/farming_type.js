@@ -6,13 +6,15 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
     const membershipAstrix = document.getElementsByClassName("membership_astrix");
     const landRequiredFields = document.getElementsByClassName("land_required_field");
     const landAstrix = document.getElementsByClassName("land_astrix");
-
+    const livestockRequiredFields = document.getElementsByClassName("livestock_required_field");
+    const cropMixedRequiredFields = document.getElementsByClassName("crop_mixed_required_field");
     const landNext = document.getElementById("land-next");
     const cropNext = document.getElementById("crop-next");
     const livestockNext = document.getElementById("livestock-next");
     const livestockPrev = document.getElementById("livestock-previous");
     const resourcePrev = document.getElementById("resource-previous");
     const agriPrev = document.getElementById("agricultural-previous");
+    const addLineLivestockField = document.getElementsByClassName("addline_livestock_field");
 
     if (selectedFarmingType === "Crop Farming" || selectedFarmingType === "Mixed Farming") {
         // Membership
@@ -21,6 +23,9 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
         });
         Array.from(membershipRequiredFields).forEach((element) => {
             element.setAttribute("required", "required");
+        });
+        Array.from(livestockRequiredFields).forEach((element) => {
+            element.removeAttribute("required", "required");
         });
 
         // Land Information
@@ -53,7 +58,15 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
     }
 
     if (selectedFarmingType === "Crop Farming") {
+        Array.from(livestockRequiredFields).forEach((element) => {
+            element.removeAttribute("required", "required");
+        });
+
         if (fromGroup) {
+            cropNext.setAttribute(
+                "onclick",
+                "showModalSection('agricultural-input', 'crop-information',  'next')"
+            );
             cropNext.setAttribute(
                 "onclick",
                 "showModalSection('agricultural-input', 'crop-information',  'next')"
@@ -80,6 +93,13 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
         Array.from(membershipRequiredFields).forEach((element) => {
             element.removeAttribute("required");
         });
+        Array.from(cropMixedRequiredFields).forEach((element) => {
+            element.removeAttribute("required");
+        });
+        Array.from(addLineLivestockField).forEach((element) => {
+            element.setAttribute("required");
+        });
+
 
         // Land Information
         Array.from(landAstrix).forEach((element) => {

@@ -76,40 +76,46 @@ function addFamilyMember() {
         });
 
         $("#familyMemberModal").modal("hide");
+
     } else {
         console.log("Please fill all the required fields");
     }
 }
 
-// eslint-disable-next-line no-unused-vars
-function deleteMember(button) {
-    const memberId = $(button).attr("store");
-    var groupId = $("input[name='group_id']").val();
-    console.log("memberID is ", memberId);
 
-    if (confirm("Are you sure you want to delete this family member?")) {
-        $.ajax({
-            url: "/serviceprovider/member/delete/",
-            type: "POST",
-            data: {member_id: memberId, group_id: groupId}, // Send data as form-encoded
-            success: function (data) {
-                if (data.success) {
-                    console.log("heeyyyyy");
-                    const row = $(button).closest("tr");
-                    row.remove();
-                    alert("Family member deleted successfully.");
-                } else {
-                    console.log("undefined is here");
-                    alert("Error: " + data.error);
-                }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.error("Error:", textStatus, errorThrown);
-                alert("An error occurred while deleting the family member.");
-            },
-        });
-    }
-}
+// function deleteMember(button) {
+//     const memberId = $(button).attr("store");
+//     var groupId = $("input[name='group_id']").val();
+
+//     console.log("memberID is ", memberId);
+
+//     if (confirm("Are you sure you want to delete this family member?")) {
+//         $.ajax({
+//             url: "/serviceprovider/member/delete/",
+//             type: "POST",
+//             data: { member_id: memberId, group_id: groupId },
+//             success: function (data) {
+//                 data = JSON.parse(data);
+//                 if (data.success) {
+
+//                     console.log("in the the the here")
+//                     const row = $(button).closest("tr");
+//                     row.remove();
+//                     alert(data.message);
+//                 } 
+                
+//                 else {
+//                     console.log("Delete failed:", data);
+//                     alert("Error: " + (data.error));
+//                 }
+//             },
+//             error: function (jqXHR, textStatus, errorThrown) {
+//                 console.error("Error:", textStatus, errorThrown);
+//                 alert("An error occurred while deleting the family member: " + errorThrown);
+//             },
+//         });
+//     }
+// }
 
 const farmerCount = 0;
 
@@ -156,6 +162,7 @@ function addFarmerMember() {
 $(document).on("click", "#hh_member_update", function () {
     // Console.log('populateEditModal called');
     var memberId = $(this).attr("store");
+    var group_id = $("input[name='group_id']").val();
     var modal = $("#editFamilyMemberModal");
     console.log("Click edit", memberId);
     $.ajax({
@@ -163,6 +170,7 @@ $(document).on("click", "#hh_member_update", function () {
         method: "POST",
         data: {
             member_id: memberId,
+            group_id: group_id,
         },
         dataType: "json",
         success: function (response) {
@@ -175,6 +183,8 @@ $(document).on("click", "#hh_member_update", function () {
             } else if (response.gender === "female") {
                 modal.find("#edit_gender_female").prop("checked", true);
             }
+            console.log(response.kind);
+            modal.find("#edit_relation_with_hh_selection").val(response.kind);
 
             console.log();
             var ele = document.getElementById("update-member-btn");
@@ -209,6 +219,7 @@ $(document).on("click", "#update-member-btn", function () {
     var memberId = ele.getAttribute("store");
 
     var group_id = $("input[name='group_id']").val();
+    var relationship = $("select[name='relation_with_household_head']").val();
     // Console.log(memberId)
 
     var data = {
@@ -219,7 +230,7 @@ $(document).on("click", "#update-member-btn", function () {
         gf_name_eng: modal.find("#edit_grandfathers_name").val(),
         birthdate: modal.find("#edit_birthdate").val(),
         gender: modal.find("input[name='gender']:checked").val(),
-        // Relationship: modal.find("select[name='relationship']").val()
+        Relationship: relationship,
     };
 
     // Console.log("Sending data:", data);
@@ -237,17 +248,18 @@ $(document).on("click", "#update-member-btn", function () {
                 // Update the table with the new member list
                 var tableBody = $("#familylist tbody");
                 tableBody.empty();
-                response.member_list.forEach(function (member) {
+                response.member_list.forEach(function (member, index) {
+                    var serialNumber = index + 1;
+                    console.log(serialNumber);
                     var newRowHtml = `
                         <tr>
+                            <td>${serialNumber}</td>
                             <td>${member.name}</td>
                             <td>${member.age}</td>
                             <td>${member.gender}</td>
-
-
-                            <td>"Member"</td>
+                            <td>${member.kind}</td>
                             <td>
-                                <button type="button" class="btn btn-icon rounded-0" id="hh_member_update" store="${member.id}" title="Edit" data-bs-toggle="modal" data-bs-target="#editFamilyMemberModal">
+                                <button type="button" class="btn btn-icon rounded-0" id="hh_member_update" store="${member.id}" title="Edit">
                                     <i class="fa fa-pencil"></i>
                                 </button>
                                 <button type="button" class="btn btn-outline-secondary btn-sm my-3" onclick="deleteMember(this)">
@@ -275,6 +287,7 @@ $(document).on("click", "#update-member-btn", function () {
 
 // / Add button
 $(document).on("click", "#family_member_submit", function () {
+    $(this).prop('disabled', true);
     console.log("Add button in update household");
     var group_id = $("input[name='group_id']").val();
     var given_name = $("#mamber_given_name").val();
@@ -304,6 +317,8 @@ $(document).on("click", "#family_member_submit", function () {
             if (response.member_list) {
                 // eslint-disable-next-line no-undef
                 resetFormFieldsMember();
+
+             
                 // Update the table with the new member list
                 var tableBody = $("#familylist tbody");
                 tableBody.empty();
@@ -332,6 +347,7 @@ $(document).on("click", "#family_member_submit", function () {
 
                 // Hide the modal after successful submission
                 $("#familyMemberModal").modal("hide");
+                $('#successModal').modal('show')
             } else {
                 console.error("Failed to add family member");
             }
@@ -363,8 +379,16 @@ function showNextModal(nextSectionId, currentSectionId) {
     }
 }
 
+
+
+
+
+
 // eslint-disable-next-line no-unused-vars
 function showModalSection(nextSectionId, currentSectionId, direction) {
+
+
+
     // eslint-disable-next-line no-undef
     var val = validateSection(currentSectionId);
     if (direction === "prev") {

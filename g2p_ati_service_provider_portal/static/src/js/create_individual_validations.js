@@ -115,6 +115,14 @@ $(document).ready(function () {
         }
     }
 
+    // function formatInputWithSpaces(inputElement) {
+    //     inputElement.addEventListener("input", function () {
+    //         const value = inputElement.value.replace(/\s+/g, "");
+    //         const formattedValue = value.match(/.{1,4}/g)?.join(" ") || "";
+    //         inputElement.value = formattedValue;
+    //     });
+    // }
+
     function formatInputWithSpaces(inputElement) {
         inputElement.addEventListener("input", function () {
             const value = inputElement.value.replace(/\s+/g, "");
@@ -122,6 +130,17 @@ $(document).ready(function () {
             inputElement.value = formattedValue;
         });
     }
+
+    //this is the one with the problem
+
+//     const uidInput = document.getElementById("uid_input");
+// const ridInput = document.getElementById("rid_input");
+// const uidError = document.getElementById("uid_error");
+// const ridError = document.getElementById("rid_error");
+
+// // Apply space formatting to both UID and RID inputs
+// formatInputWithSpaces(uidInput);
+// formatInputWithSpaces(ridInput);
 
     // Apply the function to both UID and RID inputs
 
@@ -140,7 +159,7 @@ $(document).ready(function () {
         if ((sanitizedValue.length !== 12 && sanitizedValue.length !== 0) || !isOnlyDigits) {
             uidInput.classList.add("uid_error");
             uidError.style.display = "block";
-            uidInput.setAttribute("required", "required");
+            // uidInput.setAttribute("required", "required");
         } else {
             uidInput.classList.remove("uid_error");
             uidError.style.display = "none";
@@ -153,18 +172,61 @@ $(document).ready(function () {
         if ((sanitizedValue.length !== 29 && sanitizedValue.length !== 0) || !isOnlyDigits) {
             ridInput.classList.add("rid_error");
             ridError.style.display = "block";
-            ridInput.setAttribute("required", "required");
+            // ridInput.setAttribute("required", "required");
         } else {
             ridInput.classList.remove("rid_error");
             ridError.style.display = "none";
         }
     });
 
+
+    // this is the one that doesn't work
+
+//     // Validation for UID input field
+// uidInput.addEventListener("input", function () {
+//     const sanitizedValue = uidInput.value.replace(/\s+/g, ""); // Remove spaces
+//     const isOnlyDigits = /^\d*$/.test(sanitizedValue); // Check if only digits
+
+//     // If not 12 digits or contains non-digit characters, show error
+//     if ((sanitizedValue.length !== 12 && sanitizedValue.length !== 0) || !isOnlyDigits) {
+//         uidInput.classList.add("is-invalid");
+//         uidError.style.display = "block";
+//     } else {
+//         uidInput.classList.remove("is-invalid");
+//         uidError.style.display = "none";
+//     }
+// });
+
+// // Validation for RID input field
+// ridInput.addEventListener("input", function () {
+//     const sanitizedValue = ridInput.value.replace(/\s+/g, ""); // Remove spaces
+//     const isOnlyDigits = /^\d*$/.test(sanitizedValue); // Check if only digits
+
+//     // If not 29 digits or contains non-digit characters, show error
+//     if ((sanitizedValue.length !== 29 && sanitizedValue.length !== 0) || !isOnlyDigits) {
+//         ridInput.classList.add("is-invalid");
+//         ridError.style.display = "block";
+//     } else {
+//         ridInput.classList.remove("is-invalid");
+//         ridError.style.display = "none";
+//     }
+// });
+
+
+   
+    
     // Event listeners
     function handleNationalIdSelection() {
         const selectElement = document.getElementById("have-national-id-selection");
         const uidDiv = document.getElementById("uid-div");
         const ridDiv = document.getElementById("rid-div");
+        
+        const uidInput = document.getElementById("uid_input");
+        const ridInput = document.getElementById("rid_input");
+        const uidError = document.getElementById("uid_error");
+        const ridError = document.getElementById("rid_error");
+
+
         // Const ridInput = document.getElementById("rid_input");
         // Const uidInput = document.getElementById("uid_input");
         const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
@@ -191,7 +253,9 @@ $(document).ready(function () {
         ridError.style.display = "none";
     }
 
-    function handlePhoneNumberSelection() {
+
+
+   function handlePhoneNumberSelection() {
         const selectElement = document.getElementById("have-phone-no-selection");
         const primaryPhoneDiv = document.getElementById("primary-div");
         const otherPhoneDiv = document.getElementById("other-div");
@@ -441,20 +505,56 @@ function validateElement(element) {
 function validateUID() {
     const uid = document.getElementById("uid_input");
     const uidError = document.getElementById("uid_error");
-    const isValid = uid.value.length === 12 && /^\d+$/.test(uid.value);
+    // const isValid = uid.value.length === 12 && /^\d+$/.test(uid.value);
+    const isValid = uid.value.replace(/\s+/g, "").length === 12 && /^\d+$/.test(uid.value.replace(/\s+/g, ""));
     uid.classList.toggle("is-invalid", !isValid);
+    // uid.classList.toggle("is-valid", isValid); // Add this line
     uidError.style.display = isValid ? "none" : "block";
     return isValid;
 }
 
+// Helper functions for validating UID and RID
+// function validateUID() {
+//     const uid = document.getElementById("uid_input");
+//     const uidError = document.getElementById("uid_error");
+//     const isValid = uid.value.replace(/\s+/g, "").length === 12 && /^\d+$/.test(uid.value.replace(/\s+/g, ""));
+//     uid.classList.toggle("is-invalid", !isValid);
+//     uidError.style.display = isValid ? "none" : "block";
+//     return isValid;
+// }
+
+// function validateRID() {
+//     const rid = document.getElementById("rid_input");
+//     const ridError = document.getElementById("rid_error");
+//     const isValid = rid.value.replace(/\s+/g, "").length === 29 && /^\d+$/.test(rid.value.replace(/\s+/g, ""));
+//     rid.classList.toggle("is-invalid", !isValid);
+//     ridError.style.display = isValid ? "none" : "block";
+//     return isValid;
+// }
+
+
 function validateRID() {
     const rid = document.getElementById("rid_input");
     const ridError = document.getElementById("rid_error");
-    const isValid = rid.value.length === 29 && /^\d+$/.test(rid.value);
+    // const isValid = rid.value.length === 29 && /^\d+$/.test(rid.value);
+    const isValid = rid.value.replace(/\s+/g, "").length === 29 && /^\d+$/.test(rid.value.replace(/\s+/g, ""));
     rid.classList.toggle("is-invalid", !isValid);
+    // rid.classList.toggle("is-valid", isValid); // Add this line
     ridError.style.display = isValid ? "none" : "block";
     return isValid;
 }
+
+
+
+// Apply the function to both UID and RID inputs
+
+
+// Add event listeners for real-time validation
+// uidInput.addEventListener("input", validateUID);
+// ridInput.addEventListener("input", validateRID);
+
+
+
 
 function validateRadioButtons(radioName, section) {
     const radioGroup = section.querySelectorAll(`input[name="${radioName}"]`);
@@ -537,6 +637,33 @@ function validateSection(sectionId) {
     return valid;
 }
 
+
+// function validateSection(sectionId) {
+//     const section = document.getElementById(sectionId);
+//     const requiredFields = section.querySelectorAll("[required]");
+//     let valid = true;
+
+//     requiredFields.forEach((field) => {
+//         if (field.value.trim() === "") {
+//             field.classList.add("is-invalid");
+//             valid = false;
+//         } else {
+//             field.classList.remove("is-invalid");
+//         }
+
+//         // Special validation for UID and RID in 'id-section'
+//         if (sectionId === "id-section" && field.name === "uid") {
+//             valid = valid && validateUID();
+//         }
+//         if (sectionId === "id-section" && field.name === "rid") {
+//             valid = valid && validateRID();
+//         }
+//     });
+
+//     return valid;
+// }
+
+
 // Let previousSection = "id-section";
 
 function showSection(sectionId, element, fromGroup = false) {
@@ -581,82 +708,280 @@ function showSection(sectionId, element, fromGroup = false) {
     }
 }
 // eslint-disable-next-line no-unused-vars
-function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
-    var val = validateSection(currentSectionId);
+// function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
+//     var val = validateSection(currentSectionId);
 
-    if (val) {
-        var activeLink = document.querySelector(".sidebar .nav-link.active");
-        var nextLink = activeLink.parentElement.nextElementSibling.querySelector(".nav-link");
+//     if (val) {
+//         var activeLink = document.querySelector(".sidebar .nav-link.active");
+//         var nextLink = activeLink.parentElement.nextElementSibling.querySelector(".nav-link");
+//         if (nextLink) {
+//             nextLink.classList.remove("disabled");
+//             showSection(nextSectionId, nextLink, fromGroup);
+//         }
+//     }
+// }
+
+
+function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
+
+    console.log("in here")
+    const isSectionValid = validateSection(currentSectionId);
+
+    if (isSectionValid) {
+        const activeLink = document.querySelector(".sidebar .nav-link.active");
+        const nextLink = activeLink.parentElement.nextElementSibling.querySelector(".nav-link");
         if (nextLink) {
             nextLink.classList.remove("disabled");
-            showSection(nextSectionId, nextLink, fromGroup);
+            showSection(nextSectionId, nextLink, fromGroup); // Move to next section if valid
         }
     }
 }
 
-function checkRequired() {
-    // Const farmingType = document.getElementById('farming-type-selection');
-    // const selectedOptionText = farmingType.options[farmingType.selectedIndex].text
-    //     .trim()
-    //     // .toLowerCase();
-    // console.log(selectedOptionText);
-    // if (selectedOptionText === 'Agro-Pastoral' || selectedOptionText === 'Mixed Far4ming' ) {
-    //     // field2.setAttribute('required', 'required');
-    // }
-}
 
-function toggleFieldBasedOnRadio(inputName, fieldIdToToggle, selectElementId, toggleValue = "Yes") {
-    const radios = document.querySelectorAll(`input[name="${inputName}"]`);
-    let shouldShowField = false;
+// Function toggleFieldBasedOnRadio(inputName, fieldIdToToggle, selectElementId, toggleValue = "Yes") {
+//     const radios = document.querySelectorAll(`input[name="${inputName}"]`);
+//     let shouldShowField = false;
 
-    radios.forEach((radio) => {
-        if (radio.checked && radio.dataset.text === toggleValue) {
-            shouldShowField = true;
+//     radios.forEach((radio) => {
+//         if (radio.checked && radio.dataset.text === toggleValue) {
+//             shouldShowField = true;
+//         }
+//     });
+
+//     const fieldToToggle = document.getElementById(fieldIdToToggle);
+//     fieldToToggle.style.display = shouldShowField ? "block" : "none";
+//     const selectElement = document.getElementById(selectElementId);
+//     if (shouldShowField === true) {
+//         selectElement.setAttribute("required", "required");
+//     } else if (shouldShowField === false) {
+//         selectElement.removeAttribute("required");
+//     }
+// }
+
+// document.addEventListener("DOMContentLoaded", function () {
+//     // Initial check on page load
+//     checkRequired();
+//     toggleFieldBasedOnRadio("is_member_of_primary_coop", "primary-coop-field", "name_of_primary_coop");
+//     toggleFieldBasedOnRadio("is_member_of_coop_union", "coop-union-field", "name_of_coop_union");
+//     toggleFieldBasedOnRadio("in_farmer_cluster", "primary-commodity-field", "primary_commodity");
+//     toggleFieldBasedOnRadio("in_farmer_cluster", "role-in-cluster-field", "role_in_cluster");
+
+//     // Attach event listeners to the radio buttons
+//     const primaryCoopRadios = document.querySelectorAll('input[name="is_member_of_primary_coop"]');
+//     primaryCoopRadios.forEach((radio) => {
+//         radio.addEventListener("change", function () {
+//             toggleFieldBasedOnRadio(
+//                 "is_member_of_primary_coop",
+//                 "primary-coop-field",
+//                 "name_of_primary_coop"
+//             );
+//         });
+//     });
+
+//     const coopUnionRadios = document.querySelectorAll('input[name="is_member_of_coop_union"]');
+//     coopUnionRadios.forEach((radio) => {
+//         radio.addEventListener("change", function () {
+//             toggleFieldBasedOnRadio("is_member_of_coop_union", "coop-union-field", "name_of_coop_union");
+//         });
+//     });
+
+//     const isMemberRadios = document.querySelectorAll('input[name="in_farmer_cluster"]');
+//     isMemberRadios.forEach((radio) => {
+//         radio.addEventListener("change", function () {
+//             toggleFieldBasedOnRadio("in_farmer_cluster", "primary-commodity-field", "primary_commodity");
+//             toggleFieldBasedOnRadio("in_farmer_cluster", "role-in-cluster-field", "role_in_cluster");
+//         });
+//     });
+// });
+
+// function toggleFieldBasedOnSelect(
+//     fieldIdToToggle,
+//     value,
+//     toggleValue = "Yes",
+//     other = false,
+//     otherInputIdToClear,
+//     selectionFieldIdToClear
+// ) {
+//     const shouldShowField = value === toggleValue;
+//     console.log("inherrrerererre1");
+//     console.log(otherInputIdToClear, selectionFieldIdToClear )
+
+//     const selectionFieldToClear = document.getElementById(selectionFieldIdToClear);
+//     const otherInputToClear = document.getElementById(otherInputIdToClear);
+
+//     if (!shouldShowField) {
+
+//         if (selectionFieldToClear) {
+//             selectionFieldToClear.selectedIndex = 0;
+//         } else {
+//             console.warn(`Warning: Invalid input ID provided: ${selectionFieldIdToClear}`);
+//         }
+
+//         if (otherInputToClear) {
+//             otherInputToClear.value = "";
+//         } else {
+//             console.warn(`Warning: Invalid input ID provided: ${otherInputIdToClear}`);
+//         }
+//     }
+
+//         const fieldToToggle = document.getElementById(fieldIdToToggle);
+
+//         if (fieldToToggle) {
+//             fieldToToggle.style.display = shouldShowField ? "block" : "none";
+//         } else {
+//             console.error(`Warning: Invalid field ID provided: ${fieldIdToToggle}`);
+//         }
+
+// }
+
+//   document.addEventListener("DOMContentLoaded", function () {
+
+//     function setupSelectChangeHandler(selectId, fieldIdsToToggle,  toggleValue = "Yes", otherInputIdToClear,selectionFieldIdToClear) {
+
+//       const selectElement = document.getElementById(selectId);
+
+//       console.log("in selelct handler")
+//       console.log(otherInputIdToClear,selectionFieldIdToClear)
+
+//       selectElement.addEventListener("change", function () {
+
+//         console.log("inside select handler  in  handler")
+//         console.log(otherInputIdToClear,selectionFieldIdToClear)
+
+//         const selectedOption = selectElement.options[selectElement.selectedIndex];
+//         toggleFieldBasedOnSelect(fieldIdsToToggle=fieldIdsToToggle, value=selectedOption.text, toggleValue = "Yes",
+//             otherInputIdToClear,
+//             selectionFieldIdToClear)
+//       });
+
+//       const initialSelectedOption =
+//         selectElement.options[selectElement.selectedIndex];
+//       toggleFieldBasedOnSelect(
+//         selectId,
+//         fieldIdToToggle,
+//         initialSelectedOption.text
+//       );
+//     }
+
+//     setupSelectChangeHandler(selectId="is_member_of_primary_coop",fieldIdsToToggle="primary-coop-field", otherInputIdToClear="other_primary_coop",selectionFieldIdToClear="name_of_primary_coop")
+//     setupSelectChangeHandler("is_member_of_coop_union", "coop-union-field");
+//     setupSelectChangeHandler("in_farmer_cluster", "primary-commodity-field");
+//     setupSelectChangeHandler("in_farmer_cluster", "role-in-cluster-field");
+
+//   });
+
+function toggleFieldBasedOnSelect(
+    fieldIdToToggle,
+    value,
+    toggleValue = "Yes",
+    otherInputIdToClear,
+    selectionFieldIdToClear,
+    containerId,
+    containerId2
+) {
+    console.log("Inside toggleFieldBasedOnSelect");
+    console.log("otherInputIdToClear:", otherInputIdToClear);
+    console.log("selectionFieldIdToClear:", selectionFieldIdToClear);
+
+    const shouldShowField = value === toggleValue;
+
+    const selectionFieldToClear = document.getElementById(selectionFieldIdToClear);
+    const otherInputToClear = document.getElementById(otherInputIdToClear);
+    const container_div = document.getElementById(containerId);
+    const container_div2 = document.getElementById(containerId2);
+
+    if (!shouldShowField) {
+        if (selectionFieldToClear) {
+            selectionFieldToClear.selectedIndex = 0;
+        } else {
+            console.warn(`Warning: Invalid selection field ID provided: ${selectionFieldIdToClear}`);
         }
-    });
+
+        if (otherInputToClear) {
+            otherInputToClear.value = "";
+            if (container_div) {
+                container_div.style.display = shouldShowField ? "block" : "none";
+            }
+
+            if (container_div2) {
+                container_div2.style.display = shouldShowField ? "block" : "none";
+            }
+        } else {
+            console.warn(`Warning: Invalid other input ID provided: ${otherInputIdToClear}`);
+        }
+    }
 
     const fieldToToggle = document.getElementById(fieldIdToToggle);
-    fieldToToggle.style.display = shouldShowField ? "block" : "none";
-    const selectElement = document.getElementById(selectElementId);
-    if (shouldShowField === true) {
-        selectElement.setAttribute("required", "required");
-    } else if (shouldShowField === false) {
-        selectElement.removeAttribute("required");
+
+    if (fieldToToggle) {
+        fieldToToggle.style.display = shouldShowField ? "block" : "none";
+    } else {
+        console.error(`Error: Invalid field ID provided: ${fieldIdToToggle}`);
     }
+}
+
+function getInitialSelection(selectId) {
+    const selectElement = document.getElementById(selectId);
+    return selectElement ? selectElement.options[selectElement.selectedIndex].text : null;
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    // Initial check on page load
-    checkRequired();
-    toggleFieldBasedOnRadio("is_member_of_primary_coop", "primary-coop-field", "name_of_primary_coop");
-    toggleFieldBasedOnRadio("is_member_of_coop_union", "coop-union-field", "name_of_coop_union");
-    toggleFieldBasedOnRadio("in_farmer_cluster", "primary-commodity-field", "primary_commodity");
-    toggleFieldBasedOnRadio("in_farmer_cluster", "role-in-cluster-field", "role_in_cluster");
+    const selectHandlers = [
+        {
+            selectId: "is_member_of_primary_coop",
+            fieldIdsToToggle: "primary-coop-field",
+            otherInputIdToClear: "other_primary_coop",
+            selectionFieldIdToClear: "name_of_primary_coop",
+            containerId: "otherModalPrimaryCoopField",
+            containerId2: "otherPrimaryCoopField",
+        },
 
-    // Attach event listeners to the radio buttons
-    const primaryCoopRadios = document.querySelectorAll('input[name="is_member_of_primary_coop"]');
-    primaryCoopRadios.forEach((radio) => {
-        radio.addEventListener("change", function () {
-            toggleFieldBasedOnRadio(
-                "is_member_of_primary_coop",
-                "primary-coop-field",
-                "name_of_primary_coop"
-            );
-        });
-    });
+        {
+            selectId: "is_member_of_coop_union",
+            fieldIdsToToggle: "coop-union-field",
+            otherInputIdToClear: "other_coop_union",
+            selectionFieldIdToClear: "name_of_coop_union",
+            containerId: "otherModalCoopUnionField",
+            containerId2: "otherCoopUnionField",
+        },
 
-    const coopUnionRadios = document.querySelectorAll('input[name="is_member_of_coop_union"]');
-    coopUnionRadios.forEach((radio) => {
-        radio.addEventListener("change", function () {
-            toggleFieldBasedOnRadio("is_member_of_coop_union", "coop-union-field", "name_of_coop_union");
-        });
-    });
+        {selectId: "in_farmer_cluster", fieldIdsToToggle: "primary-commodity-field"},
+        {selectId: "in_farmer_cluster", fieldIdsToToggle: "role-in-cluster-field"},
+    ];
 
-    const isMemberRadios = document.querySelectorAll('input[name="in_farmer_cluster"]');
-    isMemberRadios.forEach((radio) => {
-        radio.addEventListener("change", function () {
-            toggleFieldBasedOnRadio("in_farmer_cluster", "primary-commodity-field", "primary_commodity");
-            toggleFieldBasedOnRadio("in_farmer_cluster", "role-in-cluster-field", "role_in_cluster");
-        });
+    selectHandlers.forEach((handler) => {
+        const selectElement = document.getElementById(handler.selectId);
+        if (selectElement) {
+            selectElement.addEventListener("change", function () {
+                console.log("Inside select handler for:", handler.selectId);
+                const selectedOption = selectElement.options[selectElement.selectedIndex];
+                toggleFieldBasedOnSelect(
+                    handler.fieldIdsToToggle,
+                    selectedOption.text,
+                    "Yes",
+                    handler.otherInputIdToClear,
+                    handler.selectionFieldIdToClear,
+                    handler.containerId,
+                    handler.containerId2
+                );
+            });
+
+            selectHandlers.forEach((handler) => {
+                const initialSelection = getInitialSelection(handler.selectId);
+                if (initialSelection) {
+                    toggleFieldBasedOnSelect(
+                        handler.fieldIdsToToggle,
+                        initialSelection,
+                        "Yes",
+                        handler.otherInputIdToClear,
+                        handler.selectionFieldIdToClear,
+                        handler.containerId,
+                        handler.containerId2
+                    );
+                }
+            });
+        } else {
+            console.error(`Error: Select element not found for ID: ${handler.selectId}`);
+        }
     });
 });
