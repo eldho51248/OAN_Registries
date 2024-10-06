@@ -10,7 +10,7 @@
 
         <xpath expr="//div[hasclass('main-container')]" position="replace">
             <div style="padding-top: 15px !important; padding-bottom: 0px !important;" class="main-container">
-                <div class="container-adjuster">
+                <div class="">
                     <h5 style="font: normal 600 18px / 22px Inter !important;" class="all-title">Create New Household</h5>
                     <div class="form-template">
                         <ol class="breadcrumb form-layout-breadcrumb">

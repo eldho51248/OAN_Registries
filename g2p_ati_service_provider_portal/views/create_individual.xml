@@ -9,7 +9,7 @@
     >
 
         <xpath expr="//div[hasclass('main-container')]" position="replace">
-            <div class="container-adjuster">
+            <div class="">
                 <h5 class="all-title">Create Farmer</h5>
                 <div class="form-template">
 

@@ -10,7 +10,7 @@
         <xpath expr="//div[hasclass('main-container')]" position="replace">
             <div class="main-container1">
 
-                <div class="container-adjuster">
+                <div class="">
 
                     <div class="d-flex flex-row justify-content-between">
 

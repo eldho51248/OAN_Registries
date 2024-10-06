@@ -9,7 +9,7 @@
     >
         <xpath expr="//div[hasclass('main-container')]" position="replace">
             <div class="main-container" style="padding-top: 15px !important; padding-bottom: 0px !important;">
-                <div class="container-adjuster">
+                <div style="max-width: 1400px" class="mx-auto px-3">
                     <h5 style="font: normal 600 18px / 22px Inter !important;" class="all-title">Update Farmer</h5>
                     <div class="form-template">
                         <ol class="breadcrumb form-layout-breadcrumb">
@@ -151,7 +151,7 @@
                                         </div>
                                         <main role="main" class="content">
                                             <div id="id-section" class="section-container">
-                                                <div class="row section-content">
+                                                <div class=" section-content">
                                                     <div class="col-lg-6 col-md-6 col-sm-12">
                                                         <div class="s_website_form_field">
                                                             <label class="s_website_form_label" for="name">
@@ -268,7 +268,7 @@
                                                         <div class="col-lg-4">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
+                                                                
                                                             >
                                                                 <label class="s_website_form_label">
                                                                     <span
@@ -354,7 +354,7 @@
                                                         <div class="col-lg-4">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
+                                                                
                                                             >
                                                                 <label
                                                                     class="s_website_form_label"
@@ -385,7 +385,7 @@
                                                         <div class="col-lg-4">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
+                                                                
                                                             >
                                                                 <label
                                                                     class="s_website_form_label"
@@ -417,7 +417,7 @@
                                                         <div class="col-lg-4">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
+                                                                
                                                             >
                                                                 <label
                                                                     class="s_website_form_label"
@@ -455,7 +455,7 @@
                                                         <div class="col-lg-4">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
+                                                                
                                                             >
                                                                 <label
                                                                     class="s_website_form_label"
@@ -488,7 +488,7 @@
                                                         <div class="col-lg-4">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
+                                                                
                                                             >
                                                                 <label
                                                                     class="s_website_form_label"
@@ -522,7 +522,7 @@
                                                         <div class="col-lg-4">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
+                                                                
                                                             >
                                                                 <label
                                                                     class="s_website_form_label"
@@ -558,7 +558,7 @@
                                                         <div class="col-lg-4">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
+                                                                
                                                             >
                                                                 <label
                                                                     class="s_website_form_label"
@@ -592,7 +592,7 @@
                                                         <div class="col-lg-4">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
+                                                                
                                                             >
                                                                 <label
                                                                     class="s_website_form_label"
@@ -624,7 +624,7 @@
                                                         <div class="col-lg-4">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
+                                                                
                                                             >
                                                                 <label
                                                                     class="s_website_form_label"
@@ -671,7 +671,7 @@
                                                         <div class="col-lg-4 left-margin-input">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
+                                                                
                                                             >
                                                                 <label class="s_website_form_label">
                                                                     <span
@@ -710,7 +710,7 @@
                                                         <div class="col-lg-4 left-margin-input">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
+                                                                
                                                             >
                                                                 <label class="s_website_form_label">
                                                                     <span
@@ -746,7 +746,7 @@
                                                         <div class="col-lg-4">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
+                                                                
                                                             >
                                                                 <label class="s_website_form_label">
                                                                     <span
@@ -810,7 +810,7 @@
                                                         <div class="col-lg-4">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
+                                                                
                                                             >
                                                                 <label class="s_website_form_label">
                                                                     <span
@@ -874,7 +874,7 @@
                                                         <div class="col-lg-4">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
+                                                                
                                                             >
                                                                 <label
                                                                     class="s_website_form_label"
@@ -942,7 +942,7 @@
                                                         <div class="col-lg-4">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
+                                                                
                                                             >
                                                                 <label
                                                                     class="s_website_form_label"
@@ -1080,7 +1080,7 @@
                                                         <div class="col-lg-4 ">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
+                                                                
                                                             >
                                                                 <label
                                                                     class="s_website_form_label"
@@ -1106,7 +1106,7 @@
                                                         <div class="col-lg-4">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
+                                                                
                                                             >
                                                                 <label class="s_website_form_label">
                                                                     <span
@@ -1140,7 +1140,7 @@
                                                         <div class="col-lg-4">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
+                                                                
                                                             >
                                                                 <label
                                                                     class="s_website_form_label"
