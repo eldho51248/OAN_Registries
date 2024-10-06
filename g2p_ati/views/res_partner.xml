@@ -62,7 +62,7 @@
 				<attribute name="invisible">1</attribute>
 			</xpath>
 			<xpath expr="//field[@name='registration_date']" position="before">
-				<field name="has_national_id" />
+				<field name="has_national_id" invisible="is_farmer!='yes'" />
 				<!-- <field name="registration_date" readonly="1" /> -->
 				<field name="rejection_reason" invisible="state!='rejected'" />
 			</xpath>
@@ -174,24 +174,24 @@
 					</group>
 					<group name="socio_economic_data" string="Social Economic Data">
 						<field name="hh_is_household_head" />
-						<field name="hh_income_type" create="False" widget="many2many_tags" />
-						<field name="education" />
-						<field name="martial_status" />
+						<field name="hh_income_type" create="False" widget="many2many_tags" invisible="is_farmer!='yes'" />
+						<field name="education" invisible="is_farmer!='yes'" />
+						<field name="martial_status" invisible="is_farmer!='yes'" />
 					</group>
 				</group>
 				<group name="farmer_socio_economic_data" colspan="2">
 					<group string="Farmer Data">
 						<field name="is_farmer" />
 						<field name="primary_Language" />
-						<field name="farming_type" />
+						<field name="farming_type" invisible="is_farmer!='yes'" />
 					</group>
-					<group name="disability" string="Disability">
+					<group name="disability" string="Disability" invisible="is_farmer!='yes'">
 						<field name="is_disabled" />
 					</group>
 				</group>
 			</xpath>
 			<xpath expr="//sheet/notebook[@name='individual_detail']/page[@name='basic_info']" position="after">
-				<page string="Farmer Details" sequence="2">
+				<page string="Farmer Details" sequence="2" invisible="is_farmer!='yes'">
 					<group>
 						<group name="farmer_membership" string="Membership">
 							<field name="is_member_of_primary_cooperative" />
@@ -231,7 +231,7 @@
 						</group>
 					</group>
 				</page>
-				<page string="Land Information" name="lands">
+				<page string="Land Information" name="lands" invisible="is_farmer!='yes'">
 					<group name="computed_land_info" cols="2" colspan="2">
 						<group name="total_land">
 							<field name="total_land_area" readonly="True" />
@@ -251,7 +251,7 @@
 						</tree>
 					</field>
 				</page>
-				<page string="Crop Information" name="crops">
+				<page string="Crop Information" name="crops" invisible="is_farmer!='yes'">
 					<group name="crop_water_source">
 						<field name="crop_water_sources" colspan="2" create="False" widget="many2many_tags" />
 					</group>
@@ -264,7 +264,7 @@
 						</tree>
 					</field>
 				</page>
-				<page string="Livestock Information" name="livestocks">
+				<page string="Livestock Information" name="livestocks" invisible="is_farmer!='yes'">
 					<group name="livestock_water">
 						<field name="livestock_water_sources" create="False" widget="many2many_tags" />
 					</group>

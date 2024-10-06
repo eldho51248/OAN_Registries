@@ -189,6 +189,19 @@ class G2PFarmer(models.Model):
 
     farmer_id = fields.Char(string="Farmer ID", compute="_compute_farmer_id", store=True, index=True)
 
+    @api.onchange("is_member_of_primary_cooperative")
+    def _onchange_is_member_of_primary_cooperative(self):
+        self.primary_cooperatives = False
+
+    @api.onchange("is_member_of_cooperative_union")
+    def _onchange_is_member_of_cooperative_union(self):
+        self.cooperative_unions = False
+
+    @api.onchange("is_member_in_farmer_cluster")
+    def _onchange_is_member_in_farmer_cluster(self):
+        self.role_in_farmer_cluster = False
+        self.primary_commodity = False
+
     @api.onchange("region")
     def _onchange_region(self):
         self.zone = False

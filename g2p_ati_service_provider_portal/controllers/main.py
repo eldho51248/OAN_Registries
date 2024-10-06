@@ -1489,7 +1489,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 model_id, "has_personal_phone", beneficiary.has_personal_phone
             )
             
-            # _logger.info(f" ttheeee land info {land_info_data}")
 
             # Rendering the template with the prepared data
             return request.render(
@@ -1618,7 +1617,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     
  
     
-    def _prepare_land_info_data(self, beneficiary, ownership_type_selections):
+        def _prepare_land_info_data(self, beneficiary, ownership_type_selections):
         land_info_data = []
         for index, land_info in enumerate(beneficiary.land_information_ids, start=1):
             ownership_selection_id = False
@@ -1647,11 +1646,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     "land_certificate": land_certificate,
             
                 })
-
-
-
-
-
 
                 
         return land_info_data
@@ -1924,7 +1918,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             )
             _logger.info("before machinery2")
             
-            # land_info_data = self.get_land_info_data(kw, backend_id)
+
+            land_info_data = self.get_land_info_data(kw, backend_id)
+
             _logger.info("before machinery3")
             
             
@@ -1934,15 +1930,15 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             livestock_info_data = self.get_livestock_info_data(kw)
             _logger.info("before machinery5")
             
-            # supporting_documents_ids = self.get_supporting_documents_ids(kw)
+
+            supporting_documents_ids = self.get_supporting_documents_ids(kw)
+
             
             _logger.info("before machinery6")
             
             additional_info_json = self.handle_other_info(kw)
             # Clean up existing data
             _logger.info("before machinery7")
-            
-            # _logger.info(f" tthe land info {land_info_data}")
             
 
             update_records = {
@@ -1997,6 +1993,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 "additional_g2p_info": additional_info_json,
             }
             # Update member details
+
             is_locked = False
             edit_state = member.edit_state
             if edit_state == 'locked':
@@ -2650,7 +2647,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     def process_land(self, kw, vals):
         land_records = json.loads(kw.get("landRecords", "[]"))
         
-        
 
         land_info_data = []
         supporting_documents_ids = []
@@ -2746,7 +2742,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             group_rec = self._get_or_create_group(kw, region, zone, woreda, kebele)
             
             
-            
+
 
             vals = self._prepare_individual_vals(kw, region, zone, woreda, kebele)
             
@@ -2754,7 +2750,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             
             vals = self.process_land(kw, vals)
             
-            
+
             _logger.info(f"herere is the land  {vals['land_information_ids']}")
 
             vals["crop_information_ids"] = self._prepare_crop_information(kw.get("cropRecords"))
