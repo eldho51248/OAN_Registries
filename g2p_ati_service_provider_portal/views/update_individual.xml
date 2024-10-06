@@ -32,6 +32,8 @@
                             action="/serviceprovider/individual/update/submit"
                             method="POST"
                             enctype="multipart/form-data"
+                            class="mx-auto px-3 px-lg-0"
+
                         >
                             <input type="hidden" name="group_id" value="" />
                             <div class="row">

@@ -11,8 +11,10 @@
         <xpath expr="//div[hasclass('main-container')]" position="replace">
             <div style="padding-top: 15px !important; padding-bottom: 0px !important;" class="main-container">
                 <div class="">
+                    <div  style="max-width:1400px" class="form-template mx-auto">
+
                     <h5 class="all-title">Update Household</h5>
-                    <div class="form-template">
+
                         <ol class="breadcrumb form-layout-breadcrumb">
                             <li class="breadcrumb-item">
                                 <a href="/serviceprovider/home">
@@ -34,7 +36,7 @@
                             action="/serviceprovider/group/update/submit"
                             method="POST"
                             enctype="multipart/form-data"
-                            class="mx-auto px-3"
+                            class="mx-auto px-3 px-lg-0"
                         >
                             <div class="row">
                                 <div class="container-fluid">
