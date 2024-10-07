@@ -1694,6 +1694,7 @@
                                                                                     data-live-search="true"
                                                                                     data-style="btn-custom"
                                                                                     style="width: 100%;"
+                                                                                    required="required"
                                                                                     data-none-selected-text="Select Source of Income"
                                                                                 >
                                                                                     <t
@@ -2737,11 +2738,13 @@
                                                                                     class="selectpicker"
                                                                                     id="crop_water_source"
                                                                                     name="crop_water_source"
+                                                                                    required="required"
                                                                                     multiple="multiple"
                                                                                     data-live-search="true"
                                                                                     data-style="btn-custom"
                                                                                     style="width: 100%;"
                                                                                     data-none-selected-text="Select Water Source"
+                                                                                    onchange="validateElement(this)"
                                                                                 >
                                                                                     <t
                                                                                         t-foreach="crop_water_source"
@@ -3104,14 +3107,16 @@
                                                                                     </span>
                                                                                 </label>
                                                                                 <select
-                                                                                    class="selectpicker"
+                                                                                    class="selectpicker livestock_required_field"
                                                                                     id="livestock_water_source"
                                                                                     name="livestock_water_source"
                                                                                     multiple="multiple"
                                                                                     data-live-search="true"
+                                                                                    required="required"
                                                                                     data-style="btn-custom "
                                                                                     style="width: 100%;"
                                                                                     data-none-selected-text="Select"
+                                                                                    onchange="validateElement(this)"
                                                                                 >
                                                                                     <t
                                                                                         t-foreach="water_source"
@@ -3184,7 +3189,7 @@
                                                                                                 </label>
                                                                                                 <select
                                                                                                     id="livestock_selection"
-                                                                                                    class="form-select"
+                                                                                                    class="form-select livestock_required_field"
                                                                                                     name="livestock_types_0"
                                                                                                     required="required"
                                                                                                     onchange="validateElement(this)"
@@ -3239,7 +3244,7 @@
                                                                                                     type="text"
                                                                                                     id="number_of_livestock"
                                                                                                     name="number_of_livestock_0"
-                                                                                                    class="form-control"
+                                                                                                    class="form-control livestock_required_field"
                                                                                                     required="required"
                                                                                                     oninput="validateElement(this)"
                                                                                                     placeholder="Enter Amount"

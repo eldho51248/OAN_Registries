@@ -563,6 +563,9 @@ $(document).ready(function () {
     };
 });
 
+
+
+
 function validateSelect(selectElement) {
     const value = selectElement.value;
     const defaultValue = selectElement.options[0].value;
@@ -600,11 +603,29 @@ function validateInput(inputElement) {
 //         }
 //     }
 // }
+function validateMultiSelect(selectElement) {
+    const selectedOptions = $(selectElement).val();
+    const isValid = selectedOptions && selectedOptions.length > 0;
 
+    // wrapper of the selectpicker
+    const selectWrapper = $(selectElement).parent().find('.dropdown-toggle');
+
+    // Add or remove the 'is-invalid' class based on the validation
+    if (!isValid) {
+        selectWrapper.addClass('is-invalid');  
+    } else {
+        selectWrapper.removeClass('is-invalid');
+    }
+
+    return isValid;
+}
 // eslint-disable-next-line no-unused-vars
 function validateElement(element) {
     // Check if the element is a select or an input field
-    if (element.tagName === "SELECT") {
+    if (element.tagName === "SELECT" && element.multiple) {
+        return validateMultiSelect(element);
+    } 
+    else if (element.tagName === "SELECT") {
         validateSelect(element);
     } else if (element.tagName === "INPUT") {
         validateInput(element);
@@ -696,7 +717,19 @@ function validateSection(sectionId) {
         if (field.type === "radio") {
             // Validate radio buttons in this section
             isFieldValid = validateRadioButtons(field.name, section);
-        } else {
+        } 
+     else if (field.tagName === "SELECT" && field.multiple) {
+        // Validate multi-select fields
+        isFieldValid = validateMultiSelect(field);
+    } 
+    else if (field.type === "file") {
+        // Validate file input field
+        isFieldValid = field.files.length > 0;
+        // Apply 'is-invalid' class for file input
+        field.classList.toggle("is-invalid", !isFieldValid);
+    }
+        
+        else {
             // Validate non-radio fields
             isFieldValid = field.value.trim() !== "";
         }
@@ -708,7 +741,7 @@ function validateSection(sectionId) {
         }
 
         // Apply 'is-invalid' class for non-radio fields
-        if (field.type !== "radio") {
+        if (field.type !== "radio" && field.type !== "file") {
             field.classList.toggle("is-invalid", !isFieldValid);
         }
 

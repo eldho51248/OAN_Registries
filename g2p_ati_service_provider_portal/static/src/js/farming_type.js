@@ -79,6 +79,7 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
             const livestock = document.getElementsByClassName("livestock-farming-type");
             Array.from(livestock).forEach((section) => {
                 section.style.display = "none";
+                
             });
             const errMsg = document.getElementsByClassName("livestock-err-msg");
             Array.from(errMsg).forEach((section) => {

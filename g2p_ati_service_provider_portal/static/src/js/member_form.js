@@ -1,5 +1,7 @@
 // Date restriction
 $(document).ready(function () {
+     // Initialize select picker on page load
+    
     $(".date-picker").each(function () {
         var input = this;
         var today = new Date().toISOString().split("T")[0];
@@ -91,9 +93,16 @@ function resetFormFields() {
     // Reset select dropdowns to the first option
     $("#farmerDetailModal select").prop("selectedIndex", 0).trigger("change");
 
-    // Clear multi-select fields
-    $("#farmerDetailModal select[multiple]").val([]).trigger("change");
+    // Reset all multi-select pickers using .dropdown-toggle
+    $('#farmerDetailModal select[multiple="multiple"]').each(function() {
+        var $select = $(this);
+        $select.find('option').prop('selected', false);  // Clear selected options
+        $select.trigger('change');  // Trigger change event to ensure UI is updated
+       
+        $select.parent().find('.dropdown-toggle').removeClass('is-invalid'); 
+    });
 
+    
     // Reset number and date fields to their default state
     $("#farmerDetailModal input[type='number'], #farmerDetailModal input[type='date']").val("");
 
@@ -121,7 +130,7 @@ function resetFormFieldsMember() {
 // });
 
 $(document).on("click", "#member_submit", async function () {
-    console.log("Add memberrrrrr clicked");
+    console.log("Add memberrrrrr clicked on add and update too");
 
     const isSectionValid = validateSection("access-to-resource");
 
@@ -421,6 +430,7 @@ $(document).on("click", "#member_submit", async function () {
         success: function (response) {
             console.log("Ajax request successful");
             console.log("Response:", response);
+            resetFormFields();
             if (response.member_list) {
                 resetFormFields();
                 var member_list = response.member_list;
@@ -746,6 +756,7 @@ document.addEventListener("DOMContentLoaded", function () {
         handleOtherFields("hh_income_type", "otherModalIncomeField");
         handleOtherFields("name_of_primary_coop", "otherModalPrimaryCoopField");
         handleOtherFields("name_of_coop_union", "otherModalCoopUnionField");
+       
     });
 });
 
