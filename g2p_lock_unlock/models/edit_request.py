@@ -1,7 +1,9 @@
 import json
+import logging
 
 from odoo import fields, models
 
+from odoo17.odoo.exceptions import ValidationError
 from ..json_encoder import CustomJSONEncoder
 
 
@@ -70,6 +72,7 @@ class ResPartner(models.Model):
         return change_message_str
 
     def write(self, vals):
+
         no_of_edits = self.env["no.of.edits"].search([])
         json_compatible_vals = self._filter_json_compatible(vals)
         user = self.env.user
@@ -79,7 +82,25 @@ class ResPartner(models.Model):
                 vals["edit_state"] = "locked"
             vals["edit_count"] = record.edit_count + 1
 
-        if (
+        if self.env.user.has_group('base.group_portal') and record.edit_state == "locked" :
+            if 'given_name' in vals :
+                for partner in self:
+                    # update_message =
+                    self.env["res.partner.change.request"].create(
+                        {
+                            "partner_id": partner.id,
+                            "requested_by": user.id,
+                            "new_values": CustomJSONEncoder.python_dict_to_json_dict(vals),
+                            # "update_message": update_message,
+                            "state": "pending",
+                        }
+                    )
+                    # Return a meaningful value; for example, the count of records 'affected'
+                return len(self)
+            else:
+                return super().write(vals)
+
+        elif (
             self.env.context.get("bypass_write")
             or record.edit_state != "locked"
             or self.env.is_superuser()
@@ -91,11 +112,12 @@ class ResPartner(models.Model):
         else:
             # Create a change request for each record that is being updated
             for partner in self:
+
                 self.env["res.partner.change.request"].create(
                     {
                         "partner_id": partner.id,
                         "new_values": CustomJSONEncoder.python_dict_to_json_dict(vals),
-                        "update_message": json_compatible_vals,
+                        # "update_message": update_message,
                         "state": "pending",
                     }
                 )
@@ -111,12 +133,12 @@ class ResPartnerChangeRequest(models.Model):
     _description = "Update Request"
 
     name = fields.Char(string="Request")
-    partner_id = fields.Many2one("res.partner", string="Partner", required=True)
+    partner_id = fields.Many2one("res.partner", string="Record", required=True)
     # new_values = fields.Text(string="New Values", required=True)
     requested_by = fields.Many2one("res.users", default=lambda self: self.env.user)
     validator = fields.Many2one("res.users")
     new_values = fields.Json(string="Changes", required=True)
-    update_message = fields.Char(string="Message", required=True)
+    update_message = fields.Char(string="Message")
     new_values_display = fields.Char(string="New Values (Preview)", compute="_compute_new_values_display")
 
     state = fields.Selection(
@@ -171,15 +193,23 @@ class ResPartnerChangeRequest(models.Model):
             try:
                 # Safely parse the new_values string to a dictionary
                 new_vals = request.new_values
+                new_vals["state"] = "approved"
                 if isinstance(new_vals, dict):
                     # Apply the new values directly using the super method
+                    request.partner_id.reg_ids.unlink()
+                    request.partner_id.phone_number_ids.unlink()
+                    request.partner_id.land_information_ids.unlink()
+                    request.partner_id.crop_information_ids.unlink()
+                    request.partner_id.livestock_information_ids.unlink()
+                    request.partner_id.supporting_documents_ids.unlink()
                     request.partner_id.with_context(bypass_write=True).sudo().write(new_vals)
                     # Mark the request as approved
                     request.state = "approved"
                     # Add the user who validated (approved) the request
                     request.validator = self.env.user
                     # Log the applied changes for debugging
-                    request.partner_id.message_post(body=f"Changes approved and applied: {new_vals}")
+                    # request.partner_id.message_post(body=f"Changes approved and applied: {new_vals}")
+
                 else:
                     raise ValueError("Parsed new_values is not a dictionary")
             except Exception as e:
