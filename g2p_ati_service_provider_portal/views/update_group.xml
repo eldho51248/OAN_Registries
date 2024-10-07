@@ -4702,6 +4702,8 @@
                                 var fileName = input.files.length > 0 ? input.files[0].name :
                                 'Upload';
                                 uploadText.textContent = fileName;
+
+                                validateFileInput(input);
                                 }
                             </script>
 
