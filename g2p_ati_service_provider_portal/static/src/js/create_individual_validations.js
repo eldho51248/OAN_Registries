@@ -702,6 +702,23 @@ function validateRadioButtons(radioName, section) {
     return radioChecked;
 }
 
+function validateFileInput(input) {
+    const fileError = document.getElementById('file-error'); // Ensure this ID exists in your HTML
+
+    if (input.files.length === 0) {
+        // Show error if no file is uploaded
+        input.classList.add('is-invalid');
+        fileError.style.display = 'block';
+        return false;
+    } else {
+        // Hide error if file is uploaded
+        input.classList.remove('is-invalid');
+        fileError.style.display = 'none';
+        return true;
+    }
+}
+
+
 function validateSection(sectionId) {
     const section = document.getElementById(sectionId);
     const requiredFields = section.querySelectorAll("[required]");
@@ -724,9 +741,7 @@ function validateSection(sectionId) {
     } 
     else if (field.type === "file") {
         // Validate file input field
-        isFieldValid = field.files.length > 0;
-        // Apply 'is-invalid' class for file input
-        field.classList.toggle("is-invalid", !isFieldValid);
+        isFieldValid = validateFileInput(field);
     }
         
         else {

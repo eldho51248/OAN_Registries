@@ -469,6 +469,23 @@ input[type="radio"] {
     transform: translate(-50%, -50%);
 }
 
+.file-upload-wrapper {
+    position: relative; /* To position the error message properly */
+}
+
+input[type="file"].is-invalid {
+    border: 2px solid red; /* Red border for invalid file input */
+    border-radius: 5px; /* Optional: rounded corners */
+}
+
+.text-danger {
+    font-size: 12px;
+    color: red;
+    margin-top: 5px;
+    display: block;
+}
+
+
 /* input:invalid {
     border-color: red;
 }

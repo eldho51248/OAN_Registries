@@ -2399,7 +2399,7 @@
                                                                                                     </span>
 
                                                                                                 </label>
-                                                                                                <div>
+                                                                                                <div class="file-upload-wrapper">
                                                                                                     <label
                                                                                                         for="land_certificate_0"
                                                                                                         class="custom-file-upload"
@@ -2425,6 +2425,14 @@
                                                                                                         onchange="updateFileName(this)"
                                                                                                         required="required"
                                                                                                     />
+                                                                                                    <small
+                                                                                                    id="file-error"
+                                                                                                    class="text-danger"
+                                                                                                    style="display:none;">
+                                                                                                    Please
+                                                                                                    upload
+                                                                                                    a
+                                                                                                    file.</small>
 
                                                                                                 </div>
                                                                                             </div>
@@ -2604,7 +2612,7 @@
                                                                                                         *
                                                                                                     </span>
                                                                                                 </label>
-                                                                                                <div>
+                                                                                                <div class="file-upload-wrapper">
                                                                                                     <label
                                                                                                         t-att-for="'land_certificate_' + str({9999})"
                                                                                                         class="custom-file-upload"
@@ -2630,6 +2638,14 @@
                                                                                                         onchange="updateFileName(this)"
                                                                                                         required="required"
                                                                                                     />
+                                                                                                    <small
+                                                                                                    id="file-error"
+                                                                                                    class="text-danger"
+                                                                                                    style="display:none;">
+                                                                                                    Please
+                                                                                                    upload
+                                                                                                    a
+                                                                                                    file.</small>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -3784,6 +3800,7 @@
                                                                                     id="machinery-types-select"
                                                                                     name="machinery_types"
                                                                                     multiple="multiple"
+                                                                                    required="required"
                                                                                     data-live-search="true"
                                                                                     data-style="btn-custom"
                                                                                     style="width: 100%;"
@@ -3902,6 +3919,7 @@
                                                                                     data-live-search="true"
                                                                                     data-style="btn-custom"
                                                                                     style="width: 100%;"
+                                                                                    required="required"
                                                                                     data-none-selected-text="Select"
                                                                                 >
                                                                                     <t
