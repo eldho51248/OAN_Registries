@@ -122,6 +122,15 @@ function resetFormFieldsMember() {
 $(document).on("click", "#member_submit", async function () {
     console.log("Add memberrrrrr clicked");
 
+    const isSectionValid = validateSection('access-to-resource');
+
+    if (!isSectionValid){
+        return
+    }
+
+    $(this).prop('disabled', true);
+
+
     var additional_info = {};
 
     var group = $("input[name='group_id']").val();
@@ -321,6 +330,7 @@ $(document).on("click", "#member_submit", async function () {
         const index = $(this).data("index");
 
         record[`crops_${index}`] = $(this).find(`select[name="crops_${index}"]`).val();
+        record[`crop_planted_date_${index}`] = $(this).find(`input[name="crop_planted_date_${index}"]`).val();
         // For file inputs, you can either send the file directly or handle it differently if neede
         cropRecords.push(record);
     });
@@ -447,6 +457,7 @@ $(document).on("click", "#member_submit", async function () {
                             `;
                         tableBody.append(newRowHtml);
                     });
+                    $("#member_submit").prop('disabled', false);
                 }
             } else {
                 console.error("Failed to create individual");

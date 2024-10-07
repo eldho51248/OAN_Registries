@@ -9,9 +9,9 @@
     >
 
         <xpath expr="//div[hasclass('main-container')]" position="replace">
-            <div class="main-container">
+            <div style="padding-top: 15px !important; padding-bottom: 0px !important;" class="main-container">
                 <div class="container-adjuster">
-                    <h5 class="all-title">Create New Household</h5>
+                    <h5 style="font: normal 600 18px / 22px Inter !important;" class="all-title">Create New Household</h5>
                     <div class="form-template">
                         <ol class="breadcrumb form-layout-breadcrumb">
                             <li class="breadcrumb-item">
@@ -131,7 +131,7 @@
 
                                             <div id="location-details" class="section-container">
                                                 <div class="section-content">
-                                                    <div class="row ">
+                                                    <div class="row">
                                                         <div class="col-lg-5 left-margin-input">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
@@ -371,7 +371,7 @@
                                                 style="display: none;"
                                             >
                                                 <div class="section-content">
-                                                    <div class="row">
+                                                    <div class="">
                                                         <div class="tables-values-container">
                                                             <table id="memberlist">
                                                                 <thead>
@@ -466,19 +466,21 @@
                                                                 </tbody>
                                                             </table>
                                                         </div>
-                                                        <div class="no_list">
+                                                    
+                                                         <div style="text-align:center;" class="no_list mt-4">
                                                             <img
                                                                 src="/g2p_service_provider_beneficiary_management/static/src/img/no_mem.png"
-                                                                style="margin-left:60px"
+                                                                
                                                             />
-
                                                             <div
-                                                                style="text-align: center; margin-top: 20px; margin-left:-800px"
+                                                                
                                                             >
                                                                 <p>No members!</p>
                                                             </div>
 
                                                         </div>
+                                                            
+                                                        
                                                         <div style="text-align: center; margin-top: 20px;">
                                                             <button
                                                                 type="button"
@@ -549,9 +551,16 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="section-content">
-                                                                    <div class="row">
-                                                                        <div class="col-lg-4">
+                                                            
+                                                                        
+                                                                        
+                                                                        
+                                                                        <div class="row">
+                                                                        <div
+                                                                            class="col-lg-6 col-md-6 col-sm-12"
+                                                                        >
                                                                             <div class="s_website_form_field">
+                                                                           
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                 >
@@ -592,11 +601,13 @@
                                                                                         </option>
                                                                                     </t>
                                                                                 </select>
-
-
-                                                                            </div>
-                                                                        </div>
                                                                     </div>
+                                                                    </div>
+                                                                    </div>
+
+
+
+
                                                                     <div class="container-fluid pl-3 pr-5">
                                                                         <hr class="land-separator" />
                                                                     </div>
@@ -1507,7 +1518,7 @@
                                                             >
                                                                 <div class="section-content">
 
-                                                                    <div class="row">
+                                                                    <div class="">
                                                                         <div
                                                                             class="container-fluid heading-header"
                                                                             style="background-color: #d6eae0; width: 95%;"
@@ -1631,6 +1642,8 @@
                                                                                     class="selectpicker form-control"
                                                                                     name="hh_income_type"
                                                                                     id="hh_income_type"
+                                                                                    onchange="validateElement(this)"
+                                                                                    required="required"
                                                                                     multiple="multiple"
                                                                                     data-live-search="true"
                                                                                     data-style="btn-custom"
@@ -2175,7 +2188,7 @@
                                                                 style="display: none;"
                                                             >
                                                                 <div class="section-content">
-                                                                    <div class="row">
+                                                                    <div class="">
                                                                         <div
                                                                             class="col-lg-11 container-fluid heading-header"
                                                                             style="background-color: #d6eae0;"
@@ -2644,7 +2657,7 @@
                                                                 style="display: none;"
                                                             >
                                                                 <div class="section-content">
-                                                                    <div class="row">
+                                                                    <div class="">
                                                                         <div
                                                                             class="col-lg-11 container-fluid heading-header"
                                                                             style="background-color: #d6eae0;"
@@ -2684,10 +2697,14 @@
                                                                                     id="crop_water_source"
                                                                                     name="crop_water_source"
                                                                                     multiple="multiple"
+
+                                                                                                        required="required"
+
                                                                                     data-live-search="true"
                                                                                     data-style="btn-custom"
                                                                                     style="width: 100%;"
                                                                                     data-none-selected-text="Select Water Source"
+                                                                                    onchange="validateElement(this)"
                                                                                 >
                                                                                     <t
                                                                                         t-foreach="crop_water_source"
@@ -3010,7 +3027,7 @@
                                                             >
 
                                                                 <div class="section-content">
-                                                                    <div class="row">
+                                                                    <div class="">
                                                                         <div
                                                                             class="col-lg-11 container-fluid heading-header"
                                                                             style="background-color: #d6eae0;"
@@ -3023,7 +3040,7 @@
                                                                                 Information
                                                                             </span>
                                                                         </div>
-                                                                        <div class="col-6">
+                                                                        <div class="col-lg-6">
                                                                             <div class="s_website_form_field">
                                                                                 <label
                                                                                     class="s_website_form_label"
@@ -3049,10 +3066,12 @@
                                                                                     id="livestock_water_source"
                                                                                     name="livestock_water_source"
                                                                                     multiple="multiple"
+                                                                                    required="required"
                                                                                     data-live-search="true"
                                                                                     data-style="btn-custom "
                                                                                     style="width: 100%;"
                                                                                     data-none-selected-text="Select"
+                                                                                    onchange="validateElement(this)"
                                                                                 >
                                                                                     <t
                                                                                         t-foreach="water_source"
@@ -3394,7 +3413,7 @@
                                                             >
 
                                                                 <div class="section-content">
-                                                                    <div class="row">
+                                                                    <div class="">
                                                                         <div
                                                                             class="container-fluid heading-header"
                                                                             style="background-color: #d6eae0; width: 95%;"
@@ -3618,7 +3637,7 @@
                                                                 style="display: none;"
                                                             >
                                                                 <div class="section-content">
-                                                                    <div class="row">
+                                                                    <div class="">
                                                                         <div
                                                                             class="container-fluid heading-header"
                                                                             style="background-color: #d6eae0; width: 95%;"
@@ -3871,7 +3890,7 @@
                                                 style="display: none;"
                                             >
                                                 <div class="section-content">
-                                                    <div class="row">
+                                                    <div class="">
 
                                                         <div class="tables-values-container">
                                                             <table id="familylist">
@@ -3962,19 +3981,31 @@
                                                                 </tbody>
                                                             </table>
                                                         </div>
-                                                        <div class="no_list">
+
+
+                                                          <div style="text-align:center;" class="no_list mt-4">
                                                             <img
                                                                 src="/g2p_service_provider_beneficiary_management/static/src/img/no_mem.png"
-                                                                style="margin-left:60px"
+                                                                
                                                             />
                                                             <div
-                                                                style="text-align: center; margin-top: 20px; margin-left:-800px"
+                                                                
                                                             >
                                                                 <p>No members!</p>
                                                             </div>
 
                                                         </div>
+                                                            
+                                                        
+                                                      
+
                                                         <div class="mt-4" style="text-align:center;">
+
+
+                                                        
+                                                            
+                                                            
+                                                            
                                                             <button
                                                                 type="button"
                                                                 data-bs-toggle="modal"
@@ -4486,6 +4517,7 @@
                                 rel="stylesheet"
                             />
 
+
                             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" />
                             <script
                                 src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"
@@ -4503,6 +4535,8 @@
                             <script type="text/javascript"> var primaryLanguageData = JSON.parse('<t
                                     t-esc="primary_language_js"
                                 />'); </script>
+
+
 
                             <script
                                 type="text/javascript"

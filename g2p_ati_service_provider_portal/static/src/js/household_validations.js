@@ -76,6 +76,7 @@ function addFamilyMember() {
         });
 
         $("#familyMemberModal").modal("hide");
+
     } else {
         console.log("Please fill all the required fields");
     }
@@ -286,6 +287,7 @@ $(document).on("click", "#update-member-btn", function () {
 
 // / Add button
 $(document).on("click", "#family_member_submit", function () {
+    $(this).prop('disabled', true);
     console.log("Add button in update household");
     var group_id = $("input[name='group_id']").val();
     var given_name = $("#mamber_given_name").val();
@@ -345,6 +347,7 @@ $(document).on("click", "#family_member_submit", function () {
 
                 // Hide the modal after successful submission
                 $("#familyMemberModal").modal("hide");
+                $('#successModal').modal('show')
             } else {
                 console.error("Failed to add family member");
             }

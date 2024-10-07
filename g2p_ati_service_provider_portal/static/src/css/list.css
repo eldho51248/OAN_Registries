@@ -211,8 +211,8 @@ li a {
 
 .breadcrumb {
     display: none;
-    padding: 0px;
-    margin: 0px;
+    padding: 0.5rem 0.5rem !important;
+    margin: 0px !important;
 
     /* display: -webkit-box; */
     /* display: -webkit-flex; */
