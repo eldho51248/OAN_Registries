@@ -48,25 +48,47 @@ $(document).ready(function () {
         cropIndex++;
     });
 
+
     $("#add-livestock-info").click(function () {
         var $template = $("#livestock-hidden-template").html();
         var $formContainer = $("#section-content-livestock");
-
-        // Use jQuery to replace {cropIndex} placeholder in the template
+    
+        // Replace {9999} placeholder in the template
         var newLineHtml = $template.replace(/\{9999\}/g, livestockIndex);
         var $newLine = $(newLineHtml);
+    
+        // Gather already selected animal types from the first select
+        let selectedAnimalTypes = [];
+        $("select[id='livestock_selection']").each(function() {
+            let selectedValue = $(this).val();
+            if (selectedValue) {
+                selectedAnimalTypes.push(selectedValue);
+            }
+        });
+    
+        // Get the new select element
+        var newSelect = $newLine.find("select");
+    
+        // Clear existing options except the first one (the placeholder)
+        newSelect.find('option').not(':first').remove();
+    
+        // Populate new select with options from the first select excluding the selected ones
+        $("select[id='livestock_selection']").first().find('option').each(function() {
+            let optionValue = $(this).val();
+            let optionText = $(this).text();
+    
+            // Check if the option is not already selected
+            if (optionValue && !selectedAnimalTypes.includes(optionValue)) {
+                newSelect.append(`<option value="${optionValue}">${optionText}</option>`);
+            }
+        });
+    
+        // Append the new line to the form container
         $formContainer.append($newLine);
-
-        // Var newSelectIdIllness = `livestock_illness_types_${livestockIndex}`;
-        //     VirtualSelect.init({
-        //         ele: `#${newSelectIdIllness}`,
-        //         options: livestockIllnessType,
-        //         search: true,
-        //         multiple: true,
-        //     });
         livestockIndex++;
     });
 
+   
     $("#add-land-info").click(function () {
         var $template = $("#land-hidden-template").html();
         var $formContainer = $("#section-content-land");
@@ -684,7 +706,21 @@ function showSection(sectionId, element, fromGroup = false) {
                 ) {
                     console.log("yes it is");
                     section.style.display = "none";
-                } else {
+                } 
+                
+                else {
+
+                    const locationDetailsSection = document.getElementById('location-details');
+
+                    if (locationDetailsSection){
+                        const isSectionValid = validateSection('location-details');
+                        if (!isSectionValid) {
+                            return
+                        }
+                    }
+     
+
+
                     section.style.display = "none";
                     const farmerDetailSection = document.getElementById("farmer-details");
                     if (farmerDetailSection) {

@@ -1617,13 +1617,27 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     
  
     
-        def _prepare_land_info_data(self, beneficiary, ownership_type_selections):
+
+    def _prepare_land_info_data(self, beneficiary, ownership_type_selections):
+
         land_info_data = []
         for index, land_info in enumerate(beneficiary.land_information_ids, start=1):
             ownership_selection_id = False
             for choice in ownership_type_selections:
                 if choice.value == land_info.ownership_type:
                     ownership_selection_id = choice.id
+
+            
+            
+            land_certificate = {"filename": land_info.land_certificate.name if land_info.land_certificate else '',
+                                "content": (base64.b64encode(land_info.land_certificate.data).decode('utf-8') if land_info.land_certificate else ''
+    )
+}
+                    
+            land_certificate = {
+            "filename": land_info.land_certificate.name if land_info.land_certificate else '',
+            "content": land_info.land_certificate.data if land_info.land_certificate else ''
+            }
             
             
             land_certificate = {"filename": land_info.land_certificate.name if land_info.land_certificate else '',
@@ -2011,6 +2025,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             # request.session['update_success'] = True
             # return json.dumps({'status': 'success', 'message': 'Record updated successfully'})
             response = request.redirect(f"/serviceprovider/individual/update/{member.id}")
+
             if is_locked == True:
                 response.set_cookie('popup_status', 'successful', max_age=10)
                 response.set_cookie('popup_msg', 'Update Sent For Validation!', max_age=10)
@@ -2019,6 +2034,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 response.set_cookie('popup_status', 'successful', max_age=10)
                 response.set_cookie('popup_msg', 'Record Updated Successfully!', max_age=10)
                 return response
+
 
             # return request.redirect(f"/serviceprovider/individual/update/{member.id}")
 
@@ -2648,6 +2664,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         land_records = json.loads(kw.get("landRecords", "[]"))
         
 
+
         land_info_data = []
         supporting_documents_ids = []
         backend_id = (
@@ -2740,6 +2757,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             
 
             group_rec = self._get_or_create_group(kw, region, zone, woreda, kebele)
+            
             
             
 
