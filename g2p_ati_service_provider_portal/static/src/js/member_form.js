@@ -1,6 +1,7 @@
 // Date restriction
 $(document).ready(function () {
      // Initialize select picker on page load
+     $('.selectpicker').selectpicker();
     
     $(".date-picker").each(function () {
         var input = this;
@@ -78,6 +79,7 @@ function hideToast() {
 }
 
 function resetFormFields() {
+
     console.log("Resetting form fields...");
     // Reset text inputs, email, and password fields
     $(
@@ -94,13 +96,18 @@ function resetFormFields() {
     $("#farmerDetailModal select").prop("selectedIndex", 0).trigger("change");
 
     // Reset all multi-select pickers using .dropdown-toggle
-    $('#farmerDetailModal select[multiple="multiple"]').each(function() {
-        var $select = $(this);
-        $select.find('option').prop('selected', false);  // Clear selected options
-        $select.trigger('change');  // Trigger change event to ensure UI is updated
-       
-        $select.parent().find('.dropdown-toggle').removeClass('is-invalid'); 
-    });
+    var $select = $(this);
+        $select.val([]);  // Clear selected options
+
+        // Trigger the change event for any multi-select libraries being used
+        $select.trigger('change'); // For libraries like Select2 or Bootstrap Select
+
+        // Optionally reset the visible text if using Bootstrap Select or similar
+        if ($select.hasClass('selectpicker')) {
+            $select.selectpicker('val', ''); // For Bootstrap Select
+        } else if ($select.hasClass('select2')) {
+            $select.val(null).trigger('change'); // For Select2
+        }
 
     
     // Reset number and date fields to their default state
@@ -130,6 +137,7 @@ function resetFormFieldsMember() {
 // });
 
 $(document).on("click", "#member_submit", async function () {
+   
     console.log("Add memberrrrrr clicked on add and update too");
 
     const isSectionValid = validateSection("access-to-resource");
@@ -428,8 +436,10 @@ $(document).on("click", "#member_submit", async function () {
         },
         dataType: "json",
         success: function (response) {
+            // window.location.href = window.location.pathname + "?section=farmer-details";
             console.log("Ajax request successful");
             console.log("Response:", response);
+            
             resetFormFields();
             if (response.member_list) {
                 resetFormFields();
@@ -753,6 +763,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Initial check when the modal is shown
     $("#farmerDetailModal").on("shown.bs.modal", function () {
+        resetFormFields()
         handleOtherFields("hh_income_type", "otherModalIncomeField");
         handleOtherFields("name_of_primary_coop", "otherModalPrimaryCoopField");
         handleOtherFields("name_of_coop_union", "otherModalCoopUnionField");

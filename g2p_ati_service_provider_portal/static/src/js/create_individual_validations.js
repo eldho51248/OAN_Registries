@@ -885,6 +885,11 @@ function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
     }
 }
 
+// Call resetFormFields() when opening the modal
+$('#farmerDetailModal').on('show.bs.modal', function () {
+    resetFormFields();
+});
+
 // Function toggleFieldBasedOnRadio(inputName, fieldIdToToggle, selectElementId, toggleValue = "Yes") {
 //     const radios = document.querySelectorAll(`input[name="${inputName}"]`);
 //     let shouldShowField = false;
