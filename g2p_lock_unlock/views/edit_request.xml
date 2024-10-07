@@ -34,11 +34,12 @@
             </header>
             <sheet>
                 <group>
-                    <field name="partner_id" />
+                    <field name="requested_by" readonly="1"/>
+                    <field name="partner_id" readonly="1" string="Changed Record"/>
                     <!-- <field name="new_values" /> -->
-                    <field name="update_message" string="Changes" />
-                    <field name="validator" />
-                    <field name="state" />
+<!--                    <field name="update_message" string="Changes" widget="html"/>-->
+                    <field name="validator" readonly="1"/>
+                    <field name="state" readonly="1"/>
                 </group>
             </sheet>
 
@@ -51,10 +52,11 @@
     <field name="model">res.partner.change.request</field>
     <field name="arch" type="xml">
         <tree class="text-left">
-                <field name="partner_id" />
-                <field name="update_message" string="Changes" />
-                <field name="validator" />
-                <field name="state" />
+                <field name="requested_by" readonly="1"/>
+                <field name="partner_id" readonly="1" string="Changed Record"/>
+<!--                <field name="update_message" string="Changes" readonly="1"/>-->
+                <field name="validator" readonly="1"/>
+                <field name="state" readonly="1"/>
                 <button
                     title="Approve"
                     icon="fa-check"

@@ -37,9 +37,6 @@
     <xpath expr="//body" position="inside">
 
 
-
-
-
       <div class="modal fade" id="successModal" tabindex="-1" role="dialog">
 
         <div style="margin: 0 auto !importnat;" class="modal-dialog modal-sm-down modal-md md-up" role="document">
