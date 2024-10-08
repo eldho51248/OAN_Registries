@@ -29,68 +29,36 @@ class ResPartner(models.Model):
     update_request_ids = fields.One2many("res.partner.change.request", "partner_id", string="Update Requests")
     edit_suggestion_ids = fields.One2many("request", "record_id", string="Edit Suggestions")
 
-    def _filter_json_compatible(self, vals):
-        """
-        Filters out fields with non-JSON-serializable data and returns a message indicating the changes.
-        """
-        filtered_vals = {}
-        change_messages = []
+    def _sanitize_vals(self, vals):
+        sanitized = {}
+        for key, value in vals.items():
+            # Check if value is an Odoo recordset
+            if isinstance(value, models.BaseModel):
+                sanitized[key] = value.id  # Store the ID instead of the recordset
+            else:
+                sanitized[key] = value
+        return sanitized
 
-        # Get the current user
-        current_user = self.env.user.name
-
-        for key, new_value in vals.items():
-            field = self._fields.get(key)
-            if field and isinstance(field, fields.Binary):
-                # Skip binary fields
-                continue
-
-            try:
-                # Attempt to serialize the value to JSON to check if it's compatible
-                json.dumps(new_value)
-                filtered_vals[key] = new_value
-
-                # Retrieve the old value from the record
-                old_value = self[key]
-
-                # Format both values for the message
-                old_value_str = str(old_value)
-                new_value_str = str(new_value)
-
-                # Create the change message
-                change_message = (
-                    f"User {current_user} wants to change the field '{field.string}' "
-                    f"from '{old_value_str}' to '{new_value_str}'."
-                )
-                change_messages.append(change_message)
-            except (TypeError, ValueError):
-                # If serialization fails, skip the field
-                continue
-
-        # Combine all change messages into a single string
-        change_message_str = " ".join(change_messages)
-        return change_message_str
 
     def write(self, vals):
-
+        sanitized_vals = self._sanitize_vals(vals)
         no_of_edits = self.env["no.of.edits"].search([])
-        json_compatible_vals = self._filter_json_compatible(vals)
         user = self.env.user
 
         for record in self:
-            if record.edit_count >= no_of_edits.edit_amount - 1:
-                vals["edit_state"] = "locked"
-            vals["edit_count"] = record.edit_count + 1
+            if self.env.user.has_group('base.group_portal'):
+                if record.edit_count >= no_of_edits.edit_amount - 1:
+                    vals["edit_state"] = "locked"
+                vals["edit_count"] = record.edit_count + 1
 
         if self.env.user.has_group('base.group_portal') and record.edit_state == "locked" :
             if 'given_name' in vals :
                 for partner in self:
-                    # update_message =
                     self.env["res.partner.change.request"].create(
                         {
                             "partner_id": partner.id,
                             "requested_by": user.id,
-                            "new_values": CustomJSONEncoder.python_dict_to_json_dict(vals),
+                            "new_values": CustomJSONEncoder.python_dict_to_json_dict(sanitized_vals),
                             # "update_message": update_message,
                             "state": "pending",
                         }
