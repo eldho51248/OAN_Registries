@@ -78,6 +78,8 @@ function hideToast() {
     toast_container.css("display", "none");
 }
 
+
+
 function resetFormFields() {
 
     console.log("Resetting form fields...");
@@ -121,6 +123,51 @@ function resetFormFields() {
     $("#farmerDetailModal input[type='file']").val("");
 }
 
+
+function resetUpdateFields(){
+
+    console.log("Resetting form fields for update...");
+    // Reset text inputs, email, and password fields
+    $(
+        "#farmerDetailModal input[type='text'], #farmerDetailModal input[type='email'], #farmerDetailModal input[type='password']"
+    ).val("");
+
+    // Uncheck checkboxes and radio buttons
+    $("#farmerDetailModal input[type='checkbox'], #farmerDetailModal input[type='radio']").prop(
+        "checked",
+        false
+    );
+
+    // Reset select dropdowns to the first option
+    $("#farmerDetailModal select").prop("selectedIndex", 0).trigger("change");
+
+    // Reset all multi-select pickers using .dropdown-toggle
+    var $select = $(this);
+        $select.val([]);  // Clear selected options
+
+        // Trigger the change event for any multi-select libraries being used
+        $select.trigger('change'); // For libraries like Select2 or Bootstrap Select
+
+        // Optionally reset the visible text if using Bootstrap Select or similar
+        if ($select.hasClass('selectpicker')) {
+            $select.selectpicker('val', ''); // For Bootstrap Select
+        } else if ($select.hasClass('select2')) {
+            $select.val(null).trigger('change'); // For Select2
+        }
+
+    
+    // Reset number and date fields to their default state
+    $("#farmerDetailModal input[type='number'], #farmerDetailModal input[type='date']").val("");
+
+    // Clear textarea fields
+    $("#farmerDetailModal textarea").val("");
+
+    // Reset any additional inputs or fields as necessary
+
+    $("#farmerDetailModal input[type='file']").val("");
+
+}
+
 // eslint-disable-next-line no-unused-vars
 function resetFormFieldsMember() {
     $("#familyMemberModal input, #familyMemberModal select").val("");
@@ -151,6 +198,7 @@ $(document).on("click", "#member_submit", async function () {
     var additional_info = {};
 
     var group = $("input[name='group_id']").val();
+    console.log("group is ", group);
 
     var region = document.getElementById("region_selection").value;
     var zone = document.getElementById("zon_selection").value;
@@ -440,9 +488,11 @@ $(document).on("click", "#member_submit", async function () {
             console.log("Ajax request successful");
             console.log("Response:", response);
             
-            resetFormFields();
+            
             if (response.member_list) {
+                resetUpdateFields();
                 resetFormFields();
+
                 var member_list = response.member_list;
                 if (member_list) {
                     modal.modal("hide");
