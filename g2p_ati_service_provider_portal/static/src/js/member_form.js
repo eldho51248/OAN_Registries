@@ -117,16 +117,27 @@ function resetFormFields() {
 
     $("#farmerDetailModal input[type='file']").each(function () {
         var $fileInput = $(this);
-        var newFileInput = $fileInput.clone(); // Clone the input
-        newFileInput.val(""); // Clear value of the new input
+
+        // Clone the input field, but do not clone data or event handlers for debugging
+        var newFileInput = $fileInput.clone(false);
+       
+
+        newFileInput.val(""); 
 
         // Replace the original input with the cloned input
         $fileInput.replaceWith(newFileInput);
 
-        // Attach the existing onchange event from the XML-defined function
+        // Reattach the onchange event for updating the file name
         newFileInput.on("change", function () {
-            updateFileName(this); // This will refer to the function in the XML
+            updateFileName(this);  
         });
+
+        // Reset the label text to "Upload"
+        var inputId = newFileInput.attr('id');
+        var label = $('label[for="' + inputId + '"]');
+        var uploadText = label.find('.upload-text');
+        uploadText.text('Upload');  
+        
     });
 }
 
@@ -154,9 +165,9 @@ function resetUpdateFields() {
 
     // Optionally reset the visible text if using Bootstrap Select or similar
     if ($select.hasClass("selectpicker")) {
-        $select.selectpicker("val", ""); // For Bootstrap Select
+        $select.selectpicker("val", ""); 
     } else if ($select.hasClass("select2")) {
-        $select.val(null).trigger("change"); // For Select2
+        $select.val(null).trigger("change"); 
     }
 
     // Reset number and date fields to their default state
@@ -169,16 +180,27 @@ function resetUpdateFields() {
 
     $("#farmerDetailModal input[type='file']").each(function () {
         var $fileInput = $(this);
-        var newFileInput = $fileInput.clone(); // Clone the input
-        newFileInput.val(""); // Clear value of the new input
+      
+
+        // Clone the input field, but do not clone data or event handlers for debugging
+        var newFileInput = $fileInput.clone(false);
+
+
+        newFileInput.val("");  
 
         // Replace the original input with the cloned input
         $fileInput.replaceWith(newFileInput);
 
-        // Attach the existing onchange event from the XML-defined function
+        // Reattach the onchange event for updating the file name
         newFileInput.on("change", function () {
-            updateFileName(this); // This will refer to the function in the XML
+            updateFileName(this);  
         });
+
+        // Reset the label text to "Upload"
+        var inputId = newFileInput.attr('id');
+        var label = $('label[for="' + inputId + '"]');
+        var uploadText = label.find('.upload-text');
+        uploadText.text('Upload');  
     });
 }
 
