@@ -120,7 +120,19 @@ function resetFormFields() {
 
     // Reset any additional inputs or fields as necessary
 
-    $("#farmerDetailModal input[type='file']").val("");
+    $("#farmerDetailModal input[type='file']").each(function() {
+        var $fileInput = $(this);
+        var newFileInput = $fileInput.clone();  // Clone the input
+        newFileInput.val('');  // Clear value of the new input
+
+        // Replace the original input with the cloned input
+        $fileInput.replaceWith(newFileInput);
+
+        // Attach the existing onchange event from the XML-defined function
+        newFileInput.on('change', function() {
+            updateFileName(this); // This will refer to the function in the XML
+        });
+    });
 }
 
 
@@ -164,7 +176,19 @@ function resetUpdateFields(){
 
     // Reset any additional inputs or fields as necessary
 
-    $("#farmerDetailModal input[type='file']").val("");
+    $("#farmerDetailModal input[type='file']").each(function() {
+        var $fileInput = $(this);
+        var newFileInput = $fileInput.clone();  // Clone the input
+        newFileInput.val('');  // Clear value of the new input
+
+        // Replace the original input with the cloned input
+        $fileInput.replaceWith(newFileInput);
+
+        // Attach the existing onchange event from the XML-defined function
+        newFileInput.on('change', function() {
+            updateFileName(this); // This will refer to the function in the XML
+        });
+    });
 
 }
 
