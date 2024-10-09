@@ -78,7 +78,7 @@ function applySearchFilter(searchValue) {
     });
 }
 function applySelectionFilter(selectionValue, isGroup) {
-    console.log(allRows);
+
 
     filteredRows = allRows.filter((row) => {
         // Console.log(row);
@@ -97,7 +97,7 @@ function applySelectionFilter(selectionValue, isGroup) {
         // Console.log("selected", selectedText);
         return cellValue2 === selectedText || selectedText === "Region";
     });
-    console.log(filteredRows);
+  
 }
 function applySelectionFilterZone(isGroup) {
     filteredRows = allRows.filter((row) => {
@@ -255,12 +255,13 @@ function compareCellValues(rowA, rowB, columnIndex) {
         // If date column, compare dates
         const dateA = new Date(cellA);
         const dateB = new Date(cellB);
-        return dateA - dateB;    }
+        return dateA - dateB;
+    }
     // Otherwise, perform normal string or number comparison
     if (!isNaN(cellA) && !isNaN(cellB)) {
-        return Number(cellA) - Number(cellB); 
+        return Number(cellA) - Number(cellB);
     }
-    return cellA.localeCompare(cellB); 
+    return cellA.localeCompare(cellB);
 }
 
 allheadercells.forEach(function (th) {

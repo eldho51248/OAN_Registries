@@ -79,7 +79,7 @@ function hideToast() {
 }
 
 function resetFormFields() {
-    console.log("Resetting form fields...");
+   
     // Reset text inputs, email, and password fields
     $(
         "#farmerDetailModal input[type='text'], #farmerDetailModal input[type='email'], #farmerDetailModal input[type='password']"
@@ -132,7 +132,6 @@ function resetFormFields() {
 }
 
 function resetUpdateFields() {
-    console.log("Resetting form fields for update...");
     // Reset text inputs, email, and password fields
     $(
         "#farmerDetailModal input[type='text'], #farmerDetailModal input[type='email'], #farmerDetailModal input[type='password']"
@@ -200,8 +199,7 @@ function resetFormFieldsMember() {
 // });
 
 $(document).on("click", "#member_submit", async function () {
-    console.log("Add memberrrrrr clicked on add and update too");
-
+    
     const isSectionValid = validateSection("access-to-resource");
 
     if (!isSectionValid) {
@@ -213,11 +211,10 @@ $(document).on("click", "#member_submit", async function () {
     var additional_info = {};
 
     var group = $("input[name='group_id']").val();
-    console.log("group is ", group);
-
+   
     var region = document.getElementById("region_selection").value;
     var zone = document.getElementById("zon_selection").value;
-    console.log(zone);
+   
     var woreda = document.getElementById("woreda_selection").value;
 
     var kebele = document.getElementById("kebele_selection").value;
@@ -267,7 +264,7 @@ $(document).on("click", "#member_submit", async function () {
     var lastNameOther = $("#farmerDetailModal #gf_name_other").val();
     var dob = $("#farmerDetailModal #birthdate").val();
     var gender = document.querySelector('input[name="farmer_gender"]:checked').value;
-    console.log(gender);
+   
 
     var havePhoneNumber = document.getElementById("have-phone-no-selection").value;
 
@@ -335,8 +332,6 @@ $(document).on("click", "#member_submit", async function () {
         additional_info["Cooperative Union"] = other_coop_union;
     }
 
-    console.log("add info", additional_info);
-    console.log("add info type", typeof additional_info);
 
     var cropWaterSource = $("#farmerDetailModal #crop_water_source").val();
     var livestockWaterSource = $("#farmerDetailModal #livestock_water_source").val();
@@ -404,7 +399,7 @@ $(document).on("click", "#member_submit", async function () {
 
     // Invoke the async function to collect land records
     var landRecords = await collectLandRecords();
-    console.log(` these are the land records${landRecords}`);
+   
 
     const cropRecords = [];
 
@@ -438,8 +433,6 @@ $(document).on("click", "#member_submit", async function () {
     //    Var landRecords = JSON.stringify(landRecords)
 
     $(".form-control, .form-select").removeClass("is-invalid");
-
-    console.log(`here is the group: ${group}`);
 
     $.ajax({
         url: "/serviceprovider/individual/create/",
@@ -512,7 +505,6 @@ $(document).on("click", "#member_submit", async function () {
                     modal.modal("hide");
                     resetFormFields();
 
-                    console.log("member_list[0].group_id :", member_list[0].group_id);
                     $("input[name='group_id']").val(member_list[0].group_id);
                     $(".no_list").css("display", "none");
 
@@ -796,7 +788,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (hasOthers) {
             otherField.style.display = "block";
         } else {
-            console.log("hiiii");
+            
             otherField.style.display = "none";
         }
     }

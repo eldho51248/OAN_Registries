@@ -7,7 +7,6 @@ $(document).ready(function () {
 
 function updateLanguage(langElement) {
     const selectedValue = langElement.value;
-    console.log("Here");
     const nameRow = document.getElementById("other-lang-names");
 
     const givenName = document.getElementById("other-given-name");

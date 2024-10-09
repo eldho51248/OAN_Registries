@@ -5,7 +5,6 @@ $(document).ready(function () {
     }
 
     window.customvalidateFormGroup = function (isCreateForm) {
-        console.log("customvalidateFormGroup");
         const locationDetailsSection = document.querySelector("#location-details");
         const requiredFields = locationDetailsSection.querySelectorAll("[required]");
         var valid = true;
@@ -162,7 +161,6 @@ $(document).on("click", "#hh_member_update", function () {
     var memberId = $(this).attr("store");
     var group_id = $("input[name='group_id']").val();
     var modal = $("#editFamilyMemberModal");
-    console.log("Click edit", memberId);
     $.ajax({
         url: "/serviceprovider/member/update/",
         method: "POST",
@@ -181,10 +179,10 @@ $(document).on("click", "#hh_member_update", function () {
             } else if (response.gender === "female") {
                 modal.find("#edit_gender_female").prop("checked", true);
             }
-            console.log(response.kind);
+           
             modal.find("#edit_relation_with_hh_selection").val(response.kind);
 
-            console.log();
+          
             var ele = document.getElementById("update-member-btn");
             ele.setAttribute("store", memberId);
             // Ele.setAttribute("id", "update-member-btn");
@@ -231,8 +229,6 @@ $(document).on("click", "#update-member-btn", function () {
         Relationship: relationship,
     };
 
-    // Console.log("Sending data:", data);
-    console.log("Click update", memberId);
 
     $.ajax({
         url: "/serviceprovider/family_member/update/submit/",
@@ -248,7 +244,6 @@ $(document).on("click", "#update-member-btn", function () {
                 tableBody.empty();
                 response.member_list.forEach(function (member, index) {
                     var serialNumber = index + 1;
-                    console.log(serialNumber);
                     var newRowHtml = `
                         <tr>
                             <td>${serialNumber}</td>
@@ -284,7 +279,6 @@ $(document).on("click", "#update-member-btn", function () {
 // / Add button
 $(document).on("click", "#family_member_submit", function () {
     $(this).prop("disabled", true);
-    console.log("Add button in update household");
     var group_id = $("input[name='group_id']").val();
     var given_name = $("#mamber_given_name").val();
     var family_name = $("#member_fathers_name").val();
@@ -309,7 +303,6 @@ $(document).on("click", "#family_member_submit", function () {
         dataType: "json",
         success: function (response) {
             console.log("Ajax request successful");
-            console.log("Response:", response);
             if (response.member_list) {
                 // eslint-disable-next-line no-undef
                 resetFormFieldsMember();
@@ -319,7 +312,7 @@ $(document).on("click", "#family_member_submit", function () {
                 tableBody.empty();
                 response.member_list.forEach(function (member, index) {
                     var serialNumber = index + 1;
-                    console.log(serialNumber);
+                   
                     var newRowHtml = `
                         <tr>
                             <td>${serialNumber}</td>

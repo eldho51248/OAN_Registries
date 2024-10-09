@@ -463,7 +463,7 @@ $(document).ready(function () {
     });
 
     $("#region_selection").on("change", function (event) {
-        console.log("HERE");
+        
         const regionId = this.value;
         var ev = event.originalEvent;
         updateOptions("/update_zone_options", {region_id: regionId}, "zon_selection", "Select", ev, "region");
@@ -522,7 +522,7 @@ $(document).ready(function () {
     // }
 
     window.customvalidateForm = function (isCreateForm) {
-        console.log("Here");
+       
         const requiredFields = document.querySelectorAll("[required]");
         var valid = true;
 
@@ -707,11 +707,10 @@ function validateFileInput(input) {
         fileError.style.display = "block";
         return false;
     }
-        // Hide error if file is uploaded
-        input.classList.remove("is-invalid");
-        fileError.style.display = "none";
-        return true;
-
+    // Hide error if file is uploaded
+    input.classList.remove("is-invalid");
+    fileError.style.display = "none";
+    return true;
 }
 
 function validateSection(sectionId) {
@@ -823,14 +822,13 @@ function showSection(sectionId, element, fromGroup = false) {
                     sectionId === "location-details" ||
                     sectionId === "family-member-template"
                 ) {
-                    console.log("yes it is");
+                   
                     section.style.display = "none";
                 } else {
                     section.style.display = "none";
                     const farmerDetailSection = document.getElementById("farmer-details");
                     if (farmerDetailSection) {
-                        console.log("Farmer Detail Secion is");
-                        console.log(farmerDetailSection);
+                       
                         farmerDetailSection.style.display = "block";
                     }
                 }
@@ -863,7 +861,7 @@ function showSection(sectionId, element, fromGroup = false) {
 // }
 
 function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
-    console.log("in here");
+    
     const isSectionValid = validateSection(currentSectionId);
 
     if (isSectionValid) {
@@ -1022,10 +1020,7 @@ function toggleFieldBasedOnSelect(
     containerId,
     containerId2
 ) {
-    console.log("Inside toggleFieldBasedOnSelect");
-    console.log("otherInputIdToClear:", otherInputIdToClear);
-    console.log("selectionFieldIdToClear:", selectionFieldIdToClear);
-
+    
     const shouldShowField = value === toggleValue;
 
     const selectionFieldToClear = document.getElementById(selectionFieldIdToClear);
@@ -1096,7 +1091,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const selectElement = document.getElementById(handler.selectId);
         if (selectElement) {
             selectElement.addEventListener("change", function () {
-                console.log("Inside select handler for:", handler.selectId);
+               
                 const selectedOption = selectElement.options[selectElement.selectedIndex];
                 toggleFieldBasedOnSelect(
                     handler.fieldIdsToToggle,
