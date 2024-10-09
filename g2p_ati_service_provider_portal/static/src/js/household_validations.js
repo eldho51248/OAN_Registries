@@ -179,10 +179,9 @@ $(document).on("click", "#hh_member_update", function () {
             } else if (response.gender === "female") {
                 modal.find("#edit_gender_female").prop("checked", true);
             }
-           
+
             modal.find("#edit_relation_with_hh_selection").val(response.kind);
 
-          
             var ele = document.getElementById("update-member-btn");
             ele.setAttribute("store", memberId);
             // Ele.setAttribute("id", "update-member-btn");
@@ -228,7 +227,6 @@ $(document).on("click", "#update-member-btn", function () {
         gender: modal.find("input[name='gender']:checked").val(),
         Relationship: relationship,
     };
-
 
     $.ajax({
         url: "/serviceprovider/family_member/update/submit/",
@@ -312,7 +310,7 @@ $(document).on("click", "#family_member_submit", function () {
                 tableBody.empty();
                 response.member_list.forEach(function (member, index) {
                     var serialNumber = index + 1;
-                   
+
                     var newRowHtml = `
                         <tr>
                             <td>${serialNumber}</td>

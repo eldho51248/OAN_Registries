@@ -463,7 +463,6 @@ $(document).ready(function () {
     });
 
     $("#region_selection").on("change", function (event) {
-        
         const regionId = this.value;
         var ev = event.originalEvent;
         updateOptions("/update_zone_options", {region_id: regionId}, "zon_selection", "Select", ev, "region");
@@ -522,7 +521,6 @@ $(document).ready(function () {
     // }
 
     window.customvalidateForm = function (isCreateForm) {
-       
         const requiredFields = document.querySelectorAll("[required]");
         var valid = true;
 
@@ -822,13 +820,11 @@ function showSection(sectionId, element, fromGroup = false) {
                     sectionId === "location-details" ||
                     sectionId === "family-member-template"
                 ) {
-                   
                     section.style.display = "none";
                 } else {
                     section.style.display = "none";
                     const farmerDetailSection = document.getElementById("farmer-details");
                     if (farmerDetailSection) {
-                       
                         farmerDetailSection.style.display = "block";
                     }
                 }
@@ -861,7 +857,6 @@ function showSection(sectionId, element, fromGroup = false) {
 // }
 
 function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
-    
     const isSectionValid = validateSection(currentSectionId);
 
     if (isSectionValid) {
@@ -1020,7 +1015,6 @@ function toggleFieldBasedOnSelect(
     containerId,
     containerId2
 ) {
-    
     const shouldShowField = value === toggleValue;
 
     const selectionFieldToClear = document.getElementById(selectionFieldIdToClear);
@@ -1091,7 +1085,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const selectElement = document.getElementById(handler.selectId);
         if (selectElement) {
             selectElement.addEventListener("change", function () {
-               
                 const selectedOption = selectElement.options[selectElement.selectedIndex];
                 toggleFieldBasedOnSelect(
                     handler.fieldIdsToToggle,

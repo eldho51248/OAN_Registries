@@ -79,7 +79,6 @@ function hideToast() {
 }
 
 function resetFormFields() {
-   
     // Reset text inputs, email, and password fields
     $(
         "#farmerDetailModal input[type='text'], #farmerDetailModal input[type='email'], #farmerDetailModal input[type='password']"
@@ -199,7 +198,6 @@ function resetFormFieldsMember() {
 // });
 
 $(document).on("click", "#member_submit", async function () {
-    
     const isSectionValid = validateSection("access-to-resource");
 
     if (!isSectionValid) {
@@ -211,10 +209,10 @@ $(document).on("click", "#member_submit", async function () {
     var additional_info = {};
 
     var group = $("input[name='group_id']").val();
-   
+
     var region = document.getElementById("region_selection").value;
     var zone = document.getElementById("zon_selection").value;
-   
+
     var woreda = document.getElementById("woreda_selection").value;
 
     var kebele = document.getElementById("kebele_selection").value;
@@ -264,7 +262,6 @@ $(document).on("click", "#member_submit", async function () {
     var lastNameOther = $("#farmerDetailModal #gf_name_other").val();
     var dob = $("#farmerDetailModal #birthdate").val();
     var gender = document.querySelector('input[name="farmer_gender"]:checked').value;
-   
 
     var havePhoneNumber = document.getElementById("have-phone-no-selection").value;
 
@@ -332,7 +329,6 @@ $(document).on("click", "#member_submit", async function () {
         additional_info["Cooperative Union"] = other_coop_union;
     }
 
-
     var cropWaterSource = $("#farmerDetailModal #crop_water_source").val();
     var livestockWaterSource = $("#farmerDetailModal #livestock_water_source").val();
     // Var isValid = true;
@@ -399,7 +395,6 @@ $(document).on("click", "#member_submit", async function () {
 
     // Invoke the async function to collect land records
     var landRecords = await collectLandRecords();
-   
 
     const cropRecords = [];
 
@@ -788,7 +783,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (hasOthers) {
             otherField.style.display = "block";
         } else {
-            
             otherField.style.display = "none";
         }
     }

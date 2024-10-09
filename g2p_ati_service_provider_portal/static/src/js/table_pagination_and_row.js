@@ -78,8 +78,6 @@ function applySearchFilter(searchValue) {
     });
 }
 function applySelectionFilter(selectionValue, isGroup) {
-
-
     filteredRows = allRows.filter((row) => {
         // Console.log(row);
         // Assuming each row has a data attribute or a cell with the selection value
@@ -97,7 +95,6 @@ function applySelectionFilter(selectionValue, isGroup) {
         // Console.log("selected", selectedText);
         return cellValue2 === selectedText || selectedText === "Region";
     });
-  
 }
 function applySelectionFilterZone(isGroup) {
     filteredRows = allRows.filter((row) => {
