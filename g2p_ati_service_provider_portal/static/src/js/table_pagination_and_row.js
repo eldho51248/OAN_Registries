@@ -87,12 +87,11 @@ function applySelectionFilter(selectionValue, isGroup) {
         } else {
             cellValue2 = row.cells[2].innerText.trim().replace(/\s/g, "");
         }
-        // Console.log(row.cells[2]);
-        // console.log("individual", cellValue2);
+       
         const selectedText = selectionValue.options[selectionValue.selectedIndex].text
             .trim()
             .replace(/\s/g, "");
-        // Console.log("selected", selectedText);
+        
         return cellValue2 === selectedText || selectedText === "Region";
     });
 }
