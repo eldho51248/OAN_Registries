@@ -76,14 +76,12 @@ function addFamilyMember() {
         });
 
         $("#familyMemberModal").modal("hide");
-
     } else {
         console.log("Please fill all the required fields");
     }
 }
 
-
-// function deleteMember(button) {
+// Function deleteMember(button) {
 //     const memberId = $(button).attr("store");
 //     var groupId = $("input[name='group_id']").val();
 
@@ -102,8 +100,8 @@ function addFamilyMember() {
 //                     const row = $(button).closest("tr");
 //                     row.remove();
 //                     alert(data.message);
-//                 } 
-                
+//                 }
+
 //                 else {
 //                     console.log("Delete failed:", data);
 //                     alert("Error: " + (data.error));
@@ -262,7 +260,7 @@ $(document).on("click", "#update-member-btn", function () {
                                 <button type="button" class="btn btn-icon rounded-0" id="hh_member_update" store="${member.id}" title="Edit">
                                     <i class="fa fa-pencil"></i>
                                 </button>
-                               
+
                             </td>
                         </tr>
                     `;
@@ -285,7 +283,7 @@ $(document).on("click", "#update-member-btn", function () {
 
 // / Add button
 $(document).on("click", "#family_member_submit", function () {
-    $(this).prop('disabled', true);
+    $(this).prop("disabled", true);
     console.log("Add button in update household");
     var group_id = $("input[name='group_id']").val();
     var given_name = $("#mamber_given_name").val();
@@ -316,7 +314,6 @@ $(document).on("click", "#family_member_submit", function () {
                 // eslint-disable-next-line no-undef
                 resetFormFieldsMember();
 
-             
                 // Update the table with the new member list
                 var tableBody = $("#familylist tbody");
                 tableBody.empty();
@@ -334,7 +331,7 @@ $(document).on("click", "#family_member_submit", function () {
                                 <button type="button" class="btn btn-icon rounded-0" id="hh_member_update" store="${member.id}" title="Edit">
                                     <i class="fa fa-pencil"></i>
                                 </button>
-                                
+
                             </td>
                         </tr>
                     `;
@@ -343,7 +340,7 @@ $(document).on("click", "#family_member_submit", function () {
 
                 // Hide the modal after successful submission
                 $("#familyMemberModal").modal("hide");
-                $('#successModal').modal('show')
+                $("#successModal").modal("show");
             } else {
                 console.error("Failed to add family member");
             }
@@ -375,16 +372,8 @@ function showNextModal(nextSectionId, currentSectionId) {
     }
 }
 
-
-
-
-
-
 // eslint-disable-next-line no-unused-vars
 function showModalSection(nextSectionId, currentSectionId, direction) {
-
-
-
     // eslint-disable-next-line no-undef
     var val = validateSection(currentSectionId);
     if (direction === "prev") {

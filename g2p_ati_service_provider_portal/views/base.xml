@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <template id="base_inh" name="G2P Service Provider ATI Portal Base" inherit_id="g2p_service_provider_portal_base.base" priority="200">
+    <template
+        id="base_inh"
+        name="G2P Service Provider ATI Portal Base"
+        inherit_id="g2p_service_provider_portal_base.base"
+        priority="200"
+    >
         <xpath expr="//header" position="inside">
             <link rel="stylesheet" href="/g2p_ati_service_provider_portal/static/src/css/style.css" />
         </xpath>
@@ -17,7 +22,12 @@
                             <h6 style="color: #06916b" class="modal-title">Updated Successfully!</h6>
                         </div>
                         <div class="modal-footer">
-                            <button style="background-color: #06916b !important" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button
+                                style="background-color: #06916b !important"
+                                type="button"
+                                class="btn btn-secondary"
+                                data-dismiss="modal"
+                            >Close</button>
                         </div>
                     </div>
                 </div>

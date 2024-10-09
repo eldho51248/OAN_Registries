@@ -115,7 +115,7 @@ $(document).ready(function () {
         }
     }
 
-    // function formatInputWithSpaces(inputElement) {
+    // Function formatInputWithSpaces(inputElement) {
     //     inputElement.addEventListener("input", function () {
     //         const value = inputElement.value.replace(/\s+/g, "");
     //         const formattedValue = value.match(/.{1,4}/g)?.join(" ") || "";
@@ -131,7 +131,7 @@ $(document).ready(function () {
         });
     }
 
-    //this is the one with the problem
+    // This is the one with the problem
 
     //     const uidInput = document.getElementById("uid_input");
     // const ridInput = document.getElementById("rid_input");
@@ -159,7 +159,7 @@ $(document).ready(function () {
         if ((sanitizedValue.length !== 12 && sanitizedValue.length !== 0) || !isOnlyDigits) {
             uidInput.classList.add("uid_error");
             uidError.style.display = "block";
-            // uidInput.setAttribute("required", "required");
+            // UidInput.setAttribute("required", "required");
         } else {
             uidInput.classList.remove("uid_error");
             uidError.style.display = "none";
@@ -172,14 +172,14 @@ $(document).ready(function () {
         if ((sanitizedValue.length !== 29 && sanitizedValue.length !== 0) || !isOnlyDigits) {
             ridInput.classList.add("rid_error");
             ridError.style.display = "block";
-            // ridInput.setAttribute("required", "required");
+            // RidInput.setAttribute("required", "required");
         } else {
             ridInput.classList.remove("rid_error");
             ridError.style.display = "none";
         }
     });
 
-    // this is the one that doesn't work
+    // This is the one that doesn't work
 
     //     // Validation for UID input field
     // uidInput.addEventListener("input", function () {
@@ -266,7 +266,7 @@ $(document).ready(function () {
         }
     }
 
-    // function handlePrimaryCoopSelection(){
+    // Function handlePrimaryCoopSelection(){
     //     const selectElement = document.getElementById("is_member_of_primary_coop");
     //     const primaryCoopDiv = document.getElementById("primary_coop_div");
     //     const primaryCoop = document.getElementById("name_of_primary_coop");
@@ -563,9 +563,6 @@ $(document).ready(function () {
     };
 });
 
-
-
-
 function validateSelect(selectElement) {
     const value = selectElement.value;
     const defaultValue = selectElement.options[0].value;
@@ -607,14 +604,14 @@ function validateMultiSelect(selectElement) {
     const selectedOptions = $(selectElement).val();
     const isValid = selectedOptions && selectedOptions.length > 0;
 
-    // wrapper of the selectpicker
-    const selectWrapper = $(selectElement).parent().find('.dropdown-toggle');
+    // Wrapper of the selectpicker
+    const selectWrapper = $(selectElement).parent().find(".dropdown-toggle");
 
     // Add or remove the 'is-invalid' class based on the validation
     if (!isValid) {
-        selectWrapper.addClass('is-invalid');  
+        selectWrapper.addClass("is-invalid");
     } else {
-        selectWrapper.removeClass('is-invalid');
+        selectWrapper.removeClass("is-invalid");
     }
 
     return isValid;
@@ -624,8 +621,7 @@ function validateElement(element) {
     // Check if the element is a select or an input field
     if (element.tagName === "SELECT" && element.multiple) {
         return validateMultiSelect(element);
-    } 
-    else if (element.tagName === "SELECT") {
+    } else if (element.tagName === "SELECT") {
         validateSelect(element);
     } else if (element.tagName === "INPUT") {
         validateInput(element);
@@ -635,11 +631,11 @@ function validateElement(element) {
 function validateUID() {
     const uid = document.getElementById("uid_input");
     const uidError = document.getElementById("uid_error");
-    // const isValid = uid.value.length === 12 && /^\d+$/.test(uid.value);
+    // Const isValid = uid.value.length === 12 && /^\d+$/.test(uid.value);
     const isValid =
         uid.value.replace(/\s+/g, "").length === 12 && /^\d+$/.test(uid.value.replace(/\s+/g, ""));
     uid.classList.toggle("is-invalid", !isValid);
-    // uid.classList.toggle("is-valid", isValid); // Add this line
+    // Uid.classList.toggle("is-valid", isValid); // Add this line
     uidError.style.display = isValid ? "none" : "block";
     return isValid;
 }
@@ -666,11 +662,11 @@ function validateUID() {
 function validateRID() {
     const rid = document.getElementById("rid_input");
     const ridError = document.getElementById("rid_error");
-    // const isValid = rid.value.length === 29 && /^\d+$/.test(rid.value);
+    // Const isValid = rid.value.length === 29 && /^\d+$/.test(rid.value);
     const isValid =
         rid.value.replace(/\s+/g, "").length === 29 && /^\d+$/.test(rid.value.replace(/\s+/g, ""));
     rid.classList.toggle("is-invalid", !isValid);
-    // rid.classList.toggle("is-valid", isValid); // Add this line
+    // Rid.classList.toggle("is-valid", isValid); // Add this line
     ridError.style.display = isValid ? "none" : "block";
     return isValid;
 }
@@ -703,21 +699,20 @@ function validateRadioButtons(radioName, section) {
 }
 
 function validateFileInput(input) {
-    const fileError = document.getElementById('file-error'); // Ensure this ID exists in your HTML
+    const fileError = document.getElementById("file-error"); // Ensure this ID exists in your HTML
 
     if (input.files.length === 0) {
         // Show error if no file is uploaded
-        input.classList.add('is-invalid');
-        fileError.style.display = 'block';
+        input.classList.add("is-invalid");
+        fileError.style.display = "block";
         return false;
-    } else {
-        // Hide error if file is uploaded
-        input.classList.remove('is-invalid');
-        fileError.style.display = 'none';
-        return true;
     }
-}
+        // Hide error if file is uploaded
+        input.classList.remove("is-invalid");
+        fileError.style.display = "none";
+        return true;
 
+}
 
 function validateSection(sectionId) {
     const section = document.getElementById(sectionId);
@@ -734,17 +729,13 @@ function validateSection(sectionId) {
         if (field.type === "radio") {
             // Validate radio buttons in this section
             isFieldValid = validateRadioButtons(field.name, section);
-        } 
-     else if (field.tagName === "SELECT" && field.multiple) {
-        // Validate multi-select fields
-        isFieldValid = validateMultiSelect(field);
-    } 
-    else if (field.type === "file") {
-        // Validate file input field
-        isFieldValid = validateFileInput(field);
-    }
-        
-        else {
+        } else if (field.tagName === "SELECT" && field.multiple) {
+            // Validate multi-select fields
+            isFieldValid = validateMultiSelect(field);
+        } else if (field.type === "file") {
+            // Validate file input field
+            isFieldValid = validateFileInput(field);
+        } else {
             // Validate non-radio fields
             isFieldValid = field.value.trim() !== "";
         }
@@ -789,7 +780,7 @@ function validateSection(sectionId) {
     return valid;
 }
 
-// function validateSection(sectionId) {
+// Function validateSection(sectionId) {
 //     const section = document.getElementById(sectionId);
 //     const requiredFields = section.querySelectorAll("[required]");
 //     let valid = true;
@@ -886,7 +877,7 @@ function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
 }
 
 // Call resetFormFields() when opening the modal
-$('#farmerDetailModal').on('show.bs.modal', function () {
+$("#farmerDetailModal").on("show.bs.modal", function () {
     resetFormFields();
 });
 

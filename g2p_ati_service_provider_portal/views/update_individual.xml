@@ -10,7 +10,10 @@
         <xpath expr="//div[hasclass('main-container')]" position="replace">
             <div class="main-container" style="padding-top: 15px !important; padding-bottom: 0px !important;">
                 <div class="container-adjuster">
-                    <h5 style="font: normal 600 18px / 22px Inter !important;" class="all-title">Update Farmer</h5>
+                    <h5
+                        style="font: normal 600 18px / 22px Inter !important;"
+                        class="all-title"
+                    >Update Farmer</h5>
                     <div class="form-template">
                         <ol class="breadcrumb form-layout-breadcrumb">
                             <li class="breadcrumb-item">
@@ -165,7 +168,7 @@
                                                                 <span class="s_website_form_mark"> *</span>
                                                             </label>
 
-                                                           
+
 
                                                             <select
                                                                 class="form-select"
@@ -1288,7 +1291,6 @@
                                                                     style="width: 100%;"
                                                                     data-none-selected-text="Select Source of Income"
                                                                     onchange="validateElement(this)"
-
                                                                 >
                                                                     <t
                                                                         t-foreach="source_of_income"
@@ -1615,7 +1617,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-lg-6"  id="commodity_div">
+                                                        <div class="col-lg-6" id="commodity_div">
                                                             <div
                                                                 class="s_website_form_field"
                                                                 style="display: none;"
@@ -1843,7 +1845,9 @@
                                                                                         >
                                                                                             *</span>
                                                                                     </label>
-                                                                                    <div class="file-upload-wrapper">
+                                                                                    <div
+                                                                                        class="file-upload-wrapper"
+                                                                                    >
                                                                                         <label
                                                                                             for="land_certificate_0"
                                                                                             class="custom-file-upload"
@@ -1865,13 +1869,13 @@
                                                                                             name="land_certificate_0"
                                                                                             class="form-control land_required_field"
                                                                                             onchange="updateFileName(this)"
-                                                                                           
                                                                                         />
 
                                                                                         <small
-                                                                                        id="file-error"
-                                                                                        class="text-danger"
-                                                                                        style="display:none;">
+                                                                                            id="file-error"
+                                                                                            class="text-danger"
+                                                                                            style="display:none;"
+                                                                                        >
                                                                                         Please
                                                                                         upload
                                                                                         a
@@ -2034,7 +2038,9 @@
                                                                                                 >
                                                                                                     *</span>
                                                                                             </label>
-                                                                                            <div   class="file-upload-wrapper">
+                                                                                            <div
+                                                                                                class="file-upload-wrapper"
+                                                                                            >
                                                                                                 <label
                                                                                                     t-att-for="'land_certificate_' + str(land_info['index'])"
                                                                                                     class="custom-file-upload"
@@ -2058,9 +2064,10 @@
                                                                                                     onchange="updateFileName(this)"
                                                                                                 />
                                                                                                 <small
-                                                                                                id="file-error"
-                                                                                                class="text-danger"
-                                                                                                style="display:none;">
+                                                                                                    id="file-error"
+                                                                                                    class="text-danger"
+                                                                                                    style="display:none;"
+                                                                                                >
                                                                                                 Please
                                                                                                 upload
                                                                                                 a
@@ -2230,7 +2237,6 @@
                                                                                         t-att-name="'land_certificate_' + str({9999})"
                                                                                         class="form-control land_required_field"
                                                                                         onchange="updateFileName(this)"
-
                                                                                     />
                                                                                 </div>
                                                                             </div>

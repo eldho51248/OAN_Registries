@@ -1,8 +1,8 @@
 // Date restriction
 $(document).ready(function () {
-     // Initialize select picker on page load
-     $('.selectpicker').selectpicker();
-    
+    // Initialize select picker on page load
+    $(".selectpicker").selectpicker();
+
     $(".date-picker").each(function () {
         var input = this;
         var today = new Date().toISOString().split("T")[0];
@@ -78,10 +78,7 @@ function hideToast() {
     toast_container.css("display", "none");
 }
 
-
-
 function resetFormFields() {
-
     console.log("Resetting form fields...");
     // Reset text inputs, email, and password fields
     $(
@@ -99,19 +96,18 @@ function resetFormFields() {
 
     // Reset all multi-select pickers using .dropdown-toggle
     var $select = $(this);
-        $select.val([]);  // Clear selected options
+    $select.val([]); // Clear selected options
 
-        // Trigger the change event for any multi-select libraries being used
-        $select.trigger('change'); // For libraries like Select2 or Bootstrap Select
+    // Trigger the change event for any multi-select libraries being used
+    $select.trigger("change"); // For libraries like Select2 or Bootstrap Select
 
-        // Optionally reset the visible text if using Bootstrap Select or similar
-        if ($select.hasClass('selectpicker')) {
-            $select.selectpicker('val', ''); // For Bootstrap Select
-        } else if ($select.hasClass('select2')) {
-            $select.val(null).trigger('change'); // For Select2
-        }
+    // Optionally reset the visible text if using Bootstrap Select or similar
+    if ($select.hasClass("selectpicker")) {
+        $select.selectpicker("val", ""); // For Bootstrap Select
+    } else if ($select.hasClass("select2")) {
+        $select.val(null).trigger("change"); // For Select2
+    }
 
-    
     // Reset number and date fields to their default state
     $("#farmerDetailModal input[type='number'], #farmerDetailModal input[type='date']").val("");
 
@@ -120,24 +116,22 @@ function resetFormFields() {
 
     // Reset any additional inputs or fields as necessary
 
-    $("#farmerDetailModal input[type='file']").each(function() {
+    $("#farmerDetailModal input[type='file']").each(function () {
         var $fileInput = $(this);
-        var newFileInput = $fileInput.clone();  // Clone the input
-        newFileInput.val('');  // Clear value of the new input
+        var newFileInput = $fileInput.clone(); // Clone the input
+        newFileInput.val(""); // Clear value of the new input
 
         // Replace the original input with the cloned input
         $fileInput.replaceWith(newFileInput);
 
         // Attach the existing onchange event from the XML-defined function
-        newFileInput.on('change', function() {
+        newFileInput.on("change", function () {
             updateFileName(this); // This will refer to the function in the XML
         });
     });
 }
 
-
-function resetUpdateFields(){
-
+function resetUpdateFields() {
     console.log("Resetting form fields for update...");
     // Reset text inputs, email, and password fields
     $(
@@ -155,19 +149,18 @@ function resetUpdateFields(){
 
     // Reset all multi-select pickers using .dropdown-toggle
     var $select = $(this);
-        $select.val([]);  // Clear selected options
+    $select.val([]); // Clear selected options
 
-        // Trigger the change event for any multi-select libraries being used
-        $select.trigger('change'); // For libraries like Select2 or Bootstrap Select
+    // Trigger the change event for any multi-select libraries being used
+    $select.trigger("change"); // For libraries like Select2 or Bootstrap Select
 
-        // Optionally reset the visible text if using Bootstrap Select or similar
-        if ($select.hasClass('selectpicker')) {
-            $select.selectpicker('val', ''); // For Bootstrap Select
-        } else if ($select.hasClass('select2')) {
-            $select.val(null).trigger('change'); // For Select2
-        }
+    // Optionally reset the visible text if using Bootstrap Select or similar
+    if ($select.hasClass("selectpicker")) {
+        $select.selectpicker("val", ""); // For Bootstrap Select
+    } else if ($select.hasClass("select2")) {
+        $select.val(null).trigger("change"); // For Select2
+    }
 
-    
     // Reset number and date fields to their default state
     $("#farmerDetailModal input[type='number'], #farmerDetailModal input[type='date']").val("");
 
@@ -176,20 +169,19 @@ function resetUpdateFields(){
 
     // Reset any additional inputs or fields as necessary
 
-    $("#farmerDetailModal input[type='file']").each(function() {
+    $("#farmerDetailModal input[type='file']").each(function () {
         var $fileInput = $(this);
-        var newFileInput = $fileInput.clone();  // Clone the input
-        newFileInput.val('');  // Clear value of the new input
+        var newFileInput = $fileInput.clone(); // Clone the input
+        newFileInput.val(""); // Clear value of the new input
 
         // Replace the original input with the cloned input
         $fileInput.replaceWith(newFileInput);
 
         // Attach the existing onchange event from the XML-defined function
-        newFileInput.on('change', function() {
+        newFileInput.on("change", function () {
             updateFileName(this); // This will refer to the function in the XML
         });
     });
-
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -208,7 +200,6 @@ function resetFormFieldsMember() {
 // });
 
 $(document).on("click", "#member_submit", async function () {
-   
     console.log("Add memberrrrrr clicked on add and update too");
 
     const isSectionValid = validateSection("access-to-resource");
@@ -508,11 +499,10 @@ $(document).on("click", "#member_submit", async function () {
         },
         dataType: "json",
         success: function (response) {
-            // window.location.href = window.location.pathname + "?section=farmer-details";
+            // Window.location.href = window.location.pathname + "?section=farmer-details";
             console.log("Ajax request successful");
             console.log("Response:", response);
-            
-            
+
             if (response.member_list) {
                 resetUpdateFields();
                 resetFormFields();
@@ -543,7 +533,7 @@ $(document).on("click", "#member_submit", async function () {
                             <td style="color:#704880; font: normal normal 600 13px/16px Inter;">${member.name}</td>
                             <td>${member.age}</td>
                             <td>${member.gender}</td>
-                            
+
                             <td class="fw-bold text-center">
                 ${isHouseholdHead}
             </td>
@@ -552,7 +542,7 @@ $(document).on("click", "#member_submit", async function () {
                                  <a href="/serviceprovider/individual/update/${member.id}" class="btn btn-icon rounded-0 edit-btn" title="Edit">
                                     <i class="fa fa-pencil"></i>
                                 </a>
-                                
+
                             </td>
                             </tr>
                             `;
@@ -837,11 +827,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Initial check when the modal is shown
     $("#farmerDetailModal").on("shown.bs.modal", function () {
-        resetFormFields()
+        resetFormFields();
         handleOtherFields("hh_income_type", "otherModalIncomeField");
         handleOtherFields("name_of_primary_coop", "otherModalPrimaryCoopField");
         handleOtherFields("name_of_coop_union", "otherModalCoopUnionField");
-       
     });
 });
 
