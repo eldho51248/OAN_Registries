@@ -3702,6 +3702,7 @@
                                                                                     required="required"
                                                                                     onchange="validateElement(this)"
                                                                                     id="access-to-machinery-selection"
+                                                                                    
                                                                                 >
                                                                                     <option value="">
                                                                                         Select
@@ -3760,6 +3761,7 @@
                                                                                     data-style="btn-custom"
                                                                                     style="width: 100%;"
                                                                                     data-none-selected-text="Select"
+                                                                                    onchange="validateElement(this)"
                                                                                 >
                                                                                     <t
                                                                                         t-foreach="machinary_types"
@@ -3877,6 +3879,7 @@
                                                                                     style="width: 100%;"
                                                                                     required="required"
                                                                                     data-none-selected-text="Select"
+                                                                                    onchange="validateElement(this)"
                                                                                 >
                                                                                     <t
                                                                                         t-foreach="financial_access"
