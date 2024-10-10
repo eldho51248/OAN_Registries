@@ -100,7 +100,6 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
             element.setAttribute("required");
         });
 
-
         // Land Information
         Array.from(landAstrix).forEach((element) => {
             element.textContent = "";

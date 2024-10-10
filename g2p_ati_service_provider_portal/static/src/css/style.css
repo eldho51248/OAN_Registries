@@ -45,7 +45,6 @@ input[type="radio"].invalid-radio {
     border-color: green; /* Example: green border for valid inputs */
 }
 
-
 .s_website_form_field {
     /* font: normal normal normal 14px / 17px Inter; */
     /* padding-left: 20px;
@@ -269,8 +268,6 @@ input[type="radio"] {
     accent-color: #06916b;
 }
 
-
-
 .custom-dashboard-background {
     position: relative;
     z-index: 1;
@@ -470,6 +467,22 @@ input[type="radio"] {
     transform: translate(-50%, -50%);
 }
 
+.file-upload-wrapper {
+    position: relative; /* To position the error message properly */
+}
+
+input[type="file"].is-invalid {
+    border: 2px solid red; /* Red border for invalid file input */
+    border-radius: 5px; /* Optional: rounded corners */
+}
+
+.text-danger {
+    font-size: 12px;
+    color: red;
+    margin-top: 5px;
+    display: block;
+}
+
 /* input:invalid {
     border-color: red;
 }
@@ -490,13 +503,11 @@ input.form-control {
 /* Style for valid input */
 input.is-valid {
     border-color: #28a745; /* Green border for valid input */
-    
 }
 
 /* Style for invalid input */
 input.is-invalid {
     border-color: #dc3545; /* Red border for invalid input */
-    
 }
 
 /* Error message styling */
@@ -505,7 +516,6 @@ input.is-invalid {
     font-size: 14px;
     margin-top: 5px;
 }
-
 
 .header-container {
     padding-bottom: 2px;
@@ -699,20 +709,17 @@ input[type="file"] {
     background-color: #2dac64 !important;
 }
 
-
 hr {
-
     margin: 0px;
 }
 
-
-.header-container .nav , .footer-container .nav{
+.header-container .nav,
+.footer-container .nav {
     align-items: center !important;
 }
 
-
-
-.form-control.is-invalid[multiple], .form-select.is-invalid[size="multiple"] {
+.form-control.is-invalid[multiple],
+.form-select.is-invalid[size="multiple"] {
     border-color: #dc3545 !important;
     -webkit-padding-end: 4.125rem;
     -moz-padding-end: 4.125rem;
@@ -737,4 +744,7 @@ hr {
     margin: 0px auto;
     max-width: 1400px;
 
+}
+.is-invalid {
+    border: 1px solid red;
 }

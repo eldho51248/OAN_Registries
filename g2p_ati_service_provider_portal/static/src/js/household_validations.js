@@ -10,7 +10,6 @@ $(document).ready(function () {
 
 
     window.customvalidateFormGroup = function (isCreateForm) {
-        console.log("customvalidateFormGroup");
         const locationDetailsSection = document.querySelector("#location-details");
         const requiredFields = locationDetailsSection.querySelectorAll("[required]");
         var valid = true;
@@ -81,14 +80,12 @@ function addFamilyMember() {
         });
 
         $("#familyMemberModal").modal("hide");
-
     } else {
-        console.log("Please fill all the required fields");
     }
 }
 
 
-// function deleteMember(button) {
+// Function deleteMember(button) {
 //     const memberId = $(button).attr("store");
 //     var groupId = $("input[name='group_id']").val();
 
@@ -107,8 +104,8 @@ function addFamilyMember() {
 //                     const row = $(button).closest("tr");
 //                     row.remove();
 //                     alert(data.message);
-//                 } 
-                
+//                 }
+
 //                 else {
 //                     console.log("Delete failed:", data);
 //                     alert("Error: " + (data.error));
@@ -121,6 +118,7 @@ function addFamilyMember() {
 //         });
 //     }
 // }
+
 
 const farmerCount = 0;
 
@@ -165,11 +163,9 @@ function addFarmerMember() {
 // This is to populate the data for editing family member
 
 $(document).on("click", "#hh_member_update", function () {
-    // Console.log('populateEditModal called');
     var memberId = $(this).attr("store");
     var group_id = $("input[name='group_id']").val();
     var modal = $("#editFamilyMemberModal");
-    console.log("Click edit", memberId);
     $.ajax({
         url: "/serviceprovider/member/update/",
         method: "POST",
@@ -188,10 +184,9 @@ $(document).on("click", "#hh_member_update", function () {
             } else if (response.gender === "female") {
                 modal.find("#edit_gender_female").prop("checked", true);
             }
-            console.log(response.kind);
+
             modal.find("#edit_relation_with_hh_selection").val(response.kind);
 
-            console.log();
             var ele = document.getElementById("update-member-btn");
             ele.setAttribute("store", memberId);
             // Ele.setAttribute("id", "update-member-btn");
@@ -217,7 +212,6 @@ $(document).on("click", "#hh_member_update", function () {
 });
 
 $(document).on("click", "#update-member-btn", function () {
-    // Console.log("HERE this is for editing");
 
     var ele = document.getElementById("update-member-btn");
     var modal = $("#editFamilyMemberModal");
@@ -225,7 +219,6 @@ $(document).on("click", "#update-member-btn", function () {
 
     var group_id = $("input[name='group_id']").val();
     var relationship = $("select[name='relation_with_household_head']").val();
-    // Console.log(memberId)
 
     var data = {
         group_id: group_id,
@@ -238,8 +231,6 @@ $(document).on("click", "#update-member-btn", function () {
         Relationship: relationship,
     };
 
-    // Console.log("Sending data:", data);
-    console.log("Click update", memberId);
 
     $.ajax({
         url: "/serviceprovider/family_member/update/submit/",
@@ -247,15 +238,12 @@ $(document).on("click", "#update-member-btn", function () {
         data: data,
         dataType: "json",
         success: function (response) {
-            // Console.log("Ajax request successful");
-            // console.log("Response:", response);
             if (response.member_list) {
                 // Update the table with the new member list
                 var tableBody = $("#familylist tbody");
                 tableBody.empty();
                 response.member_list.forEach(function (member, index) {
                     var serialNumber = index + 1;
-                    console.log(serialNumber);
                     var newRowHtml = `
                         <tr>
                             <td>${serialNumber}</td>
@@ -267,9 +255,7 @@ $(document).on("click", "#update-member-btn", function () {
                                 <button type="button" class="btn btn-icon rounded-0" id="hh_member_update" store="${member.id}" title="Edit">
                                     <i class="fa fa-pencil"></i>
                                 </button>
-                                <button type="button" class="btn btn-outline-secondary btn-sm my-3" onclick="deleteMember(this)">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
+
                             </td>
                         </tr>
                     `;
@@ -318,8 +304,9 @@ function showSuccessModal(message) {
 
 
 $(document).on("click", "#family_member_submit", function () {
-    $(this).prop('disabled', true);
-    console.log("Add button in update household");
+
+    $(this).prop("disabled", true);
+
     var group_id = $("input[name='group_id']").val();
     var given_name = $("#mamber_given_name").val();
     var family_name = $("#member_fathers_name").val();
@@ -343,19 +330,19 @@ $(document).on("click", "#family_member_submit", function () {
         },
         dataType: "json",
         success: function (response) {
-            console.log("Ajax request successful");
+
             console.log("Response:", response);
+
             if (response.member_list) {
                 // eslint-disable-next-line no-undef
                 resetFormFieldsMember();
 
-             
                 // Update the table with the new member list
                 var tableBody = $("#familylist tbody");
                 tableBody.empty();
                 response.member_list.forEach(function (member, index) {
                     var serialNumber = index + 1;
-                    console.log(serialNumber);
+
                     var newRowHtml = `
                         <tr>
                             <td>${serialNumber}</td>
@@ -367,9 +354,7 @@ $(document).on("click", "#family_member_submit", function () {
                                 <button type="button" class="btn btn-icon rounded-0" id="hh_member_update" store="${member.id}" title="Edit">
                                     <i class="fa fa-pencil"></i>
                                 </button>
-                                <button type="button" class="btn btn-outline-secondary btn-sm my-3" onclick="deleteMember(this)">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
+
                             </td>
                         </tr>
                     `;
@@ -378,8 +363,10 @@ $(document).on("click", "#family_member_submit", function () {
 
                 // Hide the modal after successful submission
                 $("#familyMemberModal").modal("hide");
+
                 $("#family_member_submit").prop('disabled', false);
                 showSuccessModal("Family member added successfully!")
+
             } else {
                 console.error("Failed to add family member");
             }
@@ -411,16 +398,8 @@ function showNextModal(nextSectionId, currentSectionId) {
     }
 }
 
-
-
-
-
-
 // eslint-disable-next-line no-unused-vars
 function showModalSection(nextSectionId, currentSectionId, direction) {
-
-
-
     // eslint-disable-next-line no-undef
     var val = validateSection(currentSectionId);
     if (direction === "prev") {

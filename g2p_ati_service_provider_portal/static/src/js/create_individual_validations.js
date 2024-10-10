@@ -137,7 +137,7 @@ $(document).ready(function () {
         }
     }
 
-    // function formatInputWithSpaces(inputElement) {
+    // Function formatInputWithSpaces(inputElement) {
     //     inputElement.addEventListener("input", function () {
     //         const value = inputElement.value.replace(/\s+/g, "");
     //         const formattedValue = value.match(/.{1,4}/g)?.join(" ") || "";
@@ -153,16 +153,16 @@ $(document).ready(function () {
         });
     }
 
-    //this is the one with the problem
+    // This is the one with the problem
 
-//     const uidInput = document.getElementById("uid_input");
-// const ridInput = document.getElementById("rid_input");
-// const uidError = document.getElementById("uid_error");
-// const ridError = document.getElementById("rid_error");
+    //     const uidInput = document.getElementById("uid_input");
+    // const ridInput = document.getElementById("rid_input");
+    // const uidError = document.getElementById("uid_error");
+    // const ridError = document.getElementById("rid_error");
 
-// // Apply space formatting to both UID and RID inputs
-// formatInputWithSpaces(uidInput);
-// formatInputWithSpaces(ridInput);
+    // // Apply space formatting to both UID and RID inputs
+    // formatInputWithSpaces(uidInput);
+    // formatInputWithSpaces(ridInput);
 
     // Apply the function to both UID and RID inputs
 
@@ -181,7 +181,7 @@ $(document).ready(function () {
         if ((sanitizedValue.length !== 12 && sanitizedValue.length !== 0) || !isOnlyDigits) {
             uidInput.classList.add("uid_error");
             uidError.style.display = "block";
-            // uidInput.setAttribute("required", "required");
+            // UidInput.setAttribute("required", "required");
         } else {
             uidInput.classList.remove("uid_error");
             uidError.style.display = "none";
@@ -194,60 +194,55 @@ $(document).ready(function () {
         if ((sanitizedValue.length !== 29 && sanitizedValue.length !== 0) || !isOnlyDigits) {
             ridInput.classList.add("rid_error");
             ridError.style.display = "block";
-            // ridInput.setAttribute("required", "required");
+            // RidInput.setAttribute("required", "required");
         } else {
             ridInput.classList.remove("rid_error");
             ridError.style.display = "none";
         }
     });
 
+    // This is the one that doesn't work
 
-    // this is the one that doesn't work
+    //     // Validation for UID input field
+    // uidInput.addEventListener("input", function () {
+    //     const sanitizedValue = uidInput.value.replace(/\s+/g, ""); // Remove spaces
+    //     const isOnlyDigits = /^\d*$/.test(sanitizedValue); // Check if only digits
 
-//     // Validation for UID input field
-// uidInput.addEventListener("input", function () {
-//     const sanitizedValue = uidInput.value.replace(/\s+/g, ""); // Remove spaces
-//     const isOnlyDigits = /^\d*$/.test(sanitizedValue); // Check if only digits
+    //     // If not 12 digits or contains non-digit characters, show error
+    //     if ((sanitizedValue.length !== 12 && sanitizedValue.length !== 0) || !isOnlyDigits) {
+    //         uidInput.classList.add("is-invalid");
+    //         uidError.style.display = "block";
+    //     } else {
+    //         uidInput.classList.remove("is-invalid");
+    //         uidError.style.display = "none";
+    //     }
+    // });
 
-//     // If not 12 digits or contains non-digit characters, show error
-//     if ((sanitizedValue.length !== 12 && sanitizedValue.length !== 0) || !isOnlyDigits) {
-//         uidInput.classList.add("is-invalid");
-//         uidError.style.display = "block";
-//     } else {
-//         uidInput.classList.remove("is-invalid");
-//         uidError.style.display = "none";
-//     }
-// });
+    // // Validation for RID input field
+    // ridInput.addEventListener("input", function () {
+    //     const sanitizedValue = ridInput.value.replace(/\s+/g, ""); // Remove spaces
+    //     const isOnlyDigits = /^\d*$/.test(sanitizedValue); // Check if only digits
 
-// // Validation for RID input field
-// ridInput.addEventListener("input", function () {
-//     const sanitizedValue = ridInput.value.replace(/\s+/g, ""); // Remove spaces
-//     const isOnlyDigits = /^\d*$/.test(sanitizedValue); // Check if only digits
+    //     // If not 29 digits or contains non-digit characters, show error
+    //     if ((sanitizedValue.length !== 29 && sanitizedValue.length !== 0) || !isOnlyDigits) {
+    //         ridInput.classList.add("is-invalid");
+    //         ridError.style.display = "block";
+    //     } else {
+    //         ridInput.classList.remove("is-invalid");
+    //         ridError.style.display = "none";
+    //     }
+    // });
 
-//     // If not 29 digits or contains non-digit characters, show error
-//     if ((sanitizedValue.length !== 29 && sanitizedValue.length !== 0) || !isOnlyDigits) {
-//         ridInput.classList.add("is-invalid");
-//         ridError.style.display = "block";
-//     } else {
-//         ridInput.classList.remove("is-invalid");
-//         ridError.style.display = "none";
-//     }
-// });
-
-
-   
-    
     // Event listeners
     function handleNationalIdSelection() {
         const selectElement = document.getElementById("have-national-id-selection");
         const uidDiv = document.getElementById("uid-div");
         const ridDiv = document.getElementById("rid-div");
-        
+
         const uidInput = document.getElementById("uid_input");
         const ridInput = document.getElementById("rid_input");
         const uidError = document.getElementById("uid_error");
         const ridError = document.getElementById("rid_error");
-
 
         // Const ridInput = document.getElementById("rid_input");
         // Const uidInput = document.getElementById("uid_input");
@@ -275,9 +270,104 @@ $(document).ready(function () {
         ridError.style.display = "none";
     }
 
+    function handleSelection(selectElementId, divElementId, inputElementId) {
+        const selectElement = document.getElementById(selectElementId);
+        const divElement = document.getElementById(divElementId);
+        const inputElement = document.getElementById(inputElementId);
 
+        const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
+            .trim()
+            .toLowerCase();
 
-   function handlePhoneNumberSelection() {
+        if (selectedOptionText === "yes") {
+            divElement.style.display = "block";
+            inputElement.setAttribute("required", "required");
+        } else {
+            divElement.style.display = "none";
+            inputElement.removeAttribute("required");
+        }
+    }
+
+    // Function handlePrimaryCoopSelection(){
+    //     const selectElement = document.getElementById("is_member_of_primary_coop");
+    //     const primaryCoopDiv = document.getElementById("primary_coop_div");
+    //     const primaryCoop = document.getElementById("name_of_primary_coop");
+
+    //     const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
+    //         .trim()
+    //         .toLowerCase();
+
+    //     if (selectedOptionText === "yes") {
+    //         primaryCoopDiv.style.display = "block";
+    //         primaryCoop.setAttribute("required", "required");
+
+    //     } else if (selectedOptionText === "no") {
+    //         primaryCoopDiv.style.display = "none";
+    //         primaryCoop.removeAttribute("required");
+
+    //     } else {
+    //         primaryCoopDiv.style.display = "none";
+    //         primaryCoop.removeAttribute("required");
+
+    //     }
+
+    // }
+
+    // function handleCoopUnionSelection(){
+    //     const selectElement = document.getElementById("is_member_of_coop_union");
+    //     const CoopUnionDiv = document.getElementById("coop_div");
+    //     const CoopUnion = document.getElementById("name_of_coop_union");
+
+    //     const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
+    //         .trim()
+    //         .toLowerCase();
+
+    //     if (selectedOptionText === "yes") {
+    //         CoopUnionDiv.style.display = "block";
+    //         CoopUnion.setAttribute("required", "required");
+
+    //     } else if (selectedOptionText === "no") {
+    //         CoopUnionDiv.style.display = "none";
+    //         CoopUnion.removeAttribute("required");
+
+    //     } else {
+    //         CoopUnionDiv.style.display = "none";
+    //         CoopUnion.removeAttribute("required");
+
+    //     }
+
+    // }
+
+    function handleClusterSelection() {
+        const selectElement = document.getElementById("in_farmer_cluster");
+        const primaryCommodityDiv = document.getElementById("commodity_div");
+        const primaryCommodity = document.getElementById("primary_commodity");
+        const roleDiv = document.getElementById("role_div");
+        const clusterRole = document.getElementById("role_in_cluster");
+
+        const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
+            .trim()
+            .toLowerCase();
+
+        if (selectedOptionText === "yes") {
+            primaryCommodityDiv.style.display = "block";
+            primaryCommodity.setAttribute("required", "required");
+            roleDiv.style.display = "block";
+            clusterRole.setAttribute("required", "required");
+        } else if (selectedOptionText === "no") {
+            primaryCommodityDiv.style.display = "none";
+            primaryCommodity.removeAttribute("required");
+            roleDiv.style.display = "none";
+            clusterRole.removeAttribute("required");
+        } else {
+            primaryCommodityDiv.style.display = "none";
+            primaryCommodity.removeAttribute("required");
+            roleDiv.style.display = "none";
+            clusterRole.removeAttribute("required");
+        }
+    }
+
+    function handlePhoneNumberSelection() {
         const selectElement = document.getElementById("have-phone-no-selection");
         const primaryPhoneDiv = document.getElementById("primary-div");
         const otherPhoneDiv = document.getElementById("other-div");
@@ -364,8 +454,27 @@ $(document).ready(function () {
 
     // Event listener for national ID selection change
     $("#have-national-id-selection").on("change", handleNationalIdSelection);
+
     // Event listener for phone number selection change
     $("#have-phone-no-selection").on("change", handlePhoneNumberSelection);
+
+    $("#is_member_of_primary_coop").on("change", function () {
+        handleSelection("is_member_of_primary_coop", "primary_coop_div", "name_of_primary_coop");
+    });
+
+    $("#is_member_of_coop_union").on("change", function () {
+        handleSelection("is_member_of_coop_union", "coop_div", "name_of_coop_union");
+    });
+
+    $("#access-to-machinery-selection").on("change", function () {
+        handleSelection("access-to-machinery-selection", "machinery_div", "machinery-types-select");
+    });
+
+    $("#access-to-finance-selection").on("change", function () {
+        handleSelection("access-to-finance-selection", "financial_div", "finance-selection");
+    });
+
+    $("#in_farmer_cluster").on("change", handleClusterSelection);
 
     $("#access-to-machinery-selection").on("change", function () {
         toggleField("access-to-machinery-selection", "machinery-field", "machinery-types-select");
@@ -376,7 +485,6 @@ $(document).ready(function () {
     });
 
     $("#region_selection").on("change", function (event) {
-        console.log("HERE");
         const regionId = this.value;
         var ev = event.originalEvent;
         updateOptions("/update_zone_options", {region_id: regionId}, "zon_selection", "Select", ev, "region");
@@ -435,7 +543,6 @@ $(document).ready(function () {
     // }
 
     window.customvalidateForm = function (isCreateForm) {
-        console.log("Here");
         const requiredFields = document.querySelectorAll("[required]");
         var valid = true;
 
@@ -513,11 +620,28 @@ function validateInput(inputElement) {
 //         }
 //     }
 // }
+function validateMultiSelect(selectElement) {
+    const selectedOptions = $(selectElement).val();
+    const isValid = selectedOptions && selectedOptions.length > 0;
 
+    // Wrapper of the selectpicker
+    const selectWrapper = $(selectElement).parent().find(".dropdown-toggle");
+
+    // Add or remove the 'is-invalid' class based on the validation
+    if (!isValid) {
+        selectWrapper.addClass("is-invalid");
+    } else {
+        selectWrapper.removeClass("is-invalid");
+    }
+
+    return isValid;
+}
 // eslint-disable-next-line no-unused-vars
 function validateElement(element) {
     // Check if the element is a select or an input field
-    if (element.tagName === "SELECT") {
+    if (element.tagName === "SELECT" && element.multiple) {
+        return validateMultiSelect(element);
+    } else if (element.tagName === "SELECT") {
         validateSelect(element);
     } else if (element.tagName === "INPUT") {
         validateInput(element);
@@ -527,10 +651,11 @@ function validateElement(element) {
 function validateUID() {
     const uid = document.getElementById("uid_input");
     const uidError = document.getElementById("uid_error");
-    // const isValid = uid.value.length === 12 && /^\d+$/.test(uid.value);
-    const isValid = uid.value.replace(/\s+/g, "").length === 12 && /^\d+$/.test(uid.value.replace(/\s+/g, ""));
+    // Const isValid = uid.value.length === 12 && /^\d+$/.test(uid.value);
+    const isValid =
+        uid.value.replace(/\s+/g, "").length === 12 && /^\d+$/.test(uid.value.replace(/\s+/g, ""));
     uid.classList.toggle("is-invalid", !isValid);
-    // uid.classList.toggle("is-valid", isValid); // Add this line
+    // Uid.classList.toggle("is-valid", isValid); // Add this line
     uidError.style.display = isValid ? "none" : "block";
     return isValid;
 }
@@ -554,29 +679,23 @@ function validateUID() {
 //     return isValid;
 // }
 
-
 function validateRID() {
     const rid = document.getElementById("rid_input");
     const ridError = document.getElementById("rid_error");
-    // const isValid = rid.value.length === 29 && /^\d+$/.test(rid.value);
-    const isValid = rid.value.replace(/\s+/g, "").length === 29 && /^\d+$/.test(rid.value.replace(/\s+/g, ""));
+    // Const isValid = rid.value.length === 29 && /^\d+$/.test(rid.value);
+    const isValid =
+        rid.value.replace(/\s+/g, "").length === 29 && /^\d+$/.test(rid.value.replace(/\s+/g, ""));
     rid.classList.toggle("is-invalid", !isValid);
-    // rid.classList.toggle("is-valid", isValid); // Add this line
+    // Rid.classList.toggle("is-valid", isValid); // Add this line
     ridError.style.display = isValid ? "none" : "block";
     return isValid;
 }
 
-
-
 // Apply the function to both UID and RID inputs
-
 
 // Add event listeners for real-time validation
 // uidInput.addEventListener("input", validateUID);
 // ridInput.addEventListener("input", validateRID);
-
-
-
 
 function validateRadioButtons(radioName, section) {
     const radioGroup = section.querySelectorAll(`input[name="${radioName}"]`);
@@ -599,6 +718,21 @@ function validateRadioButtons(radioName, section) {
     return radioChecked;
 }
 
+function validateFileInput(input) {
+    const fileError = document.getElementById("file-error"); // Ensure this ID exists in your HTML
+
+    if (input.files.length === 0) {
+        // Show error if no file is uploaded
+        input.classList.add("is-invalid");
+        fileError.style.display = "block";
+        return false;
+    }
+    // Hide error if file is uploaded
+    input.classList.remove("is-invalid");
+    fileError.style.display = "none";
+    return true;
+}
+
 function validateSection(sectionId) {
     const section = document.getElementById(sectionId);
     const requiredFields = section.querySelectorAll("[required]");
@@ -614,6 +748,12 @@ function validateSection(sectionId) {
         if (field.type === "radio") {
             // Validate radio buttons in this section
             isFieldValid = validateRadioButtons(field.name, section);
+        } else if (field.tagName === "SELECT" && field.multiple) {
+            // Validate multi-select fields
+            isFieldValid = validateMultiSelect(field);
+        } else if (field.type === "file") {
+            // Validate file input field
+            isFieldValid = validateFileInput(field);
         } else {
             // Validate non-radio fields
             isFieldValid = field.value.trim() !== "";
@@ -626,7 +766,7 @@ function validateSection(sectionId) {
         }
 
         // Apply 'is-invalid' class for non-radio fields
-        if (field.type !== "radio") {
+        if (field.type !== "radio" && field.type !== "file") {
             field.classList.toggle("is-invalid", !isFieldValid);
         }
 
@@ -659,8 +799,7 @@ function validateSection(sectionId) {
     return valid;
 }
 
-
-// function validateSection(sectionId) {
+// Function validateSection(sectionId) {
 //     const section = document.getElementById(sectionId);
 //     const requiredFields = section.querySelectorAll("[required]");
 //     let valid = true;
@@ -685,7 +824,6 @@ function validateSection(sectionId) {
 //     return valid;
 // }
 
-
 // Let previousSection = "id-section";
 
 function showSection(sectionId, element, fromGroup = false) {
@@ -705,7 +843,6 @@ function showSection(sectionId, element, fromGroup = false) {
                     sectionId === "location-details" ||
                     sectionId === "family-member-template"
                 ) {
-                    console.log("yes it is");
                     section.style.display = "none";
                 } 
                 
@@ -735,11 +872,6 @@ function showSection(sectionId, element, fromGroup = false) {
                     const farmerDetailSection = document.getElementById("farmer-details");
                     if (farmerDetailSection) {
 
-                        console.log("inn farmerDetailSection Section")
-
-
-                        console.log("Farmer Detail Secion is");
-                        console.log(farmerDetailSection);
                         farmerDetailSection.style.display = "block";
                     }
                 }
@@ -778,10 +910,8 @@ function showSection(sectionId, element, fromGroup = false) {
 //     }
 // }
 
-
 function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
 
-    console.log("in here")
     const isSectionValid = validateSection(currentSectionId);
 
     if (isSectionValid) {
@@ -794,138 +924,10 @@ function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
     }
 }
 
-
-// Function toggleFieldBasedOnRadio(inputName, fieldIdToToggle, selectElementId, toggleValue = "Yes") {
-//     const radios = document.querySelectorAll(`input[name="${inputName}"]`);
-//     let shouldShowField = false;
-
-//     radios.forEach((radio) => {
-//         if (radio.checked && radio.dataset.text === toggleValue) {
-//             shouldShowField = true;
-//         }
-//     });
-
-//     const fieldToToggle = document.getElementById(fieldIdToToggle);
-//     fieldToToggle.style.display = shouldShowField ? "block" : "none";
-//     const selectElement = document.getElementById(selectElementId);
-//     if (shouldShowField === true) {
-//         selectElement.setAttribute("required", "required");
-//     } else if (shouldShowField === false) {
-//         selectElement.removeAttribute("required");
-//     }
-// }
-
-// document.addEventListener("DOMContentLoaded", function () {
-//     // Initial check on page load
-//     checkRequired();
-//     toggleFieldBasedOnRadio("is_member_of_primary_coop", "primary-coop-field", "name_of_primary_coop");
-//     toggleFieldBasedOnRadio("is_member_of_coop_union", "coop-union-field", "name_of_coop_union");
-//     toggleFieldBasedOnRadio("in_farmer_cluster", "primary-commodity-field", "primary_commodity");
-//     toggleFieldBasedOnRadio("in_farmer_cluster", "role-in-cluster-field", "role_in_cluster");
-
-//     // Attach event listeners to the radio buttons
-//     const primaryCoopRadios = document.querySelectorAll('input[name="is_member_of_primary_coop"]');
-//     primaryCoopRadios.forEach((radio) => {
-//         radio.addEventListener("change", function () {
-//             toggleFieldBasedOnRadio(
-//                 "is_member_of_primary_coop",
-//                 "primary-coop-field",
-//                 "name_of_primary_coop"
-//             );
-//         });
-//     });
-
-//     const coopUnionRadios = document.querySelectorAll('input[name="is_member_of_coop_union"]');
-//     coopUnionRadios.forEach((radio) => {
-//         radio.addEventListener("change", function () {
-//             toggleFieldBasedOnRadio("is_member_of_coop_union", "coop-union-field", "name_of_coop_union");
-//         });
-//     });
-
-//     const isMemberRadios = document.querySelectorAll('input[name="in_farmer_cluster"]');
-//     isMemberRadios.forEach((radio) => {
-//         radio.addEventListener("change", function () {
-//             toggleFieldBasedOnRadio("in_farmer_cluster", "primary-commodity-field", "primary_commodity");
-//             toggleFieldBasedOnRadio("in_farmer_cluster", "role-in-cluster-field", "role_in_cluster");
-//         });
-//     });
-// });
-
-// function toggleFieldBasedOnSelect(
-//     fieldIdToToggle,
-//     value,
-//     toggleValue = "Yes",
-//     other = false,
-//     otherInputIdToClear,
-//     selectionFieldIdToClear
-// ) {
-//     const shouldShowField = value === toggleValue;
-//     console.log("inherrrerererre1");
-//     console.log(otherInputIdToClear, selectionFieldIdToClear )
-
-//     const selectionFieldToClear = document.getElementById(selectionFieldIdToClear);
-//     const otherInputToClear = document.getElementById(otherInputIdToClear);
-
-//     if (!shouldShowField) {
-
-//         if (selectionFieldToClear) {
-//             selectionFieldToClear.selectedIndex = 0;
-//         } else {
-//             console.warn(`Warning: Invalid input ID provided: ${selectionFieldIdToClear}`);
-//         }
-
-//         if (otherInputToClear) {
-//             otherInputToClear.value = "";
-//         } else {
-//             console.warn(`Warning: Invalid input ID provided: ${otherInputIdToClear}`);
-//         }
-//     }
-
-//         const fieldToToggle = document.getElementById(fieldIdToToggle);
-
-//         if (fieldToToggle) {
-//             fieldToToggle.style.display = shouldShowField ? "block" : "none";
-//         } else {
-//             console.error(`Warning: Invalid field ID provided: ${fieldIdToToggle}`);
-//         }
-
-// }
-
-//   document.addEventListener("DOMContentLoaded", function () {
-
-//     function setupSelectChangeHandler(selectId, fieldIdsToToggle,  toggleValue = "Yes", otherInputIdToClear,selectionFieldIdToClear) {
-
-//       const selectElement = document.getElementById(selectId);
-
-//       console.log("in selelct handler")
-//       console.log(otherInputIdToClear,selectionFieldIdToClear)
-
-//       selectElement.addEventListener("change", function () {
-
-//         console.log("inside select handler  in  handler")
-//         console.log(otherInputIdToClear,selectionFieldIdToClear)
-
-//         const selectedOption = selectElement.options[selectElement.selectedIndex];
-//         toggleFieldBasedOnSelect(fieldIdsToToggle=fieldIdsToToggle, value=selectedOption.text, toggleValue = "Yes",
-//             otherInputIdToClear,
-//             selectionFieldIdToClear)
-//       });
-
-//       const initialSelectedOption =
-//         selectElement.options[selectElement.selectedIndex];
-//       toggleFieldBasedOnSelect(
-//         selectId,
-//         fieldIdToToggle,
-//         initialSelectedOption.text
-//       );
-//     }
-
-//     setupSelectChangeHandler(selectId="is_member_of_primary_coop",fieldIdsToToggle="primary-coop-field", otherInputIdToClear="other_primary_coop",selectionFieldIdToClear="name_of_primary_coop")
-//     setupSelectChangeHandler("is_member_of_coop_union", "coop-union-field");
-//     setupSelectChangeHandler("in_farmer_cluster", "primary-commodity-field");
-//     setupSelectChangeHandler("in_farmer_cluster", "role-in-cluster-field");
-
-//   });
+// Call resetFormFields() when opening the modal
+$("#farmerDetailModal").on("show.bs.modal", function () {
+    resetFormFields();
+});
 
 function toggleFieldBasedOnSelect(
     fieldIdToToggle,
@@ -936,9 +938,6 @@ function toggleFieldBasedOnSelect(
     containerId,
     containerId2
 ) {
-    console.log("Inside toggleFieldBasedOnSelect");
-    console.log("otherInputIdToClear:", otherInputIdToClear);
-    console.log("selectionFieldIdToClear:", selectionFieldIdToClear);
 
     const shouldShowField = value === toggleValue;
 
@@ -1010,7 +1009,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const selectElement = document.getElementById(handler.selectId);
         if (selectElement) {
             selectElement.addEventListener("change", function () {
-                console.log("Inside select handler for:", handler.selectId);
                 const selectedOption = selectElement.options[selectElement.selectedIndex];
                 toggleFieldBasedOnSelect(
                     handler.fieldIdsToToggle,

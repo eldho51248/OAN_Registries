@@ -167,7 +167,7 @@
                                                                 <span class="s_website_form_mark"> *</span>
                                                             </label>
 
-                                                           
+
 
                                                             <select
                                                                 class="form-select"
@@ -1290,7 +1290,6 @@
                                                                     style="width: 100%;"
                                                                     data-none-selected-text="Select Source of Income"
                                                                     onchange="validateElement(this)"
-
                                                                 >
                                                                     <t
                                                                         t-foreach="source_of_income"
@@ -1389,7 +1388,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-6">
+                                                        <div class="col-lg-6" id="primary_coop_div">
                                                             <div
                                                                 class="s_website_form_field"
                                                                 style="display: none;"
@@ -1500,7 +1499,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-6">
+                                                        <div class="col-lg-6" id="coop_div">
                                                             <div
                                                                 class="s_website_form_field"
                                                                 style="display: none;"
@@ -1617,7 +1616,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-lg-6">
+                                                        <div class="col-lg-6" id="commodity_div">
                                                             <div
                                                                 class="s_website_form_field"
                                                                 style="display: none;"
@@ -1660,7 +1659,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-6">
+                                                        <div class="col-lg-6" id="role_div">
                                                             <div
                                                                 class="s_website_form_field"
                                                                 style="display: none;"
@@ -1845,7 +1844,9 @@
                                                                                         >
                                                                                             *</span>
                                                                                     </label>
-                                                                                    <div>
+                                                                                    <div
+                                                                                        class="file-upload-wrapper"
+                                                                                    >
                                                                                         <label
                                                                                             for="land_certificate_0"
                                                                                             class="custom-file-upload"
@@ -1868,6 +1869,16 @@
                                                                                             class="form-control land_required_field"
                                                                                             onchange="updateFileName(this)"
                                                                                         />
+
+                                                                                        <small
+                                                                                            id="file-error"
+                                                                                            class="text-danger"
+                                                                                            style="display:none;"
+                                                                                        >
+                                                                                        Please
+                                                                                        upload
+                                                                                        a
+                                                                                        file.</small>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -2026,7 +2037,9 @@
                                                                                                 >
                                                                                                     *</span>
                                                                                             </label>
-                                                                                            <div>
+                                                                                            <div
+                                                                                                class="file-upload-wrapper"
+                                                                                            >
                                                                                                 <label
                                                                                                     t-att-for="'land_certificate_' + str(land_info['index'])"
                                                                                                     class="custom-file-upload"
@@ -2049,6 +2062,15 @@
                                                                                                     class="form-control land_required_field"
                                                                                                     onchange="updateFileName(this)"
                                                                                                 />
+                                                                                                <small
+                                                                                                    id="file-error"
+                                                                                                    class="text-danger"
+                                                                                                    style="display:none;"
+                                                                                                >
+                                                                                                Please
+                                                                                                upload
+                                                                                                a
+                                                                                                file.</small>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -2214,7 +2236,6 @@
                                                                                         t-att-name="'land_certificate_' + str({9999})"
                                                                                         class="form-control land_required_field"
                                                                                         onchange="updateFileName(this)"
-
                                                                                     />
                                                                                 </div>
                                                                             </div>
@@ -3279,7 +3300,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-6">
+                                                        <div class="col-lg-6" id="machinery_div">
                                                             <div
                                                                 class="s_website_form_field"
                                                                 style="display: none;"
@@ -3375,7 +3396,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-6">
+                                                        <div class="col-lg-6" id="financial_div">
                                                             <div
                                                                 class="s_website_form_field"
                                                                 style="display: none;"
@@ -3523,6 +3544,8 @@
                                 var fileName = input.files.length > 0 ? input.files[0].name :
                                 'Upload';
                                 uploadText.textContent = fileName;
+
+                                validateFileInput(input);
                                 }
                             </script>
 
