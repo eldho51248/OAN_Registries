@@ -10,8 +10,12 @@
         <xpath expr="//div[hasclass('main-container')]" position="replace">
             <div class="main-container" style="padding-top: 15px !important; padding-bottom: 0px !important;">
                 <div style="max-width: 1400px" class="mx-auto px-3">
-                    <h5 style="font: normal 600 18px / 22px Inter !important;" class="all-title">Update Farmer</h5>
+                    
                     <div class="form-template">
+
+                    <h5 style="font: normal 600 18px / 22px Inter !important;" class="all-title">Update Farmer</h5>
+
+                        
                         <ol class="breadcrumb form-layout-breadcrumb">
                             <li class="breadcrumb-item">
                                 <a href="/serviceprovider/home">
@@ -1730,12 +1734,12 @@
                                                                     id="land-section-repeat"
                                                                     data-index="0"
                                                                 >
-                                                                    <div class="container-fluid px-5">
+                                                                    <div class="container-fluid">
                                                                         <div class="row pt-3 pb-1">
                                                                             <div
-                                                                                class="row col-11 land_container2"
+                                                                                class="d-flex flex-column flex-lg-row w-lg-auto  land_container2"
                                                                             >
-                                                                                <div class="col-3">
+                                                                                <div class="col-lg-3">
                                                                                     <label
                                                                                         class="s_website_form_label"
                                                                                     >
@@ -1775,7 +1779,7 @@
                                                                                         </t>
                                                                                     </select>
                                                                                 </div>
-                                                                                <div class="col-3">
+                                                                                <div class="col-lg-3">
                                                                                     <label
                                                                                         class="s_website_form_label"
                                                                                     >
@@ -1803,7 +1807,7 @@
                                                                                         placeholder="Enter Land Area"
                                                                                     />
                                                                                 </div>
-                                                                                <div class="col-3">
+                                                                                <div class="col-lg-3">
                                                                                     <label
                                                                                         class="s_website_form_label"
                                                                                     >
@@ -1828,7 +1832,7 @@
                                                                                         placeholder="Enter Land ID"
                                                                                     />
                                                                                 </div>
-                                                                                <div class="col-3">
+                                                                                <div class="col-lg-3">
                                                                                     <label
                                                                                         class="s_website_form_label"
                                                                                     >
@@ -1882,7 +1886,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="col-1 my-3">
+                                                                            <div class="col-1 mx-auto my-3">
                                                                                 <button
                                                                                     type="button"
                                                                                     class="btn btn-outline-secondary btn-sm my-3 "
@@ -1916,12 +1920,12 @@
                                                                             id="land-section-repeat"
                                                                             t-att-data-index="land_info['index']"
                                                                         >
-                                                                            <div class="container-fluid px-5">
+                                                                            <div class="container-fluid">
                                                                                 <div class="row pt-3 pb-1">
                                                                                     <div
-                                                                                        class="row col-11 land_container2"
+                                                                                        class="d-flex flex-column flex-lg-row w-lg-auto  land_container2"
                                                                                     >
-                                                                                        <div class="col-3">
+                                                                                        <div class="col-lg-3">
                                                                                             <label
                                                                                                 class="s_website_form_label"
                                                                                             >
@@ -1964,7 +1968,7 @@
                                                                                                 </t>
                                                                                             </select>
                                                                                         </div>
-                                                                                        <div class="col-3">
+                                                                                        <div class="col-lg-3">
                                                                                             <label
                                                                                                 class="s_website_form_mark land_astrix"
                                                                                             >
@@ -1994,7 +1998,7 @@
                                                                                                 placeholder="Enter Land Area"
                                                                                             />
                                                                                         </div>
-                                                                                        <div class="col-3">
+                                                                                        <div class="col-lg-3">
                                                                                             <label
                                                                                                 class="s_website_form_label"
                                                                                             >
@@ -2021,7 +2025,7 @@
                                                                                                 placeholder="Enter Land ID"
                                                                                             />
                                                                                         </div>
-                                                                                        <div class="col-3">
+                                                                                        <div class="col-lg-3">
                                                                                             <label
                                                                                                 class="s_website_form_label"
                                                                                             >
@@ -2074,7 +2078,7 @@
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div class="col-1 my-3">
+                                                                                    <div class="col-1 mx-auto my-3">
                                                                                         <button
                                                                                             type="button"
                                                                                             class="btn btn-outline-secondary btn-sm my-3 "
@@ -2103,12 +2107,12 @@
                                                                 id="land-section-repeat"
                                                                 t-att-data-index="{9999}"
                                                             >
-                                                                <div class="container-fluid px-5">
+                                                                <div class="container-fluid">
                                                                     <div class="row pt-3 pb-1">
                                                                         <div
-                                                                            class="row col-11 land_container2"
+                                                                            class="d-flex flex-column flex-lg-row w-lg-auto  land_container2"
                                                                         >
-                                                                            <div class="col-3">
+                                                                            <div class="col-lg-3">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                 >
@@ -2147,7 +2151,7 @@
                                                                                     </t>
                                                                                 </select>
                                                                             </div>
-                                                                            <div class="col-3">
+                                                                            <div class="col-lg-3">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                 >
@@ -2173,7 +2177,7 @@
                                                                                     placeholder="Enter Land Area"
                                                                                 />
                                                                             </div>
-                                                                            <div class="col-3">
+                                                                            <div class="col-lg-3">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                 >
@@ -2198,7 +2202,7 @@
                                                                                     placeholder="Enter Land ID"
                                                                                 />
                                                                             </div>
-                                                                            <div class="col-3">
+                                                                            <div class="col-lg-3">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                 >
@@ -2240,7 +2244,7 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-1 my-3">
+                                                                        <div class="col-1 mx-auto my-3">
                                                                             <button
                                                                                 type="button"
                                                                                 class="btn btn-outline-secondary btn-sm my-3 "
@@ -2339,7 +2343,7 @@
                                                                     id="crop-section-repeat"
                                                                     data-index="0"
                                                                 >
-                                                                    <div class="container-fluid px-5">
+                                                                    <div class="container-fluid">
                                                                         <div class="row pt-3 pb-1">
                                                                             <div
                                                                                 class="row col-11 land_container2"
@@ -2449,12 +2453,12 @@
                                                                             id="crop-section-repeat"
                                                                             t-att-data-index="crop_info['index']"
                                                                         >
-                                                                            <div class="container-fluid px-5">
+                                                                            <div class="container-fluid">
                                                                                 <div class="row pt-3 pb-1">
                                                                                     <div
-                                                                                        class="row col-11 land_container2"
+                                                                                        class="d-flex flex-column flex-lg-row w-lg-auto  col-lg-11 land_container2"
                                                                                     >
-                                                                                        <div class="col-6">
+                                                                                        <div class="col-lg-6">
                                                                                             <label
                                                                                                 class="s_website_form_label"
                                                                                             >
@@ -2499,7 +2503,7 @@
                                                                                                 </t>
                                                                                             </select>
                                                                                         </div>
-                                                                                        <div class="col-6">
+                                                                                        <div class="col-lg-6">
                                                                                             <label
                                                                                                 class="s_website_form_label"
                                                                                             >
@@ -2528,7 +2532,7 @@
                                                                                             />
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div class="col-1 my-3">
+                                                                                    <div class="col-1 mx-auto my-3">
                                                                                         <button
                                                                                             type="button"
                                                                                             class="btn btn-outline-secondary btn-sm my-3 "
@@ -2557,12 +2561,12 @@
                                                                 id="crop-section-repeat"
                                                                 t-att-data-index="{9999}"
                                                             >
-                                                                <div class="container-fluid px-5">
+                                                                <div class="container-fluid">
                                                                     <div class="row pt-3 pb-1">
                                                                         <div
-                                                                            class="row col-11 land_container2"
+                                                                            class="d-flex flex-column flex-lg-row w-lg-auto  col-lg-11 land_container2"
                                                                         >
-                                                                            <div class="col-6">
+                                                                            <div class="col-lg-6">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                 >
@@ -2603,7 +2607,7 @@
                                                                                     </t>
                                                                                 </select>
                                                                             </div>
-                                                                            <div class="col-6">
+                                                                            <div class="col-lg-6">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                     for="crop_date"
@@ -2633,7 +2637,7 @@
                                                                                 />
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-1 my-3">
+                                                                        <div class="col-1 mx-auto my-3">
                                                                             <button
                                                                                 type="button"
                                                                                 class="btn btn-outline-secondary btn-sm my-3 "
@@ -2734,10 +2738,10 @@
                                                                     id="livestock-section-repeat"
                                                                     data-index="0"
                                                                 >
-                                                                    <div class="container-fluid px-5">
+                                                                    <div class="container-fluid">
                                                                         <div class="row pt-3 pb-1">
                                                                             <div
-                                                                                class="row col-11 land_container2"
+                                                                                class="d-flex flex-column flex-lg-row w-lg-auto  col-lg-11 land_container2"
                                                                             >
                                                                                 <div class="col-6">
                                                                                     <label
@@ -2782,7 +2786,7 @@
                                                                                         </t>
                                                                                     </select>
                                                                                 </div>
-                                                                                <div class="col-6">
+                                                                                <div class="col-lg-6">
                                                                                     <label
                                                                                         class="s_website_form_label"
                                                                                     >
@@ -2811,7 +2815,7 @@
                                                                                     />
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="col-1 my-3">
+                                                                            <div class="col-1 mx-auto my-3">
                                                                                 <button
                                                                                     type="button"
                                                                                     class="btn btn-outline-secondary btn-sm my-3 "
@@ -2845,10 +2849,10 @@
                                                                             id="livestock-section-repeat"
                                                                             t-att-data-index="livestock_info['index']"
                                                                         >
-                                                                            <div class="container-fluid px-5">
+                                                                            <div class="container-fluid">
                                                                                 <div class="row pt-3 pb-1">
                                                                                     <div
-                                                                                        class="row col-11 land_container2"
+                                                                                        class="d-flex flex-column flex-lg-row w-lg-auto  col-lg-11 land_container2"
                                                                                     >
                                                                                         <div class="col-6">
                                                                                             <label
@@ -2899,7 +2903,7 @@
                                                                                                 </t>
                                                                                             </select>
                                                                                         </div>
-                                                                                        <div class="col-6">
+                                                                                        <div class="col-lg-6">
                                                                                             <label
                                                                                                 class="s_website_form_label"
                                                                                             >
@@ -2931,7 +2935,7 @@
                                                                                             />
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div class="col-1 my-3">
+                                                                                    <div class="col-1 mx-auto my-3">
                                                                                         <button
                                                                                             type="button"
                                                                                             class="btn btn-outline-secondary btn-sm my-3 "
@@ -2964,12 +2968,12 @@
                                                                     id="livestock-section-repeat"
                                                                     t-att-data-index="{9999}"
                                                                 >
-                                                                    <div class="container-fluid px-5">
+                                                                    <div class="container-fluid">
                                                                         <div class="row pt-3 pb-1">
                                                                             <div
-                                                                                class="row col-11 land_container2"
+                                                                                class="d-flex flex-column flex-lg-row w-lg-auto  col-lg-11 land_container2"
                                                                             >
-                                                                                <div class="col-6">
+                                                                                <div class="col-lg-6">
                                                                                     <label
                                                                                         class="s_website_form_label"
                                                                                     >
@@ -3012,7 +3016,7 @@
                                                                                         </t>
                                                                                     </select>
                                                                                 </div>
-                                                                                <div class="col-6">
+                                                                                <div class="col-lg-6">
                                                                                     <label
                                                                                         class="s_website_form_label"
                                                                                     >
@@ -3041,7 +3045,7 @@
                                                                                     />
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="col-1 my-3">
+                                                                            <div class="col-1 mx-auto my-3">
                                                                                 <button
                                                                                     type="button"
                                                                                     class="btn btn-outline-secondary btn-sm my-3 "
@@ -3359,7 +3363,6 @@
                                                 style="display: none;"
                                             >
                                                 <div class="section-content">
-                                                    <div class="row">
                                                         <div class="col-lg-6">
                                                             <div class="s_website_form_field">
                                                                 <label class="s_website_form_label">
@@ -3437,7 +3440,6 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                    </div>
                                                 </div>
                                                 <div class="section-footer d-flex justify-content-end">
                                                     <button

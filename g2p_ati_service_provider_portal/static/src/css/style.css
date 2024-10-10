@@ -16,19 +16,33 @@
     display: flex;
     -ms-flex-direction: column;
     flex-direction: column;
-    width: 1150px;
-    height: 750px;
+    /* width: 1150px;
+    height: 750px; */
     pointer-events: auto;
     background-color: #fff;
     background-clip: padding-box;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 15px;
     outline: 0;
-
-    top: 50%;
+    top: 100%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+@media (min-width: 1024px) {
+    .modal-content {
+        width: 1150px; /* Desired width for medium and larger screens */
+        height: 750px; /* Desired height for medium and larger screens */
+    }
+}
+
+@media (min-width: 576px) {
+    .modal-content {
+        top: 50% !important;
+    }
+}
+
+
 
 @media (min-width: 768px) {
     .o_error_dialog {
@@ -97,7 +111,8 @@ input[type="radio"].invalid-radio {
     background-color: #dbe3e9;
     border-radius: 4px;
 }
-.sidebar .nav-link.active::after {
+
+/* .sidebar .nav-link.active::after {
     content: "";
     position: absolute;
     left: 100%;
@@ -106,7 +121,7 @@ input[type="radio"].invalid-radio {
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
     border-left: 10px solid #139049;
-}
+} */
 
 .sidebar .nav-link:hover {
     background-color: #a9b4bf;
@@ -247,6 +262,8 @@ h1 {
 .section-content {
     flex: 1 1 auto;
     min-height: 600px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
 }
 
 .section-footer {
@@ -528,7 +545,7 @@ input.is-invalid {
     margin-top: 0px !important;
     margin-bottom: 0px !important;
     /* opacity: 1; */
-    margin-left: -48px;
+    /* margin-left: -48px; */
 }
 
 .header-container .nav {
@@ -748,3 +765,23 @@ hr {
 .is-invalid {
     border: 1px solid red;
 }
+
+
+@media (max-width: 468px) {
+    .top-content {
+        margin-top: 96px; 
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items:  center !important;
+        text-align: center !important;
+    }
+}
+
+
+/* .modal-dialog {
+
+    overflow: auto !important;
+    height: 100% !important;
+
+} */
+

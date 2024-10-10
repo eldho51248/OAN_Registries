@@ -12,7 +12,7 @@
 
                 <div class="mx-auto">
 
-                    <div style="max-width: 1400px" class="mx-auto d-flex flex-row justify-content-between py-3">
+                    <div style="max-width: 1400px" class="top-content mx-auto d-flex flex-row justify-content-between py-3">
                         <div class="d-flex flex-column justify-content-start">
                             <h5
                                 style="font: normal 600 18px / 22px Inter !important;"
