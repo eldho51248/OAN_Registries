@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
+
   <template id="base_inh" name="G2P Service Provider ATI Portal Base" inherit_id="g2p_service_provider_portal_base.base" priority="200">
     <xpath expr="//header" position="inside">
       <link rel="stylesheet" href="/g2p_ati_service_provider_portal/static/src/css/style.css" />
     </xpath>
+
 
     <xpath expr="//body" position="inside">
 

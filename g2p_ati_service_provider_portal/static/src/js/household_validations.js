@@ -80,10 +80,45 @@ function addFamilyMember() {
         });
 
         $("#familyMemberModal").modal("hide");
-
     } else {
     }
 }
+
+
+// Function deleteMember(button) {
+//     const memberId = $(button).attr("store");
+//     var groupId = $("input[name='group_id']").val();
+
+//     console.log("memberID is ", memberId);
+
+//     if (confirm("Are you sure you want to delete this family member?")) {
+//         $.ajax({
+//             url: "/serviceprovider/member/delete/",
+//             type: "POST",
+//             data: { member_id: memberId, group_id: groupId },
+//             success: function (data) {
+//                 data = JSON.parse(data);
+//                 if (data.success) {
+
+//                     console.log("in the the the here")
+//                     const row = $(button).closest("tr");
+//                     row.remove();
+//                     alert(data.message);
+//                 }
+
+//                 else {
+//                     console.log("Delete failed:", data);
+//                     alert("Error: " + (data.error));
+//                 }
+//             },
+//             error: function (jqXHR, textStatus, errorThrown) {
+//                 console.error("Error:", textStatus, errorThrown);
+//                 alert("An error occurred while deleting the family member: " + errorThrown);
+//             },
+//         });
+//     }
+// }
+
 
 const farmerCount = 0;
 
@@ -149,6 +184,7 @@ $(document).on("click", "#hh_member_update", function () {
             } else if (response.gender === "female") {
                 modal.find("#edit_gender_female").prop("checked", true);
             }
+
             modal.find("#edit_relation_with_hh_selection").val(response.kind);
 
             var ele = document.getElementById("update-member-btn");
@@ -219,9 +255,7 @@ $(document).on("click", "#update-member-btn", function () {
                                 <button type="button" class="btn btn-icon rounded-0" id="hh_member_update" store="${member.id}" title="Edit">
                                     <i class="fa fa-pencil"></i>
                                 </button>
-                                <button type="button" class="btn btn-outline-secondary btn-sm my-3" onclick="deleteMember(this)">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
+
                             </td>
                         </tr>
                     `;
@@ -270,7 +304,9 @@ function showSuccessModal(message) {
 
 
 $(document).on("click", "#family_member_submit", function () {
-    $(this).prop('disabled', true);
+
+    $(this).prop("disabled", true);
+
     var group_id = $("input[name='group_id']").val();
     var given_name = $("#mamber_given_name").val();
     var family_name = $("#member_fathers_name").val();
@@ -294,17 +330,19 @@ $(document).on("click", "#family_member_submit", function () {
         },
         dataType: "json",
         success: function (response) {
+
             console.log("Response:", response);
+
             if (response.member_list) {
                 // eslint-disable-next-line no-undef
                 resetFormFieldsMember();
 
-             
                 // Update the table with the new member list
                 var tableBody = $("#familylist tbody");
                 tableBody.empty();
                 response.member_list.forEach(function (member, index) {
                     var serialNumber = index + 1;
+
                     var newRowHtml = `
                         <tr>
                             <td>${serialNumber}</td>
@@ -316,9 +354,7 @@ $(document).on("click", "#family_member_submit", function () {
                                 <button type="button" class="btn btn-icon rounded-0" id="hh_member_update" store="${member.id}" title="Edit">
                                     <i class="fa fa-pencil"></i>
                                 </button>
-                                <button type="button" class="btn btn-outline-secondary btn-sm my-3" onclick="deleteMember(this)">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
+
                             </td>
                         </tr>
                     `;
@@ -327,8 +363,10 @@ $(document).on("click", "#family_member_submit", function () {
 
                 // Hide the modal after successful submission
                 $("#familyMemberModal").modal("hide");
+
                 $("#family_member_submit").prop('disabled', false);
                 showSuccessModal("Family member added successfully!")
+
             } else {
                 console.error("Failed to add family member");
             }
@@ -360,16 +398,8 @@ function showNextModal(nextSectionId, currentSectionId) {
     }
 }
 
-
-
-
-
-
 // eslint-disable-next-line no-unused-vars
 function showModalSection(nextSectionId, currentSectionId, direction) {
-
-
-
     // eslint-disable-next-line no-undef
     var val = validateSection(currentSectionId);
     if (direction === "prev") {

@@ -11,7 +11,8 @@
         <xpath expr="//div[hasclass('main-container')]" position="replace">
             <div style="padding-top: 15px !important; padding-bottom: 0px !important;" class="main-container">
                 <div class="container-adjuster">
-                    <h5 style="font: normal 600 18px / 22px Inter !important;" class="all-title">Create New Household</h5>
+                    <h5 style="font: normal 600 18px / 22px Inter !important;" class="all-title">Create
+                        New Household</h5>
                     <div class="form-template">
                         <ol class="breadcrumb form-layout-breadcrumb">
                             <li class="breadcrumb-item">
@@ -392,10 +393,13 @@
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
                                                                         >
                                                                             Gender</th>
-                                                                        <th class="text-center"
+                                                                        <th
+                                                                            class="text-center"
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >Household Head</th>
-                                                                        <th class="text-center"
+                                                                        >Household
+                                                                            Head</th>
+                                                                        <th
+                                                                            class="text-center"
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
                                                                         >
                                                                             Actions</th>
@@ -426,18 +430,25 @@
                                                                                 />
                                                                             </td>
 
-                                                                               <td class="fw-bold text-center">
-                                                                                    <t
-                                                                                        t-if="individual['hh_is_household_head'] == 'yes'"
+                                                                            <td class="fw-bold text-center">
+                                                                                <t
+                                                                                    t-if="individual['hh_is_household_head'] == 'yes'"
+                                                                                >
+                                                                                    <span
+                                                                                        style="background-color: #06916b; font-size: 0.75rem;"
+                                                                                        class="rounded-pill text-white  py-1 px-2"
                                                                                     >
-                                                                                         <span style="background-color: #06916b; font-size: 0.75rem;" class="rounded-pill text-white  py-1 px-2">Yes</span>
-                                                                                    </t>
-                                                                                    <t t-else="">
-                                                                                        <span style="background-color: red; font-size: 0.75rem;" class=" rounded-pill text-white py-1 px-2">No</span>
-                                                                                    </t>
-                                                                                </td>
+                                                                                        Yes</span>
+                                                                                </t>
+                                                                                <t t-else="">
+                                                                                    <span
+                                                                                        style="background-color: red; font-size: 0.75rem;"
+                                                                                        class=" rounded-pill text-white py-1 px-2"
+                                                                                    >
+                                                                                        No</span>
+                                                                                </t>
+                                                                            </td>
 
-                                                                        
 
                                                                             <td>
                                                                                 <a
@@ -466,21 +477,18 @@
                                                                 </tbody>
                                                             </table>
                                                         </div>
-                                                    
-                                                         <div style="text-align:center;" class="no_list mt-4">
+
+                                                        <div style="text-align:center;" class="no_list mt-4">
                                                             <img
                                                                 src="/g2p_service_provider_beneficiary_management/static/src/img/no_mem.png"
-                                                                
                                                             />
-                                                            <div
-                                                                
-                                                            >
+                                                            <div>
                                                                 <p>No members!</p>
                                                             </div>
 
                                                         </div>
-                                                            
-                                                        
+
+
                                                         <div style="text-align: center; margin-top: 20px;">
                                                             <button
                                                                 type="button"
@@ -551,16 +559,14 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="section-content">
-                                                            
-                                                                        
-                                                                        
-                                                                        
-                                                                        <div class="row">
+
+
+                                                                    <div class="row">
                                                                         <div
                                                                             class="col-lg-6 col-md-6 col-sm-12"
                                                                         >
                                                                             <div class="s_website_form_field">
-                                                                           
+
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                 >
@@ -601,11 +607,9 @@
                                                                                         </option>
                                                                                     </t>
                                                                                 </select>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
-                                                                    </div>
-                                                                    </div>
-
-
 
 
                                                                     <div class="container-fluid pl-3 pr-5">
@@ -1782,11 +1786,12 @@
                                                                                 </select>
 
 
-
-
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-lg-6">
+                                                                        <div
+                                                                            class="col-lg-6"
+                                                                            id="primary_coop_div"
+                                                                        >
                                                                             <div
                                                                                 class="s_website_form_field"
                                                                                 style="display: none;"
@@ -1915,12 +1920,9 @@
                                                                                 </select>
 
 
-
-                    
-
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-lg-6">
+                                                                        <div class="col-lg-6 " id="coop_div">
                                                                             <div
                                                                                 class="s_website_form_field"
                                                                                 style="display: none;"
@@ -2050,16 +2052,17 @@
                                                                                     </select>
 
 
-
-
-                                                                            </div>
+                                                                                </div>
 
 
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
-                                                                        <div class="col-lg-6">
+                                                                        <div
+                                                                            class="col-lg-6 "
+                                                                            id="commodity_div"
+                                                                        >
                                                                             <div
                                                                                 class="s_website_form_field"
                                                                                 style="display: none;"
@@ -2110,7 +2113,7 @@
                                                                                 </select>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-lg-6">
+                                                                        <div class="col-lg-6" id="role_div">
                                                                             <div
                                                                                 class="s_website_form_field"
                                                                                 style="display: none;"
@@ -2357,7 +2360,9 @@
                                                                                                     </span>
 
                                                                                                 </label>
-                                                                                                <div>
+                                                                                                <div
+                                                                                                    class="file-upload-wrapper"
+                                                                                                >
                                                                                                     <label
                                                                                                         for="land_certificate_0"
                                                                                                         class="custom-file-upload"
@@ -2383,6 +2388,19 @@
                                                                                                         onchange="updateFileName(this)"
                                                                                                         required="required"
                                                                                                     />
+                                                                                                    <!--
+                                                                                                    Error
+                                                                                                    message
+                                                                                                    div -->
+                                                                                                    <small
+                                                                                                        id="file-error"
+                                                                                                        class="text-danger"
+                                                                                                        style="display:none;"
+                                                                                                    >
+                                                                                                        Please
+                                                                                                        upload
+                                                                                                        a
+                                                                                                        file.</small>
 
                                                                                                 </div>
                                                                                             </div>
@@ -2564,7 +2582,9 @@
                                                                                                         *
                                                                                                     </span>
                                                                                                 </label>
-                                                                                                <div>
+                                                                                                <div
+                                                                                                    class="file-upload-wrapper"
+                                                                                                >
                                                                                                     <label
                                                                                                         t-att-for="'land_certificate_' + str({9999})"
                                                                                                         class="custom-file-upload"
@@ -2590,6 +2610,15 @@
                                                                                                         onchange="updateFileName(this)"
                                                                                                         required="required"
                                                                                                     />
+                                                                                                    <small
+                                                                                                        id="file-error"
+                                                                                                        class="text-danger"
+                                                                                                        style="display:none;"
+                                                                                                    >
+                                                                                                    Please
+                                                                                                    upload
+                                                                                                    a
+                                                                                                    file.</small>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -2697,9 +2726,7 @@
                                                                                     id="crop_water_source"
                                                                                     name="crop_water_source"
                                                                                     multiple="multiple"
-
-                                                                                                        required="required"
-
+                                                                                    required="required"
                                                                                     data-live-search="true"
                                                                                     data-style="btn-custom"
                                                                                     style="width: 100%;"
@@ -3637,7 +3664,7 @@
                                                                 style="display: none;"
                                                             >
                                                                 <div class="section-content">
-                                                                    <div class="">
+                                                                    <div class="row">
                                                                         <div
                                                                             class="container-fluid heading-header"
                                                                             style="background-color: #d6eae0; width: 95%;"
@@ -3695,7 +3722,10 @@
 
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-lg-6">
+                                                                        <div
+                                                                            class="col-lg-6"
+                                                                            id="machinery_div"
+                                                                        >
                                                                             <div
                                                                                 class="s_website_form_field"
                                                                                 style="display: none;"
@@ -3725,6 +3755,7 @@
                                                                                     id="machinery-types-select"
                                                                                     name="machinery_types"
                                                                                     multiple="multiple"
+                                                                                    required="required"
                                                                                     data-live-search="true"
                                                                                     data-style="btn-custom"
                                                                                     style="width: 100%;"
@@ -3807,7 +3838,10 @@
                                                                             </div>
                                                                         </div>
 
-                                                                        <div class="col-lg-6">
+                                                                        <div
+                                                                            class="col-lg-6"
+                                                                            id="financial_div"
+                                                                        >
                                                                             <div
                                                                                 class="s_website_form_field"
                                                                                 style="display: none;"
@@ -3841,6 +3875,7 @@
                                                                                     data-live-search="true"
                                                                                     data-style="btn-custom"
                                                                                     style="width: 100%;"
+                                                                                    required="required"
                                                                                     data-none-selected-text="Select"
                                                                                 >
                                                                                     <t
@@ -3964,7 +3999,7 @@
                                                                                 >
                                                                                     <i class="fa fa-pencil" />
                                                                                 </button>
-                                                                               
+
                                                                                 <!-- <button
                                                                                     type="button"
                                                                                     class="btn btn-outline-secondary btn-sm my-3"
@@ -3983,29 +4018,20 @@
                                                         </div>
 
 
-                                                          <div style="text-align:center;" class="no_list mt-4">
+                                                        <div style="text-align:center;" class="no_list mt-4">
                                                             <img
                                                                 src="/g2p_service_provider_beneficiary_management/static/src/img/no_mem.png"
-                                                                
                                                             />
-                                                            <div
-                                                                
-                                                            >
+                                                            <div>
                                                                 <p>No members!</p>
                                                             </div>
 
                                                         </div>
-                                                            
-                                                        
-                                                      
+
 
                                                         <div class="mt-4" style="text-align:center;">
 
 
-                                                        
-                                                            
-                                                            
-                                                            
                                                             <button
                                                                 type="button"
                                                                 data-bs-toggle="modal"
@@ -4537,7 +4563,6 @@
                                 />'); </script>
 
 
-
                             <script
                                 type="text/javascript"
                                 src="/g2p_ati_service_provider_portal/static/src/js/virtual-select.min.js"
@@ -4579,6 +4604,9 @@
                                 var fileName = input.files.length > 0 ? input.files[0].name :
                                 'Upload';
                                 uploadText.textContent = fileName;
+
+
+                                 validateFileInput(input);
                                 }
                             </script>
 

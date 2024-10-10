@@ -137,7 +137,7 @@ $(document).ready(function () {
         }
     }
 
-    // function formatInputWithSpaces(inputElement) {
+    // Function formatInputWithSpaces(inputElement) {
     //     inputElement.addEventListener("input", function () {
     //         const value = inputElement.value.replace(/\s+/g, "");
     //         const formattedValue = value.match(/.{1,4}/g)?.join(" ") || "";
@@ -153,16 +153,16 @@ $(document).ready(function () {
         });
     }
 
-    //this is the one with the problem
+    // This is the one with the problem
 
-//     const uidInput = document.getElementById("uid_input");
-// const ridInput = document.getElementById("rid_input");
-// const uidError = document.getElementById("uid_error");
-// const ridError = document.getElementById("rid_error");
+    //     const uidInput = document.getElementById("uid_input");
+    // const ridInput = document.getElementById("rid_input");
+    // const uidError = document.getElementById("uid_error");
+    // const ridError = document.getElementById("rid_error");
 
-// // Apply space formatting to both UID and RID inputs
-// formatInputWithSpaces(uidInput);
-// formatInputWithSpaces(ridInput);
+    // // Apply space formatting to both UID and RID inputs
+    // formatInputWithSpaces(uidInput);
+    // formatInputWithSpaces(ridInput);
 
     // Apply the function to both UID and RID inputs
 
@@ -181,7 +181,7 @@ $(document).ready(function () {
         if ((sanitizedValue.length !== 12 && sanitizedValue.length !== 0) || !isOnlyDigits) {
             uidInput.classList.add("uid_error");
             uidError.style.display = "block";
-            // uidInput.setAttribute("required", "required");
+            // UidInput.setAttribute("required", "required");
         } else {
             uidInput.classList.remove("uid_error");
             uidError.style.display = "none";
@@ -194,60 +194,55 @@ $(document).ready(function () {
         if ((sanitizedValue.length !== 29 && sanitizedValue.length !== 0) || !isOnlyDigits) {
             ridInput.classList.add("rid_error");
             ridError.style.display = "block";
-            // ridInput.setAttribute("required", "required");
+            // RidInput.setAttribute("required", "required");
         } else {
             ridInput.classList.remove("rid_error");
             ridError.style.display = "none";
         }
     });
 
+    // This is the one that doesn't work
 
-    // this is the one that doesn't work
+    //     // Validation for UID input field
+    // uidInput.addEventListener("input", function () {
+    //     const sanitizedValue = uidInput.value.replace(/\s+/g, ""); // Remove spaces
+    //     const isOnlyDigits = /^\d*$/.test(sanitizedValue); // Check if only digits
 
-//     // Validation for UID input field
-// uidInput.addEventListener("input", function () {
-//     const sanitizedValue = uidInput.value.replace(/\s+/g, ""); // Remove spaces
-//     const isOnlyDigits = /^\d*$/.test(sanitizedValue); // Check if only digits
+    //     // If not 12 digits or contains non-digit characters, show error
+    //     if ((sanitizedValue.length !== 12 && sanitizedValue.length !== 0) || !isOnlyDigits) {
+    //         uidInput.classList.add("is-invalid");
+    //         uidError.style.display = "block";
+    //     } else {
+    //         uidInput.classList.remove("is-invalid");
+    //         uidError.style.display = "none";
+    //     }
+    // });
 
-//     // If not 12 digits or contains non-digit characters, show error
-//     if ((sanitizedValue.length !== 12 && sanitizedValue.length !== 0) || !isOnlyDigits) {
-//         uidInput.classList.add("is-invalid");
-//         uidError.style.display = "block";
-//     } else {
-//         uidInput.classList.remove("is-invalid");
-//         uidError.style.display = "none";
-//     }
-// });
+    // // Validation for RID input field
+    // ridInput.addEventListener("input", function () {
+    //     const sanitizedValue = ridInput.value.replace(/\s+/g, ""); // Remove spaces
+    //     const isOnlyDigits = /^\d*$/.test(sanitizedValue); // Check if only digits
 
-// // Validation for RID input field
-// ridInput.addEventListener("input", function () {
-//     const sanitizedValue = ridInput.value.replace(/\s+/g, ""); // Remove spaces
-//     const isOnlyDigits = /^\d*$/.test(sanitizedValue); // Check if only digits
+    //     // If not 29 digits or contains non-digit characters, show error
+    //     if ((sanitizedValue.length !== 29 && sanitizedValue.length !== 0) || !isOnlyDigits) {
+    //         ridInput.classList.add("is-invalid");
+    //         ridError.style.display = "block";
+    //     } else {
+    //         ridInput.classList.remove("is-invalid");
+    //         ridError.style.display = "none";
+    //     }
+    // });
 
-//     // If not 29 digits or contains non-digit characters, show error
-//     if ((sanitizedValue.length !== 29 && sanitizedValue.length !== 0) || !isOnlyDigits) {
-//         ridInput.classList.add("is-invalid");
-//         ridError.style.display = "block";
-//     } else {
-//         ridInput.classList.remove("is-invalid");
-//         ridError.style.display = "none";
-//     }
-// });
-
-
-   
-    
     // Event listeners
     function handleNationalIdSelection() {
         const selectElement = document.getElementById("have-national-id-selection");
         const uidDiv = document.getElementById("uid-div");
         const ridDiv = document.getElementById("rid-div");
-        
+
         const uidInput = document.getElementById("uid_input");
         const ridInput = document.getElementById("rid_input");
         const uidError = document.getElementById("uid_error");
         const ridError = document.getElementById("rid_error");
-
 
         // Const ridInput = document.getElementById("rid_input");
         // Const uidInput = document.getElementById("uid_input");
@@ -275,9 +270,104 @@ $(document).ready(function () {
         ridError.style.display = "none";
     }
 
+    function handleSelection(selectElementId, divElementId, inputElementId) {
+        const selectElement = document.getElementById(selectElementId);
+        const divElement = document.getElementById(divElementId);
+        const inputElement = document.getElementById(inputElementId);
 
+        const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
+            .trim()
+            .toLowerCase();
 
-   function handlePhoneNumberSelection() {
+        if (selectedOptionText === "yes") {
+            divElement.style.display = "block";
+            inputElement.setAttribute("required", "required");
+        } else {
+            divElement.style.display = "none";
+            inputElement.removeAttribute("required");
+        }
+    }
+
+    // Function handlePrimaryCoopSelection(){
+    //     const selectElement = document.getElementById("is_member_of_primary_coop");
+    //     const primaryCoopDiv = document.getElementById("primary_coop_div");
+    //     const primaryCoop = document.getElementById("name_of_primary_coop");
+
+    //     const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
+    //         .trim()
+    //         .toLowerCase();
+
+    //     if (selectedOptionText === "yes") {
+    //         primaryCoopDiv.style.display = "block";
+    //         primaryCoop.setAttribute("required", "required");
+
+    //     } else if (selectedOptionText === "no") {
+    //         primaryCoopDiv.style.display = "none";
+    //         primaryCoop.removeAttribute("required");
+
+    //     } else {
+    //         primaryCoopDiv.style.display = "none";
+    //         primaryCoop.removeAttribute("required");
+
+    //     }
+
+    // }
+
+    // function handleCoopUnionSelection(){
+    //     const selectElement = document.getElementById("is_member_of_coop_union");
+    //     const CoopUnionDiv = document.getElementById("coop_div");
+    //     const CoopUnion = document.getElementById("name_of_coop_union");
+
+    //     const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
+    //         .trim()
+    //         .toLowerCase();
+
+    //     if (selectedOptionText === "yes") {
+    //         CoopUnionDiv.style.display = "block";
+    //         CoopUnion.setAttribute("required", "required");
+
+    //     } else if (selectedOptionText === "no") {
+    //         CoopUnionDiv.style.display = "none";
+    //         CoopUnion.removeAttribute("required");
+
+    //     } else {
+    //         CoopUnionDiv.style.display = "none";
+    //         CoopUnion.removeAttribute("required");
+
+    //     }
+
+    // }
+
+    function handleClusterSelection() {
+        const selectElement = document.getElementById("in_farmer_cluster");
+        const primaryCommodityDiv = document.getElementById("commodity_div");
+        const primaryCommodity = document.getElementById("primary_commodity");
+        const roleDiv = document.getElementById("role_div");
+        const clusterRole = document.getElementById("role_in_cluster");
+
+        const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
+            .trim()
+            .toLowerCase();
+
+        if (selectedOptionText === "yes") {
+            primaryCommodityDiv.style.display = "block";
+            primaryCommodity.setAttribute("required", "required");
+            roleDiv.style.display = "block";
+            clusterRole.setAttribute("required", "required");
+        } else if (selectedOptionText === "no") {
+            primaryCommodityDiv.style.display = "none";
+            primaryCommodity.removeAttribute("required");
+            roleDiv.style.display = "none";
+            clusterRole.removeAttribute("required");
+        } else {
+            primaryCommodityDiv.style.display = "none";
+            primaryCommodity.removeAttribute("required");
+            roleDiv.style.display = "none";
+            clusterRole.removeAttribute("required");
+        }
+    }
+
+    function handlePhoneNumberSelection() {
         const selectElement = document.getElementById("have-phone-no-selection");
         const primaryPhoneDiv = document.getElementById("primary-div");
         const otherPhoneDiv = document.getElementById("other-div");
@@ -364,8 +454,27 @@ $(document).ready(function () {
 
     // Event listener for national ID selection change
     $("#have-national-id-selection").on("change", handleNationalIdSelection);
+
     // Event listener for phone number selection change
     $("#have-phone-no-selection").on("change", handlePhoneNumberSelection);
+
+    $("#is_member_of_primary_coop").on("change", function () {
+        handleSelection("is_member_of_primary_coop", "primary_coop_div", "name_of_primary_coop");
+    });
+
+    $("#is_member_of_coop_union").on("change", function () {
+        handleSelection("is_member_of_coop_union", "coop_div", "name_of_coop_union");
+    });
+
+    $("#access-to-machinery-selection").on("change", function () {
+        handleSelection("access-to-machinery-selection", "machinery_div", "machinery-types-select");
+    });
+
+    $("#access-to-finance-selection").on("change", function () {
+        handleSelection("access-to-finance-selection", "financial_div", "finance-selection");
+    });
+
+    $("#in_farmer_cluster").on("change", handleClusterSelection);
 
     $("#access-to-machinery-selection").on("change", function () {
         toggleField("access-to-machinery-selection", "machinery-field", "machinery-types-select");
@@ -511,11 +620,28 @@ function validateInput(inputElement) {
 //         }
 //     }
 // }
+function validateMultiSelect(selectElement) {
+    const selectedOptions = $(selectElement).val();
+    const isValid = selectedOptions && selectedOptions.length > 0;
 
+    // Wrapper of the selectpicker
+    const selectWrapper = $(selectElement).parent().find(".dropdown-toggle");
+
+    // Add or remove the 'is-invalid' class based on the validation
+    if (!isValid) {
+        selectWrapper.addClass("is-invalid");
+    } else {
+        selectWrapper.removeClass("is-invalid");
+    }
+
+    return isValid;
+}
 // eslint-disable-next-line no-unused-vars
 function validateElement(element) {
     // Check if the element is a select or an input field
-    if (element.tagName === "SELECT") {
+    if (element.tagName === "SELECT" && element.multiple) {
+        return validateMultiSelect(element);
+    } else if (element.tagName === "SELECT") {
         validateSelect(element);
     } else if (element.tagName === "INPUT") {
         validateInput(element);
@@ -525,10 +651,11 @@ function validateElement(element) {
 function validateUID() {
     const uid = document.getElementById("uid_input");
     const uidError = document.getElementById("uid_error");
-    // const isValid = uid.value.length === 12 && /^\d+$/.test(uid.value);
-    const isValid = uid.value.replace(/\s+/g, "").length === 12 && /^\d+$/.test(uid.value.replace(/\s+/g, ""));
+    // Const isValid = uid.value.length === 12 && /^\d+$/.test(uid.value);
+    const isValid =
+        uid.value.replace(/\s+/g, "").length === 12 && /^\d+$/.test(uid.value.replace(/\s+/g, ""));
     uid.classList.toggle("is-invalid", !isValid);
-    // uid.classList.toggle("is-valid", isValid); // Add this line
+    // Uid.classList.toggle("is-valid", isValid); // Add this line
     uidError.style.display = isValid ? "none" : "block";
     return isValid;
 }
@@ -552,29 +679,23 @@ function validateUID() {
 //     return isValid;
 // }
 
-
 function validateRID() {
     const rid = document.getElementById("rid_input");
     const ridError = document.getElementById("rid_error");
-    // const isValid = rid.value.length === 29 && /^\d+$/.test(rid.value);
-    const isValid = rid.value.replace(/\s+/g, "").length === 29 && /^\d+$/.test(rid.value.replace(/\s+/g, ""));
+    // Const isValid = rid.value.length === 29 && /^\d+$/.test(rid.value);
+    const isValid =
+        rid.value.replace(/\s+/g, "").length === 29 && /^\d+$/.test(rid.value.replace(/\s+/g, ""));
     rid.classList.toggle("is-invalid", !isValid);
-    // rid.classList.toggle("is-valid", isValid); // Add this line
+    // Rid.classList.toggle("is-valid", isValid); // Add this line
     ridError.style.display = isValid ? "none" : "block";
     return isValid;
 }
 
-
-
 // Apply the function to both UID and RID inputs
-
 
 // Add event listeners for real-time validation
 // uidInput.addEventListener("input", validateUID);
 // ridInput.addEventListener("input", validateRID);
-
-
-
 
 function validateRadioButtons(radioName, section) {
     const radioGroup = section.querySelectorAll(`input[name="${radioName}"]`);
@@ -597,6 +718,21 @@ function validateRadioButtons(radioName, section) {
     return radioChecked;
 }
 
+function validateFileInput(input) {
+    const fileError = document.getElementById("file-error"); // Ensure this ID exists in your HTML
+
+    if (input.files.length === 0) {
+        // Show error if no file is uploaded
+        input.classList.add("is-invalid");
+        fileError.style.display = "block";
+        return false;
+    }
+    // Hide error if file is uploaded
+    input.classList.remove("is-invalid");
+    fileError.style.display = "none";
+    return true;
+}
+
 function validateSection(sectionId) {
     const section = document.getElementById(sectionId);
     const requiredFields = section.querySelectorAll("[required]");
@@ -612,6 +748,12 @@ function validateSection(sectionId) {
         if (field.type === "radio") {
             // Validate radio buttons in this section
             isFieldValid = validateRadioButtons(field.name, section);
+        } else if (field.tagName === "SELECT" && field.multiple) {
+            // Validate multi-select fields
+            isFieldValid = validateMultiSelect(field);
+        } else if (field.type === "file") {
+            // Validate file input field
+            isFieldValid = validateFileInput(field);
         } else {
             // Validate non-radio fields
             isFieldValid = field.value.trim() !== "";
@@ -624,7 +766,7 @@ function validateSection(sectionId) {
         }
 
         // Apply 'is-invalid' class for non-radio fields
-        if (field.type !== "radio") {
+        if (field.type !== "radio" && field.type !== "file") {
             field.classList.toggle("is-invalid", !isFieldValid);
         }
 
@@ -657,8 +799,7 @@ function validateSection(sectionId) {
     return valid;
 }
 
-
-// function validateSection(sectionId) {
+// Function validateSection(sectionId) {
 //     const section = document.getElementById(sectionId);
 //     const requiredFields = section.querySelectorAll("[required]");
 //     let valid = true;
@@ -682,7 +823,6 @@ function validateSection(sectionId) {
 
 //     return valid;
 // }
-
 
 // Let previousSection = "id-section";
 
@@ -770,7 +910,6 @@ function showSection(sectionId, element, fromGroup = false) {
 //     }
 // }
 
-
 function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
 
     const isSectionValid = validateSection(currentSectionId);
@@ -785,6 +924,10 @@ function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
     }
 }
 
+// Call resetFormFields() when opening the modal
+$("#farmerDetailModal").on("show.bs.modal", function () {
+    resetFormFields();
+});
 
 function toggleFieldBasedOnSelect(
     fieldIdToToggle,
