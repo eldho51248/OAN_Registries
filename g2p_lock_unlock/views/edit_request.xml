@@ -35,7 +35,8 @@
             <sheet>
                 <group>
                     <field name="requested_by" readonly="1"/>
-                    <field name="partner_id" readonly="1" string="Changed Record"/>
+                    <field name="partner_id" readonly="1" string="Changed Record" context="{'form_view_ref': 'g2p_registry_individual.view_individuals_form'}"/>
+
                     <!-- <field name="new_values" /> -->
 <!--                    <field name="update_message" string="Changes" widget="html"/>-->
                     <field name="validator" readonly="1"/>
@@ -53,7 +54,7 @@
     <field name="arch" type="xml">
         <tree class="text-left">
                 <field name="requested_by" readonly="1"/>
-                <field name="partner_id" readonly="1" string="Changed Record"/>
+                <field name="partner_id" readonly="1" string="Changed Record" context="{'form_view_ref': 'g2p_registry_individual.view_individuals_form'}"/>
 <!--                <field name="update_message" string="Changes" readonly="1"/>-->
                 <field name="validator" readonly="1"/>
                 <field name="state" readonly="1"/>

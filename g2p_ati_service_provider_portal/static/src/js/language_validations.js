@@ -22,9 +22,6 @@ function updateLanguage(langElement) {
     const gfNameAmh = document.getElementById("gf_name_amh");
     const amhNamesReq = document.getElementsByClassName("amh_names_required");
 
-    // Console.log(selectedValue);
-    // console.log(primaryLang);
-
     const selectedLang = primaryLang.find((lang) => parseInt(lang.value, 10) === parseInt(selectedValue, 10));
 
     const allowedLanguages = ["Afaan Oromoo", "Afar", "Tigrinya", "Somali"];

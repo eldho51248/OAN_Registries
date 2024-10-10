@@ -911,6 +911,7 @@ function showSection(sectionId, element, fromGroup = false) {
 // }
 
 function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
+
     const isSectionValid = validateSection(currentSectionId);
 
     if (isSectionValid) {
@@ -928,138 +929,6 @@ $("#farmerDetailModal").on("show.bs.modal", function () {
     resetFormFields();
 });
 
-// Function toggleFieldBasedOnRadio(inputName, fieldIdToToggle, selectElementId, toggleValue = "Yes") {
-//     const radios = document.querySelectorAll(`input[name="${inputName}"]`);
-//     let shouldShowField = false;
-
-//     radios.forEach((radio) => {
-//         if (radio.checked && radio.dataset.text === toggleValue) {
-//             shouldShowField = true;
-//         }
-//     });
-
-//     const fieldToToggle = document.getElementById(fieldIdToToggle);
-//     fieldToToggle.style.display = shouldShowField ? "block" : "none";
-//     const selectElement = document.getElementById(selectElementId);
-//     if (shouldShowField === true) {
-//         selectElement.setAttribute("required", "required");
-//     } else if (shouldShowField === false) {
-//         selectElement.removeAttribute("required");
-//     }
-// }
-
-// document.addEventListener("DOMContentLoaded", function () {
-//     // Initial check on page load
-//     checkRequired();
-//     toggleFieldBasedOnRadio("is_member_of_primary_coop", "primary-coop-field", "name_of_primary_coop");
-//     toggleFieldBasedOnRadio("is_member_of_coop_union", "coop-union-field", "name_of_coop_union");
-//     toggleFieldBasedOnRadio("in_farmer_cluster", "primary-commodity-field", "primary_commodity");
-//     toggleFieldBasedOnRadio("in_farmer_cluster", "role-in-cluster-field", "role_in_cluster");
-
-//     // Attach event listeners to the radio buttons
-//     const primaryCoopRadios = document.querySelectorAll('input[name="is_member_of_primary_coop"]');
-//     primaryCoopRadios.forEach((radio) => {
-//         radio.addEventListener("change", function () {
-//             toggleFieldBasedOnRadio(
-//                 "is_member_of_primary_coop",
-//                 "primary-coop-field",
-//                 "name_of_primary_coop"
-//             );
-//         });
-//     });
-
-//     const coopUnionRadios = document.querySelectorAll('input[name="is_member_of_coop_union"]');
-//     coopUnionRadios.forEach((radio) => {
-//         radio.addEventListener("change", function () {
-//             toggleFieldBasedOnRadio("is_member_of_coop_union", "coop-union-field", "name_of_coop_union");
-//         });
-//     });
-
-//     const isMemberRadios = document.querySelectorAll('input[name="in_farmer_cluster"]');
-//     isMemberRadios.forEach((radio) => {
-//         radio.addEventListener("change", function () {
-//             toggleFieldBasedOnRadio("in_farmer_cluster", "primary-commodity-field", "primary_commodity");
-//             toggleFieldBasedOnRadio("in_farmer_cluster", "role-in-cluster-field", "role_in_cluster");
-//         });
-//     });
-// });
-
-// function toggleFieldBasedOnSelect(
-//     fieldIdToToggle,
-//     value,
-//     toggleValue = "Yes",
-//     other = false,
-//     otherInputIdToClear,
-//     selectionFieldIdToClear
-// ) {
-//     const shouldShowField = value === toggleValue;
-//     console.log("inherrrerererre1");
-//     console.log(otherInputIdToClear, selectionFieldIdToClear )
-
-//     const selectionFieldToClear = document.getElementById(selectionFieldIdToClear);
-//     const otherInputToClear = document.getElementById(otherInputIdToClear);
-
-//     if (!shouldShowField) {
-
-//         if (selectionFieldToClear) {
-//             selectionFieldToClear.selectedIndex = 0;
-//         } else {
-//             console.warn(`Warning: Invalid input ID provided: ${selectionFieldIdToClear}`);
-//         }
-
-//         if (otherInputToClear) {
-//             otherInputToClear.value = "";
-//         } else {
-//             console.warn(`Warning: Invalid input ID provided: ${otherInputIdToClear}`);
-//         }
-//     }
-
-//         const fieldToToggle = document.getElementById(fieldIdToToggle);
-
-//         if (fieldToToggle) {
-//             fieldToToggle.style.display = shouldShowField ? "block" : "none";
-//         } else {
-//             console.error(`Warning: Invalid field ID provided: ${fieldIdToToggle}`);
-//         }
-
-// }
-
-//   document.addEventListener("DOMContentLoaded", function () {
-
-//     function setupSelectChangeHandler(selectId, fieldIdsToToggle,  toggleValue = "Yes", otherInputIdToClear,selectionFieldIdToClear) {
-
-//       const selectElement = document.getElementById(selectId);
-
-//       console.log("in selelct handler")
-//       console.log(otherInputIdToClear,selectionFieldIdToClear)
-
-//       selectElement.addEventListener("change", function () {
-
-//         console.log("inside select handler  in  handler")
-//         console.log(otherInputIdToClear,selectionFieldIdToClear)
-
-//         const selectedOption = selectElement.options[selectElement.selectedIndex];
-//         toggleFieldBasedOnSelect(fieldIdsToToggle=fieldIdsToToggle, value=selectedOption.text, toggleValue = "Yes",
-//             otherInputIdToClear,
-//             selectionFieldIdToClear)
-//       });
-
-//       const initialSelectedOption =
-//         selectElement.options[selectElement.selectedIndex];
-//       toggleFieldBasedOnSelect(
-//         selectId,
-//         fieldIdToToggle,
-//         initialSelectedOption.text
-//       );
-//     }
-
-//     setupSelectChangeHandler(selectId="is_member_of_primary_coop",fieldIdsToToggle="primary-coop-field", otherInputIdToClear="other_primary_coop",selectionFieldIdToClear="name_of_primary_coop")
-//     setupSelectChangeHandler("is_member_of_coop_union", "coop-union-field");
-//     setupSelectChangeHandler("in_farmer_cluster", "primary-commodity-field");
-//     setupSelectChangeHandler("in_farmer_cluster", "role-in-cluster-field");
-
-//   });
-
 function toggleFieldBasedOnSelect(
     fieldIdToToggle,
     value,
@@ -1069,6 +938,7 @@ function toggleFieldBasedOnSelect(
     containerId,
     containerId2
 ) {
+
     const shouldShowField = value === toggleValue;
 
     const selectionFieldToClear = document.getElementById(selectionFieldIdToClear);
