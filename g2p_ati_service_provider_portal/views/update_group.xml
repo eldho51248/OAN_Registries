@@ -2402,19 +2402,20 @@
                                                                                                         type="file"
                                                                                                         id="land_certificate_0"
                                                                                                         name="land_certificate_0"
-                                                                                                        class="form-control land_required_field"
+                                                                                                        class="form-control"
                                                                                                         onchange="updateFileName(this)"
-                                                                                                        required="required"
                                                                                                     />
-                                                                                                    <small
-                                                                                                        id="file-error"
-                                                                                                        class="text-danger"
-                                                                                                        style="display:none;"
-                                                                                                    >
-                                                                                                    Please
-                                                                                                    upload
-                                                                                                    a
-                                                                                                    file.</small>
+
+<!--                                                                                                    <small-->
+<!--                                                                                                        id="file-error"-->
+<!--                                                                                                        class="text-danger"-->
+<!--                                                                                                        style="display:none;"-->
+<!--                                                                                                    >-->
+<!--                                                                                                    Please-->
+<!--                                                                                                    upload-->
+<!--                                                                                                    a-->
+<!--                                                                                                    file.</small>-->
+
 
                                                                                                 </div>
                                                                                             </div>

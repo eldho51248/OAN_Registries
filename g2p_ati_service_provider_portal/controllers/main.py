@@ -1646,9 +1646,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     "total_land_area": land_info.total_land_area,
                     "land_id": land_info.land_id,
                     "ownership_type_selection_id": ownership_selection_id,
+                    "certificate_id": land_info.land_certificate.url,
                     "land_certificate": land_certificate,
 
-            
                 })
         return land_info_data
 
