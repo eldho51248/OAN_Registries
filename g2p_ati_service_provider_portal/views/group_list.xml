@@ -14,7 +14,10 @@
 
                     <div class="d-flex flex-row justify-content-between align-items-start">
                         <div class="d-flex flex-column justify-content-start">
-                            <h5 style="font: normal 600 18px / 22px Inter !important;" class="all-title">Household List</h5>
+                            <h5
+                                style="font: normal 600 18px / 22px Inter !important;"
+                                class="all-title"
+                            >Household List</h5>
 
                             <ol class="breadcrumb bg-transparent d-flex flex-col ">
                                 <li class="breadcrumb-item">

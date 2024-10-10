@@ -87,9 +87,13 @@ function applySelectionFilter(selectionValue, isGroup) {
         } else {
             cellValue2 = row.cells[2].innerText.trim().replace(/\s/g, "");
         }
+
+       
         const selectedText = selectionValue.options[selectionValue.selectedIndex].text
             .trim()
             .replace(/\s/g, "");
+        
+
         return cellValue2 === selectedText || selectedText === "Region";
     });
 }
@@ -248,13 +252,13 @@ function compareCellValues(rowA, rowB, columnIndex) {
         // If date column, compare dates
         const dateA = new Date(cellA);
         const dateB = new Date(cellB);
-        return dateA - dateB; // Ascending order (swap for descending if needed)
+        return dateA - dateB;
     }
     // Otherwise, perform normal string or number comparison
     if (!isNaN(cellA) && !isNaN(cellB)) {
-        return Number(cellA) - Number(cellB); // Numeric comparison
+        return Number(cellA) - Number(cellB);
     }
-    return cellA.localeCompare(cellB); // String comparison
+    return cellA.localeCompare(cellB);
 }
 
 allheadercells.forEach(function (th) {

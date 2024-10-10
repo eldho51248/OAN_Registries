@@ -15,7 +15,10 @@
                     <div class="d-flex flex-row justify-content-between">
 
                         <div class="d-flex flex-column  justify-content-start ">
-                            <h5 style="font: normal 600 18px / 22px Inter !important;" class="all-title">Farmer List</h5>
+                            <h5
+                                style="font: normal 600 18px / 22px Inter !important;"
+                                class="all-title"
+                            >Farmer List</h5>
 
                             <ol class="breadcrumb bg-transparent d-flex flex-col ">
                                 <li class="breadcrumb-item">
@@ -242,7 +245,7 @@
                 <div id="page-buttons" class="pagination justify-content-center">
 
                 </div>
-                
+
                 <script
                     type="text/javascript"
                     src="/g2p_ati_service_provider_portal/static/src/js/table_pagination_and_row.js"

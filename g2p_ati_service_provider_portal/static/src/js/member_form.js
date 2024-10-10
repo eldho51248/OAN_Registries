@@ -1,5 +1,8 @@
 // Date restriction
 $(document).ready(function () {
+    // Initialize select picker on page load
+    $(".selectpicker").selectpicker();
+
     $(".date-picker").each(function () {
         var input = this;
         var today = new Date().toISOString().split("T")[0];
@@ -44,18 +47,34 @@ function hideToast() {
 }
 
 function resetFormFields() {
-    
+
     // Reset text inputs, email, and password fields
-    $("#farmerDetailModal input[type='text'], #farmerDetailModal input[type='email'], #farmerDetailModal input[type='password']").val("");
+    $(
+        "#farmerDetailModal input[type='text'], #farmerDetailModal input[type='email'], #farmerDetailModal input[type='password']"
+    ).val("");
 
     // Uncheck checkboxes and radio buttons
-    $("#farmerDetailModal input[type='checkbox'], #farmerDetailModal input[type='radio']").prop("checked", false);
+    $("#farmerDetailModal input[type='checkbox'], #farmerDetailModal input[type='radio']").prop(
+        "checked",
+        false
+    );
 
     // Reset select dropdowns to the first option
     $("#farmerDetailModal select").prop("selectedIndex", 0).trigger("change");
 
-    // Clear multi-select fields
-    $("#farmerDetailModal select[multiple]").val([]).trigger("change");
+    // Reset all multi-select pickers using .dropdown-toggle
+    var $select = $(this);
+    $select.val([]); // Clear selected options
+
+    // Trigger the change event for any multi-select libraries being used
+    $select.trigger("change"); // For libraries like Select2 or Bootstrap Select
+
+    // Optionally reset the visible text if using Bootstrap Select or similar
+    if ($select.hasClass("selectpicker")) {
+        $select.selectpicker("val", ""); // For Bootstrap Select
+    } else if ($select.hasClass("select2")) {
+        $select.val(null).trigger("change"); // For Select2
+    }
 
     // Reset number and date fields to their default state
     $("#farmerDetailModal input[type='number'], #farmerDetailModal input[type='date']").val("");
@@ -64,18 +83,101 @@ function resetFormFields() {
     $("#farmerDetailModal textarea").val("");
 
     // Reset any additional inputs or fields as necessary
-    
-    $("#farmerDetailModal input[type='file']").val("");
+
+    $("#farmerDetailModal input[type='file']").each(function () {
+        var $fileInput = $(this);
+
+        // Clone the input field, but do not clone data or event handlers for debugging
+        var newFileInput = $fileInput.clone(false);
+       
+
+        newFileInput.val(""); 
+
+        // Replace the original input with the cloned input
+        $fileInput.replaceWith(newFileInput);
+
+        // Reattach the onchange event for updating the file name
+        newFileInput.on("change", function () {
+            updateFileName(this);  
+        });
+
+        // Reset the label text to "Upload"
+        var inputId = newFileInput.attr('id');
+        var label = $('label[for="' + inputId + '"]');
+        var uploadText = label.find('.upload-text');
+        uploadText.text('Upload');  
+        
+    });
 }
 
+function resetUpdateFields() {
+    // Reset text inputs, email, and password fields
+    $(
+        "#farmerDetailModal input[type='text'], #farmerDetailModal input[type='email'], #farmerDetailModal input[type='password']"
+    ).val("");
+
+    // Uncheck checkboxes and radio buttons
+    $("#farmerDetailModal input[type='checkbox'], #farmerDetailModal input[type='radio']").prop(
+        "checked",
+        false
+    );
+
+    // Reset select dropdowns to the first option
+    $("#farmerDetailModal select").prop("selectedIndex", 0).trigger("change");
+
+    // Reset all multi-select pickers using .dropdown-toggle
+    var $select = $(this);
+    $select.val([]); // Clear selected options
+
+    // Trigger the change event for any multi-select libraries being used
+    $select.trigger("change"); // For libraries like Select2 or Bootstrap Select
+
+    // Optionally reset the visible text if using Bootstrap Select or similar
+    if ($select.hasClass("selectpicker")) {
+        $select.selectpicker("val", ""); 
+    } else if ($select.hasClass("select2")) {
+        $select.val(null).trigger("change"); 
+    }
+
+    // Reset number and date fields to their default state
+    $("#farmerDetailModal input[type='number'], #farmerDetailModal input[type='date']").val("");
+
+    // Clear textarea fields
+    $("#farmerDetailModal textarea").val("");
+
+    // Reset any additional inputs or fields as necessary
+
+    $("#farmerDetailModal input[type='file']").each(function () {
+        var $fileInput = $(this);
+      
+
+        // Clone the input field, but do not clone data or event handlers for debugging
+        var newFileInput = $fileInput.clone(false);
+
+
+        newFileInput.val("");  
+
+        // Replace the original input with the cloned input
+        $fileInput.replaceWith(newFileInput);
+
+        // Reattach the onchange event for updating the file name
+        newFileInput.on("change", function () {
+            updateFileName(this);  
+        });
+
+        // Reset the label text to "Upload"
+        var inputId = newFileInput.attr('id');
+        var label = $('label[for="' + inputId + '"]');
+        var uploadText = label.find('.upload-text');
+        uploadText.text('Upload');  
+    });
+}
 
 // eslint-disable-next-line no-unused-vars
 function resetFormFieldsMember() {
     $("#familyMemberModal input, #familyMemberModal select").val("");
     $("#familyMemberModal input[type='radio']").prop("checked", false);
-    $("#livestock_water_source").val([]).trigger('change');
-
-    
+    $("#livestock_water_source").val([]).trigger("change");
 }
 
 // Replace button
@@ -88,14 +190,14 @@ function resetFormFieldsMember() {
 
 $(document).on("click", "#member_submit", async function () {
 
-    const isSectionValid = validateSection('access-to-resource');
+    const isSectionValid = validateSection("access-to-resource");
 
-    if (!isSectionValid){
-        return
+
+    if (!isSectionValid) {
+        return;
     }
 
-    $(this).prop('disabled', true);
-
+    $(this).prop("disabled", true);
 
     var additional_info = {};
 
@@ -103,6 +205,7 @@ $(document).on("click", "#member_submit", async function () {
 
     var region = document.getElementById("region_selection").value;
     var zone = document.getElementById("zon_selection").value;
+
     var woreda = document.getElementById("woreda_selection").value;
 
     var kebele = document.getElementById("kebele_selection").value;
@@ -376,17 +479,19 @@ $(document).on("click", "#member_submit", async function () {
         },
         dataType: "json",
         success: function (response) {
+            // Window.location.href = window.location.pathname + "?section=farmer-details";
             console.log("Ajax request successful");
             console.log("Response:", response);
+
             if (response.member_list) {
+                resetUpdateFields();
                 resetFormFields();
+
                 var member_list = response.member_list;
                 if (member_list) {
- 
                     modal.modal("hide");
                     resetFormFields();
 
-                    console.log("member_list[0].group_id :", member_list[0].group_id);
                     $("input[name='group_id']").val(member_list[0].group_id);
                     $(".no_list").css("display", "none");
 
@@ -397,27 +502,32 @@ $(document).on("click", "#member_submit", async function () {
                     member_list.forEach(function (member, index) {
                         $(".mem-list").css("display", "block");
                         var serialNumber = index + 1;
+                        var isHouseholdHead =
+                            member.hh_is_household_head === "yes"
+                                ? `<span style="background-color: #06916b; font-size: 0.75rem;" class="rounded-pill text-white py-1 px-2">Yes</span>`
+                                : `<span style="background-color: red; font-size: 0.75rem;" class="rounded-pill text-white py-1 px-2">No</span>`;
                         var newRowHtml = `
                             <tr data-member-id="${member.id}">
                             <td>${serialNumber}</td>
                             <td style="color:#704880; font: normal normal 600 13px/16px Inter;">${member.name}</td>
                             <td>${member.age}</td>
                             <td>${member.gender}</td>
-                            <td>${member.hh_is_household_head}</td>
+
+                            <td class="fw-bold text-center">
+                ${isHouseholdHead}
+            </td>
 
                             <td>
                                  <a href="/serviceprovider/individual/update/${member.id}" class="btn btn-icon rounded-0 edit-btn" title="Edit">
                                     <i class="fa fa-pencil"></i>
                                 </a>
-                                <button type="button" class="btn btn-outline-secondary btn-sm my-3" onclick="deleteMember(this)">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
+
                             </td>
                             </tr>
                             `;
                         tableBody.append(newRowHtml);
                     });
-                    $("#member_submit").prop('disabled', false);
+                    $("#member_submit").prop("disabled", false);
                 }
             } else {
                 console.error("Failed to create individual");
@@ -665,7 +775,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (hasOthers) {
             otherField.style.display = "block";
         } else {
-            console.log("hiiii");
             otherField.style.display = "none";
         }
     }
@@ -696,6 +805,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Initial check when the modal is shown
     $("#farmerDetailModal").on("shown.bs.modal", function () {
+        resetFormFields();
         handleOtherFields("hh_income_type", "otherModalIncomeField");
         handleOtherFields("name_of_primary_coop", "otherModalPrimaryCoopField");
         handleOtherFields("name_of_coop_union", "otherModalCoopUnionField");

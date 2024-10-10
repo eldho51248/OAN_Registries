@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template
         id="ati_update_group_form_template"
@@ -172,8 +172,7 @@
                                                                         class="s_website_form_label_content"
                                                                     >
                                                                         Region</span>
-                                                                    <span
-                                                                        class="s_website_form_mark">
+                                                                    <span class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <div class="row">
@@ -194,8 +193,7 @@
                                                                                     t-att-value="option.id"
                                                                                     t-att-selected="option.id == group.region.id"
                                                                                 >
-                                                                                    <t
-                                                                                        t-esc="option.name" />
+                                                                                    <t t-esc="option.name" />
                                                                                 </option>
                                                                             </t>
                                                                         </select>
@@ -213,8 +211,7 @@
                                                                         class="s_website_form_label_content"
                                                                     >
                                                                         Zone</span>
-                                                                    <span
-                                                                        class="s_website_form_mark">
+                                                                    <span class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <div class="row">
@@ -227,14 +224,12 @@
                                                                             onchange="validateElement(this)"
                                                                         >
                                                                             <option value="">Select</option>
-                                                                            <t t-foreach="zone"
-                                                                                t-as="option">
+                                                                            <t t-foreach="zone" t-as="option">
                                                                                 <option
                                                                                     t-att-value="option.id"
                                                                                     t-att-selected="option.id == group.zone.id"
                                                                                 >
-                                                                                    <t
-                                                                                        t-esc="option.name" />
+                                                                                    <t t-esc="option.name" />
                                                                                 </option>
                                                                             </t>
                                                                         </select>
@@ -254,8 +249,7 @@
                                                                         class="s_website_form_label_content"
                                                                     >
                                                                         Woreda</span>
-                                                                    <span
-                                                                        class="s_website_form_mark">
+                                                                    <span class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <div class="row">
@@ -276,8 +270,7 @@
                                                                                     t-att-value="option.id"
                                                                                     t-att-selected="option.id == group.woreda.id"
                                                                                 >
-                                                                                    <t
-                                                                                        t-esc="option.name" />
+                                                                                    <t t-esc="option.name" />
                                                                                 </option>
                                                                             </t>
                                                                         </select>
@@ -295,8 +288,7 @@
                                                                         class="s_website_form_label_content"
                                                                     >
                                                                         Kebele</span>
-                                                                    <span
-                                                                        class="s_website_form_mark">
+                                                                    <span class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
                                                                 <div class="row">
@@ -317,8 +309,7 @@
                                                                                     t-att-value="option.id"
                                                                                     t-att-selected="option.id == group.kebele.id"
                                                                                 >
-                                                                                    <t
-                                                                                        t-esc="option.name" />
+                                                                                    <t t-esc="option.name" />
                                                                                 </option>
                                                                             </t>
                                                                         </select>
@@ -381,8 +372,7 @@
 
                                                 </div>
 
-                                                <div
-                                                    class="section-footer d-flex justify-content-end">
+                                                <div class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-outline-secondary"
@@ -427,10 +417,12 @@
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
                                                                         >
                                                                             Gender</th>
-                                                                        <th class="text-center"
+                                                                        <th
+                                                                            class="text-center"
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
                                                                         >Household Head</th>
-                                                                        <th class="text-center"
+                                                                        <th
+                                                                            class="text-center"
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
                                                                         >
                                                                             Actions</th>
@@ -444,10 +436,8 @@
                                                                             t-as="individual"
                                                                         >
                                                                             <tr>
-                                                                                <td
-                                                                                    style="color:#b3b3b3;">
-                                                                                    <t
-                                                                                        t-out="counter" />
+                                                                                <td style="color:#b3b3b3;">
+                                                                                    <t t-out="counter" />
                                                                                 </td>
                                                                                 <td
                                                                                     style="color:#078148; font: normal normal 600 13px/16px Inter;"
@@ -461,21 +451,28 @@
                                                                                         t-out="individual['age']"
                                                                                     />
                                                                                 </td>
-                                                                                <td
-                                                                                    class="text-capitalize">
+                                                                                <td class="text-capitalize">
                                                                                     <t
                                                                                         t-out="individual['gender']"
                                                                                     />
                                                                                 </td>
-                                                                               
-                                                                                <td class="fw-bold text-center">
+
+                                                                                <td
+                                                                                    class="fw-bold text-center"
+                                                                                >
                                                                                     <t
                                                                                         t-if="individual['hh_is_household_head'] == 'yes'"
                                                                                     >
-                                                                                         <span style="background-color: #06916b; font-size: 0.75rem;" class="rounded-pill text-white  py-1 px-2">Yes</span>
+                                                                                         <span
+                                                                                            style="background-color: #06916b; font-size: 0.75rem;"
+                                                                                            class="rounded-pill text-white  py-1 px-2"
+                                                                                        >Yes</span>
                                                                                     </t>
                                                                                     <t t-else="">
-                                                                                        <span style="background-color: red; font-size: 0.75rem;" class=" rounded-pill text-white py-1 px-2">No</span>
+                                                                                        <span
+                                                                                            style="background-color: red; font-size: 0.75rem;"
+                                                                                            class=" rounded-pill text-white py-1 px-2"
+                                                                                        >No</span>
                                                                                     </t>
                                                                                 </td>
 
@@ -529,8 +526,7 @@
                                                                 </tbody>
                                                             </table>
                                                         </div>
-                                                        <div
-                                                            style="text-align: center; margin-top: 20px;">
+                                                        <div style="text-align: center; margin-top: 20px;">
                                                             <button
                                                                 type="button"
                                                                 data-bs-toggle="modal"
@@ -544,8 +540,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div
-                                                    class="section-footer d-flex justify-content-end">
+                                                <div class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-outline-secondary"
@@ -569,8 +564,7 @@
                                                     class="modal-dialog modal-dialog-centered"
                                                     role="document"
                                                 >
-                                                    <div
-                                                        class="modal-content beneficiary-modal-content">
+                                                    <div class="modal-content beneficiary-modal-content">
                                                         <div
                                                             class="card-header form-card-header"
                                                             style="margin:15px"
@@ -603,13 +597,15 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="section-content">
-                                                                    
-                                                                    
+
+
                                                                     <div class="row">
                                                                         <div class="col-lg-4">
                                                                             <div
 
+
                                                                                 class="s_website_form_field ">
+
 
                                                                                 <label
                                                                                     class="s_website_form_label"
@@ -656,16 +652,14 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div
-                                                                        class="container-fluid pl-3 pr-5">
+                                                                    <div class="container-fluid pl-3 pr-5">
                                                                         <hr class="land-separator" />
                                                                     </div>
                                                                     <div class="row">
                                                                         <div
                                                                             class="col-lg-6 col-md-6 col-sm-12"
                                                                         >
-                                                                            <div
-                                                                                class="s_website_form_field">
+                                                                            <div class="s_website_form_field">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                     for="name"
@@ -690,8 +684,7 @@
                                                                                     id="have-national-id-selection"
                                                                                     onchange="validateElement(this)"
                                                                                 >
-                                                                                    <option
-                                                                                        value="">
+                                                                                    <option value="">
                                                                                         Select</option>
                                                                                     <t
                                                                                         t-foreach="has_national_id"
@@ -789,8 +782,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div
-                                                                        class="container-fluid pl-3 pr-5">
+                                                                    <div class="container-fluid pl-3 pr-5">
                                                                         <hr class="land-separator" />
                                                                     </div>
                                                                     <div class="row">
@@ -825,8 +817,7 @@
                                                                                             onchange="validateElement(this); validateLang(this);"
                                                                                             id="primary_language"
                                                                                         >
-                                                                                            <option
-                                                                                                value="">
+                                                                                            <option value="">
                                                                                                 Select
                                                                                                 Language
                                                                                             </option>
@@ -1173,8 +1164,7 @@
                                                                         </div>
                                                                     </div>
 
-                                                                    <div
-                                                                        class="container-fluid pl-3 pr-5">
+                                                                    <div class="container-fluid pl-3 pr-5">
                                                                         <hr class="land-separator" />
                                                                     </div>
 
@@ -1214,8 +1204,7 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-lg-4">
-                                                                            <div
-                                                                                class="s_website_form_field">
+                                                                            <div class="s_website_form_field">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                 >
@@ -1232,8 +1221,7 @@
                                                                                 </label>
 
 
-                                                                                <div
-                                                                                    class="d-flex flex-wrap">
+                                                                                <div class="d-flex flex-wrap">
                                                                                     <div
                                                                                         t-foreach="gender"
                                                                                         t-as="option"
@@ -1527,8 +1515,7 @@
                                                                                     onchange="validateElement(this); checkFarmingType(this, true);"
                                                                                     id="farming-type-selection"
                                                                                 >
-                                                                                    <option
-                                                                                        value="">Select
+                                                                                    <option value="">Select
                                                                                         Farming Type
                                                                                     </option>
                                                                                     <t
@@ -1580,8 +1567,7 @@
                                                                     <div class="row">
 
                                                                         <div class="col-lg-6">
-                                                                            <div
-                                                                                class="s_website_form_field">
+                                                                            <div class="s_website_form_field">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                 >
@@ -1603,8 +1589,7 @@
                                                                                     onchange="validateElement(this)"
                                                                                     id="marital-status-selection"
                                                                                 >
-                                                                                    <option
-                                                                                        value="">Select
+                                                                                    <option value="">Select
                                                                                         Marital
                                                                                         Status</option>
                                                                                     <t
@@ -1623,8 +1608,7 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-lg-6">
-                                                                            <div
-                                                                                class="s_website_form_field">
+                                                                            <div class="s_website_form_field">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                 >
@@ -1646,8 +1630,7 @@
                                                                                     onchange="validateElement(this)"
                                                                                     id="education-level-selection"
                                                                                 >
-                                                                                    <option
-                                                                                        value="">Select
+                                                                                    <option value="">Select
                                                                                         Education
                                                                                         Level</option>
                                                                                     <t
@@ -1669,8 +1652,7 @@
 
                                                                     <div class="row">
                                                                         <div class="col-lg-6">
-                                                                            <div
-                                                                                class="s_website_form_field">
+                                                                            <div class="s_website_form_field">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                 >
@@ -1696,6 +1678,7 @@
                                                                                     data-live-search="true"
                                                                                     data-style="btn-custom"
                                                                                     style="width: 100%;"
+                                                                                    required="required"
                                                                                     data-none-selected-text="Select Source of Income"
                                                                                 >
                                                                                     <t
@@ -1720,8 +1703,7 @@
                                                                             id="otherModalIncomeField"
                                                                             style="display: none;"
                                                                         >
-                                                                            <div
-                                                                                class="s_website_form_field">
+                                                                            <div class="s_website_form_field">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                 >
@@ -1784,8 +1766,7 @@
                                                                     </div>
                                                                     <div class="row">
                                                                         <div class="col-lg-6">
-                                                                            <div
-                                                                                class="s_website_form_field">
+                                                                            <div class="s_website_form_field">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                     for="is_member_of_primary_coop"
@@ -1831,7 +1812,10 @@
 
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-lg-6">
+                                                                        <div
+                                                                            class="col-lg-6"
+                                                                            id="primary_coop_div"
+                                                                        >
                                                                             <div
                                                                                 class="s_website_form_field"
                                                                                 style="display: none;"
@@ -1857,8 +1841,7 @@
                                                                                     id="name_of_primary_coop"
                                                                                     onchange="validateElement(this)"
                                                                                 >
-                                                                                    <option
-                                                                                        value="">Select
+                                                                                    <option value="">Select
                                                                                         Primary
                                                                                         Cooperative
                                                                                     </option>
@@ -1910,8 +1893,7 @@
                                                                     </div>
                                                                     <div class="row">
                                                                         <div class="col-lg-6">
-                                                                            <div
-                                                                                class="s_website_form_field">
+                                                                            <div class="s_website_form_field">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                     for="is_member_of_coop_union"
@@ -1957,7 +1939,7 @@
 
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-lg-6">
+                                                                        <div class="col-lg-6" id="coop_div">
                                                                             <div
                                                                                 class="s_website_form_field"
                                                                                 style="display: none;"
@@ -1988,8 +1970,7 @@
                                                                                     id="name_of_coop_union"
                                                                                     onchange="validateElement(this)"
                                                                                 >
-                                                                                    <option
-                                                                                        value="">Select
+                                                                                    <option value="">Select
                                                                                         Cooperative
                                                                                         Union
                                                                                     </option>
@@ -2042,8 +2023,7 @@
 
                                                                     <div class="row">
                                                                         <div class="col-lg-6">
-                                                                            <div
-                                                                                class="s_website_form_field">
+                                                                            <div class="s_website_form_field">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                     for="is_member_in_farmer_cluster"
@@ -2065,8 +2045,7 @@
                                                                                         *
                                                                                     </span>
                                                                                 </label>
-                                                                                <div
-                                                                                    class="form-group">
+                                                                                <div class="form-group">
 
                                                                                     <select
                                                                                         class="form-select"
@@ -2076,8 +2055,7 @@
                                                                                     >
 
 
-                                                                                        <option
-                                                                                            value="">
+                                                                                        <option value="">
                                                                                             Select</option>
                                                                                         <t
                                                                                             t-foreach="is_member_in_farmer_cluster"
@@ -2088,7 +2066,8 @@
                                                                                                 t-att-value="option.id"
                                                                                             >
                                                                                                 <t
-                                                                                                    t-esc="option.name" />
+                                                                                                    t-esc="option.name"
+                                                                                                />
                                                                                             </option>
                                                                                         </t>
                                                                                     </select>
@@ -2100,7 +2079,10 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
-                                                                        <div class="col-lg-6">
+                                                                        <div
+                                                                            class="col-lg-6"
+                                                                            id="commodity_div"
+                                                                        >
                                                                             <div
                                                                                 class="s_website_form_field"
                                                                                 style="display: none;"
@@ -2132,8 +2114,7 @@
                                                                                     id="primary_commodity"
                                                                                     onchange="validateElement(this)"
                                                                                 >
-                                                                                    <option
-                                                                                        value="">Select
+                                                                                    <option value="">Select
                                                                                         Primary
                                                                                         Commodity
                                                                                     </option>
@@ -2152,7 +2133,7 @@
                                                                                 </select>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-lg-6">
+                                                                        <div class="col-lg-6" id="role_div">
                                                                             <div
                                                                                 class="s_website_form_field"
                                                                                 style="display: none;"
@@ -2182,8 +2163,7 @@
                                                                                     id="role_in_cluster"
                                                                                     onchange="validateElement(this)"
                                                                                 >
-                                                                                    <option
-                                                                                        value="">Select
+                                                                                    <option value="">Select
                                                                                         Role
                                                                                     </option>
                                                                                     <t
@@ -2245,13 +2225,11 @@
                                                                         </div>
                                                                     </div>
                                                                     <div id="section-content-land">
-                                                                        <div
-                                                                            id="land-section-content">
+                                                                        <div id="land-section-content">
                                                                             <div
                                                                                 class="container-fluid pl-3 pr-5"
                                                                             >
-                                                                                <hr
-                                                                                    class="land-separator" />
+                                                                                <hr class="land-separator" />
                                                                             </div>
                                                                             <div
                                                                                 class="land-section-wrapper"
@@ -2400,7 +2378,9 @@
                                                                                                     </span>
 
                                                                                                 </label>
-                                                                                                <div>
+                                                                                                <div
+                                                                                                    class="file-upload-wrapper"
+                                                                                                >
                                                                                                     <label
                                                                                                         for="land_certificate_0"
                                                                                                         class="custom-file-upload"
@@ -2426,6 +2406,15 @@
                                                                                                         onchange="updateFileName(this)"
                                                                                                         required="required"
                                                                                                     />
+                                                                                                    <small
+                                                                                                        id="file-error"
+                                                                                                        class="text-danger"
+                                                                                                        style="display:none;"
+                                                                                                    >
+                                                                                                    Please
+                                                                                                    upload
+                                                                                                    a
+                                                                                                    file.</small>
 
                                                                                                 </div>
                                                                                             </div>
@@ -2605,7 +2594,9 @@
                                                                                                         *
                                                                                                     </span>
                                                                                                 </label>
-                                                                                                <div>
+                                                                                                <div
+                                                                                                    class="file-upload-wrapper"
+                                                                                                >
                                                                                                     <label
                                                                                                         t-att-for="'land_certificate_' + str({9999})"
                                                                                                         class="custom-file-upload"
@@ -2631,6 +2622,15 @@
                                                                                                         onchange="updateFileName(this)"
                                                                                                         required="required"
                                                                                                     />
+                                                                                                    <small
+                                                                                                        id="file-error"
+                                                                                                        class="text-danger"
+                                                                                                        style="display:none;"
+                                                                                                    >
+                                                                                                    Please
+                                                                                                    upload
+                                                                                                    a
+                                                                                                    file.</small>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -2661,8 +2661,7 @@
                                                                     </div>
                                                                     <div class="row mt-3">
                                                                         <div class="col-lg-7" />
-                                                                        <div
-                                                                            class="col-lg-5 text-end">
+                                                                        <div class="col-lg-5 text-end">
                                                                             <button
                                                                                 type="button"
                                                                                 class="addLine"
@@ -2712,8 +2711,7 @@
                                                                             </span>
                                                                         </div>
                                                                         <div class="col-6">
-                                                                            <div
-                                                                                class="s_website_form_field">
+                                                                            <div class="s_website_form_field">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                 >
@@ -2739,11 +2737,13 @@
                                                                                     class="selectpicker"
                                                                                     id="crop_water_source"
                                                                                     name="crop_water_source"
+                                                                                    required="required"
                                                                                     multiple="multiple"
                                                                                     data-live-search="true"
                                                                                     data-style="btn-custom"
                                                                                     style="width: 100%;"
                                                                                     data-none-selected-text="Select Water Source"
+                                                                                    onchange="validateElement(this)"
                                                                                 >
                                                                                     <t
                                                                                         t-foreach="crop_water_source"
@@ -2762,13 +2762,11 @@
                                                                         </div>
                                                                     </div>
                                                                     <div id="section-content-crop">
-                                                                        <div
-                                                                            id="crop-section-content">
+                                                                        <div id="crop-section-content">
                                                                             <div
                                                                                 class="container-fluid pl-3 pr-5"
                                                                             >
-                                                                                <hr
-                                                                                    class="land-separator" />
+                                                                                <hr class="land-separator" />
                                                                             </div>
                                                                             <div
                                                                                 class="crop-section-wrapper"
@@ -3027,8 +3025,7 @@
 
                                                                     <div class="row mt-3">
                                                                         <div class="col-lg-7" />
-                                                                        <div
-                                                                            class="col-lg-5 text-end">
+                                                                        <div class="col-lg-5 text-end">
                                                                             <button
                                                                                 type="button"
                                                                                 class="addLine"
@@ -3084,8 +3081,7 @@
                                                                             </span>
                                                                         </div>
                                                                         <div class="col-6">
-                                                                            <div
-                                                                                class="s_website_form_field">
+                                                                            <div class="s_website_form_field">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                 >
@@ -3106,14 +3102,16 @@
                                                                                     </span>
                                                                                 </label>
                                                                                 <select
-                                                                                    class="selectpicker"
+                                                                                    class="selectpicker livestock_required_field"
                                                                                     id="livestock_water_source"
                                                                                     name="livestock_water_source"
                                                                                     multiple="multiple"
                                                                                     data-live-search="true"
+                                                                                    required="required"
                                                                                     data-style="btn-custom "
                                                                                     style="width: 100%;"
                                                                                     data-none-selected-text="Select"
+                                                                                    onchange="validateElement(this)"
                                                                                 >
                                                                                     <t
                                                                                         t-foreach="water_source"
@@ -3135,15 +3133,12 @@
                                                                         </div>
 
                                                                     </div>
-                                                                    <div
-                                                                        id="section-content-livestock">
-                                                                        <div
-                                                                            id="livestock-section-content">
+                                                                    <div id="section-content-livestock">
+                                                                        <div id="livestock-section-content">
                                                                             <div
                                                                                 class="container-fluid pl-3 pr-5"
                                                                             >
-                                                                                <hr
-                                                                                    class="land-separator" />
+                                                                                <hr class="land-separator" />
                                                                             </div>
                                                                             <div
                                                                                 class="livestock-section-wrapper"
@@ -3186,7 +3181,7 @@
                                                                                                 </label>
                                                                                                 <select
                                                                                                     id="livestock_selection"
-                                                                                                    class="form-select"
+                                                                                                    class="form-select livestock_required_field"
                                                                                                     name="livestock_types_0"
                                                                                                     required="required"
                                                                                                     onchange="validateElement(this)"
@@ -3241,7 +3236,7 @@
                                                                                                     type="text"
                                                                                                     id="number_of_livestock"
                                                                                                     name="number_of_livestock_0"
-                                                                                                    class="form-control"
+                                                                                                    class="form-control livestock_required_field"
                                                                                                     required="required"
                                                                                                     oninput="validateElement(this)"
                                                                                                     placeholder="Enter Amount"
@@ -3418,8 +3413,7 @@
 
                                                                     <div class="row mt-3">
                                                                         <div class="col-lg-7" />
-                                                                        <div
-                                                                            class="col-lg-5 text-end">
+                                                                        <div class="col-lg-5 text-end">
                                                                             <button
                                                                                 type="button"
                                                                                 class="addLine"
@@ -3475,8 +3469,7 @@
 
                                                                     <div class="row">
                                                                         <div class="col-lg-6">
-                                                                            <div
-                                                                                class="s_website_form_field">
+                                                                            <div class="s_website_form_field">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                 >
@@ -3500,8 +3493,7 @@
                                                                                     id="have-used-fertilizer-selection"
                                                                                     required="required"
                                                                                 >
-                                                                                    <option
-                                                                                        value="">
+                                                                                    <option value="">
                                                                                         Select</option>
                                                                                     <t
                                                                                         t-foreach="do_you_use_fertilizer"
@@ -3519,8 +3511,7 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-lg-6">
-                                                                            <div
-                                                                                class="s_website_form_field">
+                                                                            <div class="s_website_form_field">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                 >
@@ -3544,8 +3535,7 @@
                                                                                     id="have-used-pesticide-selection"
                                                                                     required="required"
                                                                                 >
-                                                                                    <option
-                                                                                        value="">
+                                                                                    <option value="">
                                                                                         Select</option>
                                                                                     <t
                                                                                         t-foreach="do_you_use_pesticide"
@@ -3566,8 +3556,7 @@
 
                                                                     <div class="row">
                                                                         <div class="col-lg-6">
-                                                                            <div
-                                                                                class="s_website_form_field">
+                                                                            <div class="s_website_form_field">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                 >
@@ -3592,8 +3581,7 @@
                                                                                     id="have-used-insecticide-selection"
                                                                                     required="required"
                                                                                 >
-                                                                                    <option
-                                                                                        value="">
+                                                                                    <option value="">
                                                                                         Select</option>
                                                                                     <t
                                                                                         t-foreach="do_you_use_insecticide"
@@ -3611,8 +3599,7 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-lg-6">
-                                                                            <div
-                                                                                class="s_website_form_field">
+                                                                            <div class="s_website_form_field">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                 >
@@ -3638,8 +3625,7 @@
                                                                                     id="have-used-improved-seed-selection"
                                                                                     required="required"
                                                                                 >
-                                                                                    <option
-                                                                                        value="">
+                                                                                    <option value="">
                                                                                         Select</option>
                                                                                     <t
                                                                                         t-foreach="do_you_use_improved_seed"
@@ -3704,8 +3690,7 @@
                                                                             </span>
                                                                         </div>
                                                                         <div class="col-lg-6">
-                                                                            <div
-                                                                                class="s_website_form_field">
+                                                                            <div class="s_website_form_field">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                 >
@@ -3731,8 +3716,7 @@
                                                                                     onchange="validateElement(this)"
                                                                                     id="access-to-machinery-selection"
                                                                                 >
-                                                                                    <option
-                                                                                        value="">
+                                                                                    <option value="">
                                                                                         Select
                                                                                     </option>
                                                                                     <t
@@ -3751,7 +3735,10 @@
 
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-lg-6">
+                                                                        <div
+                                                                            class="col-lg-6"
+                                                                            id="machinery_div"
+                                                                        >
                                                                             <div
                                                                                 class="s_website_form_field"
                                                                                 style="display: none;"
@@ -3781,6 +3768,7 @@
                                                                                     id="machinery-types-select"
                                                                                     name="machinery_types"
                                                                                     multiple="multiple"
+                                                                                    required="required"
                                                                                     data-live-search="true"
                                                                                     data-style="btn-custom"
                                                                                     style="width: 100%;"
@@ -3816,8 +3804,7 @@
                                                                     </div>
                                                                     <div class="row">
                                                                         <div class="col-lg-6">
-                                                                            <div
-                                                                                class="s_website_form_field">
+                                                                            <div class="s_website_form_field">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                 >
@@ -3844,8 +3831,7 @@
                                                                                     id="access-to-finance-selection"
                                                                                     required="required"
                                                                                 >
-                                                                                    <option
-                                                                                        value="">
+                                                                                    <option value="">
                                                                                         Select
                                                                                     </option>
                                                                                     <t
@@ -3865,7 +3851,10 @@
                                                                             </div>
                                                                         </div>
 
-                                                                        <div class="col-lg-6">
+                                                                        <div
+                                                                            class="col-lg-6"
+                                                                            id="financial_div"
+                                                                        >
                                                                             <div
                                                                                 class="s_website_form_field"
                                                                                 style="display: none;"
@@ -3899,6 +3888,7 @@
                                                                                     data-live-search="true"
                                                                                     data-style="btn-custom"
                                                                                     style="width: 100%;"
+                                                                                    required="required"
                                                                                     data-none-selected-text="Select"
                                                                                 >
                                                                                     <t
@@ -4007,10 +3997,8 @@
                                                                             <tr
                                                                                 t-att-data-member-id="individual.id"
                                                                             >
-                                                                                <td
-                                                                                    style="color:#b3b3b3;">
-                                                                                    <t
-                                                                                        t-out="counter" />
+                                                                                <td style="color:#b3b3b3;">
+                                                                                    <t t-out="counter" />
                                                                                 </td>
                                                                                 <td
                                                                                     style="color:#078148; font: normal normal 600 13px/16px Inter;"
@@ -4024,8 +4012,7 @@
                                                                                         t-out="individual.age"
                                                                                     />
                                                                                 </td>
-                                                                                <td
-                                                                                    class="text-capitalize">
+                                                                                <td class="text-capitalize">
                                                                                     <t
                                                                                         t-out="individual.gender"
                                                                                     />
@@ -4051,7 +4038,7 @@
                                                                                             class="fa fa-pencil"
                                                                                         />
                                                                                     </button>
-                                                                                    
+
                                                                                     <!-- <button
                                                                                         type="button"
                                                                                         class="btn btn-outline-secondary btn-sm my-3"
@@ -4096,8 +4083,7 @@
                                                             </table>
 
 
-                                                            <div class="mt-4"
-                                                                style="text-align:center;">
+                                                            <div class="mt-4" style="text-align:center;">
                                                                 <button
                                                                     type="button"
                                                                     data-bs-toggle="modal"
@@ -4111,8 +4097,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div
-                                                    class="section-footer d-flex justify-content-end">
+                                                <div class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-outline-secondary"
@@ -4341,8 +4326,7 @@
                                                     class="modal-dialog modal-dialog-centered"
                                                     role="document"
                                                 >
-                                                    <div
-                                                        class="modal-content beneficiary-modal-content">
+                                                    <div class="modal-content beneficiary-modal-content">
                                                         <div
                                                             class="card-header form-card-header"
                                                             style="margin:15px"
@@ -4355,8 +4339,7 @@
                                                                 members</h5>
 
                                                         </div>
-                                                        <div class="modal-body"
-                                                            style="overflow:hidden">
+                                                        <div class="modal-body" style="overflow:hidden">
                                                             <div class="s_website_form_rows">
                                                                 <div class="row mem-row">
                                                                     <div class="col-lg-4">
@@ -4441,8 +4424,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div
-                                                                    class="row input-fields mem-row">
+                                                                <div class="row input-fields mem-row">
                                                                     <div class="col-lg-4">
                                                                         <div>
                                                                             <label
@@ -4473,21 +4455,18 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-4">
-                                                                        <label
-                                                                            class="s_website_form_label">
+                                                                        <label class="s_website_form_label">
                                                                             <span
                                                                                 class="s_website_form_label_content"
                                                                                 style="color: #666666;"
                                                                             >
                                                                                 Gender
                                                                             </span>
-                                                                            <span
-                                                                                class="s_website_form_mark">
+                                                                            <span class="s_website_form_mark">
                                                                                 *
                                                                             </span>
                                                                         </label>
-                                                                        <div
-                                                                            class="d-flex flex-wrap">
+                                                                        <div class="d-flex flex-wrap">
                                                                             <div
                                                                                 t-foreach="gender"
                                                                                 t-as="option"
@@ -4505,8 +4484,7 @@
                                                                                     class="form-check-label ms-2"
                                                                                     t-att-for="option.value"
                                                                                 >
-                                                                                    <t
-                                                                                        t-esc="option.code" />
+                                                                                    <t t-esc="option.code" />
                                                                                 </label>
                                                                             </div>
                                                                         </div>
@@ -4542,8 +4520,7 @@
                                                                                 <option
                                                                                     t-att-value="option.id"
                                                                                 >
-                                                                                    <t
-                                                                                        t-esc="option.name" />
+                                                                                    <t t-esc="option.name" />
                                                                                 </option>
                                                                             </t>
                                                                         </select>
@@ -4554,8 +4531,7 @@
 
 
                                                         </div>
-                                                        <div class="card-footer"
-                                                            style="text-align:right">
+                                                        <div class="card-footer" style="text-align:right">
                                                             <button
                                                                 type="button"
                                                                 class="btn btn-outline-primary modal-cancel-button"
@@ -4621,8 +4597,7 @@
                                 rel="stylesheet"
                             />
 
-                            <script
-                                src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" />
+                            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" />
                             <script
                                 src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"
                                 integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g=="
@@ -4681,6 +4656,8 @@
                                 var fileName = input.files.length > 0 ? input.files[0].name :
                                 'Upload';
                                 uploadText.textContent = fileName;
+
+                                validateFileInput(input);
                                 }
                             </script>
 
