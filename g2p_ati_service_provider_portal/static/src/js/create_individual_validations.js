@@ -689,6 +689,7 @@ function validateSection(sectionId) {
 function showSection(sectionId, element, fromGroup = false) {
     // Val = validateSection(previousSection);
     var val = true;
+    var isSectionValid = true;
 
     if (val) {
         if (fromGroup) {
@@ -710,8 +711,17 @@ function showSection(sectionId, element, fromGroup = false) {
                     const locationDetailsSection = document.getElementById('location-details');
 
                     if (locationDetailsSection){
-                        const isSectionValid = validateSection('location-details');
+
+                        console.log("inn locationDetailsSection  ")
+                         isSectionValid = validateSection('location-details');
+                        
                         if (!isSectionValid) {
+
+                            console.log("inn Section invalid")
+                        
+                            const farmerDetailSection = document.getElementById("family-members");
+                        farmerDetailSection.style.display = "none";
+
                             return
                         }
                     }
@@ -721,11 +731,16 @@ function showSection(sectionId, element, fromGroup = false) {
                     section.style.display = "none";
                     const farmerDetailSection = document.getElementById("farmer-details");
                     if (farmerDetailSection) {
+
                         farmerDetailSection.style.display = "block";
                     }
                 }
             });
         }
+
+        if(isSectionValid) {
+
+
         document.getElementById(sectionId).style.display = "block";
         // PreviousSection = sectionId;
         // If (!fromGroup) {
@@ -736,6 +751,9 @@ function showSection(sectionId, element, fromGroup = false) {
         if (element) {
             element.classList.add("active");
         }
+
+    }
+
     }
 }
 // eslint-disable-next-line no-unused-vars

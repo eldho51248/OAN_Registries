@@ -3,7 +3,6 @@ import logging
 
 from odoo import fields, models
 
-from odoo17.odoo.exceptions import ValidationError
 from ..json_encoder import CustomJSONEncoder
 
 
