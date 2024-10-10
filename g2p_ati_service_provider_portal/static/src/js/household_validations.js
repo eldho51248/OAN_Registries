@@ -1,8 +1,13 @@
 $(document).ready(function () {
+   
+
+
     function expandSection(sectionId) {
         var consentSection = document.getElementById(sectionId);
         consentSection.classList.add("show");
     }
+
+
 
     window.customvalidateFormGroup = function (isCreateForm) {
         const locationDetailsSection = document.querySelector("#location-details");
@@ -274,7 +279,33 @@ $(document).on("click", "#update-member-btn", function () {
     });
 });
 
-// / Add button
+function showSuccessModal(message) {
+    const imgElement = document.getElementById('successModal').querySelector('.popup_img');
+    const h4Element = document.getElementById('successModal').querySelector('h4');
+    const msgElement = document.getElementById('successModal').querySelector('.popup_msg');
+
+    imgElement.src = "/g2p_ati_service_provider_portal/static/src/img/ok.png";
+    h4Element.textContent = "Success!";
+    msgElement.textContent = message.replace(/^"|"$/g, '');
+
+    $('#successModal').modal('show');
+  }
+
+  // Function to show error modal
+  function showErrorModal(message) {
+    const imgElement = document.getElementById('successModal').querySelector('.popup_img');
+    const h4Element = document.getElementById('successModal').querySelector('h4');
+    const msgElement = document.getElementById('successModal').querySelector('.popup_msg');
+
+    imgElement.src = "/g2p_ati_service_provider_portal/static/src/img/no.png";
+    h4Element.textContent = "Error";
+    msgElement.textContent = message.replace(/^"|"$/g, '');
+
+    $('#successModal').modal('show');
+  }
+
+
+
 $(document).on("click", "#family_member_submit", function () {
     $(this).prop("disabled", true);
     var group_id = $("input[name='group_id']").val();
@@ -331,7 +362,10 @@ $(document).on("click", "#family_member_submit", function () {
 
                 // Hide the modal after successful submission
                 $("#familyMemberModal").modal("hide");
-                $("#successModal").modal("show");
+
+                $("#family_member_submit").prop('disabled', false);
+                showSuccessModal("Family member added successfully!")
+
             } else {
                 console.error("Failed to add family member");
             }

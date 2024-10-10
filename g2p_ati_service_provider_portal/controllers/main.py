@@ -436,7 +436,10 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             #         pass
 
             response = request.redirect("/serviceprovider/group")
-            response.set_cookie("update_status", "successful", max_age=10)
+
+            response.set_cookie('popup_status', 'successful', max_age=10)
+            response.set_cookie('popup_msg', 'Record Created Successfully!', max_age=10)
+
 
             return response
         except Exception:
@@ -1487,7 +1490,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 model_id, "has_personal_phone", beneficiary.has_personal_phone
             )
 
-            _logger.info(f" ttheeee land info {land_info_data}")
 
             # Rendering the template with the prepared data
             return request.render(
@@ -1614,7 +1616,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
         return [selection_ids, selection_id]
 
+
     def _prepare_land_info_data(self, beneficiary, ownership_type_selections):
+
         land_info_data = []
         for index, land_info in enumerate(beneficiary.land_information_ids, start=1):
             ownership_selection_id = False
@@ -1631,10 +1635,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 ),
             }
 
-            land_certificate = {
-                "filename": land_info.land_certificate.name if land_info.land_certificate else "",
-                "content": land_info.land_certificate.data if land_info.land_certificate else "",
-            }
+        
+         
+      
 
             land_info_data.append(
                 {
@@ -1644,9 +1647,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     "land_id": land_info.land_id,
                     "ownership_type_selection_id": ownership_selection_id,
                     "land_certificate": land_certificate,
-                }
-            )
 
+            
+                })
         return land_info_data
 
     def _prepare_crop_info_data(self, beneficiary):
@@ -1718,7 +1721,10 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             has_national_id = member.has_national_id
             primary_Language = member.primary_Language
             is_member_of_primary_cooperative = member.is_member_of_primary_cooperative
-            primary_cooperatives = member.primary_cooperatives
+            if is_member_of_primary_cooperative == 'yes':
+                primary_cooperatives = member.primary_cooperatives
+            else:
+                primary_cooperatives = " "
             is_member_of_cooperative_union = member.is_member_of_cooperative_union
             cooperative_unions = member.cooperative_unions
             is_member_in_farmer_cluster = member.is_member_in_farmer_cluster
@@ -1910,7 +1916,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             )
             _logger.info("before machinery2")
 
+
             land_info_data = self.get_land_info_data(kw, backend_id)
+
             _logger.info("before machinery3")
 
             crop_info_data = self.get_crop_info_data(kw)
@@ -1919,7 +1927,10 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             livestock_info_data = self.get_livestock_info_data(kw)
             _logger.info("before machinery5")
 
+            
+
             supporting_documents_ids = self.get_supporting_documents_ids(kw)
+
 
             _logger.info("before machinery6")
 
@@ -1927,14 +1938,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             # Clean up existing data
             _logger.info("before machinery7")
 
-            _logger.info(f" tthe land info {land_info_data}")
-
-            member.reg_ids.unlink()
-            member.phone_number_ids.unlink()
-            member.land_information_ids.unlink()
-            member.crop_information_ids.unlink()
-            member.livestock_information_ids.unlink()
-            member.supporting_documents_ids.unlink()
+           
             update_records = {
                 "has_national_id": has_national_id,
                 "reg_ids": reg_ids,
@@ -1987,13 +1991,35 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 "additional_g2p_info": additional_info_json,
             }
             # Update member details
+
+            is_locked = False
+            edit_state = member.edit_state
+            if edit_state == 'locked':
+                is_locked = True
+            else:
+                is_locked = False
+                member.reg_ids.unlink()
+                member.phone_number_ids.unlink()
+                member.land_information_ids.unlink()
+                member.crop_information_ids.unlink()
+                member.livestock_information_ids.unlink()
+                member.supporting_documents_ids.unlink()
+
             member.sudo().write(update_records)
             # request.session['update_success'] = True
             # return json.dumps({'status': 'success', 'message': 'Record updated successfully'})
             response = request.redirect(f"/serviceprovider/individual/update/{member.id}")
-            response.set_cookie("update_status", "successful", max_age=10)
 
-            return response
+
+            if is_locked == True:
+                response.set_cookie('popup_status', 'successful', max_age=10)
+                response.set_cookie('popup_msg', 'Update Sent For Validation!', max_age=10)
+                return response
+            else:
+                response.set_cookie('popup_status', 'successful', max_age=10)
+                response.set_cookie('popup_msg', 'Record Updated Successfully!', max_age=10)
+                return response
+
 
             # return request.redirect(f"/serviceprovider/individual/update/{member.id}")
 
@@ -2637,6 +2663,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     def process_land(self, kw, vals):
         land_records = json.loads(kw.get("landRecords", "[]"))
 
+
         land_info_data = []
         supporting_documents_ids = []
         backend_id = (
@@ -2739,9 +2766,11 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             group_rec = self._get_or_create_group(kw, region, zone, woreda, kebele, enumerator)
 
+
             vals = self._prepare_individual_vals(kw, region, zone, woreda, kebele)
 
             vals = self.process_land(kw, vals)
+
 
             _logger.info(f"herere is the land  {vals['land_information_ids']}")
 
