@@ -548,7 +548,7 @@ $(document).ready(function () {
 
         for (let i = 0; i < requiredFields.length; i++) {
             const field = requiredFields[i];
-            const isFieldValid = field.value.trim();
+            const isFieldValid = (field.value || "").trim(); 
             const fieldName = field.getAttribute("name");
 
             if (fieldName.includes("{9999}")) {
@@ -634,8 +634,12 @@ function validateMultiSelect(selectElement) {
         selectWrapper.removeClass("is-invalid");
     }
 
+    // Always ensure the select element itself reflects validity
+    $(selectElement).toggleClass("is-invalid", !isValid);
+
     return isValid;
 }
+
 // eslint-disable-next-line no-unused-vars
 function validateElement(element) {
     // Check if the element is a select or an input field
@@ -755,13 +759,20 @@ function validateSection(sectionId) {
             // Validate file input field
             isFieldValid = validateFileInput(field);
         } else {
-            // Validate non-radio fields
-            isFieldValid = field.value.trim() !== "";
+            if (field && field.value){
+                isFieldValid = field.value.trim() !== "";
+               
+            }
+            else{
+                // Validate non-radio fields
+                isFieldValid = false;
+            }
+            
         }
 
         const fieldName = field.getAttribute("name");
 
-        if (fieldName.includes("{9999}")) {
+        if (fieldName && fieldName.includes("{9999}")) {
             return;
         }
 

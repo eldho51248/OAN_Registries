@@ -2307,7 +2307,7 @@
                                                                         *</span>
                                                                 </label>
                                                                 <select
-                                                                    class="selectpicker crop_mixed_required_field"
+                                                                    class="selectpicker "
                                                                     name="crop_water_source"
                                                                     multiple="multiple"
                                                                     data-live-search="true"
@@ -2702,7 +2702,7 @@
                                                                         *</span>
                                                                 </label>
                                                                 <select
-                                                                    class="selectpicker"
+                                                                    class="selectpicker "
                                                                     name="livestock_water_source"
                                                                     multiple="multiple"
                                                                     data-live-search="true"
@@ -3319,7 +3319,7 @@
                                                                         *</span>
                                                                 </label>
                                                                 <select
-                                                                    class="selectpicker form-control crop_mixed_required_field"
+                                                                    class="selectpicker form-control "
                                                                     id="machinery-types-select"
                                                                     name="machinery_types"
                                                                     multiple="multiple"
@@ -3327,6 +3327,8 @@
                                                                     data-style="btn-custom"
                                                                     style="width: 100%;"
                                                                     data-none-selected-text="Select"
+                                                                    onchange="validateElement(this)"
+                                                                    required="required"
                                                                 >
                                                                     <t
                                                                         t-foreach="machinary_types"
@@ -3423,6 +3425,8 @@
                                                                     data-style="btn-custom"
                                                                     style="width: 100%;"
                                                                     data-none-selected-text="Select"
+                                                                    required = "required"
+                                                                    onchange="validateElement(this)"
                                                                 >
                                                                     <t
                                                                         t-foreach="financial_access"

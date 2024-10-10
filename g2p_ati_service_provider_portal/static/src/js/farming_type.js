@@ -17,6 +17,7 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
     const addLineLivestockField = document.getElementsByClassName("addline_livestock_field");
 
     if (selectedFarmingType === "Crop Farming" || selectedFarmingType === "Mixed Farming") {
+       
         // Membership
         Array.from(membershipAstrix).forEach((element) => {
             element.textContent = " *";
@@ -35,6 +36,11 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
         Array.from(landRequiredFields).forEach((element) => {
             element.setAttribute("required", "required");
         });
+
+        Array.from(cropMixedRequiredFields).forEach((element) => {
+            element.setAttribute("required", "required");
+        });
+      
 
         if (fromGroup) {
             landNext.setAttribute(
@@ -58,9 +64,12 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
     }
 
     if (selectedFarmingType === "Crop Farming") {
+
         Array.from(livestockRequiredFields).forEach((element) => {
             element.removeAttribute("required", "required");
         });
+        
+      
 
         if (fromGroup) {
             cropNext.setAttribute(
@@ -99,6 +108,10 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
         Array.from(addLineLivestockField).forEach((element) => {
             element.setAttribute("required");
         });
+        Array.from(livestockRequiredFields).forEach((element) => {
+            element.setAttribute("required", "required");
+        });
+        
 
         // Land Information
         Array.from(landAstrix).forEach((element) => {
@@ -145,6 +158,7 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
             });
         }
     } else if (selectedFarmingType === "Mixed Farming") {
+        
         if (fromGroup) {
             cropNext.setAttribute(
                 "onclick",
