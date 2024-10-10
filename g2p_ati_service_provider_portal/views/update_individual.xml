@@ -1871,6 +1871,7 @@
                                                                                             onchange="updateFileName(this)"
                                                                                         />
 
+
 <!--                                                                                        <small-->
 <!--                                                                                            id="file-error"-->
 <!--                                                                                            class="text-danger"-->
@@ -1880,6 +1881,7 @@
 <!--                                                                                        upload-->
 <!--                                                                                        a-->
 <!--                                                                                        file.</small>-->
+
 
                                                                                     </div>
                                                                                 </div>
@@ -2058,6 +2060,7 @@
                                                                                                     </span>
                                                                                                 </label>
                                                                                                 <input
+
                                                                                                         type="file"
                                                                                                         t-att-id="'land_certificate_' + str(land_info['index'])"
                                                                                                         t-att-name="'land_certificate_' + str(land_info['index'])"
@@ -2074,11 +2077,14 @@
                                                                                                         class="btn btn-link"
                                                                                                         t-if="land_info['certificate_id']"
                                                                                                     >View Certificate</a>
+
                                                                                                 <small
                                                                                                     id="file-error"
                                                                                                     class="text-danger"
                                                                                                     style="display:none;"
+
                                                                                                 ></small>
+
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
