@@ -3102,7 +3102,7 @@
                                                                                     </span>
                                                                                 </label>
                                                                                 <select
-                                                                                    class="selectpicker livestock_required_field"
+                                                                                    class="selectpicker"
                                                                                     id="livestock_water_source"
                                                                                     name="livestock_water_source"
                                                                                     multiple="multiple"
@@ -3712,7 +3712,7 @@
                                                                                 <select
                                                                                     class="form-select"
                                                                                     name="access_to_machinery"
-                                                                                    required="required"
+                                                                                   
                                                                                     onchange="validateElement(this)"
                                                                                     id="access-to-machinery-selection"
                                                                                 >
@@ -3764,7 +3764,7 @@
 
                                                                                 </label>
                                                                                 <select
-                                                                                    class="selectpicker form-control"
+                                                                                    class="selectpicker form-control crop_mixed_required_field"
                                                                                     id="machinery-types-select"
                                                                                     name="machinery_types"
                                                                                     multiple="multiple"

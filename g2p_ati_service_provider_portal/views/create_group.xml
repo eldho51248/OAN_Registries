@@ -3089,7 +3089,7 @@
                                                                                     </span>
                                                                                 </label>
                                                                                 <select
-                                                                                    class="selectpicker  "
+                                                                                    class="selectpicker"
                                                                                     id="livestock_water_source"
                                                                                     name="livestock_water_source"
                                                                                     multiple="multiple"
