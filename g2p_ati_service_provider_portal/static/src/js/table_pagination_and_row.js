@@ -78,10 +78,8 @@ function applySearchFilter(searchValue) {
     });
 }
 function applySelectionFilter(selectionValue, isGroup) {
-    console.log(allRows);
 
     filteredRows = allRows.filter((row) => {
-        // Console.log(row);
         // Assuming each row has a data attribute or a cell with the selection value
         var cellValue2 = null;
         if (isGroup) {
@@ -89,15 +87,11 @@ function applySelectionFilter(selectionValue, isGroup) {
         } else {
             cellValue2 = row.cells[2].innerText.trim().replace(/\s/g, "");
         }
-        // Console.log(row.cells[2]);
-        // console.log("individual", cellValue2);
         const selectedText = selectionValue.options[selectionValue.selectedIndex].text
             .trim()
             .replace(/\s/g, "");
-        // Console.log("selected", selectedText);
         return cellValue2 === selectedText || selectedText === "Region";
     });
-    console.log(filteredRows);
 }
 function applySelectionFilterZone(isGroup) {
     filteredRows = allRows.filter((row) => {
@@ -114,7 +108,6 @@ function applySelectionFilterZone(isGroup) {
         }
         // Const cellValue2 = row.cells[3].value
 
-        // console.log(cellValue2,selectionValue,text_i)
         // return cellValue2 === selectionValue;
         return cellValue2 === text_i || text_i === "Zone";
     });

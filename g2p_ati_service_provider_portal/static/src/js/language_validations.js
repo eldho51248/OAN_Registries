@@ -7,7 +7,6 @@ $(document).ready(function () {
 
 function updateLanguage(langElement) {
     const selectedValue = langElement.value;
-    console.log("Here");
     const nameRow = document.getElementById("other-lang-names");
 
     const givenName = document.getElementById("other-given-name");
@@ -22,9 +21,6 @@ function updateLanguage(langElement) {
     const fatherNameAmh = document.getElementById("family_name_amh");
     const gfNameAmh = document.getElementById("gf_name_amh");
     const amhNamesReq = document.getElementsByClassName("amh_names_required");
-
-    // Console.log(selectedValue);
-    // console.log(primaryLang);
 
     const selectedLang = primaryLang.find((lang) => parseInt(lang.value, 10) === parseInt(selectedValue, 10));
 
