@@ -2702,7 +2702,7 @@
                                                                         *</span>
                                                                 </label>
                                                                 <select
-                                                                    class="selectpicker"
+                                                                    class="selectpicker livestock_required_field"
                                                                     name="livestock_water_source"
                                                                     multiple="multiple"
                                                                     data-live-search="true"
