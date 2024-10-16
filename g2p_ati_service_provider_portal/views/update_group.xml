@@ -378,7 +378,7 @@
                                                 <div class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
-                                                        class="btn btn-outline-secondary"
+                                                        class="btn btn-sm btn-outline-secondary"
                                                         onclick="showNextSection('farmer-details', 'location-details')"
                                                         id="some-button-or-link"
                                                     > NEXT <span>&#x276F;</span>
@@ -535,7 +535,7 @@
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#farmerDetailModal"
                                                                 onclick="showNextModal('individual-details', 'farmer-details')"
-                                                                class="btn btn-primary create-new"
+                                                                class="btn btn-sm btn-primary create-new"
                                                             >
                                                                 Add Farmer
                                                             </button>
@@ -546,7 +546,7 @@
                                                 <div class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
-                                                        class="btn btn-outline-secondary"
+                                                        class="btn btn-sm btn-outline-secondary"
                                                         onclick="showNextSection('family-members', 'farmer-details')"
                                                         id="some-button-or-link"
                                                     >NEXT <span>&#x276F;</span>
@@ -1552,7 +1552,7 @@
                                                                     </button>
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-primary"
+                                                                        class="btn btn-sm btn-primary"
                                                                         onclick="showModalSection('socio-economic-data', 'individual-details', 'next')"
                                                                         id="some-button-or-link"
                                                                     >NEXT <span>
@@ -1742,7 +1742,7 @@
                                                                         &#x276E;</span> PREVIOUS </button>
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-primary"
+                                                                        class="btn btn-sm btn-primary"
                                                                         onclick="showModalSection('membership-details', 'socio-economic-data',  'next')"
                                                                         id="some-button-or-link"
                                                                     >NEXT <span>
@@ -2199,7 +2199,7 @@
                                                                         &#x276E;</span> PREVIOUS </button>
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-primary"
+                                                                        class="btn btn-sm btn-primary"
                                                                         onclick="showModalSection('land-information', 'membership-details',  'next')"
                                                                         id="some-button-or-link"
                                                                     >NEXT <span>
@@ -2687,7 +2687,7 @@
                                                                         &#x276E;</span> PREVIOUS </button>
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-primary"
+                                                                        class="btn btn-sm btn-primary"
                                                                         onclick="showModalSection('crop-information', 'land-information',  'next')"
                                                                         id="land-next"
                                                                     >NEXT <span>
@@ -3052,7 +3052,7 @@
                                                                         &#x276E;</span> PREVIOUS </button>
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-primary"
+                                                                        class="btn btn-sm btn-primary"
                                                                         onclick="showModalSection('livestock-information', 'crop-information',  'next')"
                                                                         id="crop-next"
                                                                     >NEXT <span>
@@ -3440,7 +3440,7 @@
                                                                         &#x276E;</span> PREVIOUS </button>
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-primary"
+                                                                        class="btn btn-sm btn-primary"
                                                                         onclick="showModalSection('agricultural-input', 'livestock-information',  'next')"
                                                                         id="livestock-next"
                                                                     >NEXT <span>
@@ -3663,7 +3663,7 @@
                                                                         PREVIOUS </button>
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-primary"
+                                                                        class="btn btn-sm btn-primary"
                                                                         onclick="showModalSection('access-to-resource', 'agricultural-input',  'next')"
                                                                         id="some-button-or-link"
                                                                     >NEXT <span>
@@ -4089,7 +4089,7 @@
                                                                     type="button"
                                                                     data-bs-toggle="modal"
                                                                     data-bs-target="#familyMemberModal"
-                                                                    class="btn btn-primary create-new"
+                                                                    class="btn btn-sm btn-primary create-new"
                                                                 >
                                                                     Add Family Member
                                                                 </button>

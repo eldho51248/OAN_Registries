@@ -257,7 +257,7 @@
                                                 <div class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
-                                                        class="btn btn-outline-secondary next-btn"
+                                                        class=" btn-sm btn-outline-secondary next-btn"
                                                         onclick="showNextSection('individual-details', 'id-section')"
                                                         id="nextButton"
                                                     >NEXT<span>&#x276F;</span>
@@ -1186,7 +1186,7 @@
                                                 <div class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
-                                                        class="btn btn-outline-secondary"
+                                                        class="btn btn-sm btn-outline-secondary"
                                                         onclick="showNextSection('socio-economic-data', 'individual-details')"
                                                         id="some-button-or-link"
                                                     >NEXT <span>&#x276F;</span>
@@ -1337,7 +1337,7 @@
                                                 <div class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
-                                                        class="btn btn-outline-secondary"
+                                                        class="btn btn-sm btn-outline-secondary"
                                                         onclick="showNextSection('membership-details', 'socio-economic-data')"
                                                         id="some-button-or-link"
                                                     >NEXT <span>&#x276F;</span>
@@ -1710,7 +1710,7 @@
                                                 <div class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
-                                                        class="btn btn-outline-secondary"
+                                                        class="btn btn-sm btn-outline-secondary"
                                                         onclick="showNextSection('land-information', 'membership-details')"
                                                         id="some-button-or-link"
                                                     >NEXT <span>&#x276F;</span>
@@ -2276,7 +2276,7 @@
                                                 <div class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
-                                                        class="btn btn-outline-secondary"
+                                                        class="btn btn-sm btn-outline-secondary"
                                                         onclick="showNextSection('crop-information', 'land-information')"
                                                         id="some-button-or-link"
                                                     >NEXT <span>&#x276F;</span>
@@ -2669,7 +2669,7 @@
                                                 <div class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
-                                                        class="btn btn-outline-secondary"
+                                                        class="btn btn-sm btn-outline-secondary"
                                                         onclick="showNextSection('livestock-information', 'crop-information')"
                                                         id="some-button-or-link"
                                                     >NEXT <span>&#x276F;</span>
@@ -3080,7 +3080,7 @@
                                                 <div class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
-                                                        class="btn btn-outline-secondary"
+                                                        class="btn btn-sm btn-outline-secondary"
                                                         onclick="showNextSection('agricultural-input', 'livestock-information')"
                                                         id="some-button-or-link"
                                                     >NEXT <span>&#x276F;</span>
@@ -3248,7 +3248,7 @@
                                                 >
                                                     <button
                                                         type="button"
-                                                        class="btn btn-outline-secondary"
+                                                        class="btn btn-sm btn-outline-secondary"
                                                         onclick="showNextSection('access-to-resource', 'agricultural-input')"
                                                         id="some-button-or-link"
                                                     >NEXT <span>&#x276F;</span>
@@ -3350,7 +3350,7 @@
                                                 <div class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
-                                                        class="btn btn-outline-secondary"
+                                                        class="btn btn-sm btn-outline-secondary"
                                                         onclick="showNextSection('financial-service', 'access-to-resource')"
                                                         id="some-button-or-link"
                                                     >NEXT <span>&#x276F;</span>
