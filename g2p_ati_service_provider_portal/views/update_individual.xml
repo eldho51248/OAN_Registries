@@ -2326,14 +2326,15 @@
                                                                         *</span>
                                                                 </label>
                                                                 <select
-                                                                    class="selectpicker crop_mixed_required_field "
+                                                                    class="selectpicker form-control "
                                                                     name="crop_water_source"
                                                                     multiple="multiple"
+                                                                    
                                                                     data-live-search="true"
                                                                     data-style="btn-custom "
                                                                     style="width: 100%;"
                                                                     data-none-selected-text="Select Water Source"
-                                                                    required="required"
+                                                                    
                                                                     onchange="validateElement(this)"
                                                                 >
                                                                     <t t-foreach="water_source" t-as="option">
@@ -2429,7 +2430,7 @@
                                                                                         id="crop_planted_date"
                                                                                         name="crop_planted_date_0"
                                                                                         class="form-control date-picker crop_mixed_required_field"
-                                                                                        required="required"
+                                                                                       
                                                                                         onchange="validateElement(this)"
                                                                                         placeholder="DD-MM-YYYY"
                                                                                     />
@@ -2541,7 +2542,7 @@
                                                                                                 id="crop_planted_date"
                                                                                                 t-att-name="'crop_planted_date' + str(crop_info['index'])"
                                                                                                 class="form-control date-picker crop_mixed_required_field"
-                                                                                                required="required"
+                                                                                               
                                                                                                 onchange="validateElement(this)"
                                                                                                 placeholder="DD-MM-YYYY"
                                                                                                 t-att-value="crop_info['crop_planted_date']"
@@ -2721,13 +2722,13 @@
                                                                         *</span>
                                                                 </label>
                                                                 <select
-                                                                    class="selectpicker livestock_required_field "
+                                                                    class="selectpicker "
                                                                     name="livestock_water_source"
                                                                     multiple="multiple"
                                                                     data-live-search="true"
                                                                     data-style="btn-custom "
                                                                     style="width: 100%;"
-                                                                    required="required"
+                                                                    
                                                                     onchange="validateElement(this)"
                                                                     data-none-selected-text="Select Water Source"
                                                                 >

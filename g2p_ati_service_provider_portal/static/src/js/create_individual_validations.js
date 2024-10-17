@@ -644,6 +644,7 @@ function validateMultiSelect(selectElement) {
 function validateElement(element) {
     // Check if the element is a select or an input field
     if (element.tagName === "SELECT" && element.multiple) {
+        $(element).removeClass("is-invalid");
         return validateMultiSelect(element);
     } else if (element.tagName === "SELECT") {
         validateSelect(element);
