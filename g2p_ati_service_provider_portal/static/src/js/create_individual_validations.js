@@ -722,20 +722,58 @@ function validateRadioButtons(radioName, section) {
     return radioChecked;
 }
 
-function validateFileInput(input) {
-    const fileError = document.getElementById("file-error"); // Ensure this ID exists in your HTML
+// function validateFileInput(input) {
+//     const fileError = document.getElementById("file-error"); // Ensure this ID exists in your HTML
 
-    if (input.files.length === 0) {
-        // Show error if no file is uploaded
-        input.classList.add("is-invalid");
-        fileError.style.display = "block";
-        return false;
+//     if (input.files.length === 0) {
+//         // Show error if no file is uploaded
+//         input.classList.add("is-invalid");
+//         fileError.style.display = "block";
+//         return false;
+//     }
+//     // Hide error if file is uploaded
+//     input.classList.remove("is-invalid");
+//     fileError.style.display = "none";
+//     return true;
+// }
+
+function validateFileInput(field) {
+    const allowedFileTypes = ['image/jpeg', 'image/png', 'application/pdf']; // Allowed types
+    const maxFileSize = 5 * 1024 * 1024; // 5 MB limit
+
+    // Get the files from the input
+    const files = field.files;
+
+    // Ensure that only one file can be uploaded
+    if (files.length > 1) {
+        field.classList.add("is-invalid"); // Add invalid class for UI
+        return false; // More than one file uploaded
     }
-    // Hide error if file is uploaded
-    input.classList.remove("is-invalid");
-    fileError.style.display = "none";
-    return true;
+
+    // If no files uploaded, return false
+    if (files.length === 0) {
+        field.classList.add("is-invalid"); // Add invalid class for UI
+        return false; // No file uploaded
+    }
+
+    const file = files[0]; // Get the single file
+
+    // Check file type
+    if (!allowedFileTypes.includes(file.type)) {
+        field.classList.add("is-invalid"); // Add invalid class for UI
+        return false; // Invalid file type
+    }
+
+    // Check file size
+    if (file.size > maxFileSize) {
+        field.classList.add("is-invalid"); // Add invalid class for UI
+        return false; // File too large
+    }
+
+    field.classList.remove("is-invalid"); // Remove invalid class if valid
+    return true; // Valid file input
 }
+
 
 function validateSection(sectionId) {
     const section = document.getElementById(sectionId);

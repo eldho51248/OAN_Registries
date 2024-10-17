@@ -190,6 +190,8 @@ function resetFormFieldsMember() {
 
 $(document).on("click", "#member_submit", async function () {
 
+    console.log("hello work");
+
     const isSectionValid = validateSection("access-to-resource");
 
 
