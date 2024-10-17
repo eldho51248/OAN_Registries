@@ -502,7 +502,7 @@
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#farmerDetailModal"
                                                                 onclick="showNextModal('individual-details', 'farmer-details')"
-                                                                class="btn btn-primary create-new"
+                                                                class="btn btn-sm btn-primary create-new"
                                                             >
                                                                 Add Farmer
                                                             </button>
@@ -3671,7 +3671,6 @@
                                                                 style="display: none;"
                                                             >
                                                                 <div class="section-content">
-                                                                    <div class="row">
                                                                         <div
                                                                             class="container-fluid heading-header"
                                                                             style="background-color: #d6eae0; width: 95%;"
@@ -3784,7 +3783,6 @@
                                                                                 </select>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
                                                                     <div
                                                                         class="container-fluid heading-header"
                                                                         style="background-color: #d6eae0; width: 95%;"

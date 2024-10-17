@@ -163,8 +163,8 @@ input[type="radio"].invalid-radio {
     background-color: #e6f7e8;
     margin-top: 1.5%;
     margin-bottom: 1%;
-    margin-left: 3.5%;
-    margin-right: 8%;
+    /* margin-left: 3.5%;
+    margin-right: 8%; */
     padding: 8px;
 }
 

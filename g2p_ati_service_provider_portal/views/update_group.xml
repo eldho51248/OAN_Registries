@@ -1544,7 +1544,7 @@
                                                                 >
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-outline-secondary"
+                                                                        class="btn btn-sm btn-outline-secondary"
                                                                         t-attf-onclick="location.href='/serviceprovider/group/update/#{group.id}';"
                                                                         style="width: 90px;"
                                                                     >
@@ -4101,7 +4101,7 @@
                                                 <div class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
-                                                        class="btn btn-outline-secondary"
+                                                        class="btn btn-sm btn-outline-secondary"
                                                         onclick="location.href = '/serviceprovider/group';"
                                                         style="width: 90px;"
                                                     >
@@ -4111,10 +4111,10 @@
                                                         onclick="location.reload()"
                                                         id="beneficiary_submit"
                                                         type="button"
-                                                        class="btn btn-primary"
+                                                        class="btn btn-sm btn-primary"
                                                         style="width: 90px;"
                                                     >
-                                                        Close
+                                                        CLOSE
                                                     </button>
                                                 </div>
                                             </div>

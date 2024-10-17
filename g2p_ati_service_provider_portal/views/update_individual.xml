@@ -13,24 +13,37 @@
                     
                     <div class="form-template">
 
+                    
+                    
+<div class="top-content">
+                    
                     <h5 style="font: normal 600 18px / 22px Inter !important;" class="all-title">Update Farmer</h5>
 
-                        
-                        <ol class="breadcrumb form-layout-breadcrumb">
+                       <ol class="breadcrumb form-layout-breadcrumb">
                             <li class="breadcrumb-item">
                                 <a href="/serviceprovider/home">
                                     Dashboard
                                 </a>
                             </li>
+
+                            <li class="breadcrumb-item" id="household-item" style="display: none;">
+                                <a href="#">Household</a>
+                            </li>
+
                             <li class="breadcrumb-item">
                                 <a href="/serviceprovider/individual">
                                     Farmer
                                 </a>
                             </li>
+
                             <li class="breadcrumb-item active" aria-current="page">
                                 Update Farmer
                             </li>
                         </ol>
+
+</div>
+
+
                         <form
                             id="updategroupForm"
                             action="/serviceprovider/individual/update/submit"
@@ -39,7 +52,9 @@
                             class="mx-auto px-3 px-lg-0"
 
                         >
-                            <input type="hidden" name="group_id" value="" />
+                            <input type="hidden" name="group_id" value=""/>
+                            <input id="form_type" type="hidden"  name="group" value=""/>
+
                             <div class="row">
                                 <div class="container-fluid">
                                     <div class="rounded-card">
@@ -3444,7 +3459,7 @@
                                                 <div class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
-                                                        class="btn btn-outline-secondary"
+                                                        class="btn btn-sm btn-outline-secondary"
                                                         onclick="location.href = '/serviceprovider/individual';"
                                                         style="width: 90px;"
                                                     >
@@ -3454,10 +3469,9 @@
                                                         id="beneficiary_submit"
                                                         type="button"
                                                         onclick="customvalidateForm(false);"
-                                                        class="btn btn-primary"
+                                                        class="btn btn-sm btn-primary"
                                                         style="width: 90px;"
-                                                    >
-                                                        SAVE
+                                                    >SAVE
                                                     </button>
                                                 </div>
                                             </div>
@@ -3551,25 +3565,44 @@
                                 }
                             </script>
 
-                            <!-- <script>
-                                function updateFileName(input) {
-                                var inputId = input.getAttribute('id');
-                                var label = document.querySelector(label[for="${inputId}"]);
-                                var uploadText = label.querySelector('.upload-text');
+                         
 
-                                console.log("in herrerererererererer")
-                                console.log(input.files[0].fileName)
+                         <script>
 
-                                var fileName = input.files.length > 0 ? input.files[0].fileName :
-                                'Upload';
-                                uploadText.textContent = fileName;
-                                }
-                            </script> -->
 
-                            <script>
-                                $(document).ready(function () {
-                                $('.selectpicker').selectpicker();
-                                });
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const group = urlParams.get('group');
+
+                        if (group) {
+                            const householdItem = document.getElementById('household-item');
+                            householdItem.style.display = 'list-item'; // Show the household item
+                            householdItem.querySelector('a').href = `/serviceprovider/group/update/${group}`;
+                            
+                            
+
+                        }
+
+                        const formTypeInput  = document.getElementById('form_type');
+                        formTypeInput.value = group ? group : false;
+
+                        <!-- const beneficiarySubmitButton = document.getElementById('beneficiary_submit');
+                        beneficiarySubmitButton.textContent = group ? 'CLOSE' : 'SAVE'; -->
+
+                        
+
+                        <!-- const formTypeParam = group ? 'group' : 'individual';
+                        const groupParam = group;
+                        const url_string_group = `&`
+
+                        updateGroupForm.action = `/serviceprovider/individual/update/submit?form_type=${formTypeParam}${'&'}group=${groupParam}`;
+ -->
+
+
+
+
+                        $(document).ready(function () {
+                        $('.selectpicker').selectpicker();
+                        });
                             </script>
                         </form>
                     </div>

@@ -1711,12 +1711,10 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         website=True,
         csrf=False,
     )
-    def update_individual_submit(self, **kw):
+    def update_individual_submit(self,**kw):
         try:
             member = request.env["res.partner"].sudo().browse(int(kw.get("id holder")))
 
-            _logger.info("here in the update submit")
-            _logger.info(kw)
 
             has_national_id = member.has_national_id
             primary_Language = member.primary_Language
@@ -1750,7 +1748,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             # Update individual details
 
-            _logger.info("before fertilizer")
             do_you_use_fertilizer = (
                 self.get_selection_value("ir.model.fields.selection", kw.get("have_used_fertilizer"))
                 or member.do_you_use_fertilizer
@@ -1768,7 +1765,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 or member.do_you_use_improved_seed
             )
 
-            _logger.info("after fertilizers")
 
             has_national_id = (
                 self.get_selection_value("ir.model.fields.selection", kw.get("has_national_id"))
@@ -1809,7 +1805,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 country_id=ethiopia_country_id,
             )
 
-            _logger.info("before social")
             # Socio-economic data
             martial_status = self.get_selection_value("ir.model.fields.selection", kw.get("marital_status"))
             education = self.get_selection_value("ir.model.fields.selection", kw.get("education_level"))
@@ -1818,9 +1813,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 if kw.get("hh_income_type")
                 else []
             )
-            _logger.info("after social")
 
-            _logger.info("before Membership")
             # Membership details
             is_member_of_primary_cooperative = self.get_selection_value(
                 "ir.model.fields.selection", kw.get("is_member_of_primary_coop")
@@ -1831,7 +1824,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             is_member_in_farmer_cluster = self.get_selection_value(
                 "ir.model.fields.selection", kw.get("in_farmer_cluster")
             )
-            _logger.info("after Membership")
 
             crop_water_sources = (
                 [(6, 0, list(map(int, request.httprequest.form.getlist("crop_water_source"))))]
@@ -1860,7 +1852,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             # TODO: a new function needs to be added here
             # livestock_info_data = self._prepare_livestock_info_data(kw)
-            _logger.info("before machinery")
 
             # Access to machinery
             access_to_machinery = self.get_selection_value(
@@ -1909,34 +1900,27 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                         "ir.model.fields.selection", kw.get("role_in_cluster")
                     )
 
-            _logger.info("before machinery1")
             backend_id = (
                 request.env.ref("storage_backend.default_storage_backend").id
                 or request.env["storage.backend"].sudo().search([], limit=1).id
             )
-            _logger.info("before machinery2")
 
 
             land_info_data = self.get_land_info_data(kw, backend_id)
 
-            _logger.info("before machinery3")
 
             crop_info_data = self.get_crop_info_data(kw)
-            _logger.info("before machinery4")
 
             livestock_info_data = self.get_livestock_info_data(kw)
-            _logger.info("before machinery5")
 
             
 
             supporting_documents_ids = self.get_supporting_documents_ids(kw)
 
 
-            _logger.info("before machinery6")
 
             additional_info_json = self.handle_other_info(kw)
             # Clean up existing data
-            _logger.info("before machinery7")
 
            
             update_records = {
@@ -2008,7 +1992,19 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             member.sudo().write(update_records)
             # request.session['update_success'] = True
             # return json.dumps({'status': 'success', 'message': 'Record updated successfully'})
-            response = request.redirect(f"/serviceprovider/individual/update/{member.id}")
+            
+            
+            response = None
+            
+            group = kw.get('group')
+    
+            
+            if not group:
+                response = request.redirect(f"/serviceprovider/individual/update/{member.id}")
+                
+            if group:
+                response = request.redirect(f"/serviceprovider/individual/update/{member.id}?group={group}")
+                
 
 
             if is_locked == True:
@@ -2112,7 +2108,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
     def get_selection_value(self, model, selection_id):
         if selection_id and len(selection_id) > 0:
-            _logger.info("I am in the the model: {model}  selection_id {selection_id} ")
             return (
                 (request.env[model].sudo().search([("id", "=", selection_id)]).value)
                 if selection_id
@@ -2140,7 +2135,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         for index in land_indices:
             ownership_type = kw.get(f"land_ownership_type_{index}")
 
-            _logger.info(f"the ownership_type {ownership_type}")
 
             if ownership_type == "":
                 continue
@@ -2160,14 +2154,12 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             lnd_idx = kw.get(f"land_certificate_{index}")
 
-            _logger.info(f"here is the land info certfficate {lnd_idx}")
 
             if (
                 kw.get(f"land_certificate_{index}")
                 and (f"land_certificate_{index}").strip()
                 and kw.get(f"land_certificate_{index}").read()
             ):
-                _logger.info("iy i in the hjhghjghjghjgjgjgjhgjgjhgjgj")
 
                 land_certificate = kw.get(f"land_certificate_{index}")
                 binary_content = base64.b64encode(land_certificate.read()).decode("utf-8")
@@ -2431,7 +2423,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         website=True,
         csrf=False,
     )
-    def update_family_member_submit(self, **kw):
+    def update_family_member_submit(self,**kw):
         res = dict()
         try:
             group_id = kw.get("group_id")
@@ -2610,7 +2602,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             member = request.env["res.partner"].sudo().browse(member_id)
             group_rec = request.env["res.partner"].sudo().browse(group_id)
 
-            _logger.info(f"here in the delete {member_id}")
 
             if not member.exists():
                 return json.dumps({"error": "Member not found"})
@@ -2626,7 +2617,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 )
 
                 if group_membership:
-                    _logger.info("here before removing the group_membership ")
                     group_membership.unlink()
 
                 if member.is_farmer != "yes":
@@ -2741,7 +2731,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     def individual_create(self, **kw):
         res = dict()
         try:
-            _logger.info(f"herere is the kw  {kw}")
             region = self._convert_to_int(kw.get("region"))
             zone = self._convert_to_int(kw.get("zone"))
             woreda = self._convert_to_int(kw.get("woreda"))
@@ -2772,7 +2761,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             vals = self.process_land(kw, vals)
 
 
-            _logger.info(f"herere is the land  {vals['land_information_ids']}")
 
             vals["crop_information_ids"] = self._prepare_crop_information(kw.get("cropRecords"))
             vals["livestock_information_ids"] = self._livestock_information(kw.get("livestockRecord"))
