@@ -2306,6 +2306,17 @@
                                                                                                     oninput="validateElement(this)"
                                                                                                     placeholder="Enter Land Area"
                                                                                                 />
+                                                                                                <!-- <div class= "col-12">
+                                                                                                    <div
+                                                                                                    class="error-message col-12 s_website_form_field"
+                                                                                                    id="land_area_error"
+                                                                                                    style="display: none;color: red;"
+                                                                                                >
+                                                                                                    Total Land area should be digits only.
+                                                                                                </div>
+                                                                                            </div> -->
+
+                                                                                               
                                                                                             </div>
 
                                                                                             <div
@@ -2431,7 +2442,7 @@
                                                                                         class="land-separator"
                                                                                     />
                                                                                 </div>
-                                                                            </div>
+                                                                               
                                                                         </div>
 
                                                                         <div
@@ -2530,6 +2541,7 @@
                                                                                                     oninput="validateElement(this)"
                                                                                                     placeholder="Enter Land Area"
                                                                                                 />
+                                                                                               
                                                                                             </div>
                                                                                             <div
                                                                                                 class="col-3"
@@ -2636,6 +2648,11 @@
                                                                                             </button>
                                                                                         </div>
                                                                                     </div>
+
+                                                                                   
+                                                                                    
+                                                                                </div>
+                                                                               
                                                                                 </div>
                                                                                 <div
                                                                                     class="container-fluid pl-3 pr-5"
@@ -2644,6 +2661,8 @@
                                                                                         class="land-separator"
                                                                                     />
                                                                                 </div>
+
+                                                                                
                                                                             </div>
                                                                         </div>
                                                                     </div>

@@ -164,6 +164,10 @@ $(document).ready(function () {
     // formatInputWithSpaces(uidInput);
     // formatInputWithSpaces(ridInput);
 
+  
+
+
+
     // Apply the function to both UID and RID inputs
 
     const ridInput = document.getElementById("rid_input");
@@ -600,7 +604,9 @@ function validateInput(inputElement) {
         radioGroup.forEach((radio) => {
             radio.classList.remove("is-invalid");
         });
-    } else {
+    }
+  
+    else {
         // For other input types, check the value and remove "is-invalid" if not empty
         const value = inputElement.value;
         if (value.trim() !== "") {
@@ -648,9 +654,15 @@ function validateElement(element) {
         return validateMultiSelect(element);
     } else if (element.tagName === "SELECT") {
         validateSelect(element);
-    } else if (element.tagName === "INPUT") {
+    } 
+    else if(element.id === "total_land_area"){
+        validateLandArea(element);
+    }
+    
+    else if (element.tagName === "INPUT") {
         validateInput(element);
     }
+
 }
 
 function validateUID() {
@@ -738,6 +750,29 @@ function validateRadioButtons(radioName, section) {
 //     return true;
 // }
 
+function validateLandArea(field) {
+    const digitRegex = /^\d*$/; // Regular expression to allow only digits
+    const landAreaError = document.getElementById('land_area_error');
+
+    // Check if the input value is valid (only digits)
+    const isValid = digitRegex.test(field.value);
+
+    // Display or hide the error message based on the validation
+    // landAreaError.style.display = isValid ? 'none' : 'block';
+
+    // If the input is valid, remove the 'is-invalid' class
+    // If it's not valid, add the 'is-invalid' class
+    if (isValid) {
+        field.classList.remove("is-invalid");
+    } else {
+        field.classList.add("is-invalid");
+    }
+
+    return isValid;
+}
+
+
+
 function validateFileInput(field) {
     const allowedFileTypes = ['image/jpeg', 'image/png', 'application/pdf']; // Allowed types
     const maxFileSize = 5 * 1024 * 1024; // 5 MB limit
@@ -815,6 +850,12 @@ function validateSection(sectionId) {
             return;
         }
 
+        // Check for Total Land Area field and validate it
+        if (field.id === "total_land_area") {
+            isFieldValid = validateLandArea(field);
+        }
+        
+
         // Apply 'is-invalid' class for non-radio fields
         if (field.type !== "radio" && field.type !== "file") {
             field.classList.toggle("is-invalid", !isFieldValid);
@@ -830,6 +871,10 @@ function validateSection(sectionId) {
         if (sectionId === "id-section" && fieldName === "rid") {
             valid = valid && validateRID();
         }
+        if(sectionId === "land-information" && fieldName ==="total_land_area"){
+            valid = valid && validateLandArea();
+        }
+
     });
     if (uidError.style.display === "block") {
         valid = false;

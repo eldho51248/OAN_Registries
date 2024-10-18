@@ -1786,7 +1786,7 @@
                                                                                         >
                                                                                             Total
                                                                                             Land
-                                                                                            Area (in
+                                                                                            Area  (in
                                                                                             Hectares)
                                                                                         </span>
                                                                                         <span
@@ -1970,7 +1970,7 @@
                                                                                         </div>
                                                                                         <div class="col-3">
                                                                                             <label
-                                                                                                class="s_website_form_mark land_astrix"
+                                                                                                class="s_website_form_mark"
                                                                                             >
                                                                                                 <span
                                                                                                     class="s_website_form_label_content"
@@ -1983,7 +1983,7 @@
                                                                                                     Hectares)
                                                                                                 </span>
                                                                                                 <span
-                                                                                                    class="s_website_form_mark"
+                                                                                                    class="s_website_form_mark land_astrix"
                                                                                                 >
                                                                                                     *</span>
                                                                                             </label>
@@ -2176,7 +2176,9 @@
                                                                                         style="color: #666666;"
                                                                                     >
                                                                                         Total Land
-                                                                                        Area
+                                                                                        Area  
+                                                                                        (in
+                                                                                        Hectares)
                                                                                     </span>
                                                                                     <span
                                                                                         class="s_website_form_mark land_astrix"
