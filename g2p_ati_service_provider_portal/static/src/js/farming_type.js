@@ -17,6 +17,7 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
     const addLineLivestockField = document.getElementsByClassName("addline_livestock_field");
 
     if (selectedFarmingType === "Crop Farming" || selectedFarmingType === "Mixed Farming") {
+       
         // Membership
         Array.from(membershipAstrix).forEach((element) => {
             element.textContent = " *";
@@ -35,6 +36,22 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
         Array.from(landRequiredFields).forEach((element) => {
             element.setAttribute("required", "required");
         });
+
+        Array.from(cropMixedRequiredFields).forEach((element) => {
+            element.setAttribute("required", "required");
+
+            // Add event listener to validate when the user selects an option
+            if (element.tagName === "SELECT" && element.hasAttribute("multiple")) {
+                console.log("selected");
+                // Apply multiselect-specific validation
+                $(element).on('changed.bs.select', function () {
+                    validateMultiSelect(element);
+                });
+                // Initial validation for multiselect
+                validateMultiSelect(element);
+            }
+        });
+
 
         if (fromGroup) {
             landNext.setAttribute(
@@ -58,9 +75,29 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
     }
 
     if (selectedFarmingType === "Crop Farming") {
+
         Array.from(livestockRequiredFields).forEach((element) => {
             element.removeAttribute("required", "required");
         });
+        Array.from(cropMixedRequiredFields).forEach((element) => {
+            element.setAttribute("required", "required");
+
+            // Add event listener to validate when the user selects an option
+            if (element.tagName === "SELECT" && element.hasAttribute("multiple")) {
+                console.log("selected");
+                // Apply multiselect-specific validation
+                $(element).on('changed.bs.select', function () {
+                    validateMultiSelect(element);
+                    element.removeAttribute("required", "required");
+
+                });
+                // Initial validation for multiselect
+                validateMultiSelect(element);
+            }
+        });
+
+        
+      
 
         if (fromGroup) {
             cropNext.setAttribute(
@@ -95,10 +132,16 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
         });
         Array.from(cropMixedRequiredFields).forEach((element) => {
             element.removeAttribute("required");
+            element.classList.remove("is-invalid");
+
         });
         Array.from(addLineLivestockField).forEach((element) => {
             element.setAttribute("required");
         });
+        Array.from(livestockRequiredFields).forEach((element) => {
+            element.setAttribute("required", "required");
+        });
+        
 
         // Land Information
         Array.from(landAstrix).forEach((element) => {
@@ -145,6 +188,7 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
             });
         }
     } else if (selectedFarmingType === "Mixed Farming") {
+        
         if (fromGroup) {
             cropNext.setAttribute(
                 "onclick",

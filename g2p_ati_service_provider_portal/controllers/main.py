@@ -20,14 +20,22 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
         # domain = []
         # domain.append(("is_group", "=", True))
         user_id = request.env.user.id
+        partner = request.env.user.partner_id
 
         households = (
-            request.env["res.partner"].sudo().search([("is_group", "=", True), ("create_uid", "=", user_id)])
+            request.env["res.partner"].sudo().search([("is_group", "=", True), 
+            ])
         )
         individuals = (
             request.env["res.partner"]
             .sudo()
-            .search([("is_group", "=", False), ("is_farmer", "=", "yes"), ("create_uid", "=", user_id)])
+            .search([("is_group", "=", False), ("is_farmer", "=", "yes"), 
+             "|",  # Logical OR operator
+            ("enumerator_user_id", "=", user_id),
+            ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
+             
+            
+            ])
         )
 
         return request.render(
@@ -1339,6 +1347,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     )
     def indvidual_update(self, _id):
         try:
+            print("updateeeeee")
             beneficiary = request.env["res.partner"].sudo().browse(_id)
             if not beneficiary:
                 return request.render(
@@ -1637,6 +1646,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             }
 
 
+
             land_info_data.append(
                 {
                     "index": index,
@@ -1644,9 +1654,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     "total_land_area": land_info.total_land_area,
                     "land_id": land_info.land_id,
                     "ownership_type_selection_id": ownership_selection_id,
+                    "certificate_id": certificate_url,
                     "land_certificate": land_certificate,
 
-            
                 })
         return land_info_data
 
@@ -1654,6 +1664,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         crop_info_data = []
         serialized_crop_info_data = []
         for index, crop_info in enumerate(beneficiary.crop_information_ids, start=1):
+            print("crop planted date",crop_info.collected_gc)
             crop_info_data.append(
                 {
                     "index": index,
@@ -1671,6 +1682,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     "crop_planted_date": crop_info.collected_gc,
                 }
             )
+
+        
         return crop_info_data, serialized_crop_info_data
 
     def _prepare_livestock_info_data(self, beneficiary):
@@ -2114,71 +2127,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         else:
             return False
 
-    # def get_land_info_data(self, kw, backend_id):
-    #     land_info_data = []
-    #     land_indices = set()
-
-    #     valid_keys = [key for key in kw.keys() if "{9999}" not in key]
-    #     for key in valid_keys:
-    #         if key.startswith("land_ownership_type_"):
-    #             try:
-    #                 land_index = int(key.split("_")[-1])
-    #                 land_indices.add(land_index)
-    #             except ValueError:
-    #                 continue
-    #     doc_tag = request.env["g2p.document.tag"].sudo().get_tag_by_name("Land Certificate")
-    #     if not doc_tag:
-    #         doc_tag = request.env["g2p.document.tag"].sudo().create({"name": "Land Certificate"})
-
-    #     for index in land_indices:
-    #         ownership_type = kw.get(f"land_ownership_type_{index}")
-
-
-    #         if ownership_type == "":
-    #             continue
-
-    #         land_id = kw.get(f"land_id{index}")
-    #         land_area = kw.get(f"total_land_area{index}")
-
-    #         land_ownership_type = (
-    #             request.env["ir.model.fields.selection"].sudo().search([("id", "=", ownership_type)]).value
-    #         )
-
-    #         land_info_dict = {
-    #             "ownership_type": land_ownership_type,
-    #             "total_land_area": land_area,
-    #             "land_id": land_id,
-    #         }
-
-    #         lnd_idx = kw.get(f"land_certificate_{index}")
-
-
-    #         if (
-    #             kw.get(f"land_certificate_{index}")
-    #             and (f"land_certificate_{index}").strip()
-    #             and kw.get(f"land_certificate_{index}").read()
-    #         ):
-
-    #             land_certificate = kw.get(f"land_certificate_{index}")
-    #             binary_content = base64.b64encode(land_certificate.read()).decode("utf-8")
-    #             storage_file = (
-    #                 request.env["storage.file"]
-    #                 .sudo()
-    #                 .create(
-    #                     {
-    #                         "backend_id": backend_id,
-    #                         "name": land_certificate.filename,
-    #                         "data": binary_content,
-    #                         "tags_ids": [(4, doc_tag.id)],
-    #                     }
-    #                 )
-    #             )
-    #             land_info_dict["land_certificate"] = storage_file.id
-    #         land_info_data.append((0, 0, land_info_dict))
-
-    #     return land_info_data
-
-
+  
 
     def get_land_info_data(self, kw, backend_id):
         land_info_data = []
@@ -2197,7 +2146,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         if not doc_tag:
             doc_tag = request.env["g2p.document.tag"].sudo().create({"name": "Land Certificate"})
 
+
         existing_certificates = {}  # Dictionary to hold existing certificates by index
+
 
         # Retrieve existing land information for the current beneficiary
         for index in land_indices:
@@ -2222,31 +2173,36 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 "total_land_area": land_area,
                 "land_id": land_id,
             }
+             # lnd_idx = kw.get(f"land_certificate_{index}")
+
 
             # Check if the certificate is updated
             land_certificate_key = f"land_certificate_{index}"
             if kw.get(land_certificate_key) and kw.get(land_certificate_key).read():
                 land_certificate = kw.get(land_certificate_key)
                 binary_content = base64.b64encode(land_certificate.read()).decode("utf-8")
+
                 storage_file = (
                     request.env["storage.file"]
                     .sudo()
                     .create(
                         {
                             "backend_id": backend_id,
-                            "name": land_certificate.filename,
+                            "name": existing_certificate_id.filename,
                             "data": binary_content,
                             "tags_ids": [(4, doc_tag.id)],
                         }
                     )
                 )
                 land_info_dict["land_certificate"] = storage_file.id
+
             else:
                 # If not updated, keep the existing certificate
                 if index in existing_certificates:
                     land_info_dict["land_certificate"] = existing_certificates[index].land_certificate.id
 
             # Append the land info dict to the data list
+
             land_info_data.append((0, 0, land_info_dict))
 
         return land_info_data
@@ -2275,6 +2231,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             crop_id = kw.get(f"crops_{index}")
 
             crop_planted_date_id = kw.get(f"crop_planted_date{index}")
+            print("planted date id", crop_planted_date_id)
 
             if crop_id == "":
                 continue
@@ -2282,6 +2239,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 continue
 
             crop_info_data.append((0, 0, {"crop": crop_id, "collected_gc": crop_planted_date_id}))
+
+        print("crop_info is",crop_info_data)
 
         return crop_info_data
 
@@ -2397,6 +2356,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     @http.route("/serviceprovider/individual", type="http", auth="user", website=True)
     def individual_list(self, **kw):
         user_id = request.env.user.id
+        partner = request.env.user.partner_id
+            
 
         individual = (
             request.env["res.partner"]
@@ -2407,10 +2368,13 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     ("is_registrant", "=", True),
                     ("is_group", "=", False),
                     ("is_farmer", "=", "yes"),
-                    ("create_uid", "=", user_id),
+                    "|",  # Logical OR operator
+            ("enumerator_user_id", "=", user_id),
+            ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
                 ]
             )
         )
+        
         region = request.env["g2p.region"].sudo().search([])
         zone = []
         woreda = []
@@ -2423,6 +2387,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     @http.route("/serviceprovider/group", type="http", auth="user", website=True)
     def group_list(self, **kw):
         user_id = request.env.user.id
+        partner = request.env.user.partner_id
 
         groups = (
             request.env["res.partner"]
@@ -2432,7 +2397,10 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     ("active", "=", True),
                     ("is_registrant", "=", True),
                     ("is_group", "=", True),
-                    ("create_uid", "=", user_id),
+                   "|",  # Logical OR operator
+            ("enumerator_user_id", "=", user_id),
+            ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
+
                 ]
             )
         )

@@ -907,7 +907,7 @@
                                                                                         <span class="s_website_form_label_content" style="color: #666666;">
                                                                                             Total
                                                                                             Land
-                                                                                            Area (in
+                                                                                            Area  (in
                                                                                             Hectares)
                                                                                         </span>
                                                                                         <span class="s_website_form_mark land_astrix">
@@ -943,6 +943,7 @@
                                                                                                 <i class="fas fa-upload" />
                                                                                             </span>
                                                                                         </label>
+
                                                                                         <input type="file" id="land_certificate_0" name="land_certificate_0" class="form-control land_required_field" onchange="updateFileName(this)" />
 
                                                                                         <small id="file-error" class="text-danger" style="display:none;">
@@ -950,6 +951,7 @@
                                                                                         upload
                                                                                         a
                                                                                         file.</small>
+
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -998,16 +1000,33 @@
                                                                                                 </t>
                                                                                             </select>
                                                                                         </div>
+<!-- <<<<<<< 17.0-1.3-eyu
                                                                                         <div class="col-lg-3">
                                                                                             <label class="s_website_form_mark land_astrix">
                                                                                                 <span class="s_website_form_label_content" style="color: #666666;">
+======= -->
+                                                                                        <div class="col-lg-3">
+                                                                                            <label
+                                                                                                class="s_website_form_mark"
+                                                                                            >
+                                                                                                <span
+                                                                                                    class="s_website_form_label_content"
+                                                                                                    style="color: #666666;"
+                                                                                                >
+
                                                                                                     Total
                                                                                                     Land
                                                                                                     Area
                                                                                                     (in
                                                                                                     Hectares)
                                                                                                 </span>
+<!-- <<<<<<< 17.0-1.3-eyu
                                                                                                 <span class="s_website_form_mark">
+======= -->
+                                                                                                <span
+                                                                                                    class="s_website_form_mark land_astrix"
+                                                                                                >
+
                                                                                                     *</span>
                                                                                             </label>
                                                                                             <input type="text" id="total_land_area" t-att-name="'total_land_area' + str(land_info['index'])" class="form-control land_required_field" required="required" oninput="validateElement(this)" t-att-value="land_info['total_land_area']" placeholder="Enter Land Area" />
@@ -1023,9 +1042,24 @@
                                                                                             </label>
                                                                                             <input type="text" id="land_id" t-att-name="'land_id' + str(land_info['index'])" class="form-control land_required_field" required="required" oninput="validateElement(this)" t-att-value="land_info['land_id']" placeholder="Enter Land ID" />
                                                                                         </div>
+<!-- <<<<<<< 17.0-1.3-eyu
                                                                                         <div class="col-lg-3">
                                                                                             <label class="s_website_form_label">
                                                                                                 <span class="s_website_form_label_content" style="color: #666666;">
+======= -->
+
+                                                                                        
+
+
+                                                                                        <div class="col-lg-3">
+                                                                                            <label
+                                                                                                class="s_website_form_label"
+                                                                                            >
+                                                                                                <span
+                                                                                                    class="s_website_form_label_content"
+                                                                                                    style="color: #666666;"
+                                                                                                >
+
                                                                                                     Land
                                                                                                     Certificate
                                                                                                 </span>
@@ -1041,6 +1075,7 @@
                                                                                                     </span>
 
                                                                                                 </label>
+
                                                                                                 <input type="file" t-att-id="'land_certificate_' + str(land_info['index'])" t-att-name="'land_certificate_' + str(land_info['index'])" class="form-control" onchange="updateFileName(this)" />
 
                                                                                                 <input type="text" t-att-id="'updated_certificate_' + str(land_info['index'])" t-att-name="'updated_certificate_' + str(land_info['index'])" style="display: none;" class="form-control" t-att-value="land_info['id'] if land_info['land_certificate']['updated'] else ''" />
@@ -1048,11 +1083,23 @@
 
 
 
-                                                                                                <small id="file-error" class="text-danger" style="display:none;">
-                                                                                                Please
-                                                                                                upload
-                                                                                                a
-                                                                                                file.</small>
+
+                                                                                                    <a
+                                                                                                        t-att-href="land_info['certificate_id']"
+                                                                                                        t-att-id="'certificate_link_' + str(land_info['index'])"
+                                                                                                        t-att-name="'viewland_certificate_' + str(land_info['index'])"
+                                                                                                        
+                                                                                                        target="_blank"
+                                                                                                        class="btn btn-link"
+                                                                                                        t-if="land_info['certificate_id']"
+                                                                                                    >View Certificate</a>
+
+                                                                                                <small
+                                                                                                    id="file-error"
+                                                                                                    class="text-danger"
+                                                                                                    style="display:none;"
+
+                                                                                                ></small>
 
 
                                                                                             </div>
@@ -1104,7 +1151,9 @@
                                                                                 <label class="s_website_form_label">
                                                                                     <span class="s_website_form_label_content" style="color: #666666;">
                                                                                         Total Land
-                                                                                        Area
+                                                                                        Area  
+                                                                                        (in
+                                                                                        Hectares)
                                                                                     </span>
                                                                                     <span class="s_website_form_mark land_astrix">
                                                                                         *</span>
@@ -1224,7 +1273,23 @@
                                                                     <span class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
-                                                                <select class="selectpicker crop_mixed_required_field" name="crop_water_source" multiple="multiple" data-live-search="true" data-style="btn-custom " style="width: 100%;" data-none-selected-text="Select Water Source" required="required" onchange="validateElement(this)">
+
+                                                                <select
+
+                                                                    class="selectpicker form-control crop_mixed_required_field"
+
+                                                                    name="crop_water_source"
+                                                                    multiple="multiple"
+                                                                    id = "crop_water"
+                                                                    data-live-search="true"
+                                                                    data-style="btn-custom "
+                                                                    style="width: 100%;"
+                                                                    data-none-selected-text="Select Water Source"
+                                                                    
+                                
+                                                                    onchange="validateElement(this)"
+                                                                >
+
                                                                     <t t-foreach="water_source" t-as="option">
                                                                         <option t-att-value="option.id" t-att-selected="'selected' if option.id in (beneficiary.crop_water_sources.ids or []) else None">
                                                                             <t t-esc="option.name" />
@@ -1276,7 +1341,17 @@
                                                                                         <span class="s_website_form_mark">
                                                                                             *</span>
                                                                                     </label>
-                                                                                    <input type="date" id="crop_planted_date" name="crop_planted_date_0" class="form-control date-picker crop_mixed_required_field" required="required" onchange="validateElement(this)" placeholder="DD-MM-YYYY" />
+
+                                                                                    <input
+                                                                                        type="date"
+                                                                                        id="crop_planted_date"
+                                                                                        name="crop_planted_date_0"
+                                                                                        class="form-control date-picker crop_mixed_required_field"
+                                                                                       
+                                                                                        onchange="validateElement(this)"
+                                                                                        placeholder="DD-MM-YYYY"
+                                                                                    />
+
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-1 my-3">
@@ -1335,7 +1410,18 @@
                                                                                                 <span class="s_website_form_mark">
                                                                                                     *</span>
                                                                                             </label>
-                                                                                            <input type="date" id="crop_planted_date" t-att-name="'crop_planted_date' + str(crop_info['index'])" class="form-control date-picker crop_mixed_required_field" required="required" onchange="validateElement(this)" placeholder="DD-MM-YYYY" t-att-value="crop_info['crop_planted_date']" />
+
+                                                                                            <input
+                                                                                                type="date"
+                                                                                                id="crop_planted_date"
+                                                                                                t-att-name="'crop_planted_date' + str(crop_info['index'])"
+                                                                                                class="form-control date-picker crop_mixed_required_field"
+                                                                                               
+                                                                                                onchange="validateElement(this)"
+                                                                                                placeholder="DD-MM-YYYY"
+                                                                                                t-att-value="crop_info['crop_planted_date']"
+                                                                                            />
+
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="col-1 mx-auto my-3">
@@ -1388,7 +1474,18 @@
                                                                                     <span class="s_website_form_mark">
                                                                                         *</span>
                                                                                 </label>
-                                                                                <input type="date" id="crop_planted_date" name="crop-planted-date" t-att-name="'crops_planted_date_' + str({9999})" class="form-control date-picker crop_mixed_required_field" required="required" onchange="validateElement(this)" placeholder="DD-MM-YYYY" />
+
+                                                                                <input
+                                                                                    type="date"
+                                                                                    id="crop_planted_date"
+                                                                                    name="crop-planted-date"
+                                                                                    t-att-name="'crop_planted_date' + str({9999})"
+                                                                                    class="form-control date-picker crop_mixed_required_field"
+                                                                                    required="required"
+                                                                                    onchange="validateElement(this)"
+                                                                                    placeholder="DD-MM-YYYY"
+                                                                                />
+
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-1 mx-auto my-3">
@@ -1441,7 +1538,19 @@
                                                                     <span class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
-                                                                <select class="selectpicker" name="livestock_water_source" multiple="multiple" data-live-search="true" data-style="btn-custom " style="width: 100%;" required="required" onchange="validateElement(this)" data-none-selected-text="Select Water Source">
+
+                                                                <select
+                                                                    class="selectpicker "
+                                                                    name="livestock_water_source"
+                                                                    multiple="multiple"
+                                                                    data-live-search="true"
+                                                                    data-style="btn-custom "
+                                                                    style="width: 100%;"
+                                                                    
+                                                                    onchange="validateElement(this)"
+                                                                    data-none-selected-text="Select Water Source"
+                                                                >
+
                                                                     <t t-foreach="water_source" t-as="option">
                                                                         <option t-att-value="option.id" t-att-selected="'selected' if option.id in (beneficiary.livestock_water_sources.ids or []) else None">
                                                                             <t t-esc="option.name" />
@@ -1780,9 +1889,28 @@
                                                                     <span class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
-                                                                <select class="selectpicker form-control crop_mixed_required_field" id="machinery-types-select" name="machinery_types" multiple="multiple" data-live-search="true" data-style="btn-custom" style="width: 100%;" data-none-selected-text="Select">
-                                                                    <t t-foreach="machinary_types" t-as="option">
-                                                                        <option t-att-value="option.id" t-att-selected="'selected' if option.id in (beneficiary.type_of_machinery.ids or []) else None">
+
+                                                                <select
+                                                                    class="selectpicker form-control "
+                                                                    id="machinery-types-select"
+                                                                    name="machinery_types"
+                                                                    multiple="multiple"
+                                                                    data-live-search="true"
+                                                                    data-style="btn-custom"
+                                                                    style="width: 100%;"
+                                                                    data-none-selected-text="Select"
+                                                                    onchange="validateElement(this)"
+                                                                    required="required"
+                                                                >
+                                                                    <t
+                                                                        t-foreach="machinary_types"
+                                                                        t-as="option"
+                                                                    >
+                                                                        <option
+                                                                            t-att-value="option.id"
+                                                                            t-att-selected="'selected' if option.id in (beneficiary.type_of_machinery.ids or []) else None"
+                                                                        >
+
                                                                             <t t-esc="option.name" />
                                                                         </option>
                                                                     </t>
@@ -1828,14 +1956,34 @@
                                                                         have?</span>
                                                                 <span class="s_website_form_mark">
                                                                         *</span>
-                                                            </label>
-                                                            <select class="selectpicker form-control" id="finance-selection" name="finance_accesses" multiple="multiple" data-live-search="true" data-style="btn-custom" style="width: 100%;" data-none-selected-text="Select">
-                                                                <t t-foreach="financial_access" t-as="option">
-                                                                    <option t-att-value="option.id" t-att-selected="'selected' if option.id in (beneficiary.finance_accesses.ids or []) else None">
-                                                                        <t t-esc="option.name" />
-                                                                    </option>
-                                                                </t>
-                                                            </select>
+
+                                                                </label>
+                                                                <select
+                                                                    class="selectpicker form-control"
+                                                                    id="finance-selection"
+                                                                    name="finance_accesses"
+                                                                    multiple="multiple"
+                                                                    data-live-search="true"
+                                                                    data-style="btn-custom"
+                                                                    style="width: 100%;"
+                                                                    data-none-selected-text="Select"
+                                                                    required = "required"
+                                                                    onchange="validateElement(this)"
+                                                                >
+                                                                    <t
+                                                                        t-foreach="financial_access"
+                                                                        t-as="option"
+                                                                    >
+                                                                        <option
+                                                                            t-att-value="option.id"
+                                                                            t-att-selected="'selected' if option.id in (beneficiary.finance_accesses.ids or []) else None"
+                                                                        >
+                                                                            <t t-esc="option.name" />
+                                                                        </option>
+                                                                    </t>
+                                                                </select>
+                                                            </div>
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1859,19 +2007,52 @@
                             <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.14/css/bootstrap-select.min.css" rel="stylesheet" />
                             <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
                             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" />
-                            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js" integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-                            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" />
-                            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.14/js/bootstrap-select.min.js" />
-                            <script type="text/javascript"> var primaryLanguageData = JSON.parse('<t t-esc="primary_language_js" />
-'); </script>
-                            <script type="text/javascript" src="/g2p_ati_service_provider_portal/static/src/js/virtual-select.min.js" />
-                            <script type="text/javascript" src="/g2p_ati_service_provider_portal/static/src/js/member_form.js" />
-                            <script type="text/javascript" src="/g2p_ati_service_provider_portal/static/src/js/side_nav_bar.js" />
-                            <script type="text/javascript" src="/g2p_ati_service_provider_portal/static/src/js/create_individual_validations.js" />
-                            <script type="text/javascript" src="/g2p_ati_service_provider_portal/static/src/js/add_informations.js" />
-                            <script type="text/javascript" src="/g2p_ati_service_provider_portal/static/src/js/household_validations.js" />
-                            <script type="text/javascript" src="/g2p_ati_service_provider_portal/static/src/js/language_validations.js" />
-                            <script type="text/javascript" src="/g2p_ati_service_provider_portal/static/src/js/farming_type.js" />
+
+                            <script
+                                src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"
+                                integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g=="
+                                crossorigin="anonymous"
+                                referrerpolicy="no-referrer"
+                            />
+                            <script
+                                src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"
+                            />
+                            <script
+                                src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.14/js/bootstrap-select.min.js"
+                            />
+                            <script type="text/javascript"> var primaryLanguageData = JSON.parse('<t
+                                    t-esc="primary_language_js"
+                                />'); </script>
+
+                            <script
+                                type="text/javascript"
+                                src="/g2p_ati_service_provider_portal/static/src/js/member_form.js"
+                            />
+                            <script
+                                type="text/javascript"
+                                src="/g2p_ati_service_provider_portal/static/src/js/side_nav_bar.js"
+                            />
+                            <script
+                                type="text/javascript"
+                                src="/g2p_ati_service_provider_portal/static/src/js/create_individual_validations.js"
+                            />
+                            <script
+                                type="text/javascript"
+                                src="/g2p_ati_service_provider_portal/static/src/js/add_informations.js"
+                            />
+                            <script
+                                type="text/javascript"
+                                src="/g2p_ati_service_provider_portal/static/src/js/household_validations.js"
+                            />
+                            <script
+                                type="text/javascript"
+                                src="/g2p_ati_service_provider_portal/static/src/js/language_validations.js"
+                            />
+                            <script
+                                type="text/javascript"
+                                src="/g2p_ati_service_provider_portal/static/src/js/farming_type.js"
+                            />
+
                             <script>
                                 function updateFileName(input) {
                                 var inputId = input.getAttribute('id');
