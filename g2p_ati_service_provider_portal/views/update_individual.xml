@@ -2328,7 +2328,9 @@
                                                                         *</span>
                                                                 </label>
                                                                 <select
+
                                                                     class="selectpicker form-control crop_mixed_required_field"
+
                                                                     name="crop_water_source"
                                                                     multiple="multiple"
                                                                     id = "crop_water"
