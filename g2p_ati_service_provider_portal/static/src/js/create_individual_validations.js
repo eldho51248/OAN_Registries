@@ -368,6 +368,10 @@ $(document).ready(function () {
         }
     }
 
+
+
+
+
     function handlePhoneNumberSelection() {
         const selectElement = document.getElementById("have-phone-no-selection");
         const primaryPhoneDiv = document.getElementById("primary-div");
@@ -397,13 +401,15 @@ $(document).ready(function () {
     }
 
     // Function to update options for a select element based on an AJAX response
+   
     function updateOptions(
         url,
         data,
         targetSelectId,
         defaultOptionText = "Select",
         originalEvent = "",
-        selectdropdown = ""
+        selectdropdown = "",
+        initialValue = false
     ) {
         console.log(data);
         $.ajax({
@@ -417,17 +423,20 @@ $(document).ready(function () {
                 const selectedName = selectElement.options[selectElement.selectedIndex].text;
                 if (
                     originalEvent !== "" &&
-                    (selectdropdown === "current_region" || selectdropdown === "region")
+                    (selectdropdown === "current_region" || selectdropdown === "region")  
                 ) {
                     selectedvalue = " ";
-                } else if (originalEvent !== "") {
+
+                } else if (originalEvent !== ""  ) {
                     selectedvalue = " ";
-                } else if (selectElement.selectedIndex > 0) {
+
+
+                } else if (selectElement.selectedIndex > 0  ) {
                     selectedvalue = selectElement.options[selectElement.selectedIndex].value;
                     // If (selectedName) {
                     //     defaultOptionText = selectedName;
                     // }
-                } else if (selectElement.selectedIndex === 0 && selectedName !== "Select") {
+                } else if (selectElement.selectedIndex === 0 && selectedName !== "Select" ) {
                     selectedvalue = selectElement.options[selectElement.selectedIndex].value;
                     // If (selectedName) {
                     //     defaultOptionText = selectedName;
@@ -435,6 +444,7 @@ $(document).ready(function () {
                 }
 
                 selectElement.innerHTML = "";
+
                 const defaultOption = document.createElement("option");
                 defaultOption.value = selectedvalue;
                 defaultOption.textContent = defaultOptionText;
@@ -446,12 +456,38 @@ $(document).ready(function () {
                     opt.textContent = option.name;
                     selectElement.appendChild(opt);
                 });
+
+                if (initialValue){
+                    selectElement.value = initialValue;
+                }
+
             },
             error: function (error) {
                 console.error("Error fetching options:", error);
             },
         });
     }
+
+
+
+
+    
+    const initialRegionId = $("#region_selection").val();
+    const initialZoneId = $("#zon_selection").val();
+    const initialWoredaId = $("#woreda_selection").val();
+    const initialKebeleId = $("#kebele_selection").val();
+
+
+    console.log(`Here are the initial values ${initialRegionId}, ${initialZoneId}, ${initialWoredaId}`)
+      
+    updateOptions("/update_zone_options", {region_id: initialRegionId}, "zon_selection", "Select", null, "region", initialValue=initialZoneId);
+    updateOptions("/update_woreda_options", {zone_id: initialZoneId}, "woreda_selection", "Select", null, "zone", initialValue=initialWoredaId);
+    updateOptions("/update_kebele_options", {woreda_id: initialWoredaId}, "kebele_selection", "Select", null, "woreda", initialValue=initialKebeleId);
+
+
+
+  
+      
 
     // Event listener for national ID selection change
     $("#have-national-id-selection").on("change", handleNationalIdSelection);
@@ -515,13 +551,13 @@ $(document).ready(function () {
     // Validation for email
     const emailInput = document.getElementById("email");
 
-    function isValidEmail(email) {
+function isValidEmail(email) {
         // Basic email regex pattern
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailPattern.test(email);
     }
 
-    emailInput.addEventListener("input", function () {
+emailInput.addEventListener("input", function () {
         if (emailInput.value.length === 0) {
             emailInput.classList.remove("is-invalid");
             // EmailError.style.display = "none";
@@ -534,16 +570,17 @@ $(document).ready(function () {
         }
     });
 
-    function expandSection(sectionId) {
+function expandSection(sectionId) {
         var consentSection = document.getElementById(sectionId);
         consentSection.classList.add("show");
     }
+
     // Function hideSection(sectionId) {
     //     var consentSection = document.getElementById(sectionId);
     //     consentSection.classList.add("hide");
     // }
 
-    window.customvalidateForm = function (isCreateForm) {
+window.customvalidateForm = function (isCreateForm) {
         const requiredFields = document.querySelectorAll("[required]");
         var valid = true;
 
