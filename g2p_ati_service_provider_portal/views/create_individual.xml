@@ -1163,6 +1163,7 @@
                                                             <select
                                                                 class="selectpicker form-control"
                                                                 name="hh_income_type"
+                                                                id="hh_income_type"
                                                                 multiple="multiple"
                                                                 data-live-search="true"
                                                                 data-style="btn-custom"
@@ -2722,11 +2723,6 @@
                         <script type="text/javascript"> var primaryLanguageData = JSON.parse('<t
                                 t-esc="primary_language_js"
                             />'); </script>
-
-                        <script
-                            type="text/javascript"
-                            src="/g2p_ati_service_provider_portal/static/src/js/virtual-select.min.js"
-                        />
                         <script
                             type="text/javascript"
                             src="/g2p_ati_service_provider_portal/static/src/js/member_form.js"

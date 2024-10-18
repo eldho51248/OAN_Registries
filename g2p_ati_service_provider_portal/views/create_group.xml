@@ -2306,6 +2306,17 @@
                                                                                                     oninput="validateElement(this)"
                                                                                                     placeholder="Enter Land Area"
                                                                                                 />
+                                                                                                <!-- <div class= "col-12">
+                                                                                                    <div
+                                                                                                    class="error-message col-12 s_website_form_field"
+                                                                                                    id="land_area_error"
+                                                                                                    style="display: none;color: red;"
+                                                                                                >
+                                                                                                    Total Land area should be digits only.
+                                                                                                </div>
+                                                                                            </div> -->
+
+                                                                                               
                                                                                             </div>
 
                                                                                             <div
@@ -2431,7 +2442,7 @@
                                                                                         class="land-separator"
                                                                                     />
                                                                                 </div>
-                                                                            </div>
+                                                                               
                                                                         </div>
 
                                                                         <div
@@ -2530,6 +2541,7 @@
                                                                                                     oninput="validateElement(this)"
                                                                                                     placeholder="Enter Land Area"
                                                                                                 />
+                                                                                               
                                                                                             </div>
                                                                                             <div
                                                                                                 class="col-3"
@@ -2636,6 +2648,11 @@
                                                                                             </button>
                                                                                         </div>
                                                                                     </div>
+
+                                                                                   
+                                                                                    
+                                                                                </div>
+                                                                               
                                                                                 </div>
                                                                                 <div
                                                                                     class="container-fluid pl-3 pr-5"
@@ -2644,6 +2661,8 @@
                                                                                         class="land-separator"
                                                                                     />
                                                                                 </div>
+
+                                                                                
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -3702,6 +3721,7 @@
                                                                                     required="required"
                                                                                     onchange="validateElement(this)"
                                                                                     id="access-to-machinery-selection"
+                                                                                    
                                                                                 >
                                                                                     <option value="">
                                                                                         Select
@@ -3760,6 +3780,7 @@
                                                                                     data-style="btn-custom"
                                                                                     style="width: 100%;"
                                                                                     data-none-selected-text="Select"
+                                                                                    onchange="validateElement(this)"
                                                                                 >
                                                                                     <t
                                                                                         t-foreach="machinary_types"
@@ -3877,6 +3898,7 @@
                                                                                     style="width: 100%;"
                                                                                     required="required"
                                                                                     data-none-selected-text="Select"
+                                                                                    onchange="validateElement(this)"
                                                                                 >
                                                                                     <t
                                                                                         t-foreach="financial_access"
@@ -4562,11 +4584,6 @@
                                     t-esc="primary_language_js"
                                 />'); </script>
 
-
-                            <script
-                                type="text/javascript"
-                                src="/g2p_ati_service_provider_portal/static/src/js/virtual-select.min.js"
-                            />
                             <script
                                 type="text/javascript"
                                 src="/g2p_ati_service_provider_portal/static/src/js/member_form.js"

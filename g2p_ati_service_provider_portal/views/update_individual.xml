@@ -1786,7 +1786,7 @@
                                                                                         >
                                                                                             Total
                                                                                             Land
-                                                                                            Area (in
+                                                                                            Area  (in
                                                                                             Hectares)
                                                                                         </span>
                                                                                         <span
@@ -1970,7 +1970,7 @@
                                                                                         </div>
                                                                                         <div class="col-3">
                                                                                             <label
-                                                                                                class="s_website_form_mark land_astrix"
+                                                                                                class="s_website_form_mark"
                                                                                             >
                                                                                                 <span
                                                                                                     class="s_website_form_label_content"
@@ -1983,7 +1983,7 @@
                                                                                                     Hectares)
                                                                                                 </span>
                                                                                                 <span
-                                                                                                    class="s_website_form_mark"
+                                                                                                    class="s_website_form_mark land_astrix"
                                                                                                 >
                                                                                                     *</span>
                                                                                             </label>
@@ -2025,6 +2025,10 @@
                                                                                                 placeholder="Enter Land ID"
                                                                                             />
                                                                                         </div>
+
+                                                                                        
+
+
                                                                                         <div class="col-3">
                                                                                             <label
                                                                                                 class="s_website_form_label"
@@ -2073,6 +2077,8 @@
                                                                                                     <a
                                                                                                         t-att-href="land_info['certificate_id']"
                                                                                                         t-att-id="'certificate_link_' + str(land_info['index'])"
+                                                                                                        t-att-name="'viewland_certificate_' + str(land_info['index'])"
+                                                                                                        
                                                                                                         target="_blank"
                                                                                                         class="btn btn-link"
                                                                                                         t-if="land_info['certificate_id']"
@@ -2170,7 +2176,9 @@
                                                                                         style="color: #666666;"
                                                                                     >
                                                                                         Total Land
-                                                                                        Area
+                                                                                        Area  
+                                                                                        (in
+                                                                                        Hectares)
                                                                                     </span>
                                                                                     <span
                                                                                         class="s_website_form_mark land_astrix"
@@ -2320,14 +2328,16 @@
                                                                         *</span>
                                                                 </label>
                                                                 <select
-                                                                    class="selectpicker crop_mixed_required_field"
+                                                                    class="selectpicker form-control crop_mixed_required_field"
                                                                     name="crop_water_source"
                                                                     multiple="multiple"
+                                                                    id = "crop_water"
                                                                     data-live-search="true"
                                                                     data-style="btn-custom "
                                                                     style="width: 100%;"
                                                                     data-none-selected-text="Select Water Source"
-                                                                    required="required"
+                                                                    
+                                
                                                                     onchange="validateElement(this)"
                                                                 >
                                                                     <t t-foreach="water_source" t-as="option">
@@ -2423,7 +2433,7 @@
                                                                                         id="crop_planted_date"
                                                                                         name="crop_planted_date_0"
                                                                                         class="form-control date-picker crop_mixed_required_field"
-                                                                                        required="required"
+                                                                                       
                                                                                         onchange="validateElement(this)"
                                                                                         placeholder="DD-MM-YYYY"
                                                                                     />
@@ -2535,7 +2545,7 @@
                                                                                                 id="crop_planted_date"
                                                                                                 t-att-name="'crop_planted_date' + str(crop_info['index'])"
                                                                                                 class="form-control date-picker crop_mixed_required_field"
-                                                                                                required="required"
+                                                                                               
                                                                                                 onchange="validateElement(this)"
                                                                                                 placeholder="DD-MM-YYYY"
                                                                                                 t-att-value="crop_info['crop_planted_date']"
@@ -2639,7 +2649,7 @@
                                                                                     type="date"
                                                                                     id="crop_planted_date"
                                                                                     name="crop-planted-date"
-                                                                                    t-att-name="'crops_planted_date_' + str({9999})"
+                                                                                    t-att-name="'crop_planted_date' + str({9999})"
                                                                                     class="form-control date-picker crop_mixed_required_field"
                                                                                     required="required"
                                                                                     onchange="validateElement(this)"
@@ -2715,13 +2725,13 @@
                                                                         *</span>
                                                                 </label>
                                                                 <select
-                                                                    class="selectpicker"
+                                                                    class="selectpicker "
                                                                     name="livestock_water_source"
                                                                     multiple="multiple"
                                                                     data-live-search="true"
                                                                     data-style="btn-custom "
                                                                     style="width: 100%;"
-                                                                    required="required"
+                                                                    
                                                                     onchange="validateElement(this)"
                                                                     data-none-selected-text="Select Water Source"
                                                                 >
@@ -3332,7 +3342,7 @@
                                                                         *</span>
                                                                 </label>
                                                                 <select
-                                                                    class="selectpicker form-control crop_mixed_required_field"
+                                                                    class="selectpicker form-control "
                                                                     id="machinery-types-select"
                                                                     name="machinery_types"
                                                                     multiple="multiple"
@@ -3340,6 +3350,8 @@
                                                                     data-style="btn-custom"
                                                                     style="width: 100%;"
                                                                     data-none-selected-text="Select"
+                                                                    onchange="validateElement(this)"
+                                                                    required="required"
                                                                 >
                                                                     <t
                                                                         t-foreach="machinary_types"
@@ -3436,6 +3448,8 @@
                                                                     data-style="btn-custom"
                                                                     style="width: 100%;"
                                                                     data-none-selected-text="Select"
+                                                                    required = "required"
+                                                                    onchange="validateElement(this)"
                                                                 >
                                                                     <t
                                                                         t-foreach="financial_access"
@@ -3518,10 +3532,7 @@
                             <script type="text/javascript"> var primaryLanguageData = JSON.parse('<t
                                     t-esc="primary_language_js"
                                 />'); </script>
-                            <script
-                                type="text/javascript"
-                                src="/g2p_ati_service_provider_portal/static/src/js/virtual-select.min.js"
-                            />
+
                             <script
                                 type="text/javascript"
                                 src="/g2p_ati_service_provider_portal/static/src/js/member_form.js"
