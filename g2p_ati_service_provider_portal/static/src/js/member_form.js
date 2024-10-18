@@ -190,6 +190,8 @@ function resetFormFieldsMember() {
 
 $(document).on("click", "#member_submit", async function () {
 
+    console.log("hello work");
+
     const isSectionValid = validateSection("access-to-resource");
 
 
@@ -763,7 +765,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 option.textContent.trim().toLowerCase() === "others"
         );
         if (!selectElement) {
-            console.error(`Element with ID ${selectElementId} not found.`);
+            console.log(`Element with ID ${selectElementId} not found.`);
             return;
         }
 
