@@ -1731,14 +1731,14 @@
                                                     >NEXT <span>&#x276F;</span>
                                                     </button>
                                                 </div>
-                                            </div>
+                                            </div>                                      
                                             <div
                                                 id="land-information"
                                                 class="section-container"
                                                 style="display: none;"
                                             >
                                                 <div class="section-content">
-                                                    <div id="section-content-land">
+                                                    <div id="section-content-land">                                                 
                                                         <t t-if="not land_info_data">
                                                             <div id="land-section-content">
                                                                 <div class="container-fluid pl-3 pr-5">
@@ -1920,6 +1920,7 @@
                                                                 </div>
                                                             </div>
                                                         </t>
+                                                       
                                                         <t t-else="">
                                                             <div id="land-section-content">
                                                                 <div class="container-fluid pl-3 pr-5">
@@ -2064,23 +2065,35 @@
                                                                                                     class="custom-file-upload"
                                                                                                 >
                                                                                                     <span
-                                                                                                        class="upload-text"
-                                                                                                    >
-                                                                                                        Upload
-                                                                                                        Certificate</span>
+                                                                                                        class="upload-text" t-esc="land_info['land_certificate']['filename']"/>
+                                                                                                   
                                                                                                     <span>
                                                                                                         <i
                                                                                                             class="fas fa-upload"
                                                                                                         />
                                                                                                     </span>
+
                                                                                                 </label>
                                                                                                 <input
                                                                                                     type="file"
                                                                                                     t-att-id="'land_certificate_' + str(land_info['index'])"
                                                                                                     t-att-name="'land_certificate_' + str(land_info['index'])"
-                                                                                                    class="form-control land_required_field"
+                                                                                                    class="form-control"
                                                                                                     onchange="updateFileName(this)"
                                                                                                 />
+
+                                                                                                 <input
+            type="text"
+            t-att-id="'updated_certificate_' + str(land_info['index'])"
+            t-att-name="'updated_certificate_' + str(land_info['index'])"
+            style="display: none;"
+            class="form-control"
+            t-att-value="land_info['id'] if land_info['land_certificate']['updated'] else ''"
+        />
+
+
+
+
                                                                                                 <small
                                                                                                     id="file-error"
                                                                                                     class="text-danger"
@@ -2089,7 +2102,9 @@
                                                                                                 Please
                                                                                                 upload
                                                                                                 a
-                                                                                                file.</small>
+                                                                                                file.</small> 
+
+
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -2116,6 +2131,9 @@
                                                                 </t>
                                                             </div>
                                                         </t>
+
+
+
                                                         <div id="land-hidden-template" style="display: none;">
                                                             <div
                                                                 class="land-section-wrapper"
@@ -2276,6 +2294,11 @@
                                                             </div>
                                                         </div>
                                                     </div>
+
+
+
+
+
                                                     <div class="row mt-3">
                                                         <div class="col-lg-7" />
                                                         <div class="col-lg-5 text-end">
@@ -2298,6 +2321,19 @@
                                                     </button>
                                                 </div>
                                             </div>
+                                           
+                                           
+
+
+
+
+
+
+
+
+
+
+
                                             <div
                                                 id="crop-information"
                                                 class="section-container"
@@ -2310,6 +2346,27 @@
                                                     This section is only for Crop or Mixed farming
                                                     types.
                                                 </div>
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
                                                 <div class="section-content crop-mixed-farming-type">
                                                     <div class="row">
                                                         <div class="col-6">
@@ -2691,6 +2748,12 @@
                                                     </button>
                                                 </div>
                                             </div>
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
                                             <div
                                                 id="livestock-information"
                                                 class="section-container"
