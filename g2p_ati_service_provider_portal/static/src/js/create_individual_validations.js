@@ -48,47 +48,48 @@ $(document).ready(function () {
         cropIndex++;
     });
 
-
     $("#add-livestock-info").click(function () {
         var $template = $("#livestock-hidden-template").html();
         var $formContainer = $("#section-content-livestock");
-    
+
         // Replace {9999} placeholder in the template
         var newLineHtml = $template.replace(/\{9999\}/g, livestockIndex);
         var $newLine = $(newLineHtml);
-    
+
         // Gather already selected animal types from the first select
         let selectedAnimalTypes = [];
-        $("select[id='livestock_selection']").each(function() {
+        $("select[id='livestock_selection']").each(function () {
             let selectedValue = $(this).val();
             if (selectedValue) {
                 selectedAnimalTypes.push(selectedValue);
             }
         });
-    
+
         // Get the new select element
         var newSelect = $newLine.find("select");
-    
+
         // Clear existing options except the first one (the placeholder)
-        newSelect.find('option').not(':first').remove();
-    
+        newSelect.find("option").not(":first").remove();
+
         // Populate new select with options from the first select excluding the selected ones
-        $("select[id='livestock_selection']").first().find('option').each(function() {
-            let optionValue = $(this).val();
-            let optionText = $(this).text();
-    
-            // Check if the option is not already selected
-            if (optionValue && !selectedAnimalTypes.includes(optionValue)) {
-                newSelect.append(`<option value="${optionValue}">${optionText}</option>`);
-            }
-        });
-    
+        $("select[id='livestock_selection']")
+            .first()
+            .find("option")
+            .each(function () {
+                let optionValue = $(this).val();
+                let optionText = $(this).text();
+
+                // Check if the option is not already selected
+                if (optionValue && !selectedAnimalTypes.includes(optionValue)) {
+                    newSelect.append(`<option value="${optionValue}">${optionText}</option>`);
+                }
+            });
+
         // Append the new line to the form container
         $formContainer.append($newLine);
         livestockIndex++;
     });
 
-   
     $("#add-land-info").click(function () {
         var $template = $("#land-hidden-template").html();
         var $formContainer = $("#section-content-land");
@@ -843,57 +844,55 @@ function showSection(sectionId, element, fromGroup = false) {
                     sectionId === "location-details" ||
                     sectionId === "family-member-template"
                 ) {
-                    section.style.display = "none";
-                } 
-                
-                else {
+                    const locationDetailsSection = document.getElementById("location-details");
 
-                    const locationDetailsSection = document.getElementById('location-details');
+                    if (locationDetailsSection) {
+                        isSectionValid = validateSection("location-details");
 
-                    if (locationDetailsSection){
-
-                        console.log("inn locationDetailsSection  ")
-                         isSectionValid = validateSection('location-details');
-                        
                         if (!isSectionValid) {
-
-                            console.log("inn Section invalid")
-                        
                             const farmerDetailSection = document.getElementById("family-members");
-                        farmerDetailSection.style.display = "none";
+                            farmerDetailSection.style.display = "none";
 
-                            return
+                            return;
                         }
                     }
-     
 
+                    section.style.display = "none";
+                } else {
+
+                    const locationDetailsSection = document.getElementById("location-details");
+
+                    if (locationDetailsSection) {
+                        isSectionValid = validateSection("location-details");
+
+                        if (!isSectionValid) {
+                            const farmerDetailSection = document.getElementById("family-members");
+                            farmerDetailSection.style.display = "none";
+                            return;
+                        }
+                    }
 
                     section.style.display = "none";
                     const farmerDetailSection = document.getElementById("farmer-details");
                     if (farmerDetailSection) {
-
                         farmerDetailSection.style.display = "block";
                     }
                 }
             });
         }
 
-        if(isSectionValid) {
-
-
-        document.getElementById(sectionId).style.display = "block";
-        // PreviousSection = sectionId;
-        // If (!fromGroup) {
-        document.querySelectorAll(".sidebar .nav-link").forEach((link) => {
-            link.classList.remove("active");
-        });
-        // }
-        if (element) {
-            element.classList.add("active");
+        if (isSectionValid) {
+            document.getElementById(sectionId).style.display = "block";
+            // PreviousSection = sectionId;
+            // If (!fromGroup) {
+            document.querySelectorAll(".sidebar .nav-link").forEach((link) => {
+                link.classList.remove("active");
+            });
+            // }
+            if (element) {
+                element.classList.add("active");
+            }
         }
-
-    }
-
     }
 }
 // eslint-disable-next-line no-unused-vars
@@ -911,7 +910,6 @@ function showSection(sectionId, element, fromGroup = false) {
 // }
 
 function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
-
     const isSectionValid = validateSection(currentSectionId);
 
     if (isSectionValid) {
@@ -938,7 +936,6 @@ function toggleFieldBasedOnSelect(
     containerId,
     containerId2
 ) {
-
     const shouldShowField = value === toggleValue;
 
     const selectionFieldToClear = document.getElementById(selectionFieldIdToClear);

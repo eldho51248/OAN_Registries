@@ -15,7 +15,7 @@
                 <h5 class="all-title">Create Farmer</h5>
 
 
-                    <ol class="breadcrumb form-layout-breadcrumb">
+                    <ol class="breadcrumb form-layout-breadcrumb d-flex flex-col flex-md-row">
                         <li class="breadcrumb-item">
                             <a href="/serviceprovider/home">
                                 Dashboard
@@ -45,9 +45,9 @@
                         <div class="row">
 
                             <div class="container-fluid">
-                                <div class="rounded-card">
+                                <div class="rounded-card d-flex flex-column flex-md-row">
                                     <div class="sidebar">
-                                        <ul class="nav flex-column">
+                                        <ul class="nav d-flex flex-row flex-md-column justify-content-between">
                                             <li class="nav-item">
                                                 <a
                                                     id="id-section-link"

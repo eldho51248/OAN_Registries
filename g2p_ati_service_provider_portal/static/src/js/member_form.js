@@ -10,6 +10,31 @@ $(document).ready(function () {
     });
 });
 
+
+function showSuccessModal(message) {
+    const imgElement = document.getElementById('successModal').querySelector('.popup_img');
+    const h4Element = document.getElementById('successModal').querySelector('h4');
+    const msgElement = document.getElementById('successModal').querySelector('.popup_msg');
+
+    imgElement.src = "/g2p_ati_service_provider_portal/static/src/img/ok.png";
+    h4Element.textContent = "Success!";
+    msgElement.textContent = message.replace(/^"|"$/g, '');
+
+    $('#successModal').modal('show');
+  }
+
+function showErrorModal(message) {
+    const imgElement = document.getElementById('successModal').querySelector('.popup_img');
+    const h4Element = document.getElementById('successModal').querySelector('h4');
+    const msgElement = document.getElementById('successModal').querySelector('.popup_msg');
+
+    imgElement.src = "/g2p_ati_service_provider_portal/static/src/img/no.png";
+    h4Element.textContent = "Error";
+    msgElement.textContent = message.replace(/^"|"$/g, '');
+
+    $('#successModal').modal('show');
+  }
+
 // eslint-disable-next-line no-unused-vars
 function validateForm(isCreateForm) {
   
@@ -528,14 +553,23 @@ $(document).on("click", "#member_submit", async function () {
                         tableBody.append(newRowHtml);
                     });
                     $("#member_submit").prop("disabled", false);
+                    showSuccessModal("Member Added Successfully!")
+
                 }
             } else {
                 console.error("Failed to create individual");
+                $("#member_submit").prop("disabled", false);
+                showErrorModal("Failed to create individual!")
             }
         },
         error: function (error) {
             console.error("request failed");
-            console.error("Error:", error);
+            $("#member_submit").prop("disabled", false);
+            showErrorModal("Request Failed")
+
+
+            // var errorMessage = error.responseJSON.message || error.statusText;
+            // showErrorModal(errorMessage)
         },
     });
 });
