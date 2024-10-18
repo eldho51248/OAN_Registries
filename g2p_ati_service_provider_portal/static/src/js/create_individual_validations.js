@@ -48,47 +48,48 @@ $(document).ready(function () {
         cropIndex++;
     });
 
-
     $("#add-livestock-info").click(function () {
         var $template = $("#livestock-hidden-template").html();
         var $formContainer = $("#section-content-livestock");
-    
+
         // Replace {9999} placeholder in the template
         var newLineHtml = $template.replace(/\{9999\}/g, livestockIndex);
         var $newLine = $(newLineHtml);
-    
+
         // Gather already selected animal types from the first select
         let selectedAnimalTypes = [];
-        $("select[id='livestock_selection']").each(function() {
+        $("select[id='livestock_selection']").each(function () {
             let selectedValue = $(this).val();
             if (selectedValue) {
                 selectedAnimalTypes.push(selectedValue);
             }
         });
-    
+
         // Get the new select element
         var newSelect = $newLine.find("select");
-    
+
         // Clear existing options except the first one (the placeholder)
-        newSelect.find('option').not(':first').remove();
-    
+        newSelect.find("option").not(":first").remove();
+
         // Populate new select with options from the first select excluding the selected ones
-        $("select[id='livestock_selection']").first().find('option').each(function() {
-            let optionValue = $(this).val();
-            let optionText = $(this).text();
-    
-            // Check if the option is not already selected
-            if (optionValue && !selectedAnimalTypes.includes(optionValue)) {
-                newSelect.append(`<option value="${optionValue}">${optionText}</option>`);
-            }
-        });
-    
+        $("select[id='livestock_selection']")
+            .first()
+            .find("option")
+            .each(function () {
+                let optionValue = $(this).val();
+                let optionText = $(this).text();
+
+                // Check if the option is not already selected
+                if (optionValue && !selectedAnimalTypes.includes(optionValue)) {
+                    newSelect.append(`<option value="${optionValue}">${optionText}</option>`);
+                }
+            });
+
         // Append the new line to the form container
         $formContainer.append($newLine);
         livestockIndex++;
     });
 
-   
     $("#add-land-info").click(function () {
         var $template = $("#land-hidden-template").html();
         var $formContainer = $("#section-content-land");
@@ -371,6 +372,10 @@ $(document).ready(function () {
         }
     }
 
+
+
+
+
     function handlePhoneNumberSelection() {
         const selectElement = document.getElementById("have-phone-no-selection");
         const primaryPhoneDiv = document.getElementById("primary-div");
@@ -400,13 +405,15 @@ $(document).ready(function () {
     }
 
     // Function to update options for a select element based on an AJAX response
+   
     function updateOptions(
         url,
         data,
         targetSelectId,
         defaultOptionText = "Select",
         originalEvent = "",
-        selectdropdown = ""
+        selectdropdown = "",
+        initialValue = false
     ) {
         console.log(data);
         $.ajax({
@@ -420,17 +427,20 @@ $(document).ready(function () {
                 const selectedName = selectElement.options[selectElement.selectedIndex].text;
                 if (
                     originalEvent !== "" &&
-                    (selectdropdown === "current_region" || selectdropdown === "region")
+                    (selectdropdown === "current_region" || selectdropdown === "region")  
                 ) {
                     selectedvalue = " ";
-                } else if (originalEvent !== "") {
+
+                } else if (originalEvent !== ""  ) {
                     selectedvalue = " ";
-                } else if (selectElement.selectedIndex > 0) {
+
+
+                } else if (selectElement.selectedIndex > 0  ) {
                     selectedvalue = selectElement.options[selectElement.selectedIndex].value;
                     // If (selectedName) {
                     //     defaultOptionText = selectedName;
                     // }
-                } else if (selectElement.selectedIndex === 0 && selectedName !== "Select") {
+                } else if (selectElement.selectedIndex === 0 && selectedName !== "Select" ) {
                     selectedvalue = selectElement.options[selectElement.selectedIndex].value;
                     // If (selectedName) {
                     //     defaultOptionText = selectedName;
@@ -438,6 +448,7 @@ $(document).ready(function () {
                 }
 
                 selectElement.innerHTML = "";
+
                 const defaultOption = document.createElement("option");
                 defaultOption.value = selectedvalue;
                 defaultOption.textContent = defaultOptionText;
@@ -449,12 +460,38 @@ $(document).ready(function () {
                     opt.textContent = option.name;
                     selectElement.appendChild(opt);
                 });
+
+                if (initialValue){
+                    selectElement.value = initialValue;
+                }
+
             },
             error: function (error) {
                 console.error("Error fetching options:", error);
             },
         });
     }
+
+
+
+
+    
+    const initialRegionId = $("#region_selection").val();
+    const initialZoneId = $("#zon_selection").val();
+    const initialWoredaId = $("#woreda_selection").val();
+    const initialKebeleId = $("#kebele_selection").val();
+
+
+    console.log(`Here are the initial values ${initialRegionId}, ${initialZoneId}, ${initialWoredaId}`)
+      
+    updateOptions("/update_zone_options", {region_id: initialRegionId}, "zon_selection", "Select", null, "region", initialValue=initialZoneId);
+    updateOptions("/update_woreda_options", {zone_id: initialZoneId}, "woreda_selection", "Select", null, "zone", initialValue=initialWoredaId);
+    updateOptions("/update_kebele_options", {woreda_id: initialWoredaId}, "kebele_selection", "Select", null, "woreda", initialValue=initialKebeleId);
+
+
+
+  
+      
 
     // Event listener for national ID selection change
     $("#have-national-id-selection").on("change", handleNationalIdSelection);
@@ -518,13 +555,13 @@ $(document).ready(function () {
     // Validation for email
     const emailInput = document.getElementById("email");
 
-    function isValidEmail(email) {
+function isValidEmail(email) {
         // Basic email regex pattern
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailPattern.test(email);
     }
 
-    emailInput.addEventListener("input", function () {
+emailInput.addEventListener("input", function () {
         if (emailInput.value.length === 0) {
             emailInput.classList.remove("is-invalid");
             // EmailError.style.display = "none";
@@ -537,16 +574,17 @@ $(document).ready(function () {
         }
     });
 
-    function expandSection(sectionId) {
+function expandSection(sectionId) {
         var consentSection = document.getElementById(sectionId);
         consentSection.classList.add("show");
     }
+
     // Function hideSection(sectionId) {
     //     var consentSection = document.getElementById(sectionId);
     //     consentSection.classList.add("hide");
     // }
 
-    window.customvalidateForm = function (isCreateForm) {
+window.customvalidateForm = function (isCreateForm) {
         const requiredFields = document.querySelectorAll("[required]");
         var valid = true;
 
@@ -938,57 +976,55 @@ function showSection(sectionId, element, fromGroup = false) {
                     sectionId === "location-details" ||
                     sectionId === "family-member-template"
                 ) {
-                    section.style.display = "none";
-                } 
-                
-                else {
+                    const locationDetailsSection = document.getElementById("location-details");
 
-                    const locationDetailsSection = document.getElementById('location-details');
+                    if (locationDetailsSection) {
+                        isSectionValid = validateSection("location-details");
 
-                    if (locationDetailsSection){
-
-                        console.log("inn locationDetailsSection  ")
-                         isSectionValid = validateSection('location-details');
-                        
                         if (!isSectionValid) {
-
-                            console.log("inn Section invalid")
-                        
                             const farmerDetailSection = document.getElementById("family-members");
-                        farmerDetailSection.style.display = "none";
+                            farmerDetailSection.style.display = "none";
 
-                            return
+                            return;
                         }
                     }
-     
 
+                    section.style.display = "none";
+                } else {
+
+                    const locationDetailsSection = document.getElementById("location-details");
+
+                    if (locationDetailsSection) {
+                        isSectionValid = validateSection("location-details");
+
+                        if (!isSectionValid) {
+                            const farmerDetailSection = document.getElementById("family-members");
+                            farmerDetailSection.style.display = "none";
+                            return;
+                        }
+                    }
 
                     section.style.display = "none";
                     const farmerDetailSection = document.getElementById("farmer-details");
                     if (farmerDetailSection) {
-
                         farmerDetailSection.style.display = "block";
                     }
                 }
             });
         }
 
-        if(isSectionValid) {
-
-
-        document.getElementById(sectionId).style.display = "block";
-        // PreviousSection = sectionId;
-        // If (!fromGroup) {
-        document.querySelectorAll(".sidebar .nav-link").forEach((link) => {
-            link.classList.remove("active");
-        });
-        // }
-        if (element) {
-            element.classList.add("active");
+        if (isSectionValid) {
+            document.getElementById(sectionId).style.display = "block";
+            // PreviousSection = sectionId;
+            // If (!fromGroup) {
+            document.querySelectorAll(".sidebar .nav-link").forEach((link) => {
+                link.classList.remove("active");
+            });
+            // }
+            if (element) {
+                element.classList.add("active");
+            }
         }
-
-    }
-
     }
 }
 // eslint-disable-next-line no-unused-vars
@@ -1006,7 +1042,6 @@ function showSection(sectionId, element, fromGroup = false) {
 // }
 
 function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
-
     const isSectionValid = validateSection(currentSectionId);
 
     if (isSectionValid) {
@@ -1033,7 +1068,6 @@ function toggleFieldBasedOnSelect(
     containerId,
     containerId2
 ) {
-
     const shouldShowField = value === toggleValue;
 
     const selectionFieldToClear = document.getElementById(selectionFieldIdToClear);

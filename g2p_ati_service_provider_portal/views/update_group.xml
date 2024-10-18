@@ -10,36 +10,40 @@
 
         <xpath expr="//div[hasclass('main-container')]" position="replace">
             <div style="padding-top: 15px !important; padding-bottom: 0px !important;" class="main-container">
-                <div class="container-adjuster">
-                    <h5 class="all-title">Update Household</h5>
-                    <div class="form-template">
-                        <ol class="breadcrumb form-layout-breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="/serviceprovider/home">
+                <div class="">
+                    <div  style="max-width:1400px" class="form-template mx-auto">
+<div class="top-content">
+    <h5 style="font: normal 600 18px / 22px Inter !important; height: auto !important;" class="all-title">Update Household</h5>
+
+    <ol class="breadcrumb form-layout-breadcrumb d-flex flex-col flex-md-row">
+        <li class="breadcrumb-item">
+            <a href="/serviceprovider/home">
                                     Dashboard
-                                </a>
-                            </li>
-                            <li class="breadcrumb-item">
-                                <a href="/serviceprovider/group">
+            </a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="/serviceprovider/group">
                                     Household
-                                </a>
-                            </li>
-                            <li class="breadcrumb-item active" aria-current="page">
+            </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
                                 Update Household
-                            </li>
-                        </ol>
+        </li>
+    </ol>
+</div>
 
                         <form
                             id="updatehouseholdForm"
                             action="/serviceprovider/group/update/submit"
                             method="POST"
                             enctype="multipart/form-data"
+                            class="mx-auto px-3 px-lg-0"
                         >
                             <div class="row">
                                 <div class="container-fluid">
-                                    <div class="rounded-card">
+                                    <div class="rounded-card d-flex flex-column flex-md-row">
                                         <div class="sidebar">
-                                            <ul class="nav flex-column">
+                                            <ul class="nav d-flex flex-row flex-md-column justify-content-between">
                                                 <li class="nav-item">
                                                     <a
                                                         id="location-details-link"
@@ -165,7 +169,6 @@
                                                         <div class="col-lg-5 left-margin-input">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
                                                             >
                                                                 <label class="s_website_form_label">
                                                                     <span
@@ -204,7 +207,7 @@
                                                         <div class="col-lg-5 left-margin-input">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
+                                                                
                                                             >
                                                                 <label class="s_website_form_label">
                                                                     <span
@@ -242,7 +245,7 @@
                                                         <div class="col-lg-5">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
+                                                                
                                                             >
                                                                 <label class="s_website_form_label">
                                                                     <span
@@ -281,7 +284,7 @@
                                                         <div class="col-lg-5">
                                                             <div
                                                                 class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
+                                                                
                                                             >
                                                                 <label class="s_website_form_label">
                                                                     <span
@@ -375,7 +378,7 @@
                                                 <div class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
-                                                        class="btn btn-outline-secondary"
+                                                        class="btn btn-sm btn-outline-secondary"
                                                         onclick="showNextSection('farmer-details', 'location-details')"
                                                         id="some-button-or-link"
                                                     > NEXT <span>&#x276F;</span>
@@ -532,7 +535,7 @@
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#farmerDetailModal"
                                                                 onclick="showNextModal('individual-details', 'farmer-details')"
-                                                                class="btn btn-primary create-new"
+                                                                class="btn btn-sm btn-primary create-new"
                                                             >
                                                                 Add Farmer
                                                             </button>
@@ -543,7 +546,7 @@
                                                 <div class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
-                                                        class="btn btn-outline-secondary"
+                                                        class="btn btn-sm btn-outline-secondary"
                                                         onclick="showNextSection('family-members', 'farmer-details')"
                                                         id="some-button-or-link"
                                                     >NEXT <span>&#x276F;</span>
@@ -1541,7 +1544,7 @@
                                                                 >
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-outline-secondary"
+                                                                        class="btn btn-sm btn-outline-secondary"
                                                                         t-attf-onclick="location.href='/serviceprovider/group/update/#{group.id}';"
                                                                         style="width: 90px;"
                                                                     >
@@ -1549,7 +1552,7 @@
                                                                     </button>
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-primary"
+                                                                        class="btn btn-sm btn-primary"
                                                                         onclick="showModalSection('socio-economic-data', 'individual-details', 'next')"
                                                                         id="some-button-or-link"
                                                                     >NEXT <span>
@@ -1739,7 +1742,7 @@
                                                                         &#x276E;</span> PREVIOUS </button>
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-primary"
+                                                                        class="btn btn-sm btn-primary"
                                                                         onclick="showModalSection('membership-details', 'socio-economic-data',  'next')"
                                                                         id="some-button-or-link"
                                                                     >NEXT <span>
@@ -2196,7 +2199,7 @@
                                                                         &#x276E;</span> PREVIOUS </button>
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-primary"
+                                                                        class="btn btn-sm btn-primary"
                                                                         onclick="showModalSection('land-information', 'membership-details',  'next')"
                                                                         id="some-button-or-link"
                                                                     >NEXT <span>
@@ -2237,18 +2240,18 @@
                                                                                 data-index="0"
                                                                             >
                                                                                 <div
-                                                                                    class="container-fluid px-5"
+                                                                                    class="container-fluid"
                                                                                 >
 
                                                                                     <div
                                                                                         class="row pt-3 pb-1"
                                                                                     >
                                                                                         <div
-                                                                                            class="row col-11 land_container2"
+                                                                                            class="d-flex flex-column flex-lg-row w-lg-auto land_container2"
                                                                                         >
 
                                                                                             <div
-                                                                                                class="col-3"
+                                                                                                class="col-lg-3"
                                                                                             >
                                                                                                 <label
                                                                                                     class="s_website_form_label"
@@ -2297,7 +2300,7 @@
                                                                                             </div>
 
                                                                                             <div
-                                                                                                class="col-3"
+                                                                                                class="col-lg-3"
                                                                                             >
                                                                                                 <label
                                                                                                     class="s_website_form_label"
@@ -2329,7 +2332,7 @@
                                                                                             </div>
 
                                                                                             <div
-                                                                                                class="col-3"
+                                                                                                class="col-lg-3"
                                                                                             >
                                                                                                 <label
                                                                                                     class="s_website_form_label"
@@ -2359,7 +2362,7 @@
                                                                                             </div>
 
                                                                                             <div
-                                                                                                class="col-3"
+                                                                                                class="col-lg-3"
                                                                                             >
                                                                                                 <label
                                                                                                     class="s_website_form_label"
@@ -2423,7 +2426,7 @@
                                                                                         </div>
 
                                                                                         <div
-                                                                                            class="col-1 my-3"
+                                                                                            class="col-1 mx-auto my-3"
                                                                                         >
                                                                                             <button
                                                                                                 type="button"
@@ -2459,18 +2462,18 @@
                                                                                 t-att-data-index="{9999}"
                                                                             >
                                                                                 <div
-                                                                                    class="container-fluid px-5"
+                                                                                    class="container-fluid"
                                                                                 >
 
                                                                                     <div
                                                                                         class="row pt-3 pb-1"
                                                                                     >
                                                                                         <div
-                                                                                            class="row col-11 land_container2"
+                                                                                            class="d-flex flex-column flex-lg-row w-lg-auto  land_container2"
                                                                                         >
 
                                                                                             <div
-                                                                                                class="col-3"
+                                                                                                class="col-lg-3"
                                                                                             >
                                                                                                 <label
                                                                                                     class="s_website_form_label"
@@ -2516,7 +2519,7 @@
                                                                                                 </select>
                                                                                             </div>
                                                                                             <div
-                                                                                                class="col-3"
+                                                                                                class="col-lg-3"
                                                                                             >
                                                                                                 <label
                                                                                                     class="s_website_form_label"
@@ -2547,7 +2550,7 @@
                                                                                                 />
                                                                                             </div>
                                                                                             <div
-                                                                                                class="col-3"
+                                                                                                class="col-lg-3"
                                                                                             >
                                                                                                 <label
                                                                                                     class="s_website_form_label"
@@ -2577,7 +2580,7 @@
                                                                                             </div>
 
                                                                                             <div
-                                                                                                class="col-3"
+                                                                                                class="col-lg-3"
                                                                                             >
                                                                                                 <label
                                                                                                     class="s_website_form_label"
@@ -2636,7 +2639,7 @@
                                                                                             </div>
                                                                                         </div>
                                                                                         <div
-                                                                                            class="col-1 my-3"
+                                                                                            class="col-1 mx-auto my-3"
                                                                                         >
                                                                                             <button
                                                                                                 type="button"
@@ -2685,7 +2688,7 @@
                                                                         &#x276E;</span> PREVIOUS </button>
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-primary"
+                                                                        class="btn btn-sm btn-primary"
                                                                         onclick="showModalSection('crop-information', 'land-information',  'next')"
                                                                         id="land-next"
                                                                     >NEXT <span>
@@ -2775,18 +2778,18 @@
                                                                                 data-index="0"
                                                                             >
                                                                                 <div
-                                                                                    class="container-fluid px-5"
+                                                                                    class="container-fluid"
                                                                                 >
 
                                                                                     <div
                                                                                         class="row pt-3 pb-1"
                                                                                     >
                                                                                         <div
-                                                                                            class="row col-11 land_container2"
+                                                                                            class="d-flex flex-column flex-lg-row w-lg-auto  col-lg-11 land_container2"
                                                                                         >
 
                                                                                             <div
-                                                                                                class="col-6"
+                                                                                                class="col-lg-6"
                                                                                             >
                                                                                                 <label
                                                                                                     class="s_website_form_label"
@@ -2836,7 +2839,7 @@
                                                                                             </div>
 
                                                                                             <div
-                                                                                                class="col-6"
+                                                                                                class="col-lg-6"
                                                                                             >
                                                                                                 <label
                                                                                                     class="s_website_form_label"
@@ -2870,7 +2873,7 @@
 
                                                                                         </div>
                                                                                         <div
-                                                                                            class="col-1 my-3"
+                                                                                            class="col-1 mx-auto my-3"
                                                                                         >
                                                                                             <button
                                                                                                 type="button"
@@ -2906,18 +2909,18 @@
                                                                                 t-att-data-index="{9999}"
                                                                             >
                                                                                 <div
-                                                                                    class="container-fluid px-5"
+                                                                                    class="container-fluid"
                                                                                 >
 
                                                                                     <div
                                                                                         class="row pt-3 pb-1"
                                                                                     >
                                                                                         <div
-                                                                                            class="row col-11 land_container2"
+                                                                                            class="d-flex flex-column flex-lg-row w-lg-auto  col-lg-11 land_container2"
                                                                                         >
 
                                                                                             <div
-                                                                                                class="col-6"
+                                                                                                class="col-lg-6"
                                                                                             >
                                                                                                 <label
                                                                                                     class="s_website_form_label"
@@ -2967,7 +2970,7 @@
                                                                                             </div>
 
                                                                                             <div
-                                                                                                class="col-6"
+                                                                                                class="col-lg-6"
                                                                                             >
                                                                                                 <label
                                                                                                     class="s_website_form_label"
@@ -2999,7 +3002,7 @@
                                                                                             </div>
                                                                                         </div>
                                                                                         <div
-                                                                                            class="col-1 my-3"
+                                                                                            class="col-1 mx-auto my-3"
                                                                                         >
                                                                                             <button
                                                                                                 type="button"
@@ -3050,7 +3053,7 @@
                                                                         &#x276E;</span> PREVIOUS </button>
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-primary"
+                                                                        class="btn btn-sm btn-primary"
                                                                         onclick="showModalSection('livestock-information', 'crop-information',  'next')"
                                                                         id="crop-next"
                                                                     >NEXT <span>
@@ -3147,17 +3150,17 @@
                                                                                 data-index="0"
                                                                             >
                                                                                 <div
-                                                                                    class="container-fluid px-5"
+                                                                                    class="container-fluid"
                                                                                 >
 
                                                                                     <div
                                                                                         class="row pt-3 pb-1"
                                                                                     >
                                                                                         <div
-                                                                                            class="row col-11 land_container2"
+                                                                                            class="d-flex flex-column flex-lg-row w-lg-auto  col-lg-11 land_container2"
                                                                                         >
                                                                                             <div
-                                                                                                class="col-6"
+                                                                                                class="col-lg-6"
                                                                                             >
                                                                                                 <label
                                                                                                     class="s_website_form_label"
@@ -3211,7 +3214,7 @@
                                                                                             </div>
 
                                                                                             <div
-                                                                                                class="col-6"
+                                                                                                class="col-lg-6"
                                                                                             >
                                                                                                 <label
                                                                                                     class="s_website_form_label"
@@ -3245,7 +3248,7 @@
                                                                                             </div>
                                                                                         </div>
                                                                                         <div
-                                                                                            class="col-1 my-3"
+                                                                                            class="col-1 mx-auto my-3"
                                                                                         >
                                                                                             <button
                                                                                                 type="button"
@@ -3282,18 +3285,18 @@
                                                                                     t-att-data-index="{9999}"
                                                                                 >
                                                                                     <div
-                                                                                        class="container-fluid px-5"
+                                                                                        class="container-fluid"
                                                                                     >
 
                                                                                         <div
                                                                                             class="row pt-3 pb-1"
                                                                                         >
                                                                                             <div
-                                                                                                class="row col-11 land_container2"
+                                                                                                class="d-flex flex-column flex-lg-row w-lg-auto  col-lg-11 land_container2"
                                                                                             >
 
                                                                                                 <div
-                                                                                                    class="col-6"
+                                                                                                    class="col-lg-6"
                                                                                                 >
                                                                                                     <label
                                                                                                         class="s_website_form_label"
@@ -3347,7 +3350,7 @@
                                                                                                 </div>
 
                                                                                                 <div
-                                                                                                    class="col-6"
+                                                                                                    class="col-lg-6"
                                                                                                 >
                                                                                                     <label
                                                                                                         class="s_website_form_label"
@@ -3384,7 +3387,7 @@
                                                                                             </div>
 
                                                                                             <div
-                                                                                                class="col-1 my-3"
+                                                                                                class="col-1 mx-auto my-3"
                                                                                             >
                                                                                                 <button
                                                                                                     type="button"
@@ -3438,7 +3441,7 @@
                                                                         &#x276E;</span> PREVIOUS </button>
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-primary"
+                                                                        class="btn btn-sm btn-primary"
                                                                         onclick="showModalSection('agricultural-input', 'livestock-information',  'next')"
                                                                         id="livestock-next"
                                                                     >NEXT <span>
@@ -3661,7 +3664,7 @@
                                                                         PREVIOUS </button>
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-primary"
+                                                                        class="btn btn-sm btn-primary"
                                                                         onclick="showModalSection('access-to-resource', 'agricultural-input',  'next')"
                                                                         id="some-button-or-link"
                                                                     >NEXT <span>
@@ -3804,7 +3807,6 @@
                                                                             Financial Services
                                                                         </span>
                                                                     </div>
-                                                                    <div class="row">
                                                                         <div class="col-lg-6">
                                                                             <div class="s_website_form_field">
                                                                                 <label
@@ -3909,7 +3911,6 @@
                                                                                 </select>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
 
                                                                 </div>
                                                                 <div
@@ -4091,7 +4092,7 @@
                                                                     type="button"
                                                                     data-bs-toggle="modal"
                                                                     data-bs-target="#familyMemberModal"
-                                                                    class="btn btn-primary create-new"
+                                                                    class="btn btn-sm btn-primary create-new"
                                                                 >
                                                                     Add Family Member
                                                                 </button>
@@ -4103,7 +4104,7 @@
                                                 <div class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
-                                                        class="btn btn-outline-secondary"
+                                                        class="btn btn-sm btn-outline-secondary"
                                                         onclick="location.href = '/serviceprovider/group';"
                                                         style="width: 90px;"
                                                     >
@@ -4113,10 +4114,10 @@
                                                         onclick="location.reload()"
                                                         id="beneficiary_submit"
                                                         type="button"
-                                                        class="btn btn-primary"
+                                                        class="btn btn-sm btn-primary"
                                                         style="width: 90px;"
                                                     >
-                                                        SAVE
+                                                        CLOSE
                                                     </button>
                                                 </div>
                                             </div>
@@ -4150,7 +4151,7 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <form id="editFamilyMemberForm">
-                                                                <div class="container-fluid px-5">
+                                                                <div class="container-fluid">
                                                                     <div class="row pt-3 pb-1">
                                                                         <div class="col-4">
                                                                             <label
@@ -4329,7 +4330,8 @@
                                                     class="modal-dialog modal-dialog-centered"
                                                     role="document"
                                                 >
-                                                    <div class="modal-content beneficiary-modal-content">
+                                                    <div
+                                                        style="top: 50% !important" class="modal-content beneficiary-modal-content">
                                                         <div
                                                             class="card-header form-card-header"
                                                             style="margin:15px"
