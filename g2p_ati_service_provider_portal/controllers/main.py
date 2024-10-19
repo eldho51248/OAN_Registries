@@ -23,7 +23,10 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
         partner = request.env.user.partner_id
 
         households = (
-            request.env["res.partner"].sudo().search([("is_group", "=", True), 
+            request.env["res.partner"].sudo().search([("is_group", "=", True),
+                   "|",  # Logical OR operator
+                  ("enumerator_user_id", "=", user_id),
+                  ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
             ])
         )
         individuals = (
@@ -33,8 +36,6 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
              "|",  # Logical OR operator
             ("enumerator_user_id", "=", user_id),
             ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
-             
-            
             ])
         )
 
@@ -1347,7 +1348,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     )
     def indvidual_update(self, _id):
         try:
-            print("updateeeeee")
             beneficiary = request.env["res.partner"].sudo().browse(_id)
             if not beneficiary:
                 return request.render(
@@ -1664,7 +1664,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         crop_info_data = []
         serialized_crop_info_data = []
         for index, crop_info in enumerate(beneficiary.crop_information_ids, start=1):
-            print("crop planted date",crop_info.collected_gc)
             crop_info_data.append(
                 {
                     "index": index,
@@ -2231,7 +2230,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             crop_id = kw.get(f"crops_{index}")
 
             crop_planted_date_id = kw.get(f"crop_planted_date{index}")
-            print("planted date id", crop_planted_date_id)
 
             if crop_id == "":
                 continue
@@ -2239,8 +2237,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 continue
 
             crop_info_data.append((0, 0, {"crop": crop_id, "collected_gc": crop_planted_date_id}))
-
-        print("crop_info is",crop_info_data)
 
         return crop_info_data
 
@@ -3031,10 +3027,11 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
         if has_national_id == "yes":
             id_type = request.env["g2p.id.type"].sudo().search([("name", "=", "UID")], limit=1)
-            vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": kw.get("selectedId")})]
+            vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": kw.get("selectedId"), "status":"valid"})]
+
         elif has_national_id == "no":
             id_type = request.env["g2p.id.type"].sudo().search([("name", "=", "RID")], limit=1)
-            vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": kw.get("selectedId")})]
+            vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": kw.get("selectedId"), "status":"valid"})]
 
     def _prepare_socioeconomic_data(self, kw, vals):
         fields = {
