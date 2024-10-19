@@ -1644,8 +1644,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 ),
                 "updated": False,
             }
-
-
+            certificate_url = land_info.land_certificate.url if land_info.land_certificate else ""
 
 
             land_info_data.append(
