@@ -34,7 +34,7 @@
 }
 .additional_filter_container {
     display: flex;
-    flex-wrap: nowrap; /* Ensure items stay in one row */
+    flex-wrap: wrap; /* Ensure items stay in one row */
     column-gap: 50px; /* Adjust the gap between elements as needed */
     margin: 0px;
 }
@@ -77,12 +77,14 @@
 }
 
 .tables-values-container {
-    width: 100%;
+    width: auto !important;
+    /* overflow-x: unset !important; */
+    /* overflow-y: unset !important; */
 }
 
 .tables-values-container table {
+    width: auto !important;
     table-layout: fixed;
-    width: 100%;
     border-collapse: collapse;
 }
 
@@ -137,9 +139,6 @@ th {
     background: #078148;
     box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
     transition: background-color 0.3s ease;
-    margin: 0px;
-    margin-top: 15px;
-    margin-right: -300px;
 }
 
 #page-buttons button.active {
@@ -170,15 +169,14 @@ li a {
 
 .list-view {
     /* width: 100%; */
-    width: 1400px;
-    min-height: 400px;
-    margin: 20px auto; /* Adjusted margin for better fit */
+    max-width: 1400px;
+    margin: 0px auto; /* Adjusted margin for better fit */
     border: 1px solid #ddd;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #fff;
 
-    overflow: hidden;
+    overflow: auto;
 }
 
 .table-title {

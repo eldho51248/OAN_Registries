@@ -16,19 +16,33 @@
     display: flex;
     -ms-flex-direction: column;
     flex-direction: column;
-    width: 1150px;
-    height: 750px;
+    /* width: 1150px;
+    height: 750px; */
     pointer-events: auto;
     background-color: #fff;
     background-clip: padding-box;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 15px;
     outline: 0;
-
-    top: 50%;
+    top: 100%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+@media (min-width: 1024px) {
+    .modal-content {
+        width: 1150px; /* Desired width for medium and larger screens */
+        height: 750px; /* Desired height for medium and larger screens */
+    }
+}
+
+@media (min-width: 576px) {
+    .modal-content {
+        top: 50% !important;
+    }
+}
+
+
 
 @media (min-width: 768px) {
     .o_error_dialog {
@@ -47,11 +61,13 @@ input[type="radio"].invalid-radio {
 
 .s_website_form_field {
     /* font: normal normal normal 14px / 17px Inter; */
-    padding-left: 20px;
+    /* padding-left: 20px;
     padding-right: 20px;
     padding-top: 16px !important;
     padding-bottom: 14px !important;
-    margin-left: 30px;
+    margin-left: 30px; */
+    padding: 0px 0px !important;
+    margin: 0px 0px !important;
     color: black;
 }
 
@@ -77,14 +93,12 @@ input[type="radio"].invalid-radio {
     display: none; /* Hide the header initially */
 }
 .sidebar {
-    width: 300px;
-    min-height: 300px;
     background-color: #dbe3e9;
     border-right: 1px solid #ddd;
 }
 .sidebar ul {
     padding-left: 0;
-    padding-top: 20px;
+    /* padding-top: 20px; */
     list-style-type: none;
 }
 .sidebar .nav-link {
@@ -97,6 +111,18 @@ input[type="radio"].invalid-radio {
     background-color: #dbe3e9;
     border-radius: 4px;
 }
+
+
+/* .sidebar .nav-link.active::after {
+    content: "";
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #139049;
+} */
 
 
 .sidebar .nav-link:hover {
@@ -115,9 +141,10 @@ input[type="radio"].invalid-radio {
     overflow-y: auto; /* Add scroll if content overflows */
     height: 100%; /* Full height of the rounded card */
 }
-.sidebar .nav-item:first-child {
+
+/* .sidebar .nav-item:first-child {
     padding-top: 20px;
-}
+} */
 
 .form-template .breadcrumb-item a {
     color: #06916b;
@@ -139,8 +166,8 @@ input[type="radio"].invalid-radio {
     background-color: #e6f7e8;
     margin-top: 1.5%;
     margin-bottom: 1%;
-    margin-left: 3.5%;
-    margin-right: 8%;
+    /* margin-left: 3.5%;
+    margin-right: 8%; */
     padding: 8px;
 }
 
@@ -156,7 +183,6 @@ input[type="radio"].invalid-radio {
 .additional_filter_container {
     display: flex;
     flex-wrap: nowrap; /* Ensure items stay in one row */
-    gap: 20px; /* Adjust the gap between elements as needed */
     margin-left: 330px;
 }
 .search-box {
@@ -238,8 +264,9 @@ h1 {
 
 .section-content {
     flex: 1 1 auto;
-    padding: 20px;
     min-height: 600px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
 }
 
 .section-footer {
@@ -316,6 +343,7 @@ input[type="radio"] {
 }
 
 .gradient-card {
+    width: 300px;
     background: linear-gradient(135deg, #f3f9a7 0%, #ffffff 100%); /* Green to white gradient */
     border-radius: 15px;
     padding: 20px;
@@ -326,6 +354,8 @@ input[type="radio"] {
 .card-heading {
     font-size: 18px;
     font-weight: bold;
+    text-align: center;
+    margin-left: 0px !important;
 }
 
 .card p {
@@ -519,7 +549,7 @@ input.is-invalid {
     margin-top: 0px !important;
     margin-bottom: 0px !important;
     /* opacity: 1; */
-    margin-left: -48px;
+    /* margin-left: -48px; */
 }
 
 .header-container .nav {
@@ -539,6 +569,8 @@ input.is-invalid {
     display: flex;
     width: auto;
 }
+
+
 
 .land_container2 {
     padding-left: 8px;
@@ -719,6 +751,48 @@ hr {
     background-size: 16px 12px, calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 } */
 
+
+.footer-container .nav, .header-container .nav {
+    width: auto !important
+}
+
+
+#wrapwrap {
+    overflow: scroll !important;
+}
+
+#updategroupForm {
+    margin: 0px auto;
+    max-width: 1400px;
+
+}
 .is-invalid {
     border: 1px solid red;
 }
+
+
+@media (max-width: 468px) {
+    .top-content {
+        margin-top: 96px; 
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items:  center !important;
+        text-align: center !important;
+    }
+}
+
+
+@media (min-width: 768px) {
+    .sidebar {
+      width: 250px; 
+    }
+  }
+
+
+/* .modal-dialog {
+
+    overflow: auto !important;
+    height: 100% !important;
+
+} */
+

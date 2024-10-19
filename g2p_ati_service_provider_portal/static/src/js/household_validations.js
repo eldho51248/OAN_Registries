@@ -160,7 +160,6 @@ function addFarmerMember() {
     }
 }
 
-// This is to populate the data for editing family member
 
 $(document).on("click", "#hh_member_update", function () {
     var memberId = $(this).attr("store");
@@ -262,15 +261,17 @@ $(document).on("click", "#update-member-btn", function () {
                     tableBody.append(newRowHtml);
                 });
 
-                // Hide the modal after successful submission
                 $("#editFamilyMemberModal").modal("hide");
             } else {
+                showErrorModal("Failed to edit family member!")
                 console.error("Failed to edit family member");
             }
         },
 
         error: function (error) {
             console.error("Ajax request failed");
+            showErrorModal(error)
+
             console.error("Error:", error);
         },
     });
@@ -288,8 +289,7 @@ function showSuccessModal(message) {
     $('#successModal').modal('show');
   }
 
-  // Function to show error modal
-  function showErrorModal(message) {
+function showErrorModal(message) {
     const imgElement = document.getElementById('successModal').querySelector('.popup_img');
     const h4Element = document.getElementById('successModal').querySelector('h4');
     const msgElement = document.getElementById('successModal').querySelector('.popup_msg');
@@ -369,11 +369,16 @@ $(document).on("click", "#family_member_submit", function () {
 
             } else {
                 console.error("Failed to add family member");
+                $("#family_member_submit").prop('disabled', false);
+                showErrorModal("Failed to add family member!")
+
             }
         },
         error: function (error) {
             console.error("request failed");
             console.error("Error:", error);
+            $("#family_member_submit").prop('disabled', false);
+            showErrorModal("Request Failed")
         },
     });
 });

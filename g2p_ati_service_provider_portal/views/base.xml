@@ -5,6 +5,48 @@
     <xpath expr="//header" position="inside">
       <link rel="stylesheet" href="/g2p_ati_service_provider_portal/static/src/css/style.css" />
     </xpath>
+    <xpath expr="//div[hasclass('dropdown')]" position="attributes">
+    <attribute name="style">width: auto !important;</attribute>
+    </xpath>
+
+
+<xpath expr="//div[hasclass('nav')]" position="attributes">
+    <attribute name="style">max-width: 1400px !important;</attribute>
+</xpath>
+
+
+
+
+
+<xpath expr="//div[hasclass('nav')]/a" position="attributes">
+    <attribute name="class">px-5 px-xl-0 mx-auto mx-md-0</attribute>
+</xpath>
+
+<xpath expr="//div[hasclass('nav-user')]" position="attributes">
+    <attribute name="class">nav-user mx-auto mx-md-0</attribute>
+</xpath>
+
+
+
+<xpath expr="//div[hasclass('footer-container')]/div[hasclass('nav')]" position="attributes">
+    <attribute name="style">max-width: 1400px !important;</attribute>
+</xpath>
+
+
+
+<xpath expr="//div[hasclass('footer-container')]/div[hasclass('nav')]/a" position="attributes">
+    <attribute name="class">px-5 px-xl-0 mx-auto mx-md-0</attribute>
+</xpath>
+
+
+<xpath expr="//div[hasclass('footer-container')]/div[hasclass('nav')]/a" position="attributes">
+    <attribute name="class">px-5 px-xl-0 mx-auto mx-md-0</attribute>
+</xpath>
+
+
+<xpath expr="//ul[hasclass('list-container')]" position="attributes">
+    <attribute name="class">list-container mt-0 mx-auto mx-md-0</attribute>
+</xpath>
 
 
     <xpath expr="//body" position="inside">

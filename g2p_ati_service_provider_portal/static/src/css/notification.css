@@ -369,12 +369,12 @@ button#show_notification {
     margin-top: 31px;
 }
 
-.notifications_button_div {
-    margin-top: 0px;
+/* .notifications_button_div { */
+    /* margin-top: 0px;
     margin-left: 70px;
     position: relative;
     display: inline-block;
-}
+} */
 
 .trial_notify {
     width: 23%;
