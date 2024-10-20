@@ -1072,10 +1072,10 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             vals["has_national_id"] = has_national_id
             if has_national_id == "yes":
                 id_type = request.env["g2p.id.type"].sudo().search([("name", "=", "UID")], limit=1)
-                vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": kw.get("uid")})]
+                vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": kw.get("uid"), "status":"valid"})]
             elif has_national_id == "no" and kw.get("rid") and kw.get("rid").strip():
                 id_type = request.env["g2p.id.type"].sudo().search([("name", "=", "RID")], limit=1)
-                vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": kw.get("rid")})]
+                vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": kw.get("rid"), "status":"valid"})]
 
     def _process_individual_details(self, vals, kw):
         self._process_household_head(vals, kw)
@@ -1797,10 +1797,10 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             reg_ids = []
             if has_national_id == "yes":
                 id_type = request.env["g2p.id.type"].sudo().search([("name", "=", "UID")], limit=1)
-                reg_ids = [(0, 0, {"id_type": id_type.id, "value": kw.get("uid")})]
+                reg_ids = [(0, 0, {"id_type": id_type.id, "value": kw.get("uid"), "status":"valid"})]
             elif has_national_id == "no" and kw.get("rid"):
                 id_type = request.env["g2p.id.type"].sudo().search([("name", "=", "RID")], limit=1)
-                reg_ids = [(0, 0, {"id_type": id_type.id, "value": kw.get("rid")})]
+                reg_ids = [(0, 0, {"id_type": id_type.id, "value": kw.get("rid"), "status":"valid"})]
 
             # Handle phone numbers
             ethiopia_country_id = (
@@ -1923,16 +1923,11 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             livestock_info_data = self.get_livestock_info_data(kw)
 
-            
-
             supporting_documents_ids = self.get_supporting_documents_ids(kw)
-
-
 
             additional_info_json = self.handle_other_info(kw)
             # Clean up existing data
 
-           
             update_records = {
                 "has_national_id": has_national_id,
                 "reg_ids": reg_ids,
@@ -1985,10 +1980,13 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 "additional_g2p_info": additional_info_json,
             }
             # Update member details
+            user = request.env.user
+
+            # Check if the user is not a portal user (not in the 'Portal' group)
 
             is_locked = False
             edit_state = member.edit_state
-            if edit_state == 'locked':
+            if user.has_group('base.group_portal') and edit_state == 'locked':
                 is_locked = True
             else:
                 is_locked = False
