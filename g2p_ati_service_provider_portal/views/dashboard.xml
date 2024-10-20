@@ -8,123 +8,126 @@
         priority="200"
     >
         <xpath expr="//div[hasclass('container-adjuster')]" position="replace">
-          <div class="container-adjuster custom-dashboard-background" style="display: flex; justify-content: center; align-items: center;">
->
-<div class="d-flex flex-column flex-md-row gap-5 my-5 py-5">
-    
-    <!-- <a href="/serviceprovider/individual">
-    </a> -->
-
-    <div class="gradient-card py-5" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <a href="/serviceprovider/individual">
-            <h5 class="card-heading" data-oe-model="ir.ui.view" data-oe-id="1666" data-oe-field="arch" data-oe-xpath="/data/xpath[1]/div/div[1]/div[1]/a[1]/div[1]/h5[1]">Farmers</h5>
-            <img  src="/g2p_ati_service_provider_portal/static/src/img/dashboard.png" class="img mx-auto" style="width: 70px; height: 70px; margin-top: 8%; margin-bottom: 3%;" data-oe-model="ir.ui.view" data-oe-id="1666" data-oe-field="arch" data-oe-xpath="/data/xpath[1]/div/div[1]/div[1]/a[1]/div[1]/img[1]" loading="lazy"/>
-            <center>
-                <strong style="font-size:16px;color: #09A261; margin-top: 5%;">
-                                    7
+            <div
+                class="container-adjuster custom-dashboard-background"
+                style="display: flex; justify-content: center; align-items: center;"
+            >
+                <!-- <div style="margin-top: -38%;margin-right: -8%;">
+                    <h5 class="all-title" style="height:13px;font-size:16px;margin-left: 100%">Dashboard</h5>
+                    <a href="/serviceprovider/home" style="font-size:12px;margin-left: 100%; color: #09A261;">
+                        Dashboard
+                    </a>
+                </div> -->
+                <div
+                    class="card-container"
+                    style="height:420px;justify-content: space-evenly; margin-top: 2%;margin-bottom:100px"
+                >
+                    <div
+                        class="card-container-mini"
+                        style="border-radius: 20px; margin-top:2%; margin-left: -6%; width: 85%;height:130%;"
+                    >
+                        <a href="/serviceprovider/individual">
+                            <div
+                                class="card gradient-card"
+                                style="height: 70%; width: 55%; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"
+                            >
+                                <h5
+                                    class="card-heading"
+                                    style="margin-left: 8%; margin-top: 40px; font-size: 18px;"
+                                >Farmers</h5>
+                                <img
+                                    src="/g2p_ati_service_provider_portal/static/src/img/dashboard.png"
+                                    class="img"
+                                    style="width: 70px; height: 70px; margin-top: 8%; margin-left: 40%; margin-bottom: 3%;"
+                                />
+                                <center><strong style="font-size:16px;color: #09A261; margin-top: 5%;">
+                                    <t t-out="len(individuals)" />
                                     Farmers
-                </strong>
-            </center>
-            <div style="display: flex; justify-content: center; align-items: center; padding-left: 5%; padding-right: 5%;">
-                <p style="font-size:12px;text-align: center; display: -webkit-box; -webkit-box-orient: vertical;overflow: hidden;">
+                                </strong></center>
+                                <div
+                                    style="display: flex; justify-content: center; align-items: center; padding-left: 5%; padding-right: 5%;"
+                                >
+                                    <p
+                                        style="font-size:12px;text-align: center; display: -webkit-box; -webkit-box-orient: vertical;overflow: hidden;"
+                                    >
                                         More than
-                                        7
-                                        Farmers created.
-                </p>
-            </div>
-            <hr style="width: 70%; margin-left: 15%; margin-top: 7%;" data-oe-model="ir.ui.view" data-oe-id="1666" data-oe-field="arch" data-oe-xpath="/data/xpath[1]/div/div[1]/div[1]/a[1]/div[1]/hr[1]"/>
-        </a>
-        <div class="card-foot" data-oe-model="ir.ui.view" data-oe-id="1666" data-oe-field="arch" data-oe-xpath="/data/xpath[1]/div/div[1]/div[1]/a[1]/div[1]/div[2]">
-            <a href="/serviceprovider/individual">
-            </a>
-            <a href="/serviceprovider/individual" class="justify-content-center viewprograms group" style="color: #09A261;font-size:16px;">
+                                        <t t-out="len(individuals)" />
+                                        farmers created.
+                                    </p>
+                                </div>
+                                <hr style="width: 70%; margin-left: 15%; margin-top: 7%;" />
+                                <div class="card-foot">
+                                    <a
+                                        href="/serviceprovider/individual"
+                                        class="justify-content-center viewprograms group"
+                                        style="color: #09A261;font-size:16px;"
+                                    >
                                         View Farmer List
-                <img src="/g2p_ati_service_provider_portal/static/src/img/arrow.jpeg" class="img" style="width: 14px; height: 14px;" loading="lazy"/>
-            </a>
-        </div>
-    </div>
+                                        <img
+                                            src="/g2p_ati_service_provider_portal/static/src/img/arrow.jpeg"
+                                            class="img"
+                                            style="width: 14px; height: 14px;"
+                                        />
+                                    </a>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
 
-    <div class="gradient-card py-5" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <a href="/serviceprovider/group">
-            <h5 class="card-heading" data-oe-model="ir.ui.view" data-oe-id="1666" data-oe-field="arch" data-oe-xpath="/data/xpath[1]/div/div[1]/div[1]/a[1]/div[1]/h5[1]">Households</h5>
-            <img src="/g2p_ati_service_provider_portal/static/src/img/dashboard.png" class="img mx-auto" style="width: 70px; height: 70px; margin-top: 8%; margin-bottom: 3%;" data-oe-model="ir.ui.view" data-oe-id="1666" data-oe-field="arch" data-oe-xpath="/data/xpath[1]/div/div[1]/div[1]/a[1]/div[1]/img[1]" loading="lazy"/>
-            <center>
-                <strong style="font-size:16px;color: #09A261; margin-top: 5%;">
-                                    7
+                    <div
+                        class="card-container-mini"
+                        style="border-radius: 20px; margin-top:2%; margin-left: -6%; width: 85%;height:130%;"
+                    >
+                        <a href="/serviceprovider/group">
+                            <div
+                                class="card gradient-card"
+                                style="height: 70%; width: 55%; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"
+                            >
+                                <h5
+                                    class="card-heading"
+                                    style="margin-left: 8%; margin-top: 40px; font-size: 18px;"
+                                >Households</h5>
+                                <img
+                                    src="/g2p_ati_service_provider_portal/static/src/img/dashboard.png"
+                                    class="img"
+                                    style="width: 70px; height: 70px; margin-top: 8%; margin-left: 40%; margin-bottom: 3%;"
+                                />
+                                <center><strong style="font-size:16px;color: #09A261; margin-top: 5%;">
+                                    <t t-out="len(households)" />
                                     Households
-                </strong>
-            </center>
-            <div style="display: flex; justify-content: center; align-items: center; padding-left: 5%; padding-right: 5%;">
-                <p style="font-size:12px;text-align: center; display: -webkit-box; -webkit-box-orient: vertical;overflow: hidden;">
+                                </strong></center>
+                                <div
+                                    style="display: flex; justify-content: center; align-items: center; padding-left: 5%; padding-right: 5%;"
+                                >
+                                    <p
+                                        style="font-size:12px;text-align: center; display: -webkit-box; -webkit-box-orient: vertical;overflow: hidden;"
+                                    >
                                         More than
-                                        7
+                                        <t t-out="len(households)" />
                                         Households created.
-                </p>
-            </div>
-            <hr style="width: 70%; margin-left: 15%; margin-top: 7%;" data-oe-model="ir.ui.view" data-oe-id="1666" data-oe-field="arch" data-oe-xpath="/data/xpath[1]/div/div[1]/div[1]/a[1]/div[1]/hr[1]"/>
-        </a>
-        <div class="card-foot" data-oe-model="ir.ui.view" data-oe-id="1666" data-oe-field="arch" data-oe-xpath="/data/xpath[1]/div/div[1]/div[1]/a[1]/div[1]/div[2]">
-            <a href="/serviceprovider/individual">
-            </a>
-            <a href="/serviceprovider/group" class="justify-content-center viewprograms group" style="color: #09A261;font-size:16px;">
+                                    </p>
+                                </div>
+                                <hr style="width: 70%; margin-left: 15%; margin-top: 7%;" />
+                                <div class="card-foot">
+                                    <a
+                                        href="/serviceprovider/group"
+                                        class="justify-content-center viewprograms group"
+                                        style="color: #09A261;font-size:16px;"
+                                    >
                                         View Household List
-                <img src="/g2p_ati_service_provider_portal/static/src/img/arrow.jpeg" class="img" style="width: 14px; height: 14px;" loading="lazy"/>
-            </a>
-        </div>
-    </div>
-
-
-    <!-- <a href="/serviceprovider/group">
-    </a>
-     -->
-
-    <!-- <div class="gradient-card" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <a href="/serviceprovider/group">
-            <h5 class="card-heading" style="margin-left: 8%; margin-top: 40px; font-size: 18px;" data-oe-model="ir.ui.view" data-oe-id="1666" data-oe-field="arch" data-oe-xpath="/data/xpath[1]/div/div[1]/div[2]/a[1]/div[1]/h5[1]">Households</h5>
-            <img src="/g2p_ati_service_provider_portal/static/src/img/dashboard.png" class="img" style="width: 70px; height: 70px; margin-top: 8%; margin-left: 40%; margin-bottom: 3%;" data-oe-model="ir.ui.view" data-oe-id="1666" data-oe-field="arch" data-oe-xpath="/data/xpath[1]/div/div[1]/div[2]/a[1]/div[1]/img[1]" loading="lazy"/>
-            <center>
-                <strong style="font-size:16px;color: #09A261; margin-top: 5%;">
-                                    8
-                                    Households
-                </strong>
-            </center>
-            <div style="display: flex; justify-content: center; align-items: center; padding-left: 5%; padding-right: 5%;">
-                <p style="font-size:12px;text-align: center; display: -webkit-box; -webkit-box-orient: vertical;overflow: hidden;">
-                                        More than
-                                        8
-                                        Households created.
-                </p>
+                                        <img
+                                            src="/g2p_ati_service_provider_portal/static/src/img/arrow.jpeg"
+                                            class="img"
+                                            style="width: 18px; height: 18px;"
+                                        />
+                                    </a>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
             </div>
-            <hr style="width: 70%; margin-left: 15%; margin-top: 7%;" data-oe-model="ir.ui.view" data-oe-id="1666" data-oe-field="arch" data-oe-xpath="/data/xpath[1]/div/div[1]/div[2]/a[1]/div[1]/hr[1]"/>
-        </a>
-        <div class="card-foot" data-oe-model="ir.ui.view" data-oe-id="1666" data-oe-field="arch" data-oe-xpath="/data/xpath[1]/div/div[1]/div[2]/a[1]/div[1]/div[2]">
-            <a href="/serviceprovider/group">
-            </a>
-            <a href="/serviceprovider/group" class="justify-content-center viewprograms group" style="color: #09A261;font-size:16px;">
-                                        View Household List
-                <img src="/g2p_ati_service_provider_portal/static/src/img/arrow.jpeg" class="img" style="width: 18px; height: 18px;" loading="lazy"/>
-            </a>
-        </div>
-    </div> -->
-
-
-</div>
-
-
-
-
-
-
-            </div>
-
-
-
-
             <link rel="stylesheet" href="/g2p_ati_service_provider_portal/static/src/css/style.css" />
-        </xpath>
-
-        <xpath expr="//div[hasclass('main-container')]" position="attributes">
-            <attribute name="style">padding-top: 0px !important; padding-bottom: 0px !important;</attribute>
         </xpath>
     </template>
 </odoo>

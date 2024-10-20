@@ -904,7 +904,6 @@
                                                                                 <div class="col-lg-3">
                                                                                     <label class="s_website_form_label">
                                                                                         <span class="s_website_form_label_content" style="color: #666666;">
-                                                                                            Total
                                                                                             Land
                                                                                             Area  (in
                                                                                             Hectares)
@@ -1013,7 +1012,6 @@
                                                                                                     style="color: #666666;"
                                                                                                 >
 
-                                                                                                    Total
                                                                                                     Land
                                                                                                     Area
                                                                                                     (in
@@ -1148,7 +1146,7 @@
                                                                             <div class="col-lg-3">
                                                                                 <label class="s_website_form_label">
                                                                                     <span class="s_website_form_label_content" style="color: #666666;">
-                                                                                        Total Land
+                                                                                        Land
                                                                                         Area
                                                                                         (in
                                                                                         Hectares)
