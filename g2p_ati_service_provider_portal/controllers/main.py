@@ -2172,7 +2172,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             }
              # lnd_idx = kw.get(f"land_certificate_{index}")
 
-
+            existing_certificate_id = kw.get(f"land_certificate_{index}")
             # Check if the certificate is updated
             land_certificate_key = f"land_certificate_{index}"
             if kw.get(land_certificate_key) and kw.get(land_certificate_key).read():
