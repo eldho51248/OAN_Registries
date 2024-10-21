@@ -24,18 +24,18 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
 
         households = (
             request.env["res.partner"].sudo().search([("is_group", "=", True),
-                   "|",  # Logical OR operator
-                  ("enumerator_user_id", "=", user_id),
-                  ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
+                  #  "|",  # Logical OR operator
+                  # ("enumerator_user_id", "=", user_id),
+                  # ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
             ])
         )
         individuals = (
             request.env["res.partner"]
             .sudo()
             .search([("is_group", "=", False), ("is_farmer", "=", "yes"), 
-             "|",  # Logical OR operator
-            ("enumerator_user_id", "=", user_id),
-            ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
+            #  "|",  # Logical OR operator
+            # ("enumerator_user_id", "=", user_id),
+            # ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
             ])
         )
 
@@ -1727,6 +1727,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
 
             has_national_id = member.has_national_id
+            has_personal_phone = member.has_personal_phone
             primary_Language = member.primary_Language
             is_member_of_primary_cooperative = member.is_member_of_primary_cooperative
             if is_member_of_primary_cooperative == 'yes':
@@ -1775,6 +1776,11 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 or member.do_you_use_improved_seed
             )
 
+            has_personal_phone = (
+                self.get_selection_value("ir.model.fields.selection", kw.get("has_personal_phone"))
+                or member.has_personal_phone
+            )
+
 
             has_national_id = (
                 self.get_selection_value("ir.model.fields.selection", kw.get("has_national_id"))
@@ -1808,7 +1814,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             )
 
             phone_number_ids = self.handle_phone_numbers(
-                has_phone=has_national_id,
+                has_phone=has_personal_phone,
                 primary_phone=kw.get("primary_phone"),
                 secondary_phone=kw.get("secondary_phone"),
                 other_phone=kw.get("other_phone"),
@@ -1948,7 +1954,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 "kebele": int(kw.get("kebele", member.kebele)),
                 "birthdate": kw.get("birthdate", member.birthdate),
                 "gender": kw.get("gender", member.gender),
-                "has_personal_phone": has_national_id,
+                "has_personal_phone": has_personal_phone,
                 "phone_number_ids": phone_number_ids,
                 "email": kw.get("email", member.email),
                 "is_disabled": is_disabled,
@@ -2362,9 +2368,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     ("is_registrant", "=", True),
                     ("is_group", "=", False),
                     ("is_farmer", "=", "yes"),
-                    "|",  # Logical OR operator
-            ("enumerator_user_id", "=", user_id),
-            ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
+            #         "|",  # Logical OR operator
+            # ("enumerator_user_id", "=", user_id),
+            # ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
                 ]
             )
         )
@@ -2391,9 +2397,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     ("active", "=", True),
                     ("is_registrant", "=", True),
                     ("is_group", "=", True),
-                   "|",  # Logical OR operator
-            ("enumerator_user_id", "=", user_id),
-            ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
+            #        "|",  # Logical OR operator
+            # ("enumerator_user_id", "=", user_id),
+            # ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
 
                 ]
             )
