@@ -24,18 +24,18 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
 
         households = (
             request.env["res.partner"].sudo().search([("is_group", "=", True),
-                   "|",  # Logical OR operator
-                  ("enumerator_user_id", "=", user_id),
-                  ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
+                  #  "|",  # Logical OR operator
+                  # ("enumerator_user_id", "=", user_id),
+                  # ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
             ])
         )
         individuals = (
             request.env["res.partner"]
             .sudo()
             .search([("is_group", "=", False), ("is_farmer", "=", "yes"), 
-             "|",  # Logical OR operator
-            ("enumerator_user_id", "=", user_id),
-            ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
+            #  "|",  # Logical OR operator
+            # ("enumerator_user_id", "=", user_id),
+            # ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
             ])
         )
 
@@ -2207,7 +2207,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             # Append the land info dict to the data list
 
             land_info_data.append((0, 0, land_info_dict))
-
         return land_info_data
 
     def _get_existing_land_info(self, index):
@@ -2368,9 +2367,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     ("is_registrant", "=", True),
                     ("is_group", "=", False),
                     ("is_farmer", "=", "yes"),
-                    "|",  # Logical OR operator
-            ("enumerator_user_id", "=", user_id),
-            ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
+            #         "|",  # Logical OR operator
+            # ("enumerator_user_id", "=", user_id),
+            # ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
                 ]
             )
         )
@@ -2397,9 +2396,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     ("active", "=", True),
                     ("is_registrant", "=", True),
                     ("is_group", "=", True),
-                   "|",  # Logical OR operator
-            ("enumerator_user_id", "=", user_id),
-            ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
+            #        "|",  # Logical OR operator
+            # ("enumerator_user_id", "=", user_id),
+            # ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
 
                 ]
             )
@@ -3011,13 +3010,13 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     },
                 )
             )
-            if kw.get("secondary_phone") and kw.get("secondary_phone").strip():
+            if kw.get("secondaryPhoneNumber") and kw.get("secondaryPhoneNumber").strip():
                 phone_no.append(
                     (
                         0,
                         0,
                         {
-                            "phone_no": kw.get("secondary_phone"),
+                            "phone_no": kw.get("secondaryPhoneNumber"),
                             "phone_type": "secondary",
                             "country_id": ethiopia_country_id,
                         },
