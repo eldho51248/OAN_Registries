@@ -24,18 +24,18 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
 
         households = (
             request.env["res.partner"].sudo().search([("is_group", "=", True),
-                  #  "|",  # Logical OR operator
-                  # ("enumerator_user_id", "=", user_id),
-                  # ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
+                   "|",  # Logical OR operator
+                  ("enumerator_user_id", "=", user_id),
+                  ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
             ])
         )
         individuals = (
             request.env["res.partner"]
             .sudo()
             .search([("is_group", "=", False), ("is_farmer", "=", "yes"), 
-            #  "|",  # Logical OR operator
-            # ("enumerator_user_id", "=", user_id),
-            # ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
+             "|",  # Logical OR operator
+            ("enumerator_user_id", "=", user_id),
+            ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
             ])
         )
 
@@ -2367,9 +2367,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     ("is_registrant", "=", True),
                     ("is_group", "=", False),
                     ("is_farmer", "=", "yes"),
-            #         "|",  # Logical OR operator
-            # ("enumerator_user_id", "=", user_id),
-            # ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
+                    "|",  # Logical OR operator
+            ("enumerator_user_id", "=", user_id),
+            ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
                 ]
             )
         )
@@ -2396,9 +2396,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     ("active", "=", True),
                     ("is_registrant", "=", True),
                     ("is_group", "=", True),
-            #        "|",  # Logical OR operator
-            # ("enumerator_user_id", "=", user_id),
-            # ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
+                   "|",  # Logical OR operator
+            ("enumerator_user_id", "=", user_id),
+            ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
 
                 ]
             )
