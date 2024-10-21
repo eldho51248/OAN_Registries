@@ -633,7 +633,6 @@ function validateRadioButtons(radioName, section) {
 }
 
 function validateLandArea(field) {
-    console.log()
     const digitRegex = /^\d*\.?\d+$/; // Regular expression to allow only digits
     const landAreaError = document.getElementById('land_area_error');
 
@@ -649,7 +648,6 @@ function validateLandArea(field) {
         field.classList.remove("is-invalid");
     } else {
         field.classList.add("is-invalid");
-        field.setAttribute("required", "required");
     }
 
     return isValid;

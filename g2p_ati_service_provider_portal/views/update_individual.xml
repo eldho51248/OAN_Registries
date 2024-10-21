@@ -1019,7 +1019,7 @@
 
                                                                                                     *</span>
                                                                                             </label>
-                                                                                            <input type="text" id="total_land_area" t-att-name="'total_land_area_' + str(land_info['index'])" class="form-control land_required_field" required="required" oninput="validateElement(this)" t-att-value="land_info['total_land_area']" placeholder="Enter Land Area" />
+                                                                                            <input type="text" id="total_land_area" t-att-name="'total_land_area' + str(land_info['index'])" class="form-control land_required_field" required="required" oninput="validateElement(this)" t-att-value="land_info['total_land_area']" placeholder="Enter Land Area" />
                                                                                         </div>
                                                                                         <div class="col-lg-3">
                                                                                             <label class="s_website_form_label">
