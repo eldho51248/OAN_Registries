@@ -115,10 +115,11 @@
 
 
 
-                                                            <select class="form-select" name="has_national_id" required="required" onchange="validateElement(this)" id="have-national-id-selection">
+                                                            <select class="form-select" name="has_national_id" required="required" onchange="validateElement(this)" id="have-national-id-selection" >
                                                                 <option value="">Select</option>
-                                                                <t t-foreach="has_national_id" t-as="option">
-                                                                    <option t-att-value="option.id" t-att-selected="option.id == have_national_id_selection_id">
+                                                                <t t-foreach="has_national_id" t-as="option" >
+                                                                    <option t-att-value="option.id" t-att-selected="(has_uid and option.name == 'Yes') or (not has_uid and option.id == have_national_id_selection_id)">
+                                                                        
                                                                         <t t-esc="option.name" />
                                                                     </option>
                                                                 </t>
@@ -126,7 +127,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6 col-md-6 col-sm-12">
-                                                        <div class="s_website_form_field" id="uid-div" style="display: none;">
+                                                        <div class="s_website_form_field" id="uid-div" style="display: {% if has_uid %}block{% else %}none{% endif %};">
                                                             <label class="s_website_form_label" for="name">
                                                                 <span class="s_website_form_label_content" style="color: #666666;">UID</span>
                                                                 <span class="s_website_form_mark"> *</span>
@@ -136,7 +137,7 @@
                                                         <div class="error-message col-12 s_website_form_field" id="uid_error" style="display: none;color: red;">
                                                             UID must be exactly 12 Digits Only.
                                                         </div>
-                                                        <div class="s_website_form_field" id="rid-div" style="display: none;">
+                                                        <div class="s_website_form_field" id="rid-div" style="display: {% if not has_uid %}block{% else %}none{% endif %};">
                                                             <label class="s_website_form_label" for="name">
                                                                 <span class="s_website_form_label_content" style="color: #666666;">RID
                                                                 </span>
@@ -1074,7 +1075,6 @@
                                                                                                         t-att-href="land_info['certificate_id']"
                                                                                                         t-att-id="'certificate_link_' + str(land_info['index'])"
                                                                                                         t-att-name="'viewland_certificate_' + str(land_info['index'])"
-
                                                                                                         target="_blank"
                                                                                                         class="btn btn-link"
                                                                                                         t-if="land_info['certificate_id']"
@@ -1262,7 +1262,7 @@
 
                                                                 <select
 
-                                                                    class="selectpicker form-control crop_mixed_required_field"
+                                                                    class="selectpicker form-control"
 
                                                                     name="crop_water_source"
                                                                     multiple="multiple"
@@ -1333,7 +1333,6 @@
                                                                                         id="crop_planted_date"
                                                                                         name="crop_planted_date_0"
                                                                                         class="form-control date-picker crop_mixed_required_field"
-
                                                                                         onchange="validateElement(this)"
                                                                                         placeholder="DD-MM-YYYY"
                                                                                     />
@@ -1402,7 +1401,6 @@
                                                                                                 id="crop_planted_date"
                                                                                                 t-att-name="'crop_planted_date' + str(crop_info['index'])"
                                                                                                 class="form-control date-picker crop_mixed_required_field"
-
                                                                                                 onchange="validateElement(this)"
                                                                                                 placeholder="DD-MM-YYYY"
                                                                                                 t-att-value="crop_info['crop_planted_date']"
@@ -1532,7 +1530,6 @@
                                                                     data-live-search="true"
                                                                     data-style="btn-custom "
                                                                     style="width: 100%;"
-
                                                                     onchange="validateElement(this)"
                                                                     data-none-selected-text="Select Water Source"
                                                                 >

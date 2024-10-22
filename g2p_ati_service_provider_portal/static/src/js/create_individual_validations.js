@@ -138,14 +138,10 @@ $(document).ready(function () {
         }
     }
 
+    
 
-    function formatInputWithSpaces(inputElement) {
-        inputElement.addEventListener("input", function () {
-            const value = inputElement.value.replace(/\s+/g, "");
-            const formattedValue = value.match(/.{1,4}/g)?.join(" ") || "";
-            inputElement.value = formattedValue;
-        });
-    }
+  
+
 
 
     // Apply the function to both UID and RID inputs
@@ -222,6 +218,38 @@ $(document).ready(function () {
         uidError.style.display = "none";
         ridError.style.display = "none";
     }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const hasUid = "{{ has_uid }}"; // Pass this from your template context
+        const selectElement = document.getElementById("have-national-id-selection");
+        
+        // Set the selection based on UID presence
+        if (hasUid === "True") {
+            selectElement.value = "yes"; // Set dropdown to "Yes" if UID exists
+            uidDiv.style.display = "block"; // Show UID div
+            uidInput.setAttribute("required", "required");
+            ridDiv.style.display = "none"; // Hide RID div
+            ridInput.removeAttribute("required");
+        } else {
+            selectElement.value = ""; // Reset selection
+            uidDiv.style.display = "none"; // Hide UID div
+            uidInput.removeAttribute("required");
+            ridDiv.style.display = "none"; // Hide RID div
+            ridInput.removeAttribute("required");
+        }
+    
+        // Attach change event listener to the select element
+        selectElement.addEventListener("change", handleNationalIdSelection);
+    });
+
+    function formatInputWithSpaces(inputElement) {
+        inputElement.addEventListener("input", function () {
+            const value = inputElement.value.replace(/\s+/g, "");
+            const formattedValue = value.match(/.{1,4}/g)?.join(" ") || "";
+            inputElement.value = formattedValue;
+        });
+    }
+
 
     function handleSelection(selectElementId, divElementId, inputElementId) {
         const selectElement = document.getElementById(selectElementId);
