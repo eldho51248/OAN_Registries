@@ -138,13 +138,6 @@ $(document).ready(function () {
         }
     }
 
-    // Function formatInputWithSpaces(inputElement) {
-    //     inputElement.addEventListener("input", function () {
-    //         const value = inputElement.value.replace(/\s+/g, "");
-    //         const formattedValue = value.match(/.{1,4}/g)?.join(" ") || "";
-    //         inputElement.value = formattedValue;
-    //     });
-    // }
 
     function formatInputWithSpaces(inputElement) {
         inputElement.addEventListener("input", function () {
@@ -153,20 +146,6 @@ $(document).ready(function () {
             inputElement.value = formattedValue;
         });
     }
-
-    // This is the one with the problem
-
-    //     const uidInput = document.getElementById("uid_input");
-    // const ridInput = document.getElementById("rid_input");
-    // const uidError = document.getElementById("uid_error");
-    // const ridError = document.getElementById("rid_error");
-
-    // // Apply space formatting to both UID and RID inputs
-    // formatInputWithSpaces(uidInput);
-    // formatInputWithSpaces(ridInput);
-
-  
-
 
 
     // Apply the function to both UID and RID inputs
@@ -206,37 +185,6 @@ $(document).ready(function () {
         }
     });
 
-    // This is the one that doesn't work
-
-    //     // Validation for UID input field
-    // uidInput.addEventListener("input", function () {
-    //     const sanitizedValue = uidInput.value.replace(/\s+/g, ""); // Remove spaces
-    //     const isOnlyDigits = /^\d*$/.test(sanitizedValue); // Check if only digits
-
-    //     // If not 12 digits or contains non-digit characters, show error
-    //     if ((sanitizedValue.length !== 12 && sanitizedValue.length !== 0) || !isOnlyDigits) {
-    //         uidInput.classList.add("is-invalid");
-    //         uidError.style.display = "block";
-    //     } else {
-    //         uidInput.classList.remove("is-invalid");
-    //         uidError.style.display = "none";
-    //     }
-    // });
-
-    // // Validation for RID input field
-    // ridInput.addEventListener("input", function () {
-    //     const sanitizedValue = ridInput.value.replace(/\s+/g, ""); // Remove spaces
-    //     const isOnlyDigits = /^\d*$/.test(sanitizedValue); // Check if only digits
-
-    //     // If not 29 digits or contains non-digit characters, show error
-    //     if ((sanitizedValue.length !== 29 && sanitizedValue.length !== 0) || !isOnlyDigits) {
-    //         ridInput.classList.add("is-invalid");
-    //         ridError.style.display = "block";
-    //     } else {
-    //         ridInput.classList.remove("is-invalid");
-    //         ridError.style.display = "none";
-    //     }
-    // });
 
     // Event listeners
     function handleNationalIdSelection() {
@@ -293,56 +241,6 @@ $(document).ready(function () {
         }
     }
 
-    // Function handlePrimaryCoopSelection(){
-    //     const selectElement = document.getElementById("is_member_of_primary_coop");
-    //     const primaryCoopDiv = document.getElementById("primary_coop_div");
-    //     const primaryCoop = document.getElementById("name_of_primary_coop");
-
-    //     const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
-    //         .trim()
-    //         .toLowerCase();
-
-    //     if (selectedOptionText === "yes") {
-    //         primaryCoopDiv.style.display = "block";
-    //         primaryCoop.setAttribute("required", "required");
-
-    //     } else if (selectedOptionText === "no") {
-    //         primaryCoopDiv.style.display = "none";
-    //         primaryCoop.removeAttribute("required");
-
-    //     } else {
-    //         primaryCoopDiv.style.display = "none";
-    //         primaryCoop.removeAttribute("required");
-
-    //     }
-
-    // }
-
-    // function handleCoopUnionSelection(){
-    //     const selectElement = document.getElementById("is_member_of_coop_union");
-    //     const CoopUnionDiv = document.getElementById("coop_div");
-    //     const CoopUnion = document.getElementById("name_of_coop_union");
-
-    //     const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
-    //         .trim()
-    //         .toLowerCase();
-
-    //     if (selectedOptionText === "yes") {
-    //         CoopUnionDiv.style.display = "block";
-    //         CoopUnion.setAttribute("required", "required");
-
-    //     } else if (selectedOptionText === "no") {
-    //         CoopUnionDiv.style.display = "none";
-    //         CoopUnion.removeAttribute("required");
-
-    //     } else {
-    //         CoopUnionDiv.style.display = "none";
-    //         CoopUnion.removeAttribute("required");
-
-    //     }
-
-    // }
-
     function handleClusterSelection() {
         const selectElement = document.getElementById("in_farmer_cluster");
         const primaryCommodityDiv = document.getElementById("commodity_div");
@@ -371,10 +269,6 @@ $(document).ready(function () {
             clusterRole.removeAttribute("required");
         }
     }
-
-
-
-
 
     function handlePhoneNumberSelection() {
         const selectElement = document.getElementById("have-phone-no-selection");
@@ -472,10 +366,6 @@ $(document).ready(function () {
         });
     }
 
-
-
-
-    
     const initialRegionId = $("#region_selection").val();
     const initialZoneId = $("#zon_selection").val();
     const initialWoredaId = $("#woreda_selection").val();
@@ -653,17 +543,7 @@ function validateInput(inputElement) {
     }
 }
 
-// Function validateElement(element) {
-//     if (element.tagName === "SELECT") {
-//         validateSelect(element);
-//     } else if (element.tagName === "INPUT") {
-//         if (element.type === "radio") {
-//             validateRadio(element.name);
-//         } else {
-//             validateInput(element);
-//         }
-//     }
-// }
+
 function validateMultiSelect(selectElement) {
     const selectedOptions = $(selectElement).val();
     const isValid = selectedOptions && selectedOptions.length > 0;
@@ -696,6 +576,10 @@ function validateElement(element) {
     else if(element.id === "total_land_area"){
         validateLandArea(element);
     }
+    else if(element.id === "number_of_livestock"){
+
+        validateLandArea(element);
+    }
     
     else if (element.tagName === "INPUT") {
         validateInput(element);
@@ -715,25 +599,6 @@ function validateUID() {
     return isValid;
 }
 
-// Helper functions for validating UID and RID
-// function validateUID() {
-//     const uid = document.getElementById("uid_input");
-//     const uidError = document.getElementById("uid_error");
-//     const isValid = uid.value.replace(/\s+/g, "").length === 12 && /^\d+$/.test(uid.value.replace(/\s+/g, ""));
-//     uid.classList.toggle("is-invalid", !isValid);
-//     uidError.style.display = isValid ? "none" : "block";
-//     return isValid;
-// }
-
-// function validateRID() {
-//     const rid = document.getElementById("rid_input");
-//     const ridError = document.getElementById("rid_error");
-//     const isValid = rid.value.replace(/\s+/g, "").length === 29 && /^\d+$/.test(rid.value.replace(/\s+/g, ""));
-//     rid.classList.toggle("is-invalid", !isValid);
-//     ridError.style.display = isValid ? "none" : "block";
-//     return isValid;
-// }
-
 function validateRID() {
     const rid = document.getElementById("rid_input");
     const ridError = document.getElementById("rid_error");
@@ -745,12 +610,6 @@ function validateRID() {
     ridError.style.display = isValid ? "none" : "block";
     return isValid;
 }
-
-// Apply the function to both UID and RID inputs
-
-// Add event listeners for real-time validation
-// uidInput.addEventListener("input", validateUID);
-// ridInput.addEventListener("input", validateRID);
 
 function validateRadioButtons(radioName, section) {
     const radioGroup = section.querySelectorAll(`input[name="${radioName}"]`);
@@ -773,23 +632,8 @@ function validateRadioButtons(radioName, section) {
     return radioChecked;
 }
 
-// function validateFileInput(input) {
-//     const fileError = document.getElementById("file-error"); // Ensure this ID exists in your HTML
-
-//     if (input.files.length === 0) {
-//         // Show error if no file is uploaded
-//         input.classList.add("is-invalid");
-//         fileError.style.display = "block";
-//         return false;
-//     }
-//     // Hide error if file is uploaded
-//     input.classList.remove("is-invalid");
-//     fileError.style.display = "none";
-//     return true;
-// }
-
 function validateLandArea(field) {
-    const digitRegex = /^\d*$/; // Regular expression to allow only digits
+    const digitRegex = /^\d*\.?\d+$/; // Regular expression to allow only digits
     const landAreaError = document.getElementById('land_area_error');
 
     // Check if the input value is valid (only digits)
@@ -892,6 +736,10 @@ function validateSection(sectionId) {
         if (field.id === "total_land_area") {
             isFieldValid = validateLandArea(field);
         }
+
+        if (field.id === "number_of_livestock") {
+            isFieldValid = validateLandArea(field);
+        }
         
 
         // Apply 'is-invalid' class for non-radio fields
@@ -910,6 +758,9 @@ function validateSection(sectionId) {
             valid = valid && validateRID();
         }
         if(sectionId === "land-information" && fieldName ==="total_land_area"){
+            valid = valid && validateLandArea();
+        }
+        if(sectionId === "livestock-information" && fieldName ==="number_of_livestock"){
             valid = valid && validateLandArea();
         }
 
