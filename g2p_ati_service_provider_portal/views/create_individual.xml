@@ -1505,7 +1505,7 @@
                                                             <div class="container-fluid">
 
                                                                 <div class="row pt-3 pb-1">
-                                                                    <div class="d-flex flex-column flex-lg-row w-lg-auto  land_container2">
+                                                                    <div class="d-flex flex-column flex-lg-row col--lg-11  land_container2">
 
                                                                         <div class="col-lg-3">
                                                                             <label
@@ -1672,7 +1672,7 @@
                                                             <div class="container-fluid">
 
                                                                 <div class="row pt-3 pb-1">
-                                                                    <div class="d-flex flex-column flex-lg-row w-lg-auto  land_container2">
+                                                                    <div class="d-flex flex-column flex-lg-row col-lg-11  land_container2">
 
                                                                         <div class="col-3">
                                                                             <label

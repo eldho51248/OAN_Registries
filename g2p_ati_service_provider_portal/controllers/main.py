@@ -2,6 +2,7 @@ import base64
 import json
 import logging
 from datetime import date
+import re
 
 from odoo import http
 from odoo.http import request
@@ -2119,7 +2120,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 other_info["Cooperative Union"] = other_coop_union
 
         return json.dumps(other_info)
-
+    
     def get_selection_value(self, model, selection_id):
         if selection_id and len(selection_id) > 0:
             return (
@@ -2130,18 +2131,28 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         else:
             return False
 
-  
-
+    def _extract_id_from_string(self,string):
+        match = re.match(r'^updated_(\d+)$', string)
+        if match:
+            return int(match.group(1))
+        return None
+    
     def get_land_info_data(self, kw, backend_id):
         land_info_data = []
         land_indices = set()
 
+        _logger.info("Incoming KW data:")
+        _logger.info(kw)
+
+        # Extract valid land indices from the input data
         valid_keys = [key for key in kw.keys() if "{9999}" not in key]
+        
         for key in valid_keys:
             if key.startswith("land_ownership_type_"):
                 try:
                     land_index = int(key.split("_")[-1])
                     land_indices.add(land_index)
+                    
                 except ValueError:
                     continue
 
@@ -2149,26 +2160,32 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         if not doc_tag:
             doc_tag = request.env["g2p.document.tag"].sudo().create({"name": "Land Certificate"})
 
+        existing_certificates = {}  
+        
+        _logger.info(f"land_index: {land_indices}")
 
-        existing_certificates = {}  # Dictionary to hold existing certificates by index
-
-
-        # Retrieve existing land information for the current beneficiary
         for index in land_indices:
-            existing_land_info = self._get_existing_land_info(index)  # Implement this method to fetch existing data
+            
+            _logger.info(f"land_index: {index}")
+            
+            existing_land_info = self._get_existing_land_info(index) 
             if existing_land_info:
                 existing_certificates[index] = existing_land_info
 
-        for index in land_indices:
+            # Collect new land info from kw
             ownership_type = kw.get(f"land_ownership_type_{index}")
             if ownership_type == "":
-                continue
+                continue  # Skip if ownership type is empty
+     
 
-            land_id = kw.get(f"land_id{index}")
-            land_area = kw.get(f"total_land_area{index}")
-
+            land_id = kw.get(f"land_id_{index}")
+            land_area = kw.get(f"total_land_area_{index}")
+            
             land_ownership_type = (
-                request.env["ir.model.fields.selection"].sudo().search([("id", "=", ownership_type)]).value
+                request.env["ir.model.fields.selection"]
+                .sudo()
+                .search([("id", "=", ownership_type)])
+                .value
             )
 
             land_info_dict = {
@@ -2176,22 +2193,31 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 "total_land_area": land_area,
                 "land_id": land_id,
             }
-             # lnd_idx = kw.get(f"land_certificate_{index}")
 
-            existing_certificate_id = kw.get(f"land_certificate_{index}")
-            # Check if the certificate is updated
             land_certificate_key = f"land_certificate_{index}"
-            if kw.get(land_certificate_key) and kw.get(land_certificate_key).read():
+            updated_certificate_key = f"updated_certificate_{index}"
+            
+            
+            _logger.info(f"land_certificate_{index}")
+            _logger.info(kw.get(f"land_certificate_{index}"))
+            _logger.info(kw.get(f"updated_certificate_{index}"))
+            
+
+
+            if kw.get(updated_certificate_key) is None:
+                _logger.info("new")
+                _logger.info(kw.get(updated_certificate_key))
+                
+                # New certificate upload
                 land_certificate = kw.get(land_certificate_key)
                 binary_content = base64.b64encode(land_certificate.read()).decode("utf-8")
-
                 storage_file = (
                     request.env["storage.file"]
                     .sudo()
                     .create(
                         {
                             "backend_id": backend_id,
-                            "name": existing_certificate_id.filename,
+                            "name": land_certificate.filename,
                             "data": binary_content,
                             "tags_ids": [(4, doc_tag.id)],
                         }
@@ -2199,15 +2225,330 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 )
                 land_info_dict["land_certificate"] = storage_file.id
 
-            else:
-                # If not updated, keep the existing certificate
-                if index in existing_certificates:
-                    land_info_dict["land_certificate"] = existing_certificates[index].land_certificate.id
+            
+            
+            elif kw.get(updated_certificate_key).startswith("updated"):
+                _logger.info("updated")
+                _logger.info(kw.get(updated_certificate_key))
+                
+                
+                _logger.info(f" before the extract_id_from_string  {kw.get(updated_certificate_key)}")
+                land_id = self._extract_id_from_string(kw.get(updated_certificate_key))
+                land = self._get_existing_land_info(land_id)
+                
+                
+              
+                
+                storage_file_old = (
+                    request.env['storage.file']
+                    .sudo()
+                    .search([("id", "=", land.land_certificate.id)])
+                )
+                
+                # storage_file_old = self.env['storage.file'].browse(land.land_certificate.id)
+                storage_file_old.unlink()
+                
+                land_certificate = kw.get(land_certificate_key)
+                binary_content = base64.b64encode(land_certificate.read()).decode("utf-8")
+                storage_file = (
+                request.env["storage.file"]
+                .sudo()
+                .create(
+                    {
+                        "backend_id": backend_id,
+                        "name": land_certificate.filename,
+                        "data": binary_content,
+                        "tags_ids": [(4, doc_tag.id)],
+                    }
+                )
+            )
+                land_info_dict["land_certificate"] = storage_file.id
+                    
+                   
+                        
+                        
+            elif not kw.get(updated_certificate_key).startswith("updated") and kw.get(updated_certificate_key) is not None:
+                _logger.info("not updated")
+                _logger.info(kw.get(updated_certificate_key))
+                _logger.info(existing_certificates)
+                
+                
+                land_id = int(kw.get(updated_certificate_key))
+                land = self._get_existing_land_info(land_id)
+                land_info_dict["land_certificate"] = land.land_certificate.id
+                
+                
+                
+                
+                
+       
+                
+                
 
-            # Append the land info dict to the data list
+         
+                
 
+
+            # Append the land info dictionary to the data list
             land_info_data.append((0, 0, land_info_dict))
+ 
         return land_info_data
+
+
+
+
+
+
+    
+    # def get_land_info_data(self, kw, backend_id):
+    #     land_info_data = []
+    #     land_indices = set()
+
+    #     _logger.info("The KW")
+    #     _logger.info(kw)
+
+    #     valid_keys = [key for key in kw.keys() if "{9999}" not in key]
+    #     for key in valid_keys:
+    #         if key.startswith("land_ownership_type_"):
+    #             try:
+    #                 land_index = int(key.split("_")[-1])
+    #                 land_indices.add(land_index)
+    #             except ValueError:
+    #                 continue
+
+    #     doc_tag = request.env["g2p.document.tag"].sudo().get_tag_by_name("Land Certificate")
+    #     if not doc_tag:
+    #         doc_tag = request.env["g2p.document.tag"].sudo().create({"name": "Land Certificate"})
+
+    #     existing_certificates = {}  # Dictionary to hold existing certificates by index
+
+    #     # Retrieve existing land information for the current beneficiary
+    #     for index in land_indices:
+    #         _logger.info(f"the index {index}")
+    #         existing_land_info = self._get_existing_land_info(index)  # Implement this method to fetch existing data
+    #         if existing_land_info:
+    #             existing_certificates[index] = existing_land_info
+
+    #         ownership_type = kw.get(f"land_ownership_type_{index}")
+    #         if ownership_type == "":
+    #             continue
+
+    #         land_id = kw.get(f"land_id{index}")
+    #         land_area = kw.get(f"total_land_area{index}")
+
+    #         land_ownership_type = (
+    #             request.env["ir.model.fields.selection"]
+    #             .sudo()
+    #             .search([("id", "=", ownership_type)])
+    #             .value
+    #         )
+
+    #         land_info_dict = {
+    #             "ownership_type": land_ownership_type,
+    #             "total_land_area": land_area,
+    #             "land_id": land_id,
+    #         }
+
+    #         # Check if the certificate is updated (new upload)
+    #         land_certificate_key = f"land_certificate_{index}"
+    #         if kw.get(land_certificate_key) and kw.get(land_certificate_key).read():
+    #             # New certificate uploaded, handle it as before
+    #             land_certificate = kw.get(land_certificate_key)
+    #             binary_content = base64.b64encode(land_certificate.read()).decode("utf-8")
+    #             storage_file = (
+    #                 request.env["storage.file"]
+    #                 .sudo()
+    #                 .create(
+    #                     {
+    #                         "backend_id": backend_id,
+    #                         "name": land_certificate.filename,
+    #                         "data": binary_content,
+    #                         "tags_ids": [(4, doc_tag.id)],
+    #                     }
+    #                 )
+    #             )
+    #             land_info_dict["land_certificate"] = storage_file.id
+
+
+    #         else:
+    #             if index in existing_certificates:
+    #                 land_info_dict["land_certificate"] = existing_certificates[index].land_certificate.id
+
+    #         # Append the land info dict to the data list
+    #         land_info_data.append((0, 0, land_info_dict))
+            
+            
+    #     _logger.info(land_info_data)
+    #     return land_info_data
+
+
+
+
+    # def get_land_info_data(self, kw, backend_id):
+    #     land_info_data = []
+    #     land_indices = set()
+        
+    #     _logger.info("The KW")
+    #     _logger.info(kw)
+
+    #     valid_keys = [key for key in kw.keys() if "{9999}" not in key]
+    #     for key in valid_keys:
+    #         if key.startswith("land_ownership_type_"):
+    #             try:
+    #                 land_index = int(key.split("_")[-1])
+    #                 land_indices.add(land_index)
+    #             except ValueError:
+    #                 continue
+
+    #     doc_tag = request.env["g2p.document.tag"].sudo().get_tag_by_name("Land Certificate")
+    #     if not doc_tag:
+    #         doc_tag = request.env["g2p.document.tag"].sudo().create({"name": "Land Certificate"})
+
+    #     existing_certificates = {}  # Dictionary to hold existing certificates by index
+
+    #     # Retrieve existing land information for the current beneficiary
+    #     for index in land_indices:
+    #         existing_land_info = self._get_existing_land_info(index)  # Implement this method to fetch existing data
+    #         if existing_land_info:
+    #             existing_certificates[index] = existing_land_info
+
+    #     for index in land_indices:
+    #         ownership_type = kw.get(f"land_ownership_type_{index}")
+    #         if ownership_type == "":
+    #             continue
+
+    #         land_id = kw.get(f"land_id{index}")
+    #         land_area = kw.get(f"total_land_area{index}")
+
+    #         land_ownership_type = (
+    #             request.env["ir.model.fields.selection"].sudo().search([("id", "=", ownership_type)]).value
+    #         )
+
+    #         land_info_dict = {
+    #             "ownership_type": land_ownership_type,
+    #             "total_land_area": land_area,
+    #             "land_id": land_id,
+    #         }
+
+    #         # Check if the certificate is updated
+    #         land_certificate_key = f"land_certificate_{index}"
+    #         updated_certificate_key = f"updated_certificate_{index}"
+    #         # updated_value = kw.get(updated_certificate_key)
+
+    #         if kw.get(land_certificate_key) and kw.get(land_certificate_key).read():
+    #             # New certificate uploaded
+    #             land_certificate = kw.get(land_certificate_key)
+    #             binary_content = base64.b64encode(land_certificate.read()).decode("utf-8")
+    #             storage_file = (
+    #                 request.env["storage.file"]
+    #                 .sudo()
+    #                 .create(
+    #                     {
+    #                         "backend_id": backend_id,
+    #                         "name": land_certificate.filename,
+    #                         "data": binary_content,
+    #                         "tags_ids": [(4, doc_tag.id)],
+    #                     }
+    #                 )
+    #             )
+    #             land_info_dict["land_certificate"] = storage_file.id
+    #             # Set the hidden input value to false since the certificate is updated
+    #             # land_info_dict["updated"] = False
+    #         else:
+    #             # If not updated, keep the existing certificate
+    #             if index in existing_certificates:
+    #                 land_info_dict["land_certificate"] = existing_certificates[index].land_certificate.id
+    #                 # Set the hidden input value to the land ID since it is not updated
+    #                 # land_info_dict["updated"] = land_id
+
+    #         # Append the land info dict to the data list
+    #         land_info_data.append((0, 0, land_info_dict))
+
+    #     return land_info_data
+
+
+
+    # def get_land_info_data(self, kw, backend_id):
+        
+    #     _logger.info(kw)
+    #     land_info_data = []
+    #     land_indices = set()
+
+    #     valid_keys = [key for key in kw.keys() if "{9999}" not in key]
+    #     for key in valid_keys:
+    #         if key.startswith("land_ownership_type_"):
+    #             try:
+    #                 land_index = int(key.split("_")[-1])
+    #                 land_indices.add(land_index)
+    #             except ValueError:
+    #                 continue
+
+    #     doc_tag = request.env["g2p.document.tag"].sudo().get_tag_by_name("Land Certificate")
+    #     if not doc_tag:
+    #         doc_tag = request.env["g2p.document.tag"].sudo().create({"name": "Land Certificate"})
+
+
+    #     existing_certificates = {}  # Dictionary to hold existing certificates by index
+
+
+    #     # Retrieve existing land information for the current beneficiary
+    #     for index in land_indices:
+    #         existing_land_info = self._get_existing_land_info(index)  # Implement this method to fetch existing data
+    #         if existing_land_info:
+    #             existing_certificates[index] = existing_land_info
+
+    #     for index in land_indices:
+    #         ownership_type = kw.get(f"land_ownership_type_{index}")
+    #         if ownership_type == "":
+    #             continue
+
+    #         land_id = kw.get(f"land_id{index}")
+    #         land_area = kw.get(f"total_land_area{index}")
+
+    #         land_ownership_type = (
+    #             request.env["ir.model.fields.selection"].sudo().search([("id", "=", ownership_type)]).value
+    #         )
+
+    #         land_info_dict = {
+    #             "ownership_type": land_ownership_type,
+    #             "total_land_area": land_area,
+    #             "land_id": land_id,
+    #         }
+    #          # lnd_idx = kw.get(f"land_certificate_{index}")
+
+    #         existing_certificate_id = kw.get(f"land_certificate_{index}")
+            
+    #         # Check if the certificate is updated
+            
+    #         land_certificate_key = f"land_certificate_{index}"
+    #         if kw.get(land_certificate_key) and kw.get(land_certificate_key).read():
+    #             land_certificate = kw.get(land_certificate_key)
+    #             binary_content = base64.b64encode(land_certificate.read()).decode("utf-8")
+
+    #             storage_file = (
+    #                 request.env["storage.file"]
+    #                 .sudo()
+    #                 .create(
+    #                     {
+    #                         "backend_id": backend_id,
+    #                         "name": existing_certificate_id.filename,
+    #                         "data": binary_content,
+    #                         "tags_ids": [(4, doc_tag.id)],
+    #                     }
+    #                 )
+    #             )
+    #             land_info_dict["land_certificate"] = storage_file.id
+
+    #         else:
+    #             # If not updated, keep the existing certificate
+    #             if index in existing_certificates:
+    #                 land_info_dict["land_certificate"] = existing_certificates[index].land_certificate.id
+
+    #         # Append the land info dict to the data list
+
+    #         land_info_data.append((0, 0, land_info_dict))
+
+    #     return land_info_data
 
     def _get_existing_land_info(self, index):
         # This method should retrieve existing land information from the database
