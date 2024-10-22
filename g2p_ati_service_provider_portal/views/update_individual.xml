@@ -1261,7 +1261,7 @@
 
                                                                 <select
 
-                                                                    class="selectpicker form-control crop_mixed_required_field"
+                                                                    class="selectpicker form-control"
 
                                                                     name="crop_water_source"
                                                                     multiple="multiple"
