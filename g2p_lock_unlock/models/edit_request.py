@@ -75,6 +75,7 @@ class ResPartner(models.Model):
             or user.has_group("g2p_ati.group_data_validator")
             or user.has_group("g2p_registry_base.group_g2p_admin")
         ):
+            vals["state"] = "approved"
             # Allow write operations if the bypass context is set
             return super().write(vals)
         else:
