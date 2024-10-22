@@ -19,15 +19,19 @@
                                     </a>
                                 </li>
 
-                                <li class="breadcrumb-item" id="household-item" style="display: none;">
+                                 <li class="breadcrumb-item" id="household-item1" style="display: none;">
+                                    <a href="/serviceprovider/group">Household List</a>
+                                </li>
+
+                                <li class="breadcrumb-item" id="household-item2" style="display: none;">
                                     <a href="#">Household</a>
                                 </li>
 
-                                <li class="breadcrumb-item">
+                                 <li class="breadcrumb-item" id="farmer_list_item">
                                     <a href="/serviceprovider/individual">
-                                    Farmer
+                                    Farmer List
                                     </a>
-                                </li>
+                                </li> 
 
                                 <li class="breadcrumb-item active" aria-current="page">
                                 Update Farmer
@@ -880,7 +884,7 @@
                                                                 <div class="land-section-wrapper" id="land-section-repeat" data-index="0">
                                                                     <div class="container-fluid">
                                                                         <div class="row pt-3 pb-1">
-                                                                            <div class="d-flex flex-column flex-lg-row w-lg-auto  land_container2">
+                                                                            <div class="d-flex flex-column flex-lg-row col-lg-11  land_container2">
                                                                                 <div class="col-lg-3">
                                                                                     <label class="s_website_form_label">
                                                                                         <span class="s_website_form_label_content" style="color: #666666;">
@@ -977,7 +981,7 @@
                                                                         <div class="land-section-wrapper" id="land-section-repeat" t-att-data-index="land_info['index']">
                                                                             <div class="container-fluid">
                                                                                 <div class="row pt-3 pb-1">
-                                                                                    <div class="d-flex flex-column flex-lg-row w-lg-auto  land_container2">
+                                                                                    <div class="d-flex flex-column flex-lg-row col-lg-11  land_container2">
                                                                                         <div class="col-lg-3">
                                                                                             <label class="s_website_form_label">
                                                                                                 <span class="s_website_form_label_content" style="color: #666666;">
@@ -1019,7 +1023,7 @@
 
                                                                                                     *</span>
                                                                                             </label>
-                                                                                            <input type="text" id="total_land_area" t-att-name="'total_land_area' + str(land_info['index'])" class="form-control land_required_field" required="required" oninput="validateElement(this)" t-att-value="land_info['total_land_area']" placeholder="Enter Land Area" />
+                                                                                            <input type="text" id="total_land_area" t-att-name="'total_land_area_' + str(land_info['index'])" class="form-control land_required_field" required="required" oninput="validateElement(this)" t-att-value="land_info['total_land_area']" placeholder="Enter Land Area" />
                                                                                         </div>
                                                                                         <div class="col-lg-3">
                                                                                             <label class="s_website_form_label">
@@ -1030,7 +1034,7 @@
                                                                                                 <span class="s_website_form_mark land_astrix">
                                                                                                     *</span>
                                                                                             </label>
-                                                                                            <input type="text" id="land_id" t-att-name="'land_id' + str(land_info['index'])" class="form-control land_required_field" required="required" oninput="validateElement(this)" t-att-value="land_info['land_id']" placeholder="Enter Land ID" />
+                                                                                            <input type="text" id="land_id" t-att-name="'land_id_' + str(land_info['index'])" class="form-control land_required_field" required="required" oninput="validateElement(this)" t-att-value="land_info['land_id']" placeholder="Enter Land ID" />
                                                                                         </div>
 
                                                                                         <div class="col-lg-3">
@@ -1058,9 +1062,9 @@
 
                                                                                                 </label>
 
-                                                                                                <input type="file" t-att-id="'land_certificate_' + str(land_info['index'])" t-att-name="'land_certificate_' + str(land_info['index'])" class="form-control" onchange="updateFileName(this)" />
+                                                                                                <input type="file" t-att-id="'land_certificate_' + str(land_info['index'])" t-att-name="'land_certificate_' + str(land_info['index'])" class="form-control" onchange="updateFileName(this, update=true)" />
 
-                                                                                                <input type="text" t-att-id="'updated_certificate_' + str(land_info['index'])" t-att-name="'updated_certificate_' + str(land_info['index'])" style="display: none;" class="form-control" t-att-value="land_info['id'] if land_info['land_certificate']['updated'] else ''" />
+                                                                                                <input type="text" t-att-id="'updated_certificate_' + str(land_info['index'])" t-att-name="'updated_certificate_' + str(land_info['index'])" style="display: none;" class="form-control" t-att-value="land_info['id']" />
 
 
 
@@ -1109,7 +1113,7 @@
                                                             <div class="land-section-wrapper" id="land-section-repeat" t-att-data-index="{9999}">
                                                                 <div class="container-fluid">
                                                                     <div class="row pt-3 pb-1">
-                                                                        <div class="d-flex flex-column flex-lg-row w-lg-auto  land_container2">
+                                                                        <div class="d-flex flex-column flex-lg-row col-lg-11  land_container2">
                                                                             <div class="col-lg-3">
                                                                                 <label class="s_website_form_label">
                                                                                     <span class="s_website_form_label_content" style="color: #666666;">
@@ -2040,7 +2044,22 @@
                             />
 
                             <script>
-                                function updateFileName(input) {
+                                function updateFileName(input, update=false) {
+
+
+                                    if(update){
+                                    console.log("in changed file")
+                                    const hiddenInputId = 'updated_certificate_' + input.id.split('_').pop();
+                                    const hiddenInput = document.getElementById(hiddenInputId);
+                                        console.log(hiddenInput.value)
+
+                                    hiddenInput.value = `updated_${hiddenInput.value}`
+                                        console.log(hiddenInput.value)
+
+                                }
+
+
+                                
                                 var inputId = input.getAttribute('id');
                                 var label = document.querySelector(`label[for="${inputId}"]`);
                                 var uploadText = label.querySelector('.upload-text');
@@ -2049,6 +2068,12 @@
                                 uploadText.textContent = fileName;
 
                                 validateFileInput(input);
+
+
+
+
+
+
                                 }
                             </script>
 
@@ -2061,9 +2086,22 @@
                         const group = urlParams.get('group');
 
                         if (group) {
-                            const householdItem = document.getElementById('household-item');
-                            householdItem.style.display = 'list-item'; // Show the household item
+
+                            const hitem = document.getElementById('household-item1');
+                            hitem.style.display = 'list-item'; 
+
+
+                            const householdItem = document.getElementById('household-item2');
+                            householdItem.style.display = 'list-item'; 
                             householdItem.querySelector('a').href = `/serviceprovider/group/update/${group}`;
+
+                            const fitem = document.getElementById('farmer_list_item');
+                            fitem.style.display = 'none'; 
+
+
+
+
+
                         }
 
                         const formTypeInput  = document.getElementById('form_type');
