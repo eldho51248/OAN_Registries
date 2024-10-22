@@ -2231,7 +2231,7 @@
                                                                                         class="row pt-3 pb-1"
                                                                                     >
                                                                                         <div
-                                                                                            class="d-flex flex-column flex-lg-row w-lg-auto  land_container2"
+                                                                                            class="d-flex flex-column flex-lg-row col-lg-11  land_container2"
                                                                                         >
 
                                                                                             <div
@@ -2469,7 +2469,7 @@
                                                                                         class="row pt-3 pb-1"
                                                                                     >
                                                                                         <div
-                                                                                            class="d-flex flex-column flex-lg-row w-lg-auto  land_container2"
+                                                                                            class="d-flex flex-column flex-lg-row col-lg-11 land_container2"
                                                                                         >
 
                                                                                             <div

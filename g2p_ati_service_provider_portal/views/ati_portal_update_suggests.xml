@@ -83,12 +83,12 @@
                             <table id="newreimbursements">
                                 <thead>
                                     <tr>
-                                        <th>Sr.No.</th>
-                                        <th>Suggester<i class="fa fa-sort" /></th>
-                                        <th>Record</th>
-                                        <th>Reason</th>
-                                        <th>Status </th>
-                                        <th>Action</th>
+                                        <th class="sr-column">Sr.No.</th>
+                                        <th class="name-column">Suggester<i class="fa fa-sort" /></th>
+                                        <th class="fixed-width-column-group">Record</th>
+                                        <th class="fixed-width-column-group">Reason</th>
+                                        <th class="fixed-width-column-group">Status </th>
+                                        <th class="fixed-width-column-group">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>

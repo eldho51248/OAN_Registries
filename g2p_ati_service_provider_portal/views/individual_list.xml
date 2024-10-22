@@ -24,7 +24,7 @@
                                 <li class="breadcrumb-item">
                                     <a href="/serviceprovider/home">Dashboard</a>
                                 </li>
-                                <li class="breadcrumb-item active" aria-current="page">Farmer</li>
+                                <li class="breadcrumb-item active" aria-current="page">Farmer List</li>
                             </ol>
                         </div>
 
