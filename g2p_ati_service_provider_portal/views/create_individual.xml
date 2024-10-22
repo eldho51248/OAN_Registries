@@ -9,11 +9,13 @@
     >
 
         <xpath expr="//div[hasclass('main-container')]" position="replace">
-            <div class="container-adjuster">
-                <h5 class="all-title">Create Farmer</h5>
+            <div class="">
                 <div class="form-template">
 
-                    <ol class="breadcrumb form-layout-breadcrumb">
+                <h5 class="all-title">Create Farmer</h5>
+
+
+                    <ol class="breadcrumb form-layout-breadcrumb d-flex flex-col flex-md-row">
                         <li class="breadcrumb-item">
                             <a href="/serviceprovider/home">
                                 Dashboard
@@ -35,15 +37,17 @@
                         action="/serviceprovider/individual/beneficiary/create/submit"
                         method="POST"
                         enctype="multipart/form-data"
+                        class="mx-auto px-3 px-lg-0"
+
                     >
 
                         <input type="hidden" name="group_id" value="" />
                         <div class="row">
 
                             <div class="container-fluid">
-                                <div class="rounded-card">
+                                <div class="rounded-card d-flex flex-column flex-md-row">
                                     <div class="sidebar">
-                                        <ul class="nav flex-column">
+                                        <ul class="nav d-flex flex-row flex-md-column justify-content-between">
                                             <li class="nav-item">
                                                 <a
                                                     id="id-section-link"
@@ -1163,6 +1167,7 @@
                                                             <select
                                                                 class="selectpicker form-control"
                                                                 name="hh_income_type"
+                                                                id="hh_income_type"
                                                                 multiple="multiple"
                                                                 data-live-search="true"
                                                                 data-style="btn-custom"
@@ -1497,12 +1502,12 @@
                                                             id="land-section-repeat"
                                                             data-index="0"
                                                         >
-                                                            <div class="container-fluid px-5">
+                                                            <div class="container-fluid">
 
                                                                 <div class="row pt-3 pb-1">
-                                                                    <div class="row col-11 land_container2">
+                                                                    <div class="d-flex flex-column flex-lg-row w-lg-auto  land_container2">
 
-                                                                        <div class="col-3">
+                                                                        <div class="col-lg-3">
                                                                             <label
                                                                                 class="s_website_form_label"
                                                                             >
@@ -1544,7 +1549,7 @@
 
                                                                         </div>
 
-                                                                        <div class="col-3">
+                                                                        <div class="col-lg-3">
                                                                             <label
                                                                                 class="s_website_form_label"
                                                                             >
@@ -1572,7 +1577,7 @@
                                                                             />
                                                                         </div>
 
-                                                                        <div class="col-3">
+                                                                        <div class="col-lg-3">
                                                                             <label
                                                                                 class="s_website_form_label"
                                                                             >
@@ -1598,7 +1603,7 @@
                                                                             />
                                                                         </div>
 
-                                                                        <div class="col-3">
+                                                                        <div class="col-lg-3">
                                                                             <label
                                                                                 class="s_website_form_label"
                                                                             >
@@ -1639,7 +1644,7 @@
 
                                                                     </div>
 
-                                                                    <div class="col-1 my-3">
+                                                                    <div class="col-1 mx-auto my-3">
                                                                         <button
                                                                             type="button"
                                                                             class="btn btn-outline-secondary btn-sm my-3 "
@@ -1664,10 +1669,10 @@
                                                             id="land-section-repeat"
                                                             t-att-data-index="{9999}"
                                                         >
-                                                            <div class="container-fluid px-5">
+                                                            <div class="container-fluid">
 
                                                                 <div class="row pt-3 pb-1">
-                                                                    <div class="row col-11 land_container2">
+                                                                    <div class="d-flex flex-column flex-lg-row w-lg-auto  land_container2">
 
                                                                         <div class="col-3">
                                                                             <label
@@ -1711,7 +1716,7 @@
 
                                                                         </div>
 
-                                                                        <div class="col-3">
+                                                                        <div class="col-lg-3">
                                                                             <label
                                                                                 class="s_website_form_label"
                                                                             >
@@ -1739,7 +1744,7 @@
                                                                             />
                                                                         </div>
 
-                                                                        <div class="col-3">
+                                                                        <div class="col-lg-3">
                                                                             <label
                                                                                 class="s_website_form_label"
                                                                             >
@@ -1765,7 +1770,7 @@
                                                                             />
                                                                         </div>
 
-                                                                        <div class="col-3">
+                                                                        <div class="col-lg-3">
                                                                             <label
                                                                                 class="s_website_form_label"
                                                                             >
@@ -1806,7 +1811,7 @@
 
                                                                     </div>
 
-                                                                    <div class="col-1 my-3">
+                                                                    <div class="col-1 mx-auto my-3">
                                                                         <button
                                                                             type="button"
                                                                             class="btn btn-outline-secondary btn-sm my-3 "
@@ -1902,12 +1907,12 @@
                                                             id="crop-section-repeat"
                                                             data-index="0"
                                                         >
-                                                            <div class="container-fluid px-5">
+                                                            <div class="container-fluid">
 
                                                                 <div class="row pt-3 pb-1">
-                                                                    <div class="row col-11 land_container2">
+                                                                    <div class="d-flex flex-column flex-lg-row w-lg-auto  col-lg-11 land_container2">
 
-                                                                        <div class="col-6">
+                                                                        <div class="col-lg-6">
                                                                             <label
                                                                                 class="s_website_form_label"
                                                                             >
@@ -1949,7 +1954,7 @@
 
                                                                     </div>
 
-                                                                    <div class="col-1 my-3">
+                                                                    <div class="col-1 mx-auto my-3">
                                                                         <button
                                                                             type="button"
                                                                             class="btn btn-outline-secondary btn-sm my-3 "
@@ -1974,12 +1979,12 @@
                                                             id="crop-section-repeat"
                                                             t-att-data-index="{9999}"
                                                         >
-                                                            <div class="container-fluid px-5">
+                                                            <div class="container-fluid">
 
                                                                 <div class="row pt-3 pb-1">
-                                                                    <div class="row col-11 land_container2">
+                                                                    <div class="d-flex flex-column flex-lg-row w-lg-auto  col-lg-11 land_container2">
 
-                                                                        <div class="col-6">
+                                                                        <div class="col-lg-6">
                                                                             <label
                                                                                 class="s_website_form_label"
                                                                             >
@@ -2118,12 +2123,12 @@
                                                             id="livestock-section-repeat"
                                                             data-index="0"
                                                         >
-                                                            <div class="container-fluid px-5">
+                                                            <div class="container-fluid">
 
                                                                 <div class="row pt-3 pb-1">
-                                                                    <div class="row col-11 land_container2">
+                                                                    <div class="d-flex flex-column flex-lg-row w-lg-auto  col-lg-11 land_container2">
 
-                                                                        <div class="col-6">
+                                                                        <div class="col-lg-6">
                                                                             <label
                                                                                 class="s_website_form_label"
                                                                             >
@@ -2165,7 +2170,7 @@
 
                                                                         </div>
 
-                                                                        <div class="col-6">
+                                                                        <div class="col-lg-6">
                                                                             <label
                                                                                 class="s_website_form_label"
                                                                             >
@@ -2194,7 +2199,7 @@
 
                                                                     </div>
 
-                                                                    <div class="col-1 my-3">
+                                                                    <div class="col-1 mx-auto my-3">
                                                                         <button
                                                                             type="button"
                                                                             class="btn btn-outline-secondary btn-sm my-3 "
@@ -2223,14 +2228,14 @@
                                                                 id="livestock-section-repeat"
                                                                 t-att-data-index="{9999}"
                                                             >
-                                                                <div class="container-fluid px-5">
+                                                                <div class="container-fluid">
 
                                                                     <div class="row pt-3 pb-1">
                                                                         <div
-                                                                            class="row col-11 land_container2"
+                                                                            class="d-flex flex-column flex-lg-row w-lg-auto  col-lg-11 land_container2"
                                                                         >
 
-                                                                            <div class="col-6">
+                                                                            <div class="col-lg-6">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                 >
@@ -2273,7 +2278,7 @@
 
                                                                             </div>
 
-                                                                            <div class="col-6">
+                                                                            <div class="col-lg-6">
                                                                                 <label
                                                                                     class="s_website_form_label"
                                                                                 >
@@ -2303,7 +2308,7 @@
 
                                                                         </div>
 
-                                                                        <div class="col-1 my-3">
+                                                                        <div class="col-1 mx-auto my-3">
                                                                             <button
                                                                                 type="button"
                                                                                 class="btn btn-outline-secondary btn-sm my-3 "
@@ -2582,7 +2587,6 @@
                                             style="display: none;"
                                         >
                                             <div class="section-content">
-                                                <div class="row">
                                                     <div class="col-lg-6">
                                                         <div class="s_website_form_field">
                                                             <label class="s_website_form_label">
@@ -2647,7 +2651,6 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                </div>
                                             </div>
 
                                             <div class="section-footer d-flex justify-content-end">
@@ -2722,11 +2725,6 @@
                         <script type="text/javascript"> var primaryLanguageData = JSON.parse('<t
                                 t-esc="primary_language_js"
                             />'); </script>
-
-                        <script
-                            type="text/javascript"
-                            src="/g2p_ati_service_provider_portal/static/src/js/virtual-select.min.js"
-                        />
                         <script
                             type="text/javascript"
                             src="/g2p_ati_service_provider_portal/static/src/js/member_form.js"

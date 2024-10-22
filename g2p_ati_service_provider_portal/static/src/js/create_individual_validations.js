@@ -48,47 +48,48 @@ $(document).ready(function () {
         cropIndex++;
     });
 
-
     $("#add-livestock-info").click(function () {
         var $template = $("#livestock-hidden-template").html();
         var $formContainer = $("#section-content-livestock");
-    
+
         // Replace {9999} placeholder in the template
         var newLineHtml = $template.replace(/\{9999\}/g, livestockIndex);
         var $newLine = $(newLineHtml);
-    
+
         // Gather already selected animal types from the first select
         let selectedAnimalTypes = [];
-        $("select[id='livestock_selection']").each(function() {
+        $("select[id='livestock_selection']").each(function () {
             let selectedValue = $(this).val();
             if (selectedValue) {
                 selectedAnimalTypes.push(selectedValue);
             }
         });
-    
+
         // Get the new select element
         var newSelect = $newLine.find("select");
-    
+
         // Clear existing options except the first one (the placeholder)
-        newSelect.find('option').not(':first').remove();
-    
+        newSelect.find("option").not(":first").remove();
+
         // Populate new select with options from the first select excluding the selected ones
-        $("select[id='livestock_selection']").first().find('option').each(function() {
-            let optionValue = $(this).val();
-            let optionText = $(this).text();
-    
-            // Check if the option is not already selected
-            if (optionValue && !selectedAnimalTypes.includes(optionValue)) {
-                newSelect.append(`<option value="${optionValue}">${optionText}</option>`);
-            }
-        });
-    
+        $("select[id='livestock_selection']")
+            .first()
+            .find("option")
+            .each(function () {
+                let optionValue = $(this).val();
+                let optionText = $(this).text();
+
+                // Check if the option is not already selected
+                if (optionValue && !selectedAnimalTypes.includes(optionValue)) {
+                    newSelect.append(`<option value="${optionValue}">${optionText}</option>`);
+                }
+            });
+
         // Append the new line to the form container
         $formContainer.append($newLine);
         livestockIndex++;
     });
 
-   
     $("#add-land-info").click(function () {
         var $template = $("#land-hidden-template").html();
         var $formContainer = $("#section-content-land");
@@ -137,13 +138,6 @@ $(document).ready(function () {
         }
     }
 
-    // Function formatInputWithSpaces(inputElement) {
-    //     inputElement.addEventListener("input", function () {
-    //         const value = inputElement.value.replace(/\s+/g, "");
-    //         const formattedValue = value.match(/.{1,4}/g)?.join(" ") || "";
-    //         inputElement.value = formattedValue;
-    //     });
-    // }
 
     function formatInputWithSpaces(inputElement) {
         inputElement.addEventListener("input", function () {
@@ -153,16 +147,6 @@ $(document).ready(function () {
         });
     }
 
-    // This is the one with the problem
-
-    //     const uidInput = document.getElementById("uid_input");
-    // const ridInput = document.getElementById("rid_input");
-    // const uidError = document.getElementById("uid_error");
-    // const ridError = document.getElementById("rid_error");
-
-    // // Apply space formatting to both UID and RID inputs
-    // formatInputWithSpaces(uidInput);
-    // formatInputWithSpaces(ridInput);
 
   
 
@@ -205,37 +189,6 @@ $(document).ready(function () {
         }
     });
 
-    // This is the one that doesn't work
-
-    //     // Validation for UID input field
-    // uidInput.addEventListener("input", function () {
-    //     const sanitizedValue = uidInput.value.replace(/\s+/g, ""); // Remove spaces
-    //     const isOnlyDigits = /^\d*$/.test(sanitizedValue); // Check if only digits
-
-    //     // If not 12 digits or contains non-digit characters, show error
-    //     if ((sanitizedValue.length !== 12 && sanitizedValue.length !== 0) || !isOnlyDigits) {
-    //         uidInput.classList.add("is-invalid");
-    //         uidError.style.display = "block";
-    //     } else {
-    //         uidInput.classList.remove("is-invalid");
-    //         uidError.style.display = "none";
-    //     }
-    // });
-
-    // // Validation for RID input field
-    // ridInput.addEventListener("input", function () {
-    //     const sanitizedValue = ridInput.value.replace(/\s+/g, ""); // Remove spaces
-    //     const isOnlyDigits = /^\d*$/.test(sanitizedValue); // Check if only digits
-
-    //     // If not 29 digits or contains non-digit characters, show error
-    //     if ((sanitizedValue.length !== 29 && sanitizedValue.length !== 0) || !isOnlyDigits) {
-    //         ridInput.classList.add("is-invalid");
-    //         ridError.style.display = "block";
-    //     } else {
-    //         ridInput.classList.remove("is-invalid");
-    //         ridError.style.display = "none";
-    //     }
-    // });
 
     // Event listeners
     function handleNationalIdSelection() {
@@ -291,56 +244,6 @@ $(document).ready(function () {
             inputElement.removeAttribute("required");
         }
     }
-
-    // Function handlePrimaryCoopSelection(){
-    //     const selectElement = document.getElementById("is_member_of_primary_coop");
-    //     const primaryCoopDiv = document.getElementById("primary_coop_div");
-    //     const primaryCoop = document.getElementById("name_of_primary_coop");
-
-    //     const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
-    //         .trim()
-    //         .toLowerCase();
-
-    //     if (selectedOptionText === "yes") {
-    //         primaryCoopDiv.style.display = "block";
-    //         primaryCoop.setAttribute("required", "required");
-
-    //     } else if (selectedOptionText === "no") {
-    //         primaryCoopDiv.style.display = "none";
-    //         primaryCoop.removeAttribute("required");
-
-    //     } else {
-    //         primaryCoopDiv.style.display = "none";
-    //         primaryCoop.removeAttribute("required");
-
-    //     }
-
-    // }
-
-    // function handleCoopUnionSelection(){
-    //     const selectElement = document.getElementById("is_member_of_coop_union");
-    //     const CoopUnionDiv = document.getElementById("coop_div");
-    //     const CoopUnion = document.getElementById("name_of_coop_union");
-
-    //     const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
-    //         .trim()
-    //         .toLowerCase();
-
-    //     if (selectedOptionText === "yes") {
-    //         CoopUnionDiv.style.display = "block";
-    //         CoopUnion.setAttribute("required", "required");
-
-    //     } else if (selectedOptionText === "no") {
-    //         CoopUnionDiv.style.display = "none";
-    //         CoopUnion.removeAttribute("required");
-
-    //     } else {
-    //         CoopUnionDiv.style.display = "none";
-    //         CoopUnion.removeAttribute("required");
-
-    //     }
-
-    // }
 
     function handleClusterSelection() {
         const selectElement = document.getElementById("in_farmer_cluster");
@@ -400,13 +303,15 @@ $(document).ready(function () {
     }
 
     // Function to update options for a select element based on an AJAX response
+   
     function updateOptions(
         url,
         data,
         targetSelectId,
         defaultOptionText = "Select",
         originalEvent = "",
-        selectdropdown = ""
+        selectdropdown = "",
+        initialValue = false
     ) {
         console.log(data);
         $.ajax({
@@ -420,17 +325,20 @@ $(document).ready(function () {
                 const selectedName = selectElement.options[selectElement.selectedIndex].text;
                 if (
                     originalEvent !== "" &&
-                    (selectdropdown === "current_region" || selectdropdown === "region")
+                    (selectdropdown === "current_region" || selectdropdown === "region")  
                 ) {
                     selectedvalue = " ";
-                } else if (originalEvent !== "") {
+
+                } else if (originalEvent !== ""  ) {
                     selectedvalue = " ";
-                } else if (selectElement.selectedIndex > 0) {
+
+
+                } else if (selectElement.selectedIndex > 0  ) {
                     selectedvalue = selectElement.options[selectElement.selectedIndex].value;
                     // If (selectedName) {
                     //     defaultOptionText = selectedName;
                     // }
-                } else if (selectElement.selectedIndex === 0 && selectedName !== "Select") {
+                } else if (selectElement.selectedIndex === 0 && selectedName !== "Select" ) {
                     selectedvalue = selectElement.options[selectElement.selectedIndex].value;
                     // If (selectedName) {
                     //     defaultOptionText = selectedName;
@@ -438,6 +346,7 @@ $(document).ready(function () {
                 }
 
                 selectElement.innerHTML = "";
+
                 const defaultOption = document.createElement("option");
                 defaultOption.value = selectedvalue;
                 defaultOption.textContent = defaultOptionText;
@@ -449,12 +358,34 @@ $(document).ready(function () {
                     opt.textContent = option.name;
                     selectElement.appendChild(opt);
                 });
+
+                if (initialValue){
+                    selectElement.value = initialValue;
+                }
+
             },
             error: function (error) {
                 console.error("Error fetching options:", error);
             },
         });
     }
+
+    const initialRegionId = $("#region_selection").val();
+    const initialZoneId = $("#zon_selection").val();
+    const initialWoredaId = $("#woreda_selection").val();
+    const initialKebeleId = $("#kebele_selection").val();
+
+
+    console.log(`Here are the initial values ${initialRegionId}, ${initialZoneId}, ${initialWoredaId}`)
+      
+    updateOptions("/update_zone_options", {region_id: initialRegionId}, "zon_selection", "Select", null, "region", initialValue=initialZoneId);
+    updateOptions("/update_woreda_options", {zone_id: initialZoneId}, "woreda_selection", "Select", null, "zone", initialValue=initialWoredaId);
+    updateOptions("/update_kebele_options", {woreda_id: initialWoredaId}, "kebele_selection", "Select", null, "woreda", initialValue=initialKebeleId);
+
+
+
+  
+      
 
     // Event listener for national ID selection change
     $("#have-national-id-selection").on("change", handleNationalIdSelection);
@@ -518,13 +449,13 @@ $(document).ready(function () {
     // Validation for email
     const emailInput = document.getElementById("email");
 
-    function isValidEmail(email) {
+function isValidEmail(email) {
         // Basic email regex pattern
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailPattern.test(email);
     }
 
-    emailInput.addEventListener("input", function () {
+emailInput.addEventListener("input", function () {
         if (emailInput.value.length === 0) {
             emailInput.classList.remove("is-invalid");
             // EmailError.style.display = "none";
@@ -537,16 +468,17 @@ $(document).ready(function () {
         }
     });
 
-    function expandSection(sectionId) {
+function expandSection(sectionId) {
         var consentSection = document.getElementById(sectionId);
         consentSection.classList.add("show");
     }
+
     // Function hideSection(sectionId) {
     //     var consentSection = document.getElementById(sectionId);
     //     consentSection.classList.add("hide");
     // }
 
-    window.customvalidateForm = function (isCreateForm) {
+window.customvalidateForm = function (isCreateForm) {
         const requiredFields = document.querySelectorAll("[required]");
         var valid = true;
 
@@ -615,17 +547,7 @@ function validateInput(inputElement) {
     }
 }
 
-// Function validateElement(element) {
-//     if (element.tagName === "SELECT") {
-//         validateSelect(element);
-//     } else if (element.tagName === "INPUT") {
-//         if (element.type === "radio") {
-//             validateRadio(element.name);
-//         } else {
-//             validateInput(element);
-//         }
-//     }
-// }
+
 function validateMultiSelect(selectElement) {
     const selectedOptions = $(selectElement).val();
     const isValid = selectedOptions && selectedOptions.length > 0;
@@ -658,6 +580,10 @@ function validateElement(element) {
     else if(element.id === "total_land_area"){
         validateLandArea(element);
     }
+    else if(element.id === "number_of_livestock"){
+
+        validateLandArea(element);
+    }
     
     else if (element.tagName === "INPUT") {
         validateInput(element);
@@ -677,25 +603,6 @@ function validateUID() {
     return isValid;
 }
 
-// Helper functions for validating UID and RID
-// function validateUID() {
-//     const uid = document.getElementById("uid_input");
-//     const uidError = document.getElementById("uid_error");
-//     const isValid = uid.value.replace(/\s+/g, "").length === 12 && /^\d+$/.test(uid.value.replace(/\s+/g, ""));
-//     uid.classList.toggle("is-invalid", !isValid);
-//     uidError.style.display = isValid ? "none" : "block";
-//     return isValid;
-// }
-
-// function validateRID() {
-//     const rid = document.getElementById("rid_input");
-//     const ridError = document.getElementById("rid_error");
-//     const isValid = rid.value.replace(/\s+/g, "").length === 29 && /^\d+$/.test(rid.value.replace(/\s+/g, ""));
-//     rid.classList.toggle("is-invalid", !isValid);
-//     ridError.style.display = isValid ? "none" : "block";
-//     return isValid;
-// }
-
 function validateRID() {
     const rid = document.getElementById("rid_input");
     const ridError = document.getElementById("rid_error");
@@ -707,12 +614,6 @@ function validateRID() {
     ridError.style.display = isValid ? "none" : "block";
     return isValid;
 }
-
-// Apply the function to both UID and RID inputs
-
-// Add event listeners for real-time validation
-// uidInput.addEventListener("input", validateUID);
-// ridInput.addEventListener("input", validateRID);
 
 function validateRadioButtons(radioName, section) {
     const radioGroup = section.querySelectorAll(`input[name="${radioName}"]`);
@@ -735,23 +636,8 @@ function validateRadioButtons(radioName, section) {
     return radioChecked;
 }
 
-// function validateFileInput(input) {
-//     const fileError = document.getElementById("file-error"); // Ensure this ID exists in your HTML
-
-//     if (input.files.length === 0) {
-//         // Show error if no file is uploaded
-//         input.classList.add("is-invalid");
-//         fileError.style.display = "block";
-//         return false;
-//     }
-//     // Hide error if file is uploaded
-//     input.classList.remove("is-invalid");
-//     fileError.style.display = "none";
-//     return true;
-// }
-
 function validateLandArea(field) {
-    const digitRegex = /^\d*$/; // Regular expression to allow only digits
+    const digitRegex = /^\d*\.?\d+$/; // Regular expression to allow only digits
     const landAreaError = document.getElementById('land_area_error');
 
     // Check if the input value is valid (only digits)
@@ -854,6 +740,10 @@ function validateSection(sectionId) {
         if (field.id === "total_land_area") {
             isFieldValid = validateLandArea(field);
         }
+
+        if (field.id === "number_of_livestock") {
+            isFieldValid = validateLandArea(field);
+        }
         
 
         // Apply 'is-invalid' class for non-radio fields
@@ -872,6 +762,9 @@ function validateSection(sectionId) {
             valid = valid && validateRID();
         }
         if(sectionId === "land-information" && fieldName ==="total_land_area"){
+            valid = valid && validateLandArea();
+        }
+        if(sectionId === "livestock-information" && fieldName ==="number_of_livestock"){
             valid = valid && validateLandArea();
         }
 
@@ -938,57 +831,55 @@ function showSection(sectionId, element, fromGroup = false) {
                     sectionId === "location-details" ||
                     sectionId === "family-member-template"
                 ) {
-                    section.style.display = "none";
-                } 
-                
-                else {
+                    const locationDetailsSection = document.getElementById("location-details");
 
-                    const locationDetailsSection = document.getElementById('location-details');
+                    if (locationDetailsSection) {
+                        isSectionValid = validateSection("location-details");
 
-                    if (locationDetailsSection){
-
-                        console.log("inn locationDetailsSection  ")
-                         isSectionValid = validateSection('location-details');
-                        
                         if (!isSectionValid) {
-
-                            console.log("inn Section invalid")
-                        
                             const farmerDetailSection = document.getElementById("family-members");
-                        farmerDetailSection.style.display = "none";
+                            farmerDetailSection.style.display = "none";
 
-                            return
+                            return;
                         }
                     }
-     
 
+                    section.style.display = "none";
+                } else {
+
+                    const locationDetailsSection = document.getElementById("location-details");
+
+                    if (locationDetailsSection) {
+                        isSectionValid = validateSection("location-details");
+
+                        if (!isSectionValid) {
+                            const farmerDetailSection = document.getElementById("family-members");
+                            farmerDetailSection.style.display = "none";
+                            return;
+                        }
+                    }
 
                     section.style.display = "none";
                     const farmerDetailSection = document.getElementById("farmer-details");
                     if (farmerDetailSection) {
-
                         farmerDetailSection.style.display = "block";
                     }
                 }
             });
         }
 
-        if(isSectionValid) {
-
-
-        document.getElementById(sectionId).style.display = "block";
-        // PreviousSection = sectionId;
-        // If (!fromGroup) {
-        document.querySelectorAll(".sidebar .nav-link").forEach((link) => {
-            link.classList.remove("active");
-        });
-        // }
-        if (element) {
-            element.classList.add("active");
+        if (isSectionValid) {
+            document.getElementById(sectionId).style.display = "block";
+            // PreviousSection = sectionId;
+            // If (!fromGroup) {
+            document.querySelectorAll(".sidebar .nav-link").forEach((link) => {
+                link.classList.remove("active");
+            });
+            // }
+            if (element) {
+                element.classList.add("active");
+            }
         }
-
-    }
-
     }
 }
 // eslint-disable-next-line no-unused-vars
@@ -1006,7 +897,6 @@ function showSection(sectionId, element, fromGroup = false) {
 // }
 
 function showNextSection(nextSectionId, currentSectionId, fromGroup = false) {
-
     const isSectionValid = validateSection(currentSectionId);
 
     if (isSectionValid) {
@@ -1033,7 +923,6 @@ function toggleFieldBasedOnSelect(
     containerId,
     containerId2
 ) {
-
     const shouldShowField = value === toggleValue;
 
     const selectionFieldToClear = document.getElementById(selectionFieldIdToClear);
