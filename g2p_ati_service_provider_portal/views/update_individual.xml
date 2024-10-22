@@ -115,10 +115,11 @@
 
 
 
-                                                            <select class="form-select" name="has_national_id" required="required" onchange="validateElement(this)" id="have-national-id-selection">
+                                                            <select class="form-select" name="has_national_id" required="required" onchange="validateElement(this)" id="have-national-id-selection" >
                                                                 <option value="">Select</option>
-                                                                <t t-foreach="has_national_id" t-as="option">
-                                                                    <option t-att-value="option.id" t-att-selected="option.id == have_national_id_selection_id">
+                                                                <t t-foreach="has_national_id" t-as="option" >
+                                                                    <option t-att-value="option.id" t-att-selected="(has_uid and option.name == 'Yes') or (not has_uid and option.id == have_national_id_selection_id)">
+                                                                        
                                                                         <t t-esc="option.name" />
                                                                     </option>
                                                                 </t>
@@ -126,7 +127,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6 col-md-6 col-sm-12">
-                                                        <div class="s_website_form_field" id="uid-div" style="display: none;">
+                                                        <div class="s_website_form_field" id="uid-div" style="display: {% if has_uid %}block{% else %}none{% endif %};">
                                                             <label class="s_website_form_label" for="name">
                                                                 <span class="s_website_form_label_content" style="color: #666666;">UID</span>
                                                                 <span class="s_website_form_mark"> *</span>
@@ -136,7 +137,7 @@
                                                         <div class="error-message col-12 s_website_form_field" id="uid_error" style="display: none;color: red;">
                                                             UID must be exactly 12 Digits Only.
                                                         </div>
-                                                        <div class="s_website_form_field" id="rid-div" style="display: none;">
+                                                        <div class="s_website_form_field" id="rid-div" style="display: {% if not has_uid %}block{% else %}none{% endif %};">
                                                             <label class="s_website_form_label" for="name">
                                                                 <span class="s_website_form_label_content" style="color: #666666;">RID
                                                                 </span>

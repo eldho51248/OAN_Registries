@@ -13,6 +13,7 @@ class G2PRegistrantID(models.Model):
 
     def check_value(self):
         for record in self:
+            print("record type is",record.id_type.name)
             if record.id_type.name == "UID":
                 pattern = r"^\d{4} \d{4} \d{4}$"
                 if not re.match(pattern, record.value):
@@ -34,3 +35,6 @@ class G2PRegistrantID(models.Model):
                 pattern = r"^\d{29}$"
                 if not re.match(pattern, record.value):
                     raise ValidationError(_("RID should be exactly 29 digits"))
+
+
+ 
