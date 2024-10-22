@@ -40,10 +40,10 @@ class ResPartner(models.Model):
 
 
     def write(self, vals):
+        state = {'state': 'update_requested'}
         sanitized_vals = self._sanitize_vals(vals)
         no_of_edits = self.env["no.of.edits"].search([])
         user = self.env.user
-
         for record in self:
             if self.env.user.has_group('base.group_portal'):
                 if record.edit_count >= no_of_edits.edit_amount - 1:
@@ -62,8 +62,9 @@ class ResPartner(models.Model):
                             "state": "pending",
                         }
                     )
+                    vals['state'] = "update_requested"
                     # Return a meaningful value; for example, the count of records 'affected'
-                return len(self)
+                return super().write(state)
             else:
                 return super().write(vals)
 
@@ -74,6 +75,7 @@ class ResPartner(models.Model):
             or user.has_group("g2p_ati.group_data_validator")
             or user.has_group("g2p_registry_base.group_g2p_admin")
         ):
+            vals["state"] = "approved"
             # Allow write operations if the bypass context is set
             return super().write(vals)
         else:
@@ -89,7 +91,7 @@ class ResPartner(models.Model):
                     }
                 )
                 # Return a meaningful value; for example, the count of records 'affected'
-            return len(self)
+            return super().write(state)
 
 
 class ResPartnerChangeRequest(models.Model):
