@@ -23,14 +23,10 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
         partner = request.env.user.partner_id
 
         households = (
-<<<<<<< HEAD
-            request.env["res.partner"].sudo().search([("is_group", "=", True), 
-=======
             request.env["res.partner"].sudo().search([("is_group", "=", True),
                    "|",  # Logical OR operator
                   ("enumerator_user_id", "=", user_id),
                   ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
->>>>>>> c3aeb72bbc402000322f39e98a838aeebcdb1599
             ])
         )
         individuals = (
@@ -40,11 +36,6 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
              "|",  # Logical OR operator
             ("enumerator_user_id", "=", user_id),
             ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
-<<<<<<< HEAD
-             
-            
-=======
->>>>>>> c3aeb72bbc402000322f39e98a838aeebcdb1599
             ])
         )
 
@@ -1656,14 +1647,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             }
             certificate_url = land_info.land_certificate.url if land_info.land_certificate else ""
 
-<<<<<<< HEAD
-            certificate_url = land_info.land_certificate.url if land_info.land_certificate else ""
-
-        
-         
-      
-=======
->>>>>>> c3aeb72bbc402000322f39e98a838aeebcdb1599
 
             land_info_data.append(
                 {
@@ -2167,9 +2150,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         doc_tag = request.env["g2p.document.tag"].sudo().get_tag_by_name("Land Certificate")
         if not doc_tag:
             doc_tag = request.env["g2p.document.tag"].sudo().create({"name": "Land Certificate"})
-<<<<<<< HEAD
-        print("kw is ",kw)
-=======
 
 
         existing_certificates = {}  # Dictionary to hold existing certificates by index
@@ -2181,7 +2161,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             if existing_land_info:
                 existing_certificates[index] = existing_land_info
 
->>>>>>> c3aeb72bbc402000322f39e98a838aeebcdb1599
         for index in land_indices:
             ownership_type = kw.get(f"land_ownership_type_{index}")
             if ownership_type == "":
@@ -2201,18 +2180,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             }
              # lnd_idx = kw.get(f"land_certificate_{index}")
 
-<<<<<<< HEAD
-            # _logger.info(f"here is the land info certfficate {lnd_idx}")
-
-
-            # Check for existing land certificate
-            existing_certificate_id = kw.get(f"land_certificate_{index}")
-            
-            print("land cert existing",existing_certificate_id)
-            if existing_certificate_id:
-                print("i have existing certf",existing_certificate_id)                
-                binary_content = base64.b64encode(existing_certificate_id.read()).decode("utf-8")
-=======
             existing_certificate_id = kw.get(f"land_certificate_{index}")
             # Check if the certificate is updated
             land_certificate_key = f"land_certificate_{index}"
@@ -2220,7 +2187,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 land_certificate = kw.get(land_certificate_key)
                 binary_content = base64.b64encode(land_certificate.read()).decode("utf-8")
 
->>>>>>> c3aeb72bbc402000322f39e98a838aeebcdb1599
                 storage_file = (
                     request.env["storage.file"]
                     .sudo()
@@ -2234,57 +2200,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     )
                 )
                 land_info_dict["land_certificate"] = storage_file.id
-<<<<<<< HEAD
-              
-
-            else:
-                print("no")
-            #     land_certificate = kw.get(f"land_certificate_{index}")
-            #     if land_certificate and (land_certificate.strip()):
-            #         binary_content = base64.b64encode(land_certificate.read()).decode("utf-8")
-            #         storage_file = (
-            #             request.env["storage.file"]
-            #             .sudo()
-            #             .create(
-            #                 {
-            #                     "backend_id": backend_id,
-            #                     "name": land_certificate.filename,
-            #                     "data": binary_content,
-            #                     "tags_ids": [(4, doc_tag.id)],
-            #                 }
-            #             )
-            #         )
-            #         land_info_dict["land_certificate"] = storage_file.id
-
-            # land_info_data.append((0, 0, land_info_dict))
-
-
-           
-                if (
-                    kw.get(f"land_certificate_{index}")
-                    and (f"land_certificate_{index}").strip()
-                    and kw.get(f"land_certificate_{index}").read()
-                ):
-                    _logger.info("iy i in the hjhghjghjghjgjgjgjhgjgjhgjgj")
-
-                    land_certificate = kw.get(f"land_certificate_{index}")
-                    binary_content = base64.b64encode(land_certificate.read()).decode("utf-8")
-                    storage_file = (
-                        request.env["storage.file"]
-                        .sudo()
-                        .create(
-                            {
-                                "backend_id": backend_id,
-                                "name": land_certificate.filename,
-                                "data": binary_content,
-                                "tags_ids": [(4, doc_tag.id)],
-                            }
-                        )
-                    )
-                    land_info_dict["land_certificate"] = storage_file.id
-            land_info_data.append((0, 0, land_info_dict))
-=======
->>>>>>> c3aeb72bbc402000322f39e98a838aeebcdb1599
 
             else:
                 # If not updated, keep the existing certificate
