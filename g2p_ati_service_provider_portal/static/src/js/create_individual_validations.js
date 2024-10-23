@@ -348,6 +348,8 @@ $(document).ready(function () {
         const uidError = document.getElementById("uid_error");
         const ridError = document.getElementById("rid_error");
 
+        // Const ridInput = document.getElementById("rid_input");
+        // Const uidInput = document.getElementById("uid_input");
         const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
             .trim()
             .toLowerCase();
@@ -402,7 +404,6 @@ $(document).ready(function () {
         selectElement.addEventListener("change", handleNationalIdSelection);
     });
 
-        
     function formatInputWithSpaces(inputElement) {
         inputElement.addEventListener("input", function () {
             const value = inputElement.value.replace(/\s+/g, "");

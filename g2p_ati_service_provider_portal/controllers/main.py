@@ -2265,7 +2265,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
         for index in land_indices:
             
-            _logger.info(f"land_index: {index}")
             
             existing_land_info = self._get_existing_land_info(index) 
             if existing_land_info:
@@ -2279,6 +2278,13 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             land_id = kw.get(f"land_id_{index}")
             land_area = kw.get(f"total_land_area_{index}")
+            
+            _logger.info(f"land_index: {index}")
+            _logger.info(kw.get(f"land_id_{index}"))
+            _logger.info(kw.get(f"total_land_area_{index}"))
+            
+            
+            
             
             land_ownership_type = (
                 request.env["ir.model.fields.selection"]
@@ -2297,9 +2303,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             updated_certificate_key = f"updated_certificate_{index}"
             
             
-            _logger.info(f"land_certificate_{index}")
-            _logger.info(kw.get(f"land_certificate_{index}"))
-            _logger.info(kw.get(f"updated_certificate_{index}"))
+            # _logger.info(f"land_certificate_{index}")
+            # _logger.info(kw.get(f"land_certificate_{index}"))
+            # _logger.info(kw.get(f"updated_certificate_{index}"))
             
 
 
