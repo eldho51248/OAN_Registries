@@ -101,6 +101,66 @@
                                             <input type="text" id="id_holder" name="id holder" class="form-control" placeholder="id holder" t-att-value="beneficiary.id" />
                                         </div>
                                         <main role="main" class="content">
+                                            <!-- <div id="id-section" class="section-container">
+                                                <div class=" section-content">
+                                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                                        <div class="s_website_form_field">
+                                                            <label class="s_website_form_label" for="name">
+                                                                <span class="s_website_form_label_content" style="color: #666666;">Do you
+                                                                    have
+                                                                    a
+                                                                    national ID?</span>
+                                                                <span class="s_website_form_mark"> *</span>
+                                                            </label>
+
+
+
+                                                            <select class="form-select" name="has_national_id" required="required" onchange="validateElement(this)" id="have-national-id-selection">
+                                                               
+                                                                <t t-foreach="has_national_id" t-as="option">
+                                                                    <option 
+                                                                        t-att-value="option.id" 
+
+                                                                        t-att-selected="(has_uid and option.name == 'Yes') or (not has_uid and option.id == have_national_id_selection_id)"
+                                                                        t-att-disabled="(has_uid)"
+                                                                        >
+                                                                        <t t-esc="option.name" />
+                                                                    </option>
+                                                                </t>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                                        <div class="s_website_form_field" id="uid-div" style="display: {% if has_uid %}block{% else %}none{% endif %};">
+                                                            <label class="s_website_form_label" for="name">
+                                                                <span class="s_website_form_label_content" style="color: #666666;">UID</span>
+                                                                <span class="s_website_form_mark"> *</span>
+                                                            </label>
+                                                            <input type="text" id="uid_input" name="uid" class="form-control" placeholder="UID" t-att-value="uid" required="required"  />
+                                                        </div>
+                                                        <div class="error-message col-12 s_website_form_field" id="uid_error" style="display: none;color: red;">
+                                                            UID must be exactly 12 Digits Only.
+                                                        </div>
+                                                        <div class="s_website_form_field" id="rid-div" style="display: {% if not has_uid %}block{% else %}none{% endif %};">
+                                                            <label class="s_website_form_label" for="name">
+                                                                <span class="s_website_form_label_content" style="color: #666666;">RID
+                                                                </span>
+                                                                <span class="s_website_form_mark"> *</span>
+                                                            </label>
+                                                            <input type="text" id="rid_input" name="rid" class="form-control" t-att-value="rid" placeholder="RID" />
+                                                            <div class="error-message col-12 s_website_form_field" id="rid_error" style="display: none;color: red;">
+                                                                RID must be exactly
+                                                                29 digits only.
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="section-footer d-flex justify-content-end">
+                                                    <button type="button" class=" btn-sm btn-outline-secondary next-btn" onclick="showNextSection('individual-details', 'id-section')" id="nextButton">NEXT<span>&#x276F;</span>
+                                                    </button>
+                                                </div>
+                                            </div> -->
+
                                             <div id="id-section" class="section-container">
                                                 <div class=" section-content">
                                                     <div class="col-lg-6 col-md-6 col-sm-12">
@@ -116,9 +176,9 @@
 
 
                                                             <select class="form-select" name="has_national_id" required="required" onchange="validateElement(this)" id="have-national-id-selection" >
-                                                                <option value="">Select</option>
+                                                                
                                                                 <t t-foreach="has_national_id" t-as="option" >
-                                                                    <option t-att-value="option.id" t-att-selected="(has_uid and option.name == 'Yes') or (not has_uid and option.id == have_national_id_selection_id)">
+                                                                    <option t-att-value="option.id" t-att-selected="(has_uid and option.name == 'Yes') or (not has_uid and option.id == have_national_id_selection_id)"  t-att-disabled="(has_uid)">
                                                                         
                                                                         <t t-esc="option.name" />
                                                                     </option>
@@ -132,7 +192,7 @@
                                                                 <span class="s_website_form_label_content" style="color: #666666;">UID</span>
                                                                 <span class="s_website_form_mark"> *</span>
                                                             </label>
-                                                            <input type="text" id="uid_input" name="uid" class="form-control" placeholder="UID" t-att-value="uid" required="required" />
+                                                            <input type="text" id="uid_input" name="uid" class="form-control" placeholder="UID" t-att-value="uid" required="required" t-att-readonly="has_uid " />
                                                         </div>
                                                         <div class="error-message col-12 s_website_form_field" id="uid_error" style="display: none;color: red;">
                                                             UID must be exactly 12 Digits Only.
@@ -156,6 +216,7 @@
                                                     </button>
                                                 </div>
                                             </div>
+
                                             <div id="individual-details" class="section-container" style="display: none;">
                                                 <div class="section-content">
                                                     <div class="row">
