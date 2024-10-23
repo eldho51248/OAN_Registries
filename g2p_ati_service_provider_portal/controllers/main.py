@@ -1349,6 +1349,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     )
     def indvidual_update(self, _id):
         try:
+            print("updateeeeee")
             beneficiary = request.env["res.partner"].sudo().browse(_id)
             if not beneficiary:
                 return request.render(
@@ -1441,12 +1442,25 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     other_phone = phone.phone_no
 
             # Handling UID and RID
+          
+            
+            # uid, rid = "", ""
+            # for reg_id in beneficiary.reg_ids:
+            #     if beneficiary.has_national_id == "yes" and reg_id.id_type.name == "UID":
+            #         uid = reg_id.value
+            #     elif beneficiary.has_national_id == "no" and reg_id.id_type.name == "RID":
+            #         rid = reg_id.value
+
             uid, rid = "", ""
             for reg_id in beneficiary.reg_ids:
-                if beneficiary.has_national_id == "yes" and reg_id.id_type.name == "UID":
+                if reg_id.id_type.name == "UID":
                     uid = reg_id.value
                 elif beneficiary.has_national_id == "no" and reg_id.id_type.name == "RID":
                     rid = reg_id.value
+
+            has_uid = bool(uid)
+
+            
 
             hh_is_household_head, household_head_selection_id = self._get_selection_id(
                 model_id, "hh_is_household_head", beneficiary.hh_is_household_head
@@ -1507,6 +1521,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 {
                     "beneficiary": beneficiary,
                     "has_national_id": has_national_id,
+                    "has_uid":has_uid,
                     "uid": uid,
                     "rid": rid,
                     "hh_is_household_head": hh_is_household_head,
@@ -1665,6 +1680,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         crop_info_data = []
         serialized_crop_info_data = []
         for index, crop_info in enumerate(beneficiary.crop_information_ids, start=1):
+            print("crop planted date",crop_info.collected_gc)
             crop_info_data.append(
                 {
                     "index": index,
@@ -1801,13 +1817,68 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             )
 
             # National ID handling
+            # reg_ids = []
+            # if has_national_id == "yes":
+            #     id_type = request.env["g2p.id.type"].sudo().search([("name", "=", "UID")], limit=1)
+            #     reg_ids = [(0, 0, {"id_type": id_type.id, "value": kw.get("uid"), "status":"valid"})]
+            # elif has_national_id == "no" and kw.get("rid"):
+            #     id_type = request.env["g2p.id.type"].sudo().search([("name", "=", "RID")], limit=1)
+            #     reg_ids = [(0, 0, {"id_type": id_type.id, "value": kw.get("rid"), "status":"valid"})]
+
             reg_ids = []
-            if has_national_id == "yes":
-                id_type = request.env["g2p.id.type"].sudo().search([("name", "=", "UID")], limit=1)
-                reg_ids = [(0, 0, {"id_type": id_type.id, "value": kw.get("uid"), "status":"valid"})]
-            elif has_national_id == "no" and kw.get("rid"):
-                id_type = request.env["g2p.id.type"].sudo().search([("name", "=", "RID")], limit=1)
-                reg_ids = [(0, 0, {"id_type": id_type.id, "value": kw.get("rid"), "status":"valid"})]
+
+            # Check if an existing RID is present
+            existing_rid = None
+           
+            for reg_id in member.reg_ids:
+                print("for loop")
+                if reg_id.id_type.name == "RID":
+                    print("hi there work", reg_id.id_type.name)
+                    existing_rid = reg_id
+                    break
+               
+
+
+           
+
+            # Handling UID
+            if kw.get("uid"):
+                id_type_uid = request.env["g2p.id.type"].sudo().search([("name", "=", "UID")], limit=1)
+                if id_type_uid:
+                   
+                    reg_ids.append((0, 0, {"id_type": id_type_uid.id, "value": kw.get("uid"), "status": "valid"}))
+
+               
+                if existing_rid:
+                    try:
+                        
+                        check_rid = request.env['g2p.reg.id'].sudo().search([('id', '=', existing_rid.id)], limit=1)
+                        if check_rid:
+                           
+                            reg_ids.append((0,0, {
+                                "id_type": existing_rid.id_type.id,  
+                                "value": existing_rid.value,          
+                                "status": existing_rid.status          
+                            }))
+                        else:
+                            print(f"RID with ID {existing_rid.id} not found in the database. Skipping update.")
+                    except Exception as e:
+                        print(f"Error while checking existing RID: {e}")
+
+            
+            if has_national_id == "no" and kw.get("rid"):
+                id_type_rid = request.env["g2p.id.type"].sudo().search([("name", "=", "RID")], limit=1)
+                if id_type_rid:
+                            reg_ids.append((0, 0, {"id_type": id_type_rid.id, "value": kw.get("rid"), "status": "valid"}))
+
+               
+
+
+          
+
+
+                
+
 
             # Handle phone numbers
             ethiopia_country_id = (
@@ -2580,6 +2651,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             crop_id = kw.get(f"crops_{index}")
 
             crop_planted_date_id = kw.get(f"crop_planted_date{index}")
+            print("planted date id", crop_planted_date_id)
 
             if crop_id == "":
                 continue
@@ -2587,6 +2659,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 continue
 
             crop_info_data.append((0, 0, {"crop": crop_id, "collected_gc": crop_planted_date_id}))
+
+        print("crop_info is",crop_info_data)
 
         return crop_info_data
 
