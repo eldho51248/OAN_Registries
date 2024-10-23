@@ -182,98 +182,23 @@ $(document).ready(function () {
     });
 
 
-    // function handleNationalIdSelection() {
-    //     const selectElement = document.getElementById("have-national-id-selection");
-    //     const uidDiv = document.getElementById("uid-div");
-    //     const ridDiv = document.getElementById("rid-div");
-    
-    //     const uidInput = document.getElementById("uid_input");
-    //     const ridInput = document.getElementById("rid_input");
-    //     const uidError = document.getElementById("uid_error");
-    //     const ridError = document.getElementById("rid_error");
-    
-    //     const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
-    //         .trim()
-    //         .toLowerCase();
-    
-    //     if (selectedOptionText === "yes") {
-    //         uidDiv.style.display = "block";
-    //         uidInput.setAttribute("required", "required");
-    //         ridDiv.style.display = "none";
-    //         ridInput.removeAttribute("required");
-    
-    //         // Disable the 'No' option once 'Yes' is selected
-    //         const noOption = [...selectElement.options].find(option => option.text.trim().toLowerCase() === "no");
-    //         if (noOption) {
-    //             noOption.disabled = true;
-    //         }
-    //     } else if (selectedOptionText === "no") {
-    //         uidDiv.style.display = "none";
-    //         uidInput.removeAttribute("required");
-    //         ridDiv.style.display = "block";
-    //         ridInput.setAttribute("required", "required");
-    //     } else {
-    //         uidDiv.style.display = "none";
-    //         uidInput.removeAttribute("required");
-    //         ridDiv.style.display = "none";
-    //         ridInput.removeAttribute("required");
-    //     }
-    
-    //     uidError.style.display = "none";
-    //     ridError.style.display = "none";
-    // }
-    
-    // document.addEventListener("DOMContentLoaded", function () {
-    //     const hasUid = "{{ has_uid }}"; 
-    //     const selectElement = document.getElementById("have-national-id-selection");
-    //     const uidDiv = document.getElementById("uid-div");
-    //     const ridDiv = document.getElementById("rid-div");
-    //     const uidInput = document.getElementById("uid_input");
-    //     const ridInput = document.getElementById("rid_input");
-    
-    //     // Set the selection based on UID presence
-    //     if (hasUid === "True") {
-    //         selectElement.value = "yes"; 
-    //         uidDiv.style.display = "block"; 
-    //         uidInput.setAttribute("required", "required");
-    //         ridDiv.style.display = "none"; 
-    //         ridInput.removeAttribute("required");
-    
-    //         // Disable the 'No' option
-    //         // Get the current URL
-            
-    
-
-    //         const noOption = [...selectElement.options].find(option => option.text.trim().toLowerCase() === "no");
-    //         if (noOption) {
-    //             noOption.disabled = true;
-    //         }
-    //     } else {
-    //         selectElement.value = ""; 
-    //         uidDiv.style.display = "none"; 
-    //         uidInput.removeAttribute("required");
-    //         ridDiv.style.display = "none"; 
-    //         ridInput.removeAttribute("required");
-    //     }
-    
-        
-    //     selectElement.addEventListener("change", handleNationalIdSelection);
-    // });
-
+    // Event listeners
     function handleNationalIdSelection() {
         const selectElement = document.getElementById("have-national-id-selection");
         const uidDiv = document.getElementById("uid-div");
         const ridDiv = document.getElementById("rid-div");
-    
+
         const uidInput = document.getElementById("uid_input");
         const ridInput = document.getElementById("rid_input");
         const uidError = document.getElementById("uid_error");
         const ridError = document.getElementById("rid_error");
-    
+
+        // Const ridInput = document.getElementById("rid_input");
+        // Const uidInput = document.getElementById("uid_input");
         const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
             .trim()
             .toLowerCase();
-    
+
         if (selectedOptionText === "yes") {
             uidDiv.style.display = "block";
             uidInput.setAttribute("required", "required");
@@ -290,22 +215,14 @@ $(document).ready(function () {
             ridDiv.style.display = "none";
             ridInput.removeAttribute("required");
         }
-    
         uidError.style.display = "none";
         ridError.style.display = "none";
     }
-    
+
     document.addEventListener("DOMContentLoaded", function () {
         const hasUid = "{{ has_uid }}"; // Pass this from your template context
         const selectElement = document.getElementById("have-national-id-selection");
-        const uidDiv = document.getElementById("uid-div");
-        const ridDiv = document.getElementById("rid-div");
-        const uidInput = document.getElementById("uid_input");
-        const ridInput = document.getElementById("rid_input");
-    
-        // Get the current URL
-        const currentUrl = window.location.href;
-    
+        
         // Set the selection based on UID presence
         if (hasUid === "True") {
             selectElement.value = "yes"; // Set dropdown to "Yes" if UID exists
@@ -313,14 +230,6 @@ $(document).ready(function () {
             uidInput.setAttribute("required", "required");
             ridDiv.style.display = "none"; // Hide RID div
             ridInput.removeAttribute("required");
-    
-            // Disable the 'No' option, but only if the URL includes "/individual/update/"
-            if (currentUrl.includes("/individual/update/")) {
-                const noOption = [...selectElement.options].find(option => option.text.trim().toLowerCase() === "no");
-                if (noOption) {
-                    noOption.disabled = true;
-                }
-            }
         } else {
             selectElement.value = ""; // Reset selection
             uidDiv.style.display = "none"; // Hide UID div
@@ -332,8 +241,7 @@ $(document).ready(function () {
         // Attach change event listener to the select element
         selectElement.addEventListener("change", handleNationalIdSelection);
     });
-    
-    
+
     function formatInputWithSpaces(inputElement) {
         inputElement.addEventListener("input", function () {
             const value = inputElement.value.replace(/\s+/g, "");
