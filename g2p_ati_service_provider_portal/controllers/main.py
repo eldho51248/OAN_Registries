@@ -1741,6 +1741,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     def update_individual_submit(self,**kw):
         try:
             member = request.env["res.partner"].sudo().browse(int(kw.get("id holder")))
+           
 
 
             has_national_id = member.has_national_id
@@ -1830,12 +1831,17 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             # Check if an existing RID is present
             existing_rid = None
            
+
+            rid_input = kw.get("rid")
+            print("rid input",rid_input)
+            
+           
             for reg_id in member.reg_ids:
-                print("for loop")
-                if reg_id.id_type.name == "RID":
-                    print("hi there work", reg_id.id_type.name)
-                    existing_rid = reg_id
-                    break
+                if rid_input:
+                    if reg_id.id_type.name == "RID" and reg_id.value == rid_input:
+                    
+                        existing_rid = reg_id
+                        break
                
 
 
@@ -1850,6 +1856,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
                
                 if existing_rid:
+                    print("existing")
                     try:
                         
                         check_rid = request.env['g2p.reg.id'].sudo().search([('id', '=', existing_rid.id)], limit=1)
@@ -1864,12 +1871,33 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                             print(f"RID with ID {existing_rid.id} not found in the database. Skipping update.")
                     except Exception as e:
                         print(f"Error while checking existing RID: {e}")
+                has_national_id = "yes"
 
             
-            if has_national_id == "no" and kw.get("rid"):
+            if has_national_id == "no" and kw.get("rid") :
+            #     if existing_rid:
+            #         print("existing")
+            #         try:
+                        
+            #             check_rid = request.env['g2p.reg.id'].sudo().search([('id', '=', existing_rid.id)], limit=1)
+            #             if check_rid:
+                           
+            #                 reg_ids.append((0,0, {
+            #                     "id_type": existing_rid.id_type.id,  
+            #                     "value": existing_rid.value,          
+            #                     "status": existing_rid.status          
+            #                 }))
+            #             else:
+            #                 print(f"RID with ID {existing_rid.id} not found in the database. Skipping update.")
+            #         except Exception as e:
+            #             print(f"Error while checking existing RID: {e}")
+            #     print("new rid")
+
+            # else:
+            
                 id_type_rid = request.env["g2p.id.type"].sudo().search([("name", "=", "RID")], limit=1)
                 if id_type_rid:
-                            reg_ids.append((0, 0, {"id_type": id_type_rid.id, "value": kw.get("rid"), "status": "valid"}))
+                    reg_ids.append((0, 0, {"id_type": id_type_rid.id, "value": kw.get("rid"), "status": "valid"}))
 
                
 
@@ -2008,11 +2036,11 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             update_records = {
                 "has_national_id": has_national_id,
-                "reg_ids": reg_ids,
                 "primary_Language": primary_Language,
                 "given_name": kw.get("given_name"),
                 "family_name": kw.get("family_name"),
                 "gf_name_eng": kw.get("gf_name_eng"),
+                "reg_ids":reg_ids,
                 "name": name,
                 "first_name_amh": kw.get("first_name_amh"),
                 "family_name_amh": kw.get("family_name_amh"),
