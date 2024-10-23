@@ -115,15 +115,18 @@
 
 
 
-                                                            <select class="form-select" name="has_national_id" required="required" onchange="validateElement(this)" id="have-national-id-selection" >
+                                                            <select class="form-select" name="has_national_id" required="required" onchange="validateElement(this)" id="have-national-id-selection">
                                                                 <option value="">Select</option>
-                                                                <t t-foreach="has_national_id" t-as="option" >
-                                                                    <option t-att-value="option.id" t-att-selected="(has_uid and option.name == 'Yes') or (not has_uid and option.id == have_national_id_selection_id)">
-                                                                        
+                                                                <t t-foreach="has_national_id" t-as="option">
+                                                                    <option 
+                                                                        t-att-value="option.id" 
+                                                                        t-att-selected="(has_uid and option.name == 'Yes') or (not has_uid and option.id == have_national_id_selection_id)"
+                                                                        t-att-disabled="(has_uid and option.name == 'No')">
                                                                         <t t-esc="option.name" />
                                                                     </option>
                                                                 </t>
                                                             </select>
+                                                            
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6 col-md-6 col-sm-12">
