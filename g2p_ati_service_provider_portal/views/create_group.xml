@@ -366,7 +366,7 @@
                                                 <div class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
-                                                        class="btn btn-outline-secondary"
+                                                        class="btn btn-sm btn-outline-secondary"
                                                         onclick="showNextSection('farmer-details', 'location-details')"
                                                         id="some-button-or-link"
                                                     >NEXT <span>&#x276F;</span>
@@ -514,7 +514,7 @@
                                                 <div class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
-                                                        class="btn btn-outline-secondary"
+                                                        class="btn btn-sm btn-outline-secondary"
                                                         onclick="showNextSection('family-members', 'farmer-details')"
                                                         id="some-button-or-link"
                                                     >NEXT <span>&#x276F;</span>
@@ -565,7 +565,7 @@
                                                                         </span>
                                                                     </div>
                                                                 </div>
-                                                                <div class="section-content">
+                                                                <div class="section-contentm">
 
 
                                                                     <div class="row">
@@ -1502,11 +1502,11 @@
                                                                     </div>
                                                                 </div>
                                                                 <div
-                                                                    class="section-footer d-flex justify-content-end"
+                                                                    class="section-footer1 d-flex justify-content-end"
                                                                 >
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-outline-secondary"
+                                                                        class="btn btn-sm btn-outline-secondary"
                                                                         onclick="location.href = '/serviceprovider/group/create';"
                                                                         style="width: 90px;"
                                                                     >
@@ -1514,7 +1514,7 @@
                                                                     </button>
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-primary"
+                                                                        class="btn btn-sm btn-primary"
                                                                         onclick="showModalSection('socio-economic-data', 'individual-details', 'next')"
                                                                         id="some-button-or-link"
                                                                     >NEXT <span>
@@ -1714,14 +1714,14 @@
                                                                 >
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-outline-secondary"
+                                                                        class="btn btn-sm btn-outline-secondary"
                                                                         onclick="showModalSection('individual-details', 'socio-economic-data',  'prev')"
                                                                         id="some-button-or-link"
                                                                     ><span>
                                                                         &#x276E;</span> PREVIOUS </button>
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-primary"
+                                                                        class="btn btn-sm btn-primary"
                                                                         onclick="showModalSection('membership-details', 'socio-economic-data',  'next')"
                                                                         id="some-button-or-link"
                                                                     >NEXT <span>
@@ -2176,14 +2176,14 @@
                                                                 >
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-outline-secondary"
+                                                                        class="btn btn-sm btn-outline-secondary"
                                                                         onclick="showModalSection('socio-economic-data', 'membership-details',  'prev')"
                                                                         id="some-button-or-link"
                                                                     ><span>
                                                                         &#x276E;</span> PREVIOUS </button>
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-primary"
+                                                                        class="btn btn-sm btn-primary"
                                                                         onclick="showModalSection('land-information', 'membership-details',  'next')"
                                                                         id="some-button-or-link"
                                                                     >NEXT <span>
@@ -2691,14 +2691,14 @@
                                                                 >
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-outline-secondary"
+                                                                        class="btn btn-sm btn-outline-secondary"
                                                                         onclick="showModalSection('membership-details', 'land-information',  'prev')"
                                                                         id="land-previous"
                                                                     ><span>
                                                                         &#x276E;</span> PREVIOUS </button>
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-primary"
+                                                                        class="btn btn-sm btn-primary"
                                                                         onclick="showModalSection('crop-information', 'land-information',  'next')"
                                                                         id="land-next"
                                                                     >NEXT <span>
@@ -2886,7 +2886,7 @@
                                                                                         >
                                                                                             <button
                                                                                                 type="button"
-                                                                                                class="btn btn-outline-secondary btn-sm my-3 "
+                                                                                                class="btn  btn-outline-secondary btn-sm my-3 "
                                                                                                 onclick="deleteCrop(this)"
                                                                                             >
                                                                                                 <i
@@ -3055,14 +3055,14 @@
                                                                 >
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-outline-secondary"
+                                                                        class="btn btn-sm btn-outline-secondary"
                                                                         onclick="showModalSection('land-information', 'crop-information',  'prev')"
                                                                         id="crop-previous"
                                                                     ><span>
                                                                         &#x276E;</span> PREVIOUS </button>
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-primary"
+                                                                        class="btn btn-sm btn-primary"
                                                                         onclick="showModalSection('livestock-information', 'crop-information',  'next')"
                                                                         id="crop-next"
                                                                     >NEXT <span>
@@ -3443,14 +3443,14 @@
                                                                 >
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-outline-secondary"
+                                                                        class="btn btn-sm btn-outline-secondary"
                                                                         onclick="showModalSection('crop-information', 'livestock-information',  'prev')"
                                                                         id="livestock-previous"
                                                                     ><span>
                                                                         &#x276E;</span> PREVIOUS </button>
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-primary"
+                                                                        class="btn btn-sm btn-primary"
                                                                         onclick="showModalSection('agricultural-input', 'livestock-information',  'next')"
                                                                         id="livestock-next"
                                                                     >NEXT <span>
@@ -3665,7 +3665,7 @@
                                                                 >
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-outline-secondary"
+                                                                        class="btn btn-sm btn-outline-secondary"
                                                                         onclick="showModalSection('livestock-information', 'agricultural-input',  'prev')"
                                                                         id="agricultural-previous"
                                                                     >
@@ -3673,7 +3673,7 @@
                                                                         PREVIOUS </button>
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-primary"
+                                                                        class="btn btn-sm btn-primary"
                                                                         onclick="showModalSection('access-to-resource', 'agricultural-input',  'next')"
                                                                         id="some-button-or-link"
                                                                     >NEXT <span>
@@ -3926,14 +3926,14 @@
                                                                 >
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-outline-secondary"
+                                                                        class="btn btn-sm btn-outline-secondary"
                                                                         onclick="showModalSection('agricultural-input', 'access-to-resource',  'prev')"
                                                                         id="resource-previous"
                                                                     ><span>
                                                                         &#x276E;</span> PREVIOUS </button>
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-primary"
+                                                                        class="btn btn-sm btn-primary"
                                                                         id="member_submit"
                                                                     >
                                                                         ADD
@@ -4072,7 +4072,7 @@
                                                 <div class="section-footer d-flex justify-content-end">
                                                     <button
                                                         type="button"
-                                                        class="btn btn-outline-secondary"
+                                                        class="btn btn-sm btn-outline-secondary"
                                                         onclick="location.href = '/serviceprovider/group';"
                                                         style="width: 90px;"
                                                     >
@@ -4082,7 +4082,7 @@
                                                         id="beneficiary_submit"
                                                         type="button"
                                                         onclick="customvalidateFormGroup(true);"
-                                                        class="btn btn-primary"
+                                                        class="btn btn-sm  btn-primary"
                                                         style="width: 90px;"
                                                     >
                                                         Close
@@ -4271,14 +4271,14 @@
                                                         <div class="modal-footer">
                                                             <button
                                                                 type="button"
-                                                                class="btn btn-secondary"
+                                                                class="btn btn-sm btn-secondary"
                                                                 data-bs-dismiss="modal"
                                                             >Close</button>
                                                             <button
                                                                 id="update-member-btn"
                                                                 t-attf-store="{{ indi }}"
                                                                 type="button"
-                                                                class="btn btn-primary"
+                                                                class="btn btn-sm btn-primary"
                                                             >Update</button>
                                                         </div>
                                                     </div>
@@ -4504,7 +4504,7 @@
                                                         <div class="card-footer" style="text-align:right">
                                                             <button
                                                                 type="button"
-                                                                class="btn btn-outline-primary modal-cancel-button"
+                                                                class="btn btn-sm btn-outline-primary modal-cancel-button"
                                                                 data-bs-dismiss="modal"
                                                             >
                                                                 Close
@@ -4512,7 +4512,7 @@
                                                             <button
                                                                 id="family_member_submit"
                                                                 type="button"
-                                                                class="btn btn-primary create-new"
+                                                                class="btn btn-sm btn-primary create-new"
                                                             >
                                                                 Add
                                                             </button>

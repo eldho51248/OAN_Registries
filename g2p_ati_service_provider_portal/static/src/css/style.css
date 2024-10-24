@@ -135,13 +135,6 @@ input[type="radio"].invalid-radio {
     font-size: 16px;
 }
 
-.content {
-    padding: 20px;
-    flex-grow: 1; /* Take up remaining space in the card */
-    overflow-y: auto; /* Add scroll if content overflows */
-    height: 100%; /* Full height of the rounded card */
-}
-
 /* .sidebar .nav-item:first-child {
     padding-top: 20px;
 } */
@@ -262,24 +255,47 @@ h1 {
     position: relative;
 }
 
+.section-contentm {
+    flex: 1 1 auto;
+    /* max-height: 600px !important; */
+    /* overflow-y: auto !important; */
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    margin-bottom: 4rem;
+}
+
 .section-content {
     flex: 1 1 auto;
-    max-height: 600px !important;
+    max-height: 596px !important;
     overflow-y: auto !important;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
-    padding-bottom: 4rem;
 }
 
-.section-footer {
 
+
+.section-footer {
     position: absolute;
     background-color: white;
     bottom: 0;
     left: 0;
-
     padding: 10px;
-    margin: 0px 10px;
+    /* margin: 0px 10px; */
+    border-top: 1px solid #ddd;
+    width: 100%;
+    column-gap: 10px;
+}
+
+
+.section-footer1 {
+
+    position: sticky;
+    background-color: white;
+    bottom: 0;
+    left: 0;
+    border-radius: 15px;
+    padding: 10px;
+    /* margin: 0px 10px; */
     border-top: 1px solid #ddd;
     width: 100%;
     column-gap: 10px;
@@ -790,6 +806,10 @@ hr {
   }
 
 
+  .modal-body {
+    padding: 0px !important;
+  }
+
 /* .modal-dialog {
 
     overflow: auto !important;
@@ -797,3 +817,9 @@ hr {
 
 } */
 
+@media (min-width: 576px) {
+    :not(.s_popup) > .modal .modal-body {
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+    }
+}
