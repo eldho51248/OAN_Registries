@@ -2,6 +2,7 @@ import base64
 import json
 import logging
 from datetime import date
+import re
 
 from odoo import http
 from odoo.http import request
@@ -1348,6 +1349,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     )
     def indvidual_update(self, _id):
         try:
+            print("updateeeeee")
             beneficiary = request.env["res.partner"].sudo().browse(_id)
             if not beneficiary:
                 return request.render(
@@ -1440,12 +1442,25 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     other_phone = phone.phone_no
 
             # Handling UID and RID
+          
+            
+            # uid, rid = "", ""
+            # for reg_id in beneficiary.reg_ids:
+            #     if beneficiary.has_national_id == "yes" and reg_id.id_type.name == "UID":
+            #         uid = reg_id.value
+            #     elif beneficiary.has_national_id == "no" and reg_id.id_type.name == "RID":
+            #         rid = reg_id.value
+
             uid, rid = "", ""
             for reg_id in beneficiary.reg_ids:
-                if beneficiary.has_national_id == "yes" and reg_id.id_type.name == "UID":
+                if reg_id.id_type.name == "UID":
                     uid = reg_id.value
                 elif beneficiary.has_national_id == "no" and reg_id.id_type.name == "RID":
                     rid = reg_id.value
+
+            has_uid = bool(uid)
+
+            
 
             hh_is_household_head, household_head_selection_id = self._get_selection_id(
                 model_id, "hh_is_household_head", beneficiary.hh_is_household_head
@@ -1506,6 +1521,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 {
                     "beneficiary": beneficiary,
                     "has_national_id": has_national_id,
+                    "has_uid":has_uid,
                     "uid": uid,
                     "rid": rid,
                     "hh_is_household_head": hh_is_household_head,
@@ -1664,6 +1680,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         crop_info_data = []
         serialized_crop_info_data = []
         for index, crop_info in enumerate(beneficiary.crop_information_ids, start=1):
+            print("crop planted date",crop_info.collected_gc)
             crop_info_data.append(
                 {
                     "index": index,
@@ -1724,6 +1741,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     def update_individual_submit(self,**kw):
         try:
             member = request.env["res.partner"].sudo().browse(int(kw.get("id holder")))
+           
 
 
             has_national_id = member.has_national_id
@@ -1800,13 +1818,95 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             )
 
             # National ID handling
+            # reg_ids = []
+            # if has_national_id == "yes":
+            #     id_type = request.env["g2p.id.type"].sudo().search([("name", "=", "UID")], limit=1)
+            #     reg_ids = [(0, 0, {"id_type": id_type.id, "value": kw.get("uid"), "status":"valid"})]
+            # elif has_national_id == "no" and kw.get("rid"):
+            #     id_type = request.env["g2p.id.type"].sudo().search([("name", "=", "RID")], limit=1)
+            #     reg_ids = [(0, 0, {"id_type": id_type.id, "value": kw.get("rid"), "status":"valid"})]
+
             reg_ids = []
-            if has_national_id == "yes":
-                id_type = request.env["g2p.id.type"].sudo().search([("name", "=", "UID")], limit=1)
-                reg_ids = [(0, 0, {"id_type": id_type.id, "value": kw.get("uid"), "status":"valid"})]
-            elif has_national_id == "no" and kw.get("rid"):
-                id_type = request.env["g2p.id.type"].sudo().search([("name", "=", "RID")], limit=1)
-                reg_ids = [(0, 0, {"id_type": id_type.id, "value": kw.get("rid"), "status":"valid"})]
+
+            # Check if an existing RID is present
+            existing_rid = None
+           
+
+            rid_input = kw.get("rid")
+            print("rid input",rid_input)
+            
+           
+            for reg_id in member.reg_ids:
+                if rid_input:
+                    if reg_id.id_type.name == "RID" and reg_id.value == rid_input:
+                    
+                        existing_rid = reg_id
+                        break
+               
+
+
+           
+
+            # Handling UID
+            if kw.get("uid"):
+                id_type_uid = request.env["g2p.id.type"].sudo().search([("name", "=", "UID")], limit=1)
+                if id_type_uid:
+                   
+                    reg_ids.append((0, 0, {"id_type": id_type_uid.id, "value": kw.get("uid"), "status": "valid"}))
+
+               
+                if existing_rid:
+                    print("existing")
+                    try:
+                        
+                        check_rid = request.env['g2p.reg.id'].sudo().search([('id', '=', existing_rid.id)], limit=1)
+                        if check_rid:
+                           
+                            reg_ids.append((0,0, {
+                                "id_type": existing_rid.id_type.id,  
+                                "value": existing_rid.value,          
+                                "status": existing_rid.status          
+                            }))
+                        else:
+                            print(f"RID with ID {existing_rid.id} not found in the database. Skipping update.")
+                    except Exception as e:
+                        print(f"Error while checking existing RID: {e}")
+                has_national_id = "yes"
+
+            
+            if has_national_id == "no" and kw.get("rid") :
+            #     if existing_rid:
+            #         print("existing")
+            #         try:
+                        
+            #             check_rid = request.env['g2p.reg.id'].sudo().search([('id', '=', existing_rid.id)], limit=1)
+            #             if check_rid:
+                           
+            #                 reg_ids.append((0,0, {
+            #                     "id_type": existing_rid.id_type.id,  
+            #                     "value": existing_rid.value,          
+            #                     "status": existing_rid.status          
+            #                 }))
+            #             else:
+            #                 print(f"RID with ID {existing_rid.id} not found in the database. Skipping update.")
+            #         except Exception as e:
+            #             print(f"Error while checking existing RID: {e}")
+            #     print("new rid")
+
+            # else:
+            
+                id_type_rid = request.env["g2p.id.type"].sudo().search([("name", "=", "RID")], limit=1)
+                if id_type_rid:
+                    reg_ids.append((0, 0, {"id_type": id_type_rid.id, "value": kw.get("rid"), "status": "valid"}))
+
+               
+
+
+          
+
+
+                
+
 
             # Handle phone numbers
             ethiopia_country_id = (
@@ -1936,11 +2036,11 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             update_records = {
                 "has_national_id": has_national_id,
-                "reg_ids": reg_ids,
                 "primary_Language": primary_Language,
                 "given_name": kw.get("given_name"),
                 "family_name": kw.get("family_name"),
                 "gf_name_eng": kw.get("gf_name_eng"),
+                "reg_ids":reg_ids,
                 "name": name,
                 "first_name_amh": kw.get("first_name_amh"),
                 "family_name_amh": kw.get("family_name_amh"),
@@ -2119,7 +2219,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 other_info["Cooperative Union"] = other_coop_union
 
         return json.dumps(other_info)
-
+    
     def get_selection_value(self, model, selection_id):
         if selection_id and len(selection_id) > 0:
             return (
@@ -2130,18 +2230,28 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         else:
             return False
 
-  
-
+    def _extract_id_from_string(self,string):
+        match = re.match(r'^updated_(\d+)$', string)
+        if match:
+            return int(match.group(1))
+        return None
+    
     def get_land_info_data(self, kw, backend_id):
         land_info_data = []
         land_indices = set()
 
+        _logger.info("Incoming KW data:")
+        _logger.info(kw)
+
+        # Extract valid land indices from the input data
         valid_keys = [key for key in kw.keys() if "{9999}" not in key]
+        
         for key in valid_keys:
             if key.startswith("land_ownership_type_"):
                 try:
                     land_index = int(key.split("_")[-1])
                     land_indices.add(land_index)
+                    
                 except ValueError:
                     continue
 
@@ -2149,26 +2259,38 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         if not doc_tag:
             doc_tag = request.env["g2p.document.tag"].sudo().create({"name": "Land Certificate"})
 
+        existing_certificates = {}  
+        
+        _logger.info(f"land_index: {land_indices}")
 
-        existing_certificates = {}  # Dictionary to hold existing certificates by index
-
-
-        # Retrieve existing land information for the current beneficiary
         for index in land_indices:
-            existing_land_info = self._get_existing_land_info(index)  # Implement this method to fetch existing data
+            
+            
+            existing_land_info = self._get_existing_land_info(index) 
             if existing_land_info:
                 existing_certificates[index] = existing_land_info
 
-        for index in land_indices:
+            # Collect new land info from kw
             ownership_type = kw.get(f"land_ownership_type_{index}")
             if ownership_type == "":
-                continue
+                continue  # Skip if ownership type is empty
+     
 
-            land_id = kw.get(f"land_id{index}")
-            land_area = kw.get(f"total_land_area{index}")
-
+            land_id = kw.get(f"land_id_{index}")
+            land_area = kw.get(f"total_land_area_{index}")
+            
+            _logger.info(f"land_index: {index}")
+            _logger.info(kw.get(f"land_id_{index}"))
+            _logger.info(kw.get(f"total_land_area_{index}"))
+            
+            
+            
+            
             land_ownership_type = (
-                request.env["ir.model.fields.selection"].sudo().search([("id", "=", ownership_type)]).value
+                request.env["ir.model.fields.selection"]
+                .sudo()
+                .search([("id", "=", ownership_type)])
+                .value
             )
 
             land_info_dict = {
@@ -2176,22 +2298,31 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 "total_land_area": land_area,
                 "land_id": land_id,
             }
-             # lnd_idx = kw.get(f"land_certificate_{index}")
 
-            existing_certificate_id = kw.get(f"land_certificate_{index}")
-            # Check if the certificate is updated
             land_certificate_key = f"land_certificate_{index}"
-            if kw.get(land_certificate_key) and kw.get(land_certificate_key).read():
+            updated_certificate_key = f"updated_certificate_{index}"
+            
+            
+            # _logger.info(f"land_certificate_{index}")
+            # _logger.info(kw.get(f"land_certificate_{index}"))
+            # _logger.info(kw.get(f"updated_certificate_{index}"))
+            
+
+
+            if kw.get(updated_certificate_key) is None:
+                _logger.info("new")
+                _logger.info(kw.get(updated_certificate_key))
+                
+                # New certificate upload
                 land_certificate = kw.get(land_certificate_key)
                 binary_content = base64.b64encode(land_certificate.read()).decode("utf-8")
-
                 storage_file = (
                     request.env["storage.file"]
                     .sudo()
                     .create(
                         {
                             "backend_id": backend_id,
-                            "name": existing_certificate_id.filename,
+                            "name": land_certificate.filename,
                             "data": binary_content,
                             "tags_ids": [(4, doc_tag.id)],
                         }
@@ -2199,15 +2330,330 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 )
                 land_info_dict["land_certificate"] = storage_file.id
 
-            else:
-                # If not updated, keep the existing certificate
-                if index in existing_certificates:
-                    land_info_dict["land_certificate"] = existing_certificates[index].land_certificate.id
+            
+            
+            elif kw.get(updated_certificate_key).startswith("updated"):
+                _logger.info("updated")
+                _logger.info(kw.get(updated_certificate_key))
+                
+                
+                _logger.info(f" before the extract_id_from_string  {kw.get(updated_certificate_key)}")
+                land_id = self._extract_id_from_string(kw.get(updated_certificate_key))
+                land = self._get_existing_land_info(land_id)
+                
+                
+              
+                
+                storage_file_old = (
+                    request.env['storage.file']
+                    .sudo()
+                    .search([("id", "=", land.land_certificate.id)])
+                )
+                
+                # storage_file_old = self.env['storage.file'].browse(land.land_certificate.id)
+                storage_file_old.unlink()
+                
+                land_certificate = kw.get(land_certificate_key)
+                binary_content = base64.b64encode(land_certificate.read()).decode("utf-8")
+                storage_file = (
+                request.env["storage.file"]
+                .sudo()
+                .create(
+                    {
+                        "backend_id": backend_id,
+                        "name": land_certificate.filename,
+                        "data": binary_content,
+                        "tags_ids": [(4, doc_tag.id)],
+                    }
+                )
+            )
+                land_info_dict["land_certificate"] = storage_file.id
+                    
+                   
+                        
+                        
+            elif not kw.get(updated_certificate_key).startswith("updated") and kw.get(updated_certificate_key) is not None:
+                _logger.info("not updated")
+                _logger.info(kw.get(updated_certificate_key))
+                _logger.info(existing_certificates)
+                
+                
+                land_id = int(kw.get(updated_certificate_key))
+                land = self._get_existing_land_info(land_id)
+                land_info_dict["land_certificate"] = land.land_certificate.id
+                
+                
+                
+                
+                
+       
+                
+                
 
-            # Append the land info dict to the data list
+         
+                
 
+
+            # Append the land info dictionary to the data list
             land_info_data.append((0, 0, land_info_dict))
+ 
         return land_info_data
+
+
+
+
+
+
+    
+    # def get_land_info_data(self, kw, backend_id):
+    #     land_info_data = []
+    #     land_indices = set()
+
+    #     _logger.info("The KW")
+    #     _logger.info(kw)
+
+    #     valid_keys = [key for key in kw.keys() if "{9999}" not in key]
+    #     for key in valid_keys:
+    #         if key.startswith("land_ownership_type_"):
+    #             try:
+    #                 land_index = int(key.split("_")[-1])
+    #                 land_indices.add(land_index)
+    #             except ValueError:
+    #                 continue
+
+    #     doc_tag = request.env["g2p.document.tag"].sudo().get_tag_by_name("Land Certificate")
+    #     if not doc_tag:
+    #         doc_tag = request.env["g2p.document.tag"].sudo().create({"name": "Land Certificate"})
+
+    #     existing_certificates = {}  # Dictionary to hold existing certificates by index
+
+    #     # Retrieve existing land information for the current beneficiary
+    #     for index in land_indices:
+    #         _logger.info(f"the index {index}")
+    #         existing_land_info = self._get_existing_land_info(index)  # Implement this method to fetch existing data
+    #         if existing_land_info:
+    #             existing_certificates[index] = existing_land_info
+
+    #         ownership_type = kw.get(f"land_ownership_type_{index}")
+    #         if ownership_type == "":
+    #             continue
+
+    #         land_id = kw.get(f"land_id{index}")
+    #         land_area = kw.get(f"total_land_area{index}")
+
+    #         land_ownership_type = (
+    #             request.env["ir.model.fields.selection"]
+    #             .sudo()
+    #             .search([("id", "=", ownership_type)])
+    #             .value
+    #         )
+
+    #         land_info_dict = {
+    #             "ownership_type": land_ownership_type,
+    #             "total_land_area": land_area,
+    #             "land_id": land_id,
+    #         }
+
+    #         # Check if the certificate is updated (new upload)
+    #         land_certificate_key = f"land_certificate_{index}"
+    #         if kw.get(land_certificate_key) and kw.get(land_certificate_key).read():
+    #             # New certificate uploaded, handle it as before
+    #             land_certificate = kw.get(land_certificate_key)
+    #             binary_content = base64.b64encode(land_certificate.read()).decode("utf-8")
+    #             storage_file = (
+    #                 request.env["storage.file"]
+    #                 .sudo()
+    #                 .create(
+    #                     {
+    #                         "backend_id": backend_id,
+    #                         "name": land_certificate.filename,
+    #                         "data": binary_content,
+    #                         "tags_ids": [(4, doc_tag.id)],
+    #                     }
+    #                 )
+    #             )
+    #             land_info_dict["land_certificate"] = storage_file.id
+
+
+    #         else:
+    #             if index in existing_certificates:
+    #                 land_info_dict["land_certificate"] = existing_certificates[index].land_certificate.id
+
+    #         # Append the land info dict to the data list
+    #         land_info_data.append((0, 0, land_info_dict))
+            
+            
+    #     _logger.info(land_info_data)
+    #     return land_info_data
+
+
+
+
+    # def get_land_info_data(self, kw, backend_id):
+    #     land_info_data = []
+    #     land_indices = set()
+        
+    #     _logger.info("The KW")
+    #     _logger.info(kw)
+
+    #     valid_keys = [key for key in kw.keys() if "{9999}" not in key]
+    #     for key in valid_keys:
+    #         if key.startswith("land_ownership_type_"):
+    #             try:
+    #                 land_index = int(key.split("_")[-1])
+    #                 land_indices.add(land_index)
+    #             except ValueError:
+    #                 continue
+
+    #     doc_tag = request.env["g2p.document.tag"].sudo().get_tag_by_name("Land Certificate")
+    #     if not doc_tag:
+    #         doc_tag = request.env["g2p.document.tag"].sudo().create({"name": "Land Certificate"})
+
+    #     existing_certificates = {}  # Dictionary to hold existing certificates by index
+
+    #     # Retrieve existing land information for the current beneficiary
+    #     for index in land_indices:
+    #         existing_land_info = self._get_existing_land_info(index)  # Implement this method to fetch existing data
+    #         if existing_land_info:
+    #             existing_certificates[index] = existing_land_info
+
+    #     for index in land_indices:
+    #         ownership_type = kw.get(f"land_ownership_type_{index}")
+    #         if ownership_type == "":
+    #             continue
+
+    #         land_id = kw.get(f"land_id{index}")
+    #         land_area = kw.get(f"total_land_area{index}")
+
+    #         land_ownership_type = (
+    #             request.env["ir.model.fields.selection"].sudo().search([("id", "=", ownership_type)]).value
+    #         )
+
+    #         land_info_dict = {
+    #             "ownership_type": land_ownership_type,
+    #             "total_land_area": land_area,
+    #             "land_id": land_id,
+    #         }
+
+    #         # Check if the certificate is updated
+    #         land_certificate_key = f"land_certificate_{index}"
+    #         updated_certificate_key = f"updated_certificate_{index}"
+    #         # updated_value = kw.get(updated_certificate_key)
+
+    #         if kw.get(land_certificate_key) and kw.get(land_certificate_key).read():
+    #             # New certificate uploaded
+    #             land_certificate = kw.get(land_certificate_key)
+    #             binary_content = base64.b64encode(land_certificate.read()).decode("utf-8")
+    #             storage_file = (
+    #                 request.env["storage.file"]
+    #                 .sudo()
+    #                 .create(
+    #                     {
+    #                         "backend_id": backend_id,
+    #                         "name": land_certificate.filename,
+    #                         "data": binary_content,
+    #                         "tags_ids": [(4, doc_tag.id)],
+    #                     }
+    #                 )
+    #             )
+    #             land_info_dict["land_certificate"] = storage_file.id
+    #             # Set the hidden input value to false since the certificate is updated
+    #             # land_info_dict["updated"] = False
+    #         else:
+    #             # If not updated, keep the existing certificate
+    #             if index in existing_certificates:
+    #                 land_info_dict["land_certificate"] = existing_certificates[index].land_certificate.id
+    #                 # Set the hidden input value to the land ID since it is not updated
+    #                 # land_info_dict["updated"] = land_id
+
+    #         # Append the land info dict to the data list
+    #         land_info_data.append((0, 0, land_info_dict))
+
+    #     return land_info_data
+
+
+
+    # def get_land_info_data(self, kw, backend_id):
+        
+    #     _logger.info(kw)
+    #     land_info_data = []
+    #     land_indices = set()
+
+    #     valid_keys = [key for key in kw.keys() if "{9999}" not in key]
+    #     for key in valid_keys:
+    #         if key.startswith("land_ownership_type_"):
+    #             try:
+    #                 land_index = int(key.split("_")[-1])
+    #                 land_indices.add(land_index)
+    #             except ValueError:
+    #                 continue
+
+    #     doc_tag = request.env["g2p.document.tag"].sudo().get_tag_by_name("Land Certificate")
+    #     if not doc_tag:
+    #         doc_tag = request.env["g2p.document.tag"].sudo().create({"name": "Land Certificate"})
+
+
+    #     existing_certificates = {}  # Dictionary to hold existing certificates by index
+
+
+    #     # Retrieve existing land information for the current beneficiary
+    #     for index in land_indices:
+    #         existing_land_info = self._get_existing_land_info(index)  # Implement this method to fetch existing data
+    #         if existing_land_info:
+    #             existing_certificates[index] = existing_land_info
+
+    #     for index in land_indices:
+    #         ownership_type = kw.get(f"land_ownership_type_{index}")
+    #         if ownership_type == "":
+    #             continue
+
+    #         land_id = kw.get(f"land_id{index}")
+    #         land_area = kw.get(f"total_land_area{index}")
+
+    #         land_ownership_type = (
+    #             request.env["ir.model.fields.selection"].sudo().search([("id", "=", ownership_type)]).value
+    #         )
+
+    #         land_info_dict = {
+    #             "ownership_type": land_ownership_type,
+    #             "total_land_area": land_area,
+    #             "land_id": land_id,
+    #         }
+    #          # lnd_idx = kw.get(f"land_certificate_{index}")
+
+    #         existing_certificate_id = kw.get(f"land_certificate_{index}")
+            
+    #         # Check if the certificate is updated
+            
+    #         land_certificate_key = f"land_certificate_{index}"
+    #         if kw.get(land_certificate_key) and kw.get(land_certificate_key).read():
+    #             land_certificate = kw.get(land_certificate_key)
+    #             binary_content = base64.b64encode(land_certificate.read()).decode("utf-8")
+
+    #             storage_file = (
+    #                 request.env["storage.file"]
+    #                 .sudo()
+    #                 .create(
+    #                     {
+    #                         "backend_id": backend_id,
+    #                         "name": existing_certificate_id.filename,
+    #                         "data": binary_content,
+    #                         "tags_ids": [(4, doc_tag.id)],
+    #                     }
+    #                 )
+    #             )
+    #             land_info_dict["land_certificate"] = storage_file.id
+
+    #         else:
+    #             # If not updated, keep the existing certificate
+    #             if index in existing_certificates:
+    #                 land_info_dict["land_certificate"] = existing_certificates[index].land_certificate.id
+
+    #         # Append the land info dict to the data list
+
+    #         land_info_data.append((0, 0, land_info_dict))
+
+    #     return land_info_data
 
     def _get_existing_land_info(self, index):
         # This method should retrieve existing land information from the database
@@ -2233,6 +2679,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             crop_id = kw.get(f"crops_{index}")
 
             crop_planted_date_id = kw.get(f"crop_planted_date{index}")
+            print("planted date id", crop_planted_date_id)
 
             if crop_id == "":
                 continue
@@ -2240,6 +2687,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 continue
 
             crop_info_data.append((0, 0, {"crop": crop_id, "collected_gc": crop_planted_date_id}))
+
+        print("crop_info is",crop_info_data)
 
         return crop_info_data
 
@@ -3027,14 +3476,15 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     def _prepare_national_id(self, kw, vals):
         has_national_id = self._get_selection_value("ir.model.fields.selection", kw.get("hasNationalId"))
         vals["has_national_id"] = has_national_id
-
+        selected_id = kw.get("selectedId")
+        selected_id = selected_id.replace(" ", "")
         if has_national_id == "yes":
             id_type = request.env["g2p.id.type"].sudo().search([("name", "=", "UID")], limit=1)
-            vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": kw.get("selectedId"), "status":"valid"})]
+            vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": selected_id, "status":"valid"})]
 
         elif has_national_id == "no":
             id_type = request.env["g2p.id.type"].sudo().search([("name", "=", "RID")], limit=1)
-            vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": kw.get("selectedId"), "status":"valid"})]
+            vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": selected_id, "status":"valid"})]
 
     def _prepare_socioeconomic_data(self, kw, vals):
         fields = {

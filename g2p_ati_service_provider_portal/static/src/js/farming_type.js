@@ -52,7 +52,6 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
             }
         });
 
-
         if (fromGroup) {
             landNext.setAttribute(
                 "onclick",
@@ -95,7 +94,6 @@ function checkFarmingType(farmingTypeSelection, fromGroup) {
                 validateMultiSelect(element);
             }
         });
-
         
       
 
