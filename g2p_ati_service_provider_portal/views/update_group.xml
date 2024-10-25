@@ -43,7 +43,7 @@
                                 <div class="container-fluid">
                                     <div class="rounded-card d-flex flex-column flex-md-row">
                                         <div class="sidebar">
-                                            <ul class="nav d-flex flex-row flex-md-column justify-content-between">
+                                            <ul class="nav d-flex flex-row flex-md-column justify-content-center">
                                                 <li class="nav-item">
                                                     <a
                                                         id="location-details-link"
