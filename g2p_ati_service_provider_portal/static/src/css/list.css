@@ -83,7 +83,6 @@
 }
 
 .tables-values-container table {
-    width: auto !important;
     table-layout: fixed;
     border-collapse: collapse;
 }

@@ -48,9 +48,10 @@ class ResPartner(models.Model):
         user = self.env.user
         for record in self:
             if self.env.user.has_group('base.group_portal'):
-                if record.edit_count >= no_of_edits.edit_amount - 1:
+                if record.edit_count >= no_of_edits.edit_amount + 1:
                     vals["edit_state"] = "locked"
                 vals["edit_count"] = record.edit_count + 1
+                print(vals["edit_count"])
 
         if self.env.user.has_group('base.group_portal') and record.edit_state == "locked" :
             if 'given_name' in vals :
@@ -126,6 +127,7 @@ class ResPartnerChangeRequest(models.Model):
     def create(self, vals):
         # Create the change request record
         change_request = super().create(vals)
+        print("showing")
 
         # Find the group by external ID (replace with your actual group ID)
         group = self.env.ref("g2p_ati.group_data_validator")  # Replace with the actual module and group name
@@ -144,7 +146,7 @@ class ResPartnerChangeRequest(models.Model):
                         "res_id": change_request.id,  # The record ID of the res.partner.change.request
                         "user_id": user.id,
                         "date_deadline": fields.Date.context_today(self),  # Deadline in 3 days
-                        "summary": "New Partner Change Request",
+                        "summary": "New Update Request",
                         "note": "A new request has been created. Please review and approve it.",
                     }
                 )

@@ -29,6 +29,7 @@ class RequestWizard(models.TransientModel):
                 {
                     "reason": self.reason,
                     "record_id": record.id,
+                    "enumerator_id": enumerators.id,
                     "requester_id": self.env.user.id,
                     "status": "pending",
                     "type": "edit",

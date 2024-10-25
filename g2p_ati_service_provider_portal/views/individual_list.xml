@@ -222,6 +222,7 @@
                                                             string="Update"
                                                             type="object"
                                                             class="view-button2"
+                                                            t-att-disabled="group['state'] == 'update_requested'"
                                                         >
                                                         Update
                                                     </button>

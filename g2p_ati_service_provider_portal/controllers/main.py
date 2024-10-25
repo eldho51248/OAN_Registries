@@ -49,9 +49,9 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
     def portal_update_suggests(self, **kwargs):
         user_id = request.env.user.id
         updte_suggests = (
-            request.env["request"].sudo().search([("create_uid", "=", user_id)], order="create_date desc")
+            request.env["request"].sudo().search([("enumerator_id", "=", user_id)], order="create_date desc")
         )
-
+        print(updte_suggests)
         return request.render(
             "g2p_ati_service_provider_portal.ati_update_suggests_template",
             {
@@ -63,7 +63,7 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
     def get_notifications(self, **kwargs):
         user_id = request.env.user.id
         notifications = (
-            request.env["request"].sudo().search([("seen", "=", False), ("create_uid", "=", user_id)])
+            request.env["request"].sudo().search([("seen", "=", False), ("enumerator_id", "=", user_id)])
         )
 
         notifications_data = []
@@ -86,7 +86,7 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
             request.env["request"]
             .sudo()
             .search_count(
-                [("seen", "=", False), ("status", "=", "newSuggestion"), ("create_uid", "=", user_id)]
+                [("seen", "=", False), ("status", "=", "newSuggestion"), ("enumerator_id", "=", user_id)]
             )
         )
         return json.dumps([{"count": notification_count}])
@@ -115,7 +115,7 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
     def set_all_notifications_seen(self, **kwargs):
         user_id = request.env.user.id
         notifications = (
-            request.env["request"].sudo().search([("seen", "=", False), ("create_uid", "=", user_id)])
+            request.env["request"].sudo().search([("seen", "=", False), ("enumerator_id", "=", user_id)])
         )
 
         for notif in notifications:
@@ -127,7 +127,7 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
     def view_all_notifications(self, **kwargs):
         user_id = request.env.user.id
         notifications = (
-            request.env["request"].sudo().search([("seen", "=", False), ("create_uid", "=", user_id)])
+            request.env["request"].sudo().search([("seen", "=", False), ("enumerator_id", "=", user_id)])
         )
 
         for notif in notifications:
@@ -3476,6 +3476,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     def _prepare_national_id(self, kw, vals):
         has_national_id = self._get_selection_value("ir.model.fields.selection", kw.get("hasNationalId"))
         vals["has_national_id"] = has_national_id
+
         selected_id = kw.get("selectedId")
         selected_id = selected_id.replace(" ", "")
         if has_national_id == "yes":
