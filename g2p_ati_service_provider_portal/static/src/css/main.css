@@ -57,7 +57,7 @@ header#top .header-container {
 
 main {
     width: 100%;
-    margin: auto;
+    /* margin: auto; */
 }
 
 .container-adjuster {
