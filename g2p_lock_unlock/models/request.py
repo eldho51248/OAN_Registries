@@ -9,6 +9,7 @@ class Request(models.TransientModel):
     reason = fields.Text(string="Reason Description", required=True)
     record_id = fields.Many2one("res.partner", required=True)
     requester_id = fields.Many2one("res.users", string="Requester", required=True)
+    enumerator_id = fields.Many2one("res.users", string="Enumerator", required=True)
     status = fields.Selection(
         [("newSuggestion", "New Suggestion"), ("updated", "Updated")], default="newSuggestion"
     )
