@@ -43,7 +43,7 @@
                                 <div class="container-fluid">
                                     <div class="rounded-card d-flex flex-column flex-md-row">
                                         <div class="sidebar">
-                                            <ul class="nav d-flex flex-row flex-md-column justify-content-between">
+                                            <ul class="nav d-flex flex-row flex-md-column justify-content-center">
                                                 <li class="nav-item">
                                                     <a
                                                         id="location-details-link"
@@ -599,7 +599,7 @@
                                                                         </span>
                                                                     </div>
                                                                 </div>
-                                                                <div class="section-content">
+                                                                <div class="section-contentm">
 
 
                                                                     <div class="row">
@@ -1540,7 +1540,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div
-                                                                    class="section-footer d-flex justify-content-end"
+                                                                    class="section-footer1 d-flex justify-content-end"
                                                                 >
                                                                     <button
                                                                         type="button"
@@ -1735,7 +1735,7 @@
                                                                 >
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-outline-secondary"
+                                                                        class="btn btn-sm btn-outline-secondary"
                                                                         onclick="showModalSection('individual-details', 'socio-economic-data',  'prev')"
                                                                         id="some-button-or-link"
                                                                     ><span>
@@ -2192,7 +2192,7 @@
                                                                 >
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-outline-secondary"
+                                                                        class="btn btn-sm btn-outline-secondary"
                                                                         onclick="showModalSection('socio-economic-data', 'membership-details',  'prev')"
                                                                         id="some-button-or-link"
                                                                     ><span>
@@ -2681,7 +2681,7 @@
                                                                 >
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-outline-secondary"
+                                                                        class="btn btn-sm btn-outline-secondary"
                                                                         onclick="showModalSection('membership-details', 'land-information',  'prev')"
                                                                         id="land-previous"
                                                                     ><span>
@@ -3046,7 +3046,7 @@
                                                                 >
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-outline-secondary"
+                                                                        class="btn btn-sm btn-outline-secondary"
                                                                         onclick="showModalSection('land-information', 'crop-information',  'prev')"
                                                                         id="crop-previous"
                                                                     ><span>
@@ -3434,7 +3434,7 @@
                                                                 >
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-outline-secondary"
+                                                                        class="btn btn-sm btn-outline-secondary"
                                                                         onclick="showModalSection('crop-information', 'livestock-information',  'prev')"
                                                                         id="livestock-previous"
                                                                     ><span>
@@ -3656,7 +3656,7 @@
                                                                 >
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-outline-secondary"
+                                                                        class="btn btn-sm btn-outline-secondary"
                                                                         onclick="showModalSection('livestock-information', 'agricultural-input',  'prev')"
                                                                         id="agricultural-previous"
                                                                     >
@@ -3918,14 +3918,14 @@
                                                                 >
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-outline-secondary"
+                                                                        class="btn btn-sm btn-outline-secondary"
                                                                         onclick="showModalSection('agricultural-input', 'access-to-resource',  'prev')"
                                                                         id="resource-previous"
                                                                     ><span>
                                                                         &#x276E;</span> PREVIOUS </button>
                                                                     <button
                                                                         type="button"
-                                                                        class="btn btn-primary"
+                                                                        class="btn btn-sm  btn-primary"
                                                                         id="member_submit"
                                                                     >
                                                                         ADD
@@ -4303,14 +4303,14 @@
                                                         <div class="modal-footer">
                                                             <button
                                                                 type="button"
-                                                                class="btn btn-secondary"
+                                                                class="btn btn-sm btn-secondary"
                                                                 data-bs-dismiss="modal"
                                                             >Close</button>
                                                             <button
                                                                 id="update-member-btn"
                                                                 t-attf-store="{{ indi }}"
                                                                 type="button"
-                                                                class="btn btn-primary"
+                                                                class="btn btn-sm btn-primary"
                                                             >Update</button>
                                                         </div>
                                                     </div>
@@ -4539,7 +4539,7 @@
                                                         <div class="card-footer" style="text-align:right">
                                                             <button
                                                                 type="button"
-                                                                class="btn btn-outline-primary modal-cancel-button"
+                                                                class="btn btn-sm btn-outline-primary modal-cancel-button"
                                                                 data-bs-dismiss="modal"
                                                             >
                                                                 Close
@@ -4547,7 +4547,7 @@
                                                             <button
                                                                 id="family_member_submit"
                                                                 type="button"
-                                                                class="btn btn-primary create-new"
+                                                                class="btn btn-sm btn-primary create-new"
                                                             >
                                                                 Add
                                                             </button>

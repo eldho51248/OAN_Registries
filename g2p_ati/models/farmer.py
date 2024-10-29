@@ -202,6 +202,7 @@ class G2PFarmer(models.Model):
         self.role_in_farmer_cluster = False
         self.primary_commodity = False
 
+    
     @api.onchange("region")
     def _onchange_region(self):
         self.zone = False
