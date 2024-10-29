@@ -49,9 +49,8 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
     def portal_update_suggests(self, **kwargs):
         user_id = request.env.user.id
         updte_suggests = (
-            request.env["request"].sudo().search([("create_uid", "=", user_id)], order="create_date desc")
+            request.env["request"].sudo().search([("enumerator_id", "=", user_id)], order="create_date desc")
         )
-
         return request.render(
             "g2p_ati_service_provider_portal.ati_update_suggests_template",
             {
@@ -63,7 +62,7 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
     def get_notifications(self, **kwargs):
         user_id = request.env.user.id
         notifications = (
-            request.env["request"].sudo().search([("seen", "=", False), ("create_uid", "=", user_id)])
+            request.env["request"].sudo().search([("seen", "=", False), ("enumerator_id", "=", user_id)])
         )
 
         notifications_data = []
@@ -86,7 +85,7 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
             request.env["request"]
             .sudo()
             .search_count(
-                [("seen", "=", False), ("status", "=", "newSuggestion"), ("create_uid", "=", user_id)]
+                [("seen", "=", False), ("status", "=", "newSuggestion"), ("enumerator_id", "=", user_id)]
             )
         )
         return json.dumps([{"count": notification_count}])
@@ -115,7 +114,7 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
     def set_all_notifications_seen(self, **kwargs):
         user_id = request.env.user.id
         notifications = (
-            request.env["request"].sudo().search([("seen", "=", False), ("create_uid", "=", user_id)])
+            request.env["request"].sudo().search([("seen", "=", False), ("enumerator_id", "=", user_id)])
         )
 
         for notif in notifications:
@@ -127,7 +126,7 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
     def view_all_notifications(self, **kwargs):
         user_id = request.env.user.id
         notifications = (
-            request.env["request"].sudo().search([("seen", "=", False), ("create_uid", "=", user_id)])
+            request.env["request"].sudo().search([("seen", "=", False), ("enumerator_id", "=", user_id)])
         )
 
         for notif in notifications:
@@ -1349,7 +1348,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     )
     def indvidual_update(self, _id):
         try:
-           
             beneficiary = request.env["res.partner"].sudo().browse(_id)
             if not beneficiary:
                 return request.render(
@@ -1680,7 +1678,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         crop_info_data = []
         serialized_crop_info_data = []
         for index, crop_info in enumerate(beneficiary.crop_information_ids, start=1):
-          
             crop_info_data.append(
                 {
                     "index": index,
@@ -1833,7 +1830,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
            
 
             rid_input = kw.get("rid")
-            
             
            
             for reg_id in member.reg_ids:
@@ -2679,7 +2675,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             crop_id = kw.get(f"crops_{index}")
 
             crop_planted_date_id = kw.get(f"crop_planted_date{index}")
-           
 
             if crop_id == "":
                 continue
@@ -2688,7 +2683,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             crop_info_data.append((0, 0, {"crop": crop_id, "collected_gc": crop_planted_date_id}))
 
-       
 
         return crop_info_data
 
@@ -3477,13 +3471,15 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         has_national_id = self._get_selection_value("ir.model.fields.selection", kw.get("hasNationalId"))
         vals["has_national_id"] = has_national_id
 
+        selected_id = kw.get("selectedId")
+        selected_id = selected_id.replace(" ", "")
         if has_national_id == "yes":
             id_type = request.env["g2p.id.type"].sudo().search([("name", "=", "UID")], limit=1)
-            vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": kw.get("selectedId"), "status":"valid"})]
+            vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": selected_id, "status":"valid"})]
 
         elif has_national_id == "no":
             id_type = request.env["g2p.id.type"].sudo().search([("name", "=", "RID")], limit=1)
-            vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": kw.get("selectedId"), "status":"valid"})]
+            vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": selected_id, "status":"valid"})]
 
     def _prepare_socioeconomic_data(self, kw, vals):
         fields = {

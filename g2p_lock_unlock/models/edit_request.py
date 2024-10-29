@@ -48,7 +48,7 @@ class ResPartner(models.Model):
         user = self.env.user
         for record in self:
             if self.env.user.has_group('base.group_portal'):
-                if record.edit_count >= no_of_edits.edit_amount - 1:
+                if record.edit_count >= no_of_edits.edit_amount + 1:
                     vals["edit_state"] = "locked"
                 vals["edit_count"] = record.edit_count + 1
 
@@ -144,7 +144,7 @@ class ResPartnerChangeRequest(models.Model):
                         "res_id": change_request.id,  # The record ID of the res.partner.change.request
                         "user_id": user.id,
                         "date_deadline": fields.Date.context_today(self),  # Deadline in 3 days
-                        "summary": "New Partner Change Request",
+                        "summary": "New Update Request",
                         "note": "A new request has been created. Please review and approve it.",
                     }
                 )
