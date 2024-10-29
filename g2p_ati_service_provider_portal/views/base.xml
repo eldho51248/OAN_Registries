@@ -18,6 +18,9 @@
 
 
 
+
+
+
 <xpath expr="//div[hasclass('nav')]/a" position="attributes">
     <attribute name="class">px-5 px-xl-0 mx-auto mx-md-0</attribute>
 </xpath>
@@ -60,7 +63,7 @@
 
 
 
-            <div class="py-4" style="margin: 0 auto !importnat;">
+            <div class="py-4" style="margin: 0 auto !important;">
 
               <img src="" class="popup_img" style="width: 15%; height: 15%;"/>
 

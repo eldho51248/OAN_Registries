@@ -1852,6 +1852,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
                
                 if existing_rid:
+                   
                     try:
                         
                         check_rid = request.env['g2p.reg.id'].sudo().search([('id', '=', existing_rid.id)], limit=1)
@@ -1865,7 +1866,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                         else:
                             _logger.info(f"RID with ID {existing_rid.id} not found in the database. Skipping update.")
                     except Exception as e:
-                        print(f"Error while checking existing RID: {e}")
+                         _logger.info(f"Error while checking existing RID: {e}")
                 has_national_id = "yes"
 
             

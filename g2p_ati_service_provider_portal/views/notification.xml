@@ -20,7 +20,7 @@
                         />
                     </button>
 
-                    <div class="notification_dd" id="notification_dd" style="display: none;">
+                    <div class="notification_dd" id="notification_dd" >
                         <ul class="notification_ul">
                             <h5 class="notification_header_new">Notifications</h5>
                             <p class="notification_number" />

@@ -201,6 +201,15 @@ class ResPartnerChangeRequest(models.Model):
         # Mark the activities as done or unlink them (remove them)
         activities.action_done()
 
+        edit_suggestions = self.env["request"].search(
+            [("record_id", "=", self.partner_id.id)
+            ]
+        )
+        for suggests in edit_suggestions:
+            suggests.status = "updated"
+
+
+
     def reject_changes(self):
         for request in self:
             try:
