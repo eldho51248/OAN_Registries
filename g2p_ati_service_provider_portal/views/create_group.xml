@@ -1529,10 +1529,10 @@
                                                             >
                                                                 <div class="section-content">
 
-                                                                    <div class="">
+                                                                    <div class="row">
                                                                         <div
                                                                             class="container-fluid heading-header"
-                                                                            style="background-color: #d6eae0; width: 95%;"
+                                                                            style="background-color: #d6eae0; width: 98%;"
                                                                         >
                                                                             <span
                                                                                 class="heading-text"
@@ -1540,8 +1540,10 @@
                                                                             >
                                                                                 Socio Economic Data
                                                                             </span>
+                                                                          
                                                                         </div>
                                                                     </div>
+                                                                    
 
                                                                     <div class="row">
 
@@ -1735,16 +1737,19 @@
                                                                 style="display: none;"
                                                             >
                                                                 <div class="section-content">
-                                                                    <div
-                                                                        class="container-fluid heading-header"
-                                                                        style="background-color: #d6eae0; width: 95%;"
-                                                                    >
-                                                                        <span
-                                                                            class="heading-text"
-                                                                            style="color: #0e802a;"
+                                                                    <div class="row">
+                                                                        <div
+                                                                            class="container-fluid heading-header"
+                                                                            style="background-color: #d6eae0; width: 98%;"
                                                                         >
-                                                                            Membership Details
-                                                                        </span>
+                                                                            <span
+                                                                                class="heading-text"
+                                                                                style="color: #0e802a;"
+                                                                            >
+                                                                                Membership Details
+                                                                            </span>
+                                                                          
+                                                                        </div>
                                                                     </div>
                                                                     <div class="row">
                                                                         <div class="col-lg-6">
@@ -2198,10 +2203,10 @@
                                                                 style="display: none;"
                                                             >
                                                                 <div class="section-content">
-                                                                    <div class="">
+                                                                    <div class="row">
                                                                         <div
-                                                                            class="col-lg-11 container-fluid heading-header"
-                                                                            style="background-color: #d6eae0;"
+                                                                            class="container-fluid heading-header"
+                                                                            style="background-color: #d6eae0; width: 98%;"
                                                                         >
                                                                             <span
                                                                                 class="heading-text"
@@ -2209,6 +2214,7 @@
                                                                             >
                                                                                 Land Information
                                                                             </span>
+                                                                          
                                                                         </div>
                                                                     </div>
                                                                     <div id="section-content-land">
@@ -2712,10 +2718,10 @@
                                                                 style="display: none;"
                                                             >
                                                                 <div class="section-content">
-                                                                    <div class="">
+                                                                    <div class="row">
                                                                         <div
-                                                                            class="col-lg-11 container-fluid heading-header"
-                                                                            style="background-color: #d6eae0;"
+                                                                            class="container-fluid heading-header"
+                                                                            style="background-color: #d6eae0; width: 98%;"
                                                                         >
                                                                             <span
                                                                                 class="heading-text"
@@ -2723,8 +2729,10 @@
                                                                             >
                                                                                 Crop Information
                                                                             </span>
+                                                                          
                                                                         </div>
-                                                                        <div class="col-6">
+                                                                    </div>
+                                                                        <div class="row">                                                                        <div class="col-6">
                                                                             <div class="s_website_form_field">
                                                                                 <label
                                                                                     class="s_website_form_label"
@@ -3080,19 +3088,21 @@
                                                             >
 
                                                                 <div class="section-content">
-                                                                    <div class="">
+                                                                    <div class="row">
                                                                         <div
-                                                                            class="col-lg-11 container-fluid heading-header"
-                                                                            style="background-color: #d6eae0;"
+                                                                            class="container-fluid heading-header"
+                                                                            style="background-color: #d6eae0; width: 98%;"
                                                                         >
                                                                             <span
                                                                                 class="heading-text"
                                                                                 style="color: #0e802a;"
                                                                             >
-                                                                                Livestock
-                                                                                Information
+                                                                                Livestock Information
                                                                             </span>
+                                                                          
                                                                         </div>
+                                                                    </div>
+                                                                        <div class="row">
                                                                         <div class="col-lg-6">
                                                                             <div class="s_website_form_field">
                                                                                 <label
@@ -3466,10 +3476,10 @@
                                                             >
 
                                                                 <div class="section-content">
-                                                                    <div class="">
+                                                                    <div class="row">
                                                                         <div
                                                                             class="container-fluid heading-header"
-                                                                            style="background-color: #d6eae0; width: 95%;"
+                                                                            style="background-color: #d6eae0; width: 98%;"
                                                                         >
                                                                             <span
                                                                                 class="heading-text"
@@ -3477,6 +3487,7 @@
                                                                             >
                                                                                 Agricultural Input
                                                                             </span>
+                                                                          
                                                                         </div>
                                                                     </div>
 
@@ -3690,9 +3701,10 @@
                                                                 style="display: none;"
                                                             >
                                                                 <div class="section-content">
+                                                                    <div class="row">
                                                                         <div
                                                                             class="container-fluid heading-header"
-                                                                            style="background-color: #d6eae0; width: 95%;"
+                                                                            style="background-color: #d6eae0; width: 98%;"
                                                                         >
                                                                             <span
                                                                                 class="heading-text"
@@ -3700,7 +3712,10 @@
                                                                             >
                                                                                 Access To Resource
                                                                             </span>
+                                                                          
                                                                         </div>
+                                                                    </div>
+                                                                        <div class="row">
                                                                         <div class="col-lg-6">
                                                                             <div class="s_website_form_field">
                                                                                 <label
@@ -3748,6 +3763,7 @@
 
                                                                             </div>
                                                                         </div>
+
                                                                         <div
                                                                             class="col-lg-6"
                                                                             id="machinery_div"
@@ -3804,17 +3820,24 @@
                                                                                 </select>
                                                                             </div>
                                                                         </div>
-                                                                    <div
-                                                                        class="container-fluid heading-header"
-                                                                        style="background-color: #d6eae0; width: 95%;"
-                                                                    >
-                                                                        <span
-                                                                            class="heading-text"
-                                                                            style="color: #0e802a;"
-                                                                        >
-                                                                            Financial Services
-                                                                        </span>
                                                                     </div>
+                                                                    
+
+                                                                    <div class="row">
+                                                                        <div
+                                                                            class="container-fluid heading-header"
+                                                                            style="background-color: #d6eae0; width: 98%;"
+                                                                        >
+                                                                            <span
+                                                                                class="heading-text"
+                                                                                style="color: #0e802a;"
+                                                                            >
+                                                                                Financial Services
+                                                                            </span>
+                                                                          
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
                                                                         <div class="col-lg-6">
                                                                             <div class="s_website_form_field">
                                                                                 <label
@@ -3919,6 +3942,8 @@
                                                                                 </select>
                                                                             </div>
                                                                         </div>
+
+                                                                    </div>
 
                                                                 </div>
                                                                 <div

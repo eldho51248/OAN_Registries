@@ -20,7 +20,7 @@
                         </div>
 
 
-                        <div>
+                        <!-- <div>
                             <a t-attf-href="/serviceprovider/group/create/" style="float:right;">
                                 <button type="button" class="btn btn-primary create-new"> Create New <span
                                         class="mx-1"
@@ -28,7 +28,7 @@
                                     <span class="fa fa-plus" />
                                 </button>
                             </a>
-                        </div>
+                        </div> -->
 
                     </div>
 
