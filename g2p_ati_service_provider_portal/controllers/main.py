@@ -51,7 +51,6 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
         updte_suggests = (
             request.env["request"].sudo().search([("enumerator_id", "=", user_id)], order="create_date desc")
         )
-        print(updte_suggests)
         return request.render(
             "g2p_ati_service_provider_portal.ati_update_suggests_template",
             {
@@ -1349,7 +1348,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     )
     def indvidual_update(self, _id):
         try:
-            print("updateeeeee")
             beneficiary = request.env["res.partner"].sudo().browse(_id)
             if not beneficiary:
                 return request.render(
@@ -1680,7 +1678,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         crop_info_data = []
         serialized_crop_info_data = []
         for index, crop_info in enumerate(beneficiary.crop_information_ids, start=1):
-            print("crop planted date",crop_info.collected_gc)
             crop_info_data.append(
                 {
                     "index": index,
@@ -1833,7 +1830,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
            
 
             rid_input = kw.get("rid")
-            print("rid input",rid_input)
             
            
             for reg_id in member.reg_ids:
@@ -1856,7 +1852,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
                
                 if existing_rid:
-                    print("existing")
                     try:
                         
                         check_rid = request.env['g2p.reg.id'].sudo().search([('id', '=', existing_rid.id)], limit=1)
@@ -1868,7 +1863,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                                 "status": existing_rid.status          
                             }))
                         else:
-                            print(f"RID with ID {existing_rid.id} not found in the database. Skipping update.")
+                            _logger.info(f"RID with ID {existing_rid.id} not found in the database. Skipping update.")
                     except Exception as e:
                         print(f"Error while checking existing RID: {e}")
                 has_national_id = "yes"
@@ -2679,7 +2674,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             crop_id = kw.get(f"crops_{index}")
 
             crop_planted_date_id = kw.get(f"crop_planted_date{index}")
-            print("planted date id", crop_planted_date_id)
 
             if crop_id == "":
                 continue
@@ -2688,7 +2682,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             crop_info_data.append((0, 0, {"crop": crop_id, "collected_gc": crop_planted_date_id}))
 
-        print("crop_info is",crop_info_data)
 
         return crop_info_data
 
