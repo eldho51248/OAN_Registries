@@ -18,6 +18,8 @@ This repo contains Odoo modules used by OpenG2P for ATI.
 | [1.3.6](https://github.com/OpenG2P/openg2p-packaging/blob/main/packaging/packages/ati-social-registry/1.3.6.txt) | 20-Oct-2024   | Bug fixes in online registration portal. |
 | [1.3.7](https://github.com/OpenG2P/openg2p-packaging/blob/main/packaging/packages/ati-social-registry/1.3.7.txt) | 20-Oct-2024   | Bug fixes in online registration portal. | 
 | [1.3.8](https://github.com/OpenG2P/openg2p-packaging/blob/main/packaging/packages/ati-social-registry/1.3.8.txt) | 23-Oct-2024   | Bug fixes in online registration portal. | 
+| [1.3.9](https://github.com/OpenG2P/openg2p-packaging/blob/main/packaging/packages/ati-social-registry/1.3.9.txt) | 29-Oct-2024   | Bug fixes. | 
+| [1.3.10](https://github.com/OpenG2P/openg2p-packaging/blob/main/packaging/packages/ati-social-registry/1.3.10.txt) | 05-Nov-2024   | License update on service provider module. | 
 
 ## Licenses
 This repository is licensed under [LGPLv3](LICENSE).
