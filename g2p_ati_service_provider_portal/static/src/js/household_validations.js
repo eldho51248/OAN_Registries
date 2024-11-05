@@ -1,13 +1,8 @@
 $(document).ready(function () {
-   
-
-
     function expandSection(sectionId) {
         var consentSection = document.getElementById(sectionId);
         consentSection.classList.add("show");
     }
-
-
 
     window.customvalidateFormGroup = function (isCreateForm) {
         const locationDetailsSection = document.querySelector("#location-details");
@@ -84,7 +79,6 @@ function addFamilyMember() {
     }
 }
 
-
 // Function deleteMember(button) {
 //     const memberId = $(button).attr("store");
 //     var groupId = $("input[name='group_id']").val();
@@ -118,7 +112,6 @@ function addFamilyMember() {
 //         });
 //     }
 // }
-
 
 const farmerCount = 0;
 
@@ -159,7 +152,6 @@ function addFarmerMember() {
         console.log("Please fill all the required fields");
     }
 }
-
 
 $(document).on("click", "#hh_member_update", function () {
     var memberId = $(this).attr("store");
@@ -211,7 +203,6 @@ $(document).on("click", "#hh_member_update", function () {
 });
 
 $(document).on("click", "#update-member-btn", function () {
-
     var ele = document.getElementById("update-member-btn");
     var modal = $("#editFamilyMemberModal");
     var memberId = ele.getAttribute("store");
@@ -229,7 +220,6 @@ $(document).on("click", "#update-member-btn", function () {
         gender: modal.find("input[name='gender']:checked").val(),
         Relationship: relationship,
     };
-
 
     $.ajax({
         url: "/serviceprovider/family_member/update/submit/",
@@ -263,14 +253,14 @@ $(document).on("click", "#update-member-btn", function () {
 
                 $("#editFamilyMemberModal").modal("hide");
             } else {
-                showErrorModal("Failed to edit family member!")
+                showErrorModal("Failed to edit family member!");
                 console.error("Failed to edit family member");
             }
         },
 
         error: function (error) {
             console.error("Ajax request failed");
-            showErrorModal(error)
+            showErrorModal(error);
 
             console.error("Error:", error);
         },
@@ -278,33 +268,30 @@ $(document).on("click", "#update-member-btn", function () {
 });
 
 function showSuccessModal(message) {
-    const imgElement = document.getElementById('successModal').querySelector('.popup_img');
-    const h4Element = document.getElementById('successModal').querySelector('h4');
-    const msgElement = document.getElementById('successModal').querySelector('.popup_msg');
+    const imgElement = document.getElementById("successModal").querySelector(".popup_img");
+    const h4Element = document.getElementById("successModal").querySelector("h4");
+    const msgElement = document.getElementById("successModal").querySelector(".popup_msg");
 
     imgElement.src = "/g2p_ati_service_provider_portal/static/src/img/ok.png";
     h4Element.textContent = "Success!";
-    msgElement.textContent = message.replace(/^"|"$/g, '');
+    msgElement.textContent = message.replace(/^"|"$/g, "");
 
-    $('#successModal').modal('show');
-  }
+    $("#successModal").modal("show");
+}
 
 function showErrorModal(message) {
-    const imgElement = document.getElementById('successModal').querySelector('.popup_img');
-    const h4Element = document.getElementById('successModal').querySelector('h4');
-    const msgElement = document.getElementById('successModal').querySelector('.popup_msg');
+    const imgElement = document.getElementById("successModal").querySelector(".popup_img");
+    const h4Element = document.getElementById("successModal").querySelector("h4");
+    const msgElement = document.getElementById("successModal").querySelector(".popup_msg");
 
     imgElement.src = "/g2p_ati_service_provider_portal/static/src/img/no.png";
     h4Element.textContent = "Error";
-    msgElement.textContent = message.replace(/^"|"$/g, '');
+    msgElement.textContent = message.replace(/^"|"$/g, "");
 
-    $('#successModal').modal('show');
-  }
-
-
+    $("#successModal").modal("show");
+}
 
 $(document).on("click", "#family_member_submit", function () {
-
     $(this).prop("disabled", true);
 
     var group_id = $("input[name='group_id']").val();
@@ -330,7 +317,6 @@ $(document).on("click", "#family_member_submit", function () {
         },
         dataType: "json",
         success: function (response) {
-
             console.log("Response:", response);
 
             if (response.member_list) {
@@ -364,21 +350,19 @@ $(document).on("click", "#family_member_submit", function () {
                 // Hide the modal after successful submission
                 $("#familyMemberModal").modal("hide");
 
-                $("#family_member_submit").prop('disabled', false);
-                showSuccessModal("Family member added successfully!")
-
+                $("#family_member_submit").prop("disabled", false);
+                showSuccessModal("Family member added successfully!");
             } else {
                 console.error("Failed to add family member");
-                $("#family_member_submit").prop('disabled', false);
-                showErrorModal("Failed to add family member!")
-
+                $("#family_member_submit").prop("disabled", false);
+                showErrorModal("Failed to add family member!");
             }
         },
         error: function (error) {
             console.error("request failed");
             console.error("Error:", error);
-            $("#family_member_submit").prop('disabled', false);
-            showErrorModal("Request Failed")
+            $("#family_member_submit").prop("disabled", false);
+            showErrorModal("Request Failed");
         },
     });
 });

@@ -11,9 +11,12 @@
         <xpath expr="//div[hasclass('main-container')]" position="replace">
             <div style="padding-top: 15px !important; padding-bottom: 0px !important;" class="main-container">
                 <div class="">
-                    <div  style="max-width:1400px" class="form-template mx-auto">
+                    <div style="max-width:1400px" class="form-template mx-auto">
 <div class="top-content">
-    <h5 style="font: normal 600 18px / 22px Inter !important; height: auto !important;" class="all-title">Update Household</h5>
+    <h5
+                                style="font: normal 600 18px / 22px Inter !important; height: auto !important;"
+                                class="all-title"
+                            >Update Household</h5>
 
     <ol class="breadcrumb form-layout-breadcrumb d-flex flex-col flex-md-row">
         <li class="breadcrumb-item">
@@ -43,7 +46,9 @@
                                 <div class="container-fluid">
                                     <div class="rounded-card d-flex flex-column flex-md-row">
                                         <div class="sidebar">
-                                            <ul class="nav d-flex flex-row flex-md-column justify-content-center">
+                                            <ul
+                                                class="nav d-flex flex-row flex-md-column justify-content-center"
+                                            >
                                                 <li class="nav-item">
                                                     <a
                                                         id="location-details-link"
@@ -167,9 +172,7 @@
                                                 <div class="section-content">
                                                     <div class="row">
                                                         <div class="col-lg-5 left-margin-input">
-                                                            <div
-                                                                class="s_website_form_field lmargin-input"
-                                                            >
+                                                            <div class="s_website_form_field lmargin-input">
                                                                 <label class="s_website_form_label">
                                                                     <span
                                                                         class="s_website_form_label_content"
@@ -205,10 +208,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-5 left-margin-input">
-                                                            <div
-                                                                class="s_website_form_field lmargin-input"
-                                                                
-                                                            >
+                                                            <div class="s_website_form_field lmargin-input">
                                                                 <label class="s_website_form_label">
                                                                     <span
                                                                         class="s_website_form_label_content"
@@ -243,10 +243,7 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-lg-5">
-                                                            <div
-                                                                class="s_website_form_field lmargin-input"
-                                                                
-                                                            >
+                                                            <div class="s_website_form_field lmargin-input">
                                                                 <label class="s_website_form_label">
                                                                     <span
                                                                         class="s_website_form_label_content"
@@ -282,10 +279,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-5">
-                                                            <div
-                                                                class="s_website_form_field lmargin-input"
-                                                                
-                                                            >
+                                                            <div class="s_website_form_field lmargin-input">
                                                                 <label class="s_website_form_label">
                                                                     <span
                                                                         class="s_website_form_label_content"
@@ -588,13 +582,13 @@
                                                             >
                                                             <div class="row">
                                                                 <div
-                                                                    class="container-fluid heading-header"
-                                                                    style="background-color: #d6eae0; width: 95%;"
-                                                                >
-                                                                    <span
-                                                                        class="heading-text"
-                                                                        style="color: #0e802a;"
+                                                                        class="container-fluid heading-header"
+                                                                        style="background-color: #d6eae0; width: 95%;"
                                                                     >
+                                                                    <span
+                                                                            class="heading-text"
+                                                                            style="color: #0e802a;"
+                                                                        >
                                                                         Basic Details
                                                                     </span>
                                                                 </div>
@@ -605,9 +599,8 @@
                                                                     <div class="row">
                                                                         <div class="col-lg-4">
                                                                             <div
-
-
-                                                                                class="s_website_form_field ">
+                                                                                class="s_website_form_field "
+                                                                            >
 
 
                                                                                 <label
@@ -1577,7 +1570,7 @@
                                                                             >
                                                                                 Socio Economic Data
                                                                             </span>
-                                                                          
+
                                                                         </div>
                                                                     </div>
 
@@ -1782,7 +1775,7 @@
                                                                             >
                                                                                 Membership Details
                                                                             </span>
-                                                                          
+
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
@@ -2243,7 +2236,7 @@
                                                                             >
                                                                                 Land Information
                                                                             </span>
-                                                                          
+
                                                                         </div>
                                                                     </div>
                                                                     <div id="section-content-land">
@@ -2258,9 +2251,7 @@
                                                                                 id="land-section-repeat"
                                                                                 data-index="0"
                                                                             >
-                                                                                <div
-                                                                                    class="container-fluid"
-                                                                                >
+                                                                                <div class="container-fluid">
 
                                                                                     <div
                                                                                         class="row pt-3 pb-1"
@@ -2480,9 +2471,7 @@
                                                                                 id="land-section-repeat"
                                                                                 t-att-data-index="{9999}"
                                                                             >
-                                                                                <div
-                                                                                    class="container-fluid"
-                                                                                >
+                                                                                <div class="container-fluid">
 
                                                                                     <div
                                                                                         class="row pt-3 pb-1"
@@ -2732,11 +2721,11 @@
                                                                             >
                                                                                 Crop Information
                                                                             </span>
-                                                                          
+
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
-                                                                      
+
                                                                         <div class="col-6">
                                                                             <div class="s_website_form_field">
                                                                                 <label
@@ -2800,9 +2789,7 @@
                                                                                 id="crop-section-repeat"
                                                                                 data-index="0"
                                                                             >
-                                                                                <div
-                                                                                    class="container-fluid"
-                                                                                >
+                                                                                <div class="container-fluid">
 
                                                                                     <div
                                                                                         class="row pt-3 pb-1"
@@ -2931,9 +2918,7 @@
                                                                                 id="crop-section-repeat"
                                                                                 t-att-data-index="{9999}"
                                                                             >
-                                                                                <div
-                                                                                    class="container-fluid"
-                                                                                >
+                                                                                <div class="container-fluid">
 
                                                                                     <div
                                                                                         class="row pt-3 pb-1"
@@ -3105,11 +3090,11 @@
                                                                             >
                                                                                 Livestock Information
                                                                             </span>
-                                                                          
+
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
-                                                                      
+
                                                                         <div class="col-6">
                                                                             <div class="s_website_form_field">
                                                                                 <label
@@ -3175,9 +3160,7 @@
                                                                                 id="livestock-section-repeat"
                                                                                 data-index="0"
                                                                             >
-                                                                                <div
-                                                                                    class="container-fluid"
-                                                                                >
+                                                                                <div class="container-fluid">
 
                                                                                     <div
                                                                                         class="row pt-3 pb-1"
@@ -3494,7 +3477,7 @@
                                                                             >
                                                                                 Agricultural Input
                                                                             </span>
-                                                                          
+
                                                                         </div>
                                                                     </div>
 
@@ -3719,11 +3702,11 @@
                                                                             >
                                                                                 Access To Resource
                                                                             </span>
-                                                                          
+
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
-                                                                       
+
                                                                         <div class="col-lg-6">
                                                                             <div class="s_website_form_field">
                                                                                 <label
@@ -3747,7 +3730,6 @@
                                                                                 <select
                                                                                     class="form-select"
                                                                                     name="access_to_machinery"
-                                                                                   
                                                                                     onchange="validateElement(this)"
                                                                                     id="access-to-machinery-selection"
                                                                                 >
@@ -3838,7 +3820,7 @@
                                                                             >
                                                                                 Financial Services
                                                                             </span>
-                                                                          
+
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
@@ -4367,7 +4349,9 @@
                                                     role="document"
                                                 >
                                                     <div
-                                                        style="top: 50% !important" class="modal-content beneficiary-modal-content">
+                                                        style="top: 50% !important"
+                                                        class="modal-content beneficiary-modal-content"
+                                                    >
                                                         <div
                                                             class="card-header form-card-header"
                                                             style="margin:15px"

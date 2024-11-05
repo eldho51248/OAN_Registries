@@ -23,7 +23,7 @@ addon | version | maintainers | summary
 --- | --- | --- | ---
 [g2p_ati](g2p_ati/) | 17.0.1.3.0 |  | OpenG2P Country Config: ATI
 [g2p_ati_rest_api](g2p_ati_rest_api/) | 17.0.1.3.0 |  | G2P ATI: Rest API
-[g2p_ati_service_provider_portal](g2p_ati_service_provider_portal/) | 17.0.1.2.0 |  | OpenG2P Service Provider: ATI
+[g2p_ati_service_provider_portal](g2p_ati_service_provider_portal/) | 17.0.1.3.0 |  | OpenG2P Service Provider: ATI
 [g2p_lock_unlock](g2p_lock_unlock/) | 17.0.1.3.0 |  | OpenG2P Lock Unlock
 [g2p_odk_importer_ati](g2p_odk_importer_ati/) | 17.0.1.3.0 |  | OpenG2P ODK Config: ATI
 

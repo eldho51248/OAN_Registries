@@ -78,7 +78,6 @@ function applySearchFilter(searchValue) {
     });
 }
 function applySelectionFilter(selectionValue, isGroup) {
-
     filteredRows = allRows.filter((row) => {
         // Assuming each row has a data attribute or a cell with the selection value
         var cellValue2 = null;
@@ -88,11 +87,9 @@ function applySelectionFilter(selectionValue, isGroup) {
             cellValue2 = row.cells[2].innerText.trim().replace(/\s/g, "");
         }
 
-       
         const selectedText = selectionValue.options[selectionValue.selectedIndex].text
             .trim()
             .replace(/\s/g, "");
-        
 
         return cellValue2 === selectedText || selectedText === "Region";
     });

@@ -10,34 +10,32 @@ $(document).ready(function () {
     });
 });
 
-
 function showSuccessModal(message) {
-    const imgElement = document.getElementById('successModal').querySelector('.popup_img');
-    const h4Element = document.getElementById('successModal').querySelector('h4');
-    const msgElement = document.getElementById('successModal').querySelector('.popup_msg');
+    const imgElement = document.getElementById("successModal").querySelector(".popup_img");
+    const h4Element = document.getElementById("successModal").querySelector("h4");
+    const msgElement = document.getElementById("successModal").querySelector(".popup_msg");
 
     imgElement.src = "/g2p_ati_service_provider_portal/static/src/img/ok.png";
     h4Element.textContent = "Success!";
-    msgElement.textContent = message.replace(/^"|"$/g, '');
+    msgElement.textContent = message.replace(/^"|"$/g, "");
 
-    $('#successModal').modal('show');
-  }
+    $("#successModal").modal("show");
+}
 
 function showErrorModal(message) {
-    const imgElement = document.getElementById('successModal').querySelector('.popup_img');
-    const h4Element = document.getElementById('successModal').querySelector('h4');
-    const msgElement = document.getElementById('successModal').querySelector('.popup_msg');
+    const imgElement = document.getElementById("successModal").querySelector(".popup_img");
+    const h4Element = document.getElementById("successModal").querySelector("h4");
+    const msgElement = document.getElementById("successModal").querySelector(".popup_msg");
 
     imgElement.src = "/g2p_ati_service_provider_portal/static/src/img/no.png";
     h4Element.textContent = "Error";
-    msgElement.textContent = message.replace(/^"|"$/g, '');
+    msgElement.textContent = message.replace(/^"|"$/g, "");
 
-    $('#successModal').modal('show');
-  }
+    $("#successModal").modal("show");
+}
 
 // eslint-disable-next-line no-unused-vars
 function validateForm(isCreateForm) {
-  
     var isValid = true;
 
     if (isValid && isCreateForm) {
@@ -72,7 +70,6 @@ function hideToast() {
 }
 
 function resetFormFields() {
-
     // Reset text inputs, email, and password fields
     $(
         "#farmerDetailModal input[type='text'], #farmerDetailModal input[type='email'], #farmerDetailModal input[type='password']"
@@ -114,24 +111,22 @@ function resetFormFields() {
 
         // Clone the input field, but do not clone data or event handlers for debugging
         var newFileInput = $fileInput.clone(false);
-       
 
-        newFileInput.val(""); 
+        newFileInput.val("");
 
         // Replace the original input with the cloned input
         $fileInput.replaceWith(newFileInput);
 
         // Reattach the onchange event for updating the file name
         newFileInput.on("change", function () {
-            updateFileName(this);  
+            updateFileName(this);
         });
 
         // Reset the label text to "Upload"
-        var inputId = newFileInput.attr('id');
+        var inputId = newFileInput.attr("id");
         var label = $('label[for="' + inputId + '"]');
-        var uploadText = label.find('.upload-text');
-        uploadText.text('Upload');  
-        
+        var uploadText = label.find(".upload-text");
+        uploadText.text("Upload");
     });
 }
 
@@ -159,9 +154,9 @@ function resetUpdateFields() {
 
     // Optionally reset the visible text if using Bootstrap Select or similar
     if ($select.hasClass("selectpicker")) {
-        $select.selectpicker("val", ""); 
+        $select.selectpicker("val", "");
     } else if ($select.hasClass("select2")) {
-        $select.val(null).trigger("change"); 
+        $select.val(null).trigger("change");
     }
 
     // Reset number and date fields to their default state
@@ -174,27 +169,25 @@ function resetUpdateFields() {
 
     $("#farmerDetailModal input[type='file']").each(function () {
         var $fileInput = $(this);
-      
 
         // Clone the input field, but do not clone data or event handlers for debugging
         var newFileInput = $fileInput.clone(false);
 
-
-        newFileInput.val("");  
+        newFileInput.val("");
 
         // Replace the original input with the cloned input
         $fileInput.replaceWith(newFileInput);
 
         // Reattach the onchange event for updating the file name
         newFileInput.on("change", function () {
-            updateFileName(this);  
+            updateFileName(this);
         });
 
         // Reset the label text to "Upload"
-        var inputId = newFileInput.attr('id');
+        var inputId = newFileInput.attr("id");
         var label = $('label[for="' + inputId + '"]');
-        var uploadText = label.find('.upload-text');
-        uploadText.text('Upload');  
+        var uploadText = label.find(".upload-text");
+        uploadText.text("Upload");
     });
 }
 
@@ -214,11 +207,9 @@ function resetFormFieldsMember() {
 // });
 
 $(document).on("click", "#member_submit", async function () {
-
     console.log("hello work");
 
     const isSectionValid = validateSection("access-to-resource");
-
 
     if (!isSectionValid) {
         return;
@@ -447,7 +438,6 @@ $(document).on("click", "#member_submit", async function () {
 
     $(".form-control, .form-select").removeClass("is-invalid");
 
-
     $.ajax({
         url: "/serviceprovider/individual/create/",
         method: "POST",
@@ -555,22 +545,20 @@ $(document).on("click", "#member_submit", async function () {
                         tableBody.append(newRowHtml);
                     });
                     $("#member_submit").prop("disabled", false);
-                    showSuccessModal("Member Added Successfully!")
-
+                    showSuccessModal("Member Added Successfully!");
                 }
             } else {
                 console.error("Failed to create individual");
                 $("#member_submit").prop("disabled", false);
-                showErrorModal("Failed to create individual!")
+                showErrorModal("Failed to create individual!");
             }
         },
         error: function (error) {
             console.error("request failed");
             $("#member_submit").prop("disabled", false);
-            showErrorModal("Request Failed")
+            showErrorModal("Request Failed");
 
-
-            // var errorMessage = error.responseJSON.message || error.statusText;
+            // Var errorMessage = error.responseJSON.message || error.statusText;
             // showErrorModal(errorMessage)
         },
     });
