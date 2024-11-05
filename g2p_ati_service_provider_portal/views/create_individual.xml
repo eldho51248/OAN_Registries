@@ -38,7 +38,6 @@
                         method="POST"
                         enctype="multipart/form-data"
                         class="mx-auto px-3 px-lg-0"
-
                     >
 
                         <input type="hidden" name="group_id" value="" />
@@ -1505,7 +1504,9 @@
                                                             <div class="container-fluid">
 
                                                                 <div class="row pt-3 pb-1">
-                                                                    <div class="d-flex flex-column flex-lg-row col--lg-11  land_container2">
+                                                                    <div
+                                                                        class="d-flex flex-column flex-lg-row col--lg-11  land_container2"
+                                                                    >
 
                                                                         <div class="col-lg-3">
                                                                             <label
@@ -1672,7 +1673,9 @@
                                                             <div class="container-fluid">
 
                                                                 <div class="row pt-3 pb-1">
-                                                                    <div class="d-flex flex-column flex-lg-row col-lg-11  land_container2">
+                                                                    <div
+                                                                        class="d-flex flex-column flex-lg-row col-lg-11  land_container2"
+                                                                    >
 
                                                                         <div class="col-3">
                                                                             <label
@@ -1910,7 +1913,9 @@
                                                             <div class="container-fluid">
 
                                                                 <div class="row pt-3 pb-1">
-                                                                    <div class="d-flex flex-column flex-lg-row w-lg-auto  col-lg-11 land_container2">
+                                                                    <div
+                                                                        class="d-flex flex-column flex-lg-row w-lg-auto  col-lg-11 land_container2"
+                                                                    >
 
                                                                         <div class="col-lg-6">
                                                                             <label
@@ -1982,7 +1987,9 @@
                                                             <div class="container-fluid">
 
                                                                 <div class="row pt-3 pb-1">
-                                                                    <div class="d-flex flex-column flex-lg-row w-lg-auto  col-lg-11 land_container2">
+                                                                    <div
+                                                                        class="d-flex flex-column flex-lg-row w-lg-auto  col-lg-11 land_container2"
+                                                                    >
 
                                                                         <div class="col-lg-6">
                                                                             <label
@@ -2126,7 +2133,9 @@
                                                             <div class="container-fluid">
 
                                                                 <div class="row pt-3 pb-1">
-                                                                    <div class="d-flex flex-column flex-lg-row w-lg-auto  col-lg-11 land_container2">
+                                                                    <div
+                                                                        class="d-flex flex-column flex-lg-row w-lg-auto  col-lg-11 land_container2"
+                                                                    >
 
                                                                         <div class="col-lg-6">
                                                                             <label
@@ -2591,26 +2600,26 @@
                                                         <div class="s_website_form_field">
                                                             <label class="s_website_form_label">
                                                                 <span
-                                                                    class="s_website_form_label_content"
-                                                                    style="color: #666666;"
-                                                                >Do you
+                                                                class="s_website_form_label_content"
+                                                                style="color: #666666;"
+                                                            >Do you
                                                                     have access to financial
                                                                     services?
                                                                 </span>
                                                                 <span class="s_website_form_mark"> *</span>
                                                             </label>
                                                             <select
-                                                                class="form-select"
-                                                                name="has_finance_access"
-                                                                required="required"
-                                                                onchange="validateElement(this)"
-                                                                id="access-to-finance-selection"
-                                                            >
+                                                            class="form-select"
+                                                            name="has_finance_access"
+                                                            required="required"
+                                                            onchange="validateElement(this)"
+                                                            id="access-to-finance-selection"
+                                                        >
                                                                 <option value="">Select</option>
                                                                 <t
-                                                                    t-foreach="has_finance_access"
-                                                                    t-as="option"
-                                                                >
+                                                                t-foreach="has_finance_access"
+                                                                t-as="option"
+                                                            >
                                                                     <option t-att-value="option.id">
                                                                         <t t-esc="option.name" />
                                                                     </option>
@@ -2621,28 +2630,28 @@
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div
-                                                            class="s_website_form_field"
-                                                            style="display: none;"
-                                                            id="finance-field"
-                                                        >
+                                                        class="s_website_form_field"
+                                                        style="display: none;"
+                                                        id="finance-field"
+                                                    >
                                                             <label class="s_website_form_label">
                                                                 <span
-                                                                    class="s_website_form_label_content"
-                                                                    style="color: #666666;"
-                                                                >What
+                                                                class="s_website_form_label_content"
+                                                                style="color: #666666;"
+                                                            >What
                                                                     type of finance access do you
                                                                     have?</span>
                                                             </label>
                                                             <select
-                                                                class="selectpicker form-control"
-                                                                id="finance-selection"
-                                                                name="finance_accesses"
-                                                                multiple="multiple"
-                                                                data-live-search="true"
-                                                                data-style="btn-custom"
-                                                                style="width: 100%;"
-                                                                data-none-selected-text="Select Financial Service"
-                                                            >
+                                                            class="selectpicker form-control"
+                                                            id="finance-selection"
+                                                            name="finance_accesses"
+                                                            multiple="multiple"
+                                                            data-live-search="true"
+                                                            data-style="btn-custom"
+                                                            style="width: 100%;"
+                                                            data-none-selected-text="Select Financial Service"
+                                                        >
                                                                 <t t-foreach="financial_access" t-as="option">
                                                                     <option t-att-value="option.id">
                                                                         <t t-esc="option.name" />

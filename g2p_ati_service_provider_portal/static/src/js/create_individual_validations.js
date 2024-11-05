@@ -57,9 +57,9 @@ $(document).ready(function () {
         var $newLine = $(newLineHtml);
 
         // Gather already selected animal types from the first select
-        let selectedAnimalTypes = [];
+        const selectedAnimalTypes = [];
         $("select[id='livestock_selection']").each(function () {
-            let selectedValue = $(this).val();
+            const selectedValue = $(this).val();
             if (selectedValue) {
                 selectedAnimalTypes.push(selectedValue);
             }
@@ -76,8 +76,8 @@ $(document).ready(function () {
             .first()
             .find("option")
             .each(function () {
-                let optionValue = $(this).val();
-                let optionText = $(this).text();
+                const optionValue = $(this).val();
+                const optionText = $(this).text();
 
                 // Check if the option is not already selected
                 if (optionValue && !selectedAnimalTypes.includes(optionValue)) {
@@ -138,12 +138,6 @@ $(document).ready(function () {
         }
     }
 
-    
-
-  
-
-
-
     // Apply the function to both UID and RID inputs
 
     const ridInput = document.getElementById("rid_input");
@@ -181,27 +175,26 @@ $(document).ready(function () {
         }
     });
 
-
-    // function handleNationalIdSelection() {
+    // Function handleNationalIdSelection() {
     //     const selectElement = document.getElementById("have-national-id-selection");
     //     const uidDiv = document.getElementById("uid-div");
     //     const ridDiv = document.getElementById("rid-div");
-    
+
     //     const uidInput = document.getElementById("uid_input");
     //     const ridInput = document.getElementById("rid_input");
     //     const uidError = document.getElementById("uid_error");
     //     const ridError = document.getElementById("rid_error");
-    
+
     //     const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
     //         .trim()
     //         .toLowerCase();
-    
+
     //     if (selectedOptionText === "yes") {
     //         uidDiv.style.display = "block";
     //         uidInput.setAttribute("required", "required");
     //         ridDiv.style.display = "none";
     //         ridInput.removeAttribute("required");
-    
+
     //         // Disable the 'No' option once 'Yes' is selected
     //         const noOption = [...selectElement.options].find(option => option.text.trim().toLowerCase() === "no");
     //         if (noOption) {
@@ -218,45 +211,42 @@ $(document).ready(function () {
     //         ridDiv.style.display = "none";
     //         ridInput.removeAttribute("required");
     //     }
-    
+
     //     uidError.style.display = "none";
     //     ridError.style.display = "none";
     // }
-    
+
     // document.addEventListener("DOMContentLoaded", function () {
-    //     const hasUid = "{{ has_uid }}"; 
+    //     const hasUid = "{{ has_uid }}";
     //     const selectElement = document.getElementById("have-national-id-selection");
     //     const uidDiv = document.getElementById("uid-div");
     //     const ridDiv = document.getElementById("rid-div");
     //     const uidInput = document.getElementById("uid_input");
     //     const ridInput = document.getElementById("rid_input");
-    
+
     //     // Set the selection based on UID presence
     //     if (hasUid === "True") {
-    //         selectElement.value = "yes"; 
-    //         uidDiv.style.display = "block"; 
+    //         selectElement.value = "yes";
+    //         uidDiv.style.display = "block";
     //         uidInput.setAttribute("required", "required");
-    //         ridDiv.style.display = "none"; 
+    //         ridDiv.style.display = "none";
     //         ridInput.removeAttribute("required");
-    
+
     //         // Disable the 'No' option
     //         // Get the current URL
-            
-    
 
     //         const noOption = [...selectElement.options].find(option => option.text.trim().toLowerCase() === "no");
     //         if (noOption) {
     //             noOption.disabled = true;
     //         }
     //     } else {
-    //         selectElement.value = ""; 
-    //         uidDiv.style.display = "none"; 
+    //         selectElement.value = "";
+    //         uidDiv.style.display = "none";
     //         uidInput.removeAttribute("required");
-    //         ridDiv.style.display = "none"; 
+    //         ridDiv.style.display = "none";
     //         ridInput.removeAttribute("required");
     //     }
-    
-        
+
     //     selectElement.addEventListener("change", handleNationalIdSelection);
     // });
 
@@ -264,16 +254,16 @@ $(document).ready(function () {
     //     const selectElement = document.getElementById("have-national-id-selection");
     //     const uidDiv = document.getElementById("uid-div");
     //     const ridDiv = document.getElementById("rid-div");
-    
+
     //     const uidInput = document.getElementById("uid_input");
     //     const ridInput = document.getElementById("rid_input");
     //     const uidError = document.getElementById("uid_error");
     //     const ridError = document.getElementById("rid_error");
-    
+
     //     const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
     //         .trim()
     //         .toLowerCase();
-    
+
     //     if (selectedOptionText === "yes") {
     //         uidDiv.style.display = "block";
     //         uidInput.setAttribute("required", "required");
@@ -290,7 +280,7 @@ $(document).ready(function () {
     //         ridDiv.style.display = "none";
     //         ridInput.removeAttribute("required");
     //     }
-    
+
     //     // Hide errors initially
     //     uidError.style.display = "none";
     //     ridError.style.display = "none";
@@ -302,13 +292,13 @@ $(document).ready(function () {
     //     const ridDiv = document.getElementById("rid-div");
     //     const uidInput = document.getElementById("uid_input");
     //     const ridInput = document.getElementById("rid_input");
-    
+
     //     // Get the current URL
     //     const currentUrl = window.location.href;
-    
+
     //     // Debugging step: Check if the URL is captured correctly
     //     console.log("Current URL:", currentUrl);
-    
+
     //     // Set the selection based on UID presence
     //     if (hasUid === "True") {
     //         selectElement.value = "yes"; // Set dropdown to "Yes" if UID exists
@@ -323,21 +313,21 @@ $(document).ready(function () {
     //         ridDiv.style.display = "none"; // Hide RID div
     //         ridInput.removeAttribute("required");
     //     }
-    
+
     //     // If the URL includes "/individual/update/", disable the select element and make UID readonly
     //     if (currentUrl.includes("/individual/update/")) {
     //         selectElement.disabled = true;  // Disable the select element (readonly)
     //         uidInput.setAttribute("readonly", "readonly");  // Make UID input readonly
-    
+
     //         // Debugging steps to confirm if selection is disabled and UID is readonly
     //         console.log("Is select disabled?", selectElement.disabled);
     //         console.log("Is UID readonly?", uidInput.readOnly);
     //     }
-    
+
     //     // Attach change event listener to the select element for non-update cases
     //     selectElement.addEventListener("change", handleNationalIdSelection);
     // });
-    
+
     function handleNationalIdSelection() {
         const selectElement = document.getElementById("have-national-id-selection");
         const uidDiv = document.getElementById("uid-div");
@@ -375,32 +365,28 @@ $(document).ready(function () {
     }
 
     document.addEventListener("DOMContentLoaded", function () {
-        const hasUid = "{{ has_uid }}"; 
+        const hasUid = "{{ has_uid }}";
         const selectElement = document.getElementById("have-national-id-selection");
-        
+
         // Set the selection based on UID presence
         if (hasUid === "True") {
-            selectElement.value = "yes"; 
-            uidDiv.style.display = "block"; 
+            selectElement.value = "yes";
+            uidDiv.style.display = "block";
             uidInput.setAttribute("required", "required");
-            ridDiv.style.display = "none"; 
+            ridDiv.style.display = "none";
             ridInput.removeAttribute("required");
         } else {
-            selectElement.value = ""; 
-            uidDiv.style.display = "none"; 
+            selectElement.value = "";
+            uidDiv.style.display = "none";
             uidInput.removeAttribute("required");
-            ridDiv.style.display = "none"; 
+            ridDiv.style.display = "none";
             ridInput.removeAttribute("required");
         }
 
-
         if (currentUrl.includes("/individual/update/")) {
-            selectElement.disabled = true;  
-          
-            
+            selectElement.disabled = true;
         }
-    
-        
+
         selectElement.addEventListener("change", handleNationalIdSelection);
     });
 
@@ -411,7 +397,6 @@ $(document).ready(function () {
             inputElement.value = formattedValue;
         });
     }
-
 
     function handleSelection(selectElementId, divElementId, inputElementId) {
         const selectElement = document.getElementById(selectElementId);
@@ -489,7 +474,7 @@ $(document).ready(function () {
     }
 
     // Function to update options for a select element based on an AJAX response
-   
+
     function updateOptions(
         url,
         data,
@@ -511,20 +496,17 @@ $(document).ready(function () {
                 const selectedName = selectElement.options[selectElement.selectedIndex].text;
                 if (
                     originalEvent !== "" &&
-                    (selectdropdown === "current_region" || selectdropdown === "region")  
+                    (selectdropdown === "current_region" || selectdropdown === "region")
                 ) {
                     selectedvalue = " ";
-
-                } else if (originalEvent !== ""  ) {
+                } else if (originalEvent !== "") {
                     selectedvalue = " ";
-
-
-                } else if (selectElement.selectedIndex > 0  ) {
+                } else if (selectElement.selectedIndex > 0) {
                     selectedvalue = selectElement.options[selectElement.selectedIndex].value;
                     // If (selectedName) {
                     //     defaultOptionText = selectedName;
                     // }
-                } else if (selectElement.selectedIndex === 0 && selectedName !== "Select" ) {
+                } else if (selectElement.selectedIndex === 0 && selectedName !== "Select") {
                     selectedvalue = selectElement.options[selectElement.selectedIndex].value;
                     // If (selectedName) {
                     //     defaultOptionText = selectedName;
@@ -545,10 +527,9 @@ $(document).ready(function () {
                     selectElement.appendChild(opt);
                 });
 
-                if (initialValue){
+                if (initialValue) {
                     selectElement.value = initialValue;
                 }
-
             },
             error: function (error) {
                 console.error("Error fetching options:", error);
@@ -561,17 +542,35 @@ $(document).ready(function () {
     const initialWoredaId = $("#woreda_selection").val();
     const initialKebeleId = $("#kebele_selection").val();
 
+    console.log(`Here are the initial values ${initialRegionId}, ${initialZoneId}, ${initialWoredaId}`);
 
-    console.log(`Here are the initial values ${initialRegionId}, ${initialZoneId}, ${initialWoredaId}`)
-      
-    updateOptions("/update_zone_options", {region_id: initialRegionId}, "zon_selection", "Select", null, "region", initialValue=initialZoneId);
-    updateOptions("/update_woreda_options", {zone_id: initialZoneId}, "woreda_selection", "Select", null, "zone", initialValue=initialWoredaId);
-    updateOptions("/update_kebele_options", {woreda_id: initialWoredaId}, "kebele_selection", "Select", null, "woreda", initialValue=initialKebeleId);
-
-
-
-  
-      
+    updateOptions(
+        "/update_zone_options",
+        {region_id: initialRegionId},
+        "zon_selection",
+        "Select",
+        null,
+        "region",
+        (initialValue = initialZoneId)
+    );
+    updateOptions(
+        "/update_woreda_options",
+        {zone_id: initialZoneId},
+        "woreda_selection",
+        "Select",
+        null,
+        "zone",
+        (initialValue = initialWoredaId)
+    );
+    updateOptions(
+        "/update_kebele_options",
+        {woreda_id: initialWoredaId},
+        "kebele_selection",
+        "Select",
+        null,
+        "woreda",
+        (initialValue = initialKebeleId)
+    );
 
     // Event listener for national ID selection change
     $("#have-national-id-selection").on("change", handleNationalIdSelection);
@@ -635,13 +634,13 @@ $(document).ready(function () {
     // Validation for email
     const emailInput = document.getElementById("email");
 
-function isValidEmail(email) {
+    function isValidEmail(email) {
         // Basic email regex pattern
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailPattern.test(email);
     }
 
-emailInput.addEventListener("input", function () {
+    emailInput.addEventListener("input", function () {
         if (emailInput.value.length === 0) {
             emailInput.classList.remove("is-invalid");
             // EmailError.style.display = "none";
@@ -654,7 +653,7 @@ emailInput.addEventListener("input", function () {
         }
     });
 
-function expandSection(sectionId) {
+    function expandSection(sectionId) {
         var consentSection = document.getElementById(sectionId);
         consentSection.classList.add("show");
     }
@@ -664,13 +663,13 @@ function expandSection(sectionId) {
     //     consentSection.classList.add("hide");
     // }
 
-window.customvalidateForm = function (isCreateForm) {
+    window.customvalidateForm = function (isCreateForm) {
         const requiredFields = document.querySelectorAll("[required]");
         var valid = true;
 
         for (let i = 0; i < requiredFields.length; i++) {
             const field = requiredFields[i];
-            const isFieldValid = (field.value || "").trim(); 
+            const isFieldValid = (field.value || "").trim();
             const fieldName = field.getAttribute("name");
 
             if (fieldName.includes("{9999}")) {
@@ -722,9 +721,7 @@ function validateInput(inputElement) {
         radioGroup.forEach((radio) => {
             radio.classList.remove("is-invalid");
         });
-    }
-  
-    else {
+    } else {
         // For other input types, check the value and remove "is-invalid" if not empty
         const value = inputElement.value;
         if (value.trim() !== "") {
@@ -732,7 +729,6 @@ function validateInput(inputElement) {
         }
     }
 }
-
 
 function validateMultiSelect(selectElement) {
     const selectedOptions = $(selectElement).val();
@@ -762,19 +758,13 @@ function validateElement(element) {
         return validateMultiSelect(element);
     } else if (element.tagName === "SELECT") {
         validateSelect(element);
-    } 
-    else if(element.id === "total_land_area"){
+    } else if (element.id === "total_land_area") {
         validateLandArea(element);
-    }
-    else if(element.id === "number_of_livestock"){
-
+    } else if (element.id === "number_of_livestock") {
         validateLandArea(element);
-    }
-    
-    else if (element.tagName === "INPUT") {
+    } else if (element.tagName === "INPUT") {
         validateInput(element);
     }
-
 }
 
 function validateUID() {
@@ -824,7 +814,7 @@ function validateRadioButtons(radioName, section) {
 
 function validateLandArea(field) {
     const digitRegex = /^\d*\.?\d+$/; // Regular expression to allow only digits
-    const landAreaError = document.getElementById('land_area_error');
+    const landAreaError = document.getElementById("land_area_error");
 
     // Check if the input value is valid (only digits)
     const isValid = digitRegex.test(field.value);
@@ -843,10 +833,8 @@ function validateLandArea(field) {
     return isValid;
 }
 
-
-
 function validateFileInput(field) {
-    const allowedFileTypes = ['image/jpeg', 'image/png', 'application/pdf']; // Allowed types
+    const allowedFileTypes = ["image/jpeg", "image/png", "application/pdf"]; // Allowed types
     const maxFileSize = 5 * 1024 * 1024; // 5 MB limit
 
     // Get the files from the input
@@ -882,7 +870,6 @@ function validateFileInput(field) {
     return true; // Valid file input
 }
 
-
 function validateSection(sectionId) {
     const section = document.getElementById(sectionId);
     const requiredFields = section.querySelectorAll("[required]");
@@ -904,16 +891,11 @@ function validateSection(sectionId) {
         } else if (field.type === "file") {
             // Validate file input field
             isFieldValid = validateFileInput(field);
+        } else if (field && field.value) {
+            isFieldValid = field.value.trim() !== "";
         } else {
-            if (field && field.value){
-                isFieldValid = field.value.trim() !== "";
-               
-            }
-            else{
-                // Validate non-radio fields
-                isFieldValid = false;
-            }
-            
+            // Validate non-radio fields
+            isFieldValid = false;
         }
 
         const fieldName = field.getAttribute("name");
@@ -930,7 +912,6 @@ function validateSection(sectionId) {
         if (field.id === "number_of_livestock") {
             isFieldValid = validateLandArea(field);
         }
-        
 
         // Apply 'is-invalid' class for non-radio fields
         if (field.type !== "radio" && field.type !== "file") {
@@ -947,13 +928,12 @@ function validateSection(sectionId) {
         if (sectionId === "id-section" && fieldName === "rid") {
             valid = valid && validateRID();
         }
-        if(sectionId === "land-information" && fieldName ==="total_land_area"){
+        if (sectionId === "land-information" && fieldName === "total_land_area") {
             valid = valid && validateLandArea();
         }
-        if(sectionId === "livestock-information" && fieldName ==="number_of_livestock"){
+        if (sectionId === "livestock-information" && fieldName === "number_of_livestock") {
             valid = valid && validateLandArea();
         }
-
     });
     if (uidError.style.display === "block") {
         valid = false;
@@ -1032,7 +1012,6 @@ function showSection(sectionId, element, fromGroup = false) {
 
                     section.style.display = "none";
                 } else {
-
                     const locationDetailsSection = document.getElementById("location-details");
 
                     if (locationDetailsSection) {

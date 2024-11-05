@@ -12,7 +12,10 @@
 
                 <div class="">
 
-                    <div style="max-width: 1400px;" class="top-content d-flex mx-auto px-3 py-3 flex-row justify-content-between">
+                    <div
+                        style="max-width: 1400px;"
+                        class="top-content d-flex mx-auto px-3 py-3 flex-row justify-content-between"
+                    >
 
                         <div class="d-flex flex-column  justify-content-start ">
                             <h5

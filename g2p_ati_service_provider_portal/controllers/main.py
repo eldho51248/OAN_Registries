@@ -1,8 +1,8 @@
 import base64
 import json
 import logging
-from datetime import date
 import re
+from datetime import date
 
 from odoo import http
 from odoo.http import request
@@ -24,20 +24,29 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
         partner = request.env.user.partner_id
 
         households = (
-            request.env["res.partner"].sudo().search([("is_group", "=", True),
-                   "|",  # Logical OR operator
-                  ("enumerator_user_id", "=", user_id),
-                  ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
-            ])
+            request.env["res.partner"]
+            .sudo()
+            .search(
+                [
+                    ("is_group", "=", True),
+                    "|",  # Logical OR operator
+                    ("enumerator_user_id", "=", user_id),
+                    ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id),
+                ]
+            )
         )
         individuals = (
             request.env["res.partner"]
             .sudo()
-            .search([("is_group", "=", False), ("is_farmer", "=", "yes"), 
-             "|",  # Logical OR operator
-            ("enumerator_user_id", "=", user_id),
-            ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
-            ])
+            .search(
+                [
+                    ("is_group", "=", False),
+                    ("is_farmer", "=", "yes"),
+                    "|",  # Logical OR operator
+                    ("enumerator_user_id", "=", user_id),
+                    ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id),
+                ]
+            )
         )
 
         return request.render(
@@ -446,9 +455,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             response = request.redirect("/serviceprovider/group")
 
-            response.set_cookie('popup_status', 'successful', max_age=10)
-            response.set_cookie('popup_msg', 'Record Created Successfully!', max_age=10)
-
+            response.set_cookie("popup_status", "successful", max_age=10)
+            response.set_cookie("popup_msg", "Record Created Successfully!", max_age=10)
 
             return response
         except Exception:
@@ -1072,10 +1080,10 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             vals["has_national_id"] = has_national_id
             if has_national_id == "yes":
                 id_type = request.env["g2p.id.type"].sudo().search([("name", "=", "UID")], limit=1)
-                vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": kw.get("uid"), "status":"valid"})]
+                vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": kw.get("uid"), "status": "valid"})]
             elif has_national_id == "no" and kw.get("rid") and kw.get("rid").strip():
                 id_type = request.env["g2p.id.type"].sudo().search([("name", "=", "RID")], limit=1)
-                vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": kw.get("rid"), "status":"valid"})]
+                vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": kw.get("rid"), "status": "valid"})]
 
     def _process_individual_details(self, vals, kw):
         self._process_household_head(vals, kw)
@@ -1440,8 +1448,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     other_phone = phone.phone_no
 
             # Handling UID and RID
-          
-            
+
             # uid, rid = "", ""
             # for reg_id in beneficiary.reg_ids:
             #     if beneficiary.has_national_id == "yes" and reg_id.id_type.name == "UID":
@@ -1457,8 +1464,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     rid = reg_id.value
 
             has_uid = bool(uid)
-
-            
 
             hh_is_household_head, household_head_selection_id = self._get_selection_id(
                 model_id, "hh_is_household_head", beneficiary.hh_is_household_head
@@ -1512,14 +1517,13 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 model_id, "has_personal_phone", beneficiary.has_personal_phone
             )
 
-
             # Rendering the template with the prepared data
             return request.render(
                 "g2p_ati_service_provider_portal.ati_individual_registrant_update_form_template",
                 {
                     "beneficiary": beneficiary,
                     "has_national_id": has_national_id,
-                    "has_uid":has_uid,
+                    "has_uid": has_uid,
                     "uid": uid,
                     "rid": rid,
                     "hh_is_household_head": hh_is_household_head,
@@ -1639,9 +1643,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
         return [selection_ids, selection_id]
 
-
     def _prepare_land_info_data(self, beneficiary, ownership_type_selections):
-
         land_info_data = []
         for index, land_info in enumerate(beneficiary.land_information_ids, start=1):
             ownership_selection_id = False
@@ -1660,7 +1662,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             }
             certificate_url = land_info.land_certificate.url if land_info.land_certificate else ""
 
-
             land_info_data.append(
                 {
                     "index": index,
@@ -1670,8 +1671,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     "ownership_type_selection_id": ownership_selection_id,
                     "certificate_id": certificate_url,
                     "land_certificate": land_certificate,
-
-                })
+                }
+            )
         return land_info_data
 
     def _prepare_crop_info_data(self, beneficiary):
@@ -1696,7 +1697,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 }
             )
 
-        
         return crop_info_data, serialized_crop_info_data
 
     def _prepare_livestock_info_data(self, beneficiary):
@@ -1735,17 +1735,15 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         website=True,
         csrf=False,
     )
-    def update_individual_submit(self,**kw):
+    def update_individual_submit(self, **kw):
         try:
             member = request.env["res.partner"].sudo().browse(int(kw.get("id holder")))
-           
-
 
             has_national_id = member.has_national_id
             has_personal_phone = member.has_personal_phone
             primary_Language = member.primary_Language
             is_member_of_primary_cooperative = member.is_member_of_primary_cooperative
-            if is_member_of_primary_cooperative == 'yes':
+            if is_member_of_primary_cooperative == "yes":
                 primary_cooperatives = member.primary_cooperatives
             else:
                 primary_cooperatives = " "
@@ -1796,7 +1794,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 or member.has_personal_phone
             )
 
-
             has_national_id = (
                 self.get_selection_value("ir.model.fields.selection", kw.get("has_national_id"))
                 or member.has_national_id
@@ -1827,82 +1824,74 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             # Check if an existing RID is present
             existing_rid = None
-           
 
             rid_input = kw.get("rid")
-            
-           
+
             for reg_id in member.reg_ids:
                 if rid_input:
                     if reg_id.id_type.name == "RID" and reg_id.value == rid_input:
-                    
                         existing_rid = reg_id
                         break
-               
-
-
-           
 
             # Handling UID
             if kw.get("uid"):
                 id_type_uid = request.env["g2p.id.type"].sudo().search([("name", "=", "UID")], limit=1)
                 if id_type_uid:
-                   
-                    reg_ids.append((0, 0, {"id_type": id_type_uid.id, "value": kw.get("uid"), "status": "valid"}))
+                    reg_ids.append(
+                        (0, 0, {"id_type": id_type_uid.id, "value": kw.get("uid"), "status": "valid"})
+                    )
 
-               
                 if existing_rid:
-                   
                     try:
-                        
-                        check_rid = request.env['g2p.reg.id'].sudo().search([('id', '=', existing_rid.id)], limit=1)
+                        check_rid = (
+                            request.env["g2p.reg.id"].sudo().search([("id", "=", existing_rid.id)], limit=1)
+                        )
                         if check_rid:
-                           
-                            reg_ids.append((0,0, {
-                                "id_type": existing_rid.id_type.id,  
-                                "value": existing_rid.value,          
-                                "status": existing_rid.status          
-                            }))
+                            reg_ids.append(
+                                (
+                                    0,
+                                    0,
+                                    {
+                                        "id_type": existing_rid.id_type.id,
+                                        "value": existing_rid.value,
+                                        "status": existing_rid.status,
+                                    },
+                                )
+                            )
                         else:
-                            _logger.info(f"RID with ID {existing_rid.id} not found in the database. Skipping update.")
+                            _logger.info(
+                                f"RID with ID {existing_rid.id} not found in the database. Skipping update."
+                            )
                     except Exception as e:
-                         _logger.info(f"Error while checking existing RID: {e}")
+                        _logger.info(f"Error while checking existing RID: {e}")
                 has_national_id = "yes"
 
-            
-            if has_national_id == "no" and kw.get("rid") :
-            #     if existing_rid:
-            #         print("existing")
-            #         try:
-                        
-            #             check_rid = request.env['g2p.reg.id'].sudo().search([('id', '=', existing_rid.id)], limit=1)
-            #             if check_rid:
-                           
-            #                 reg_ids.append((0,0, {
-            #                     "id_type": existing_rid.id_type.id,  
-            #                     "value": existing_rid.value,          
-            #                     "status": existing_rid.status          
-            #                 }))
-            #             else:
-            #                 print(f"RID with ID {existing_rid.id} not found in the database. Skipping update.")
-            #         except Exception as e:
-            #             print(f"Error while checking existing RID: {e}")
-            #     print("new rid")
+            if has_national_id == "no" and kw.get("rid"):
+                #     if existing_rid:
+                #         print("existing")
+                #         try:
 
-            # else:
-            
+                #             check_rid = request.env['g2p.reg.id'].sudo().search([('id', '=', existing_rid.id)], limit=1)
+                #             if check_rid:
+
+                #                 reg_ids.append((0,0, {
+                #                     "id_type": existing_rid.id_type.id,
+                #                     "value": existing_rid.value,
+                #                     "status": existing_rid.status
+                #                 }))
+                #             else:
+                #                 print(f"RID with ID {existing_rid.id} not found in the database. Skipping update.")
+                #         except Exception as e:
+                #             print(f"Error while checking existing RID: {e}")
+                #     print("new rid")
+
+                # else:
+
                 id_type_rid = request.env["g2p.id.type"].sudo().search([("name", "=", "RID")], limit=1)
                 if id_type_rid:
-                    reg_ids.append((0, 0, {"id_type": id_type_rid.id, "value": kw.get("rid"), "status": "valid"}))
-
-               
-
-
-          
-
-
-                
-
+                    reg_ids.append(
+                        (0, 0, {"id_type": id_type_rid.id, "value": kw.get("rid"), "status": "valid"})
+                    )
 
             # Handle phone numbers
             ethiopia_country_id = (
@@ -2017,9 +2006,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 or request.env["storage.backend"].sudo().search([], limit=1).id
             )
 
-
             land_info_data = self.get_land_info_data(kw, backend_id)
-
 
             crop_info_data = self.get_crop_info_data(kw)
 
@@ -2036,7 +2023,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 "given_name": kw.get("given_name"),
                 "family_name": kw.get("family_name"),
                 "gf_name_eng": kw.get("gf_name_eng"),
-                "reg_ids":reg_ids,
+                "reg_ids": reg_ids,
                 "name": name,
                 "first_name_amh": kw.get("first_name_amh"),
                 "family_name_amh": kw.get("family_name_amh"),
@@ -2088,7 +2075,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             is_locked = False
             edit_state = member.edit_state
-            if user.has_group('base.group_portal') and edit_state == 'locked':
+            if user.has_group("base.group_portal") and edit_state == "locked":
                 is_locked = True
             else:
                 is_locked = False
@@ -2102,30 +2089,25 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             member.sudo().write(update_records)
             # request.session['update_success'] = True
             # return json.dumps({'status': 'success', 'message': 'Record updated successfully'})
-            
-            
+
             response = None
-            
-            group = kw.get('group')
-    
-            
+
+            group = kw.get("group")
+
             if not group:
                 response = request.redirect(f"/serviceprovider/individual/update/{member.id}")
-                
+
             if group:
                 response = request.redirect(f"/serviceprovider/individual/update/{member.id}?group={group}")
-                
-
 
             if is_locked == True:
-                response.set_cookie('popup_status', 'successful', max_age=10)
-                response.set_cookie('popup_msg', 'Update Sent For Validation!', max_age=10)
+                response.set_cookie("popup_status", "successful", max_age=10)
+                response.set_cookie("popup_msg", "Update Sent For Validation!", max_age=10)
                 return response
             else:
-                response.set_cookie('popup_status', 'successful', max_age=10)
-                response.set_cookie('popup_msg', 'Record Updated Successfully!', max_age=10)
+                response.set_cookie("popup_status", "successful", max_age=10)
+                response.set_cookie("popup_msg", "Record Updated Successfully!", max_age=10)
                 return response
-
 
             # return request.redirect(f"/serviceprovider/individual/update/{member.id}")
 
@@ -2215,7 +2197,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 other_info["Cooperative Union"] = other_coop_union
 
         return json.dumps(other_info)
-    
+
     def get_selection_value(self, model, selection_id):
         if selection_id and len(selection_id) > 0:
             return (
@@ -2226,12 +2208,12 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         else:
             return False
 
-    def _extract_id_from_string(self,string):
-        match = re.match(r'^updated_(\d+)$', string)
+    def _extract_id_from_string(self, string):
+        match = re.match(r"^updated_(\d+)$", string)
         if match:
             return int(match.group(1))
         return None
-    
+
     def get_land_info_data(self, kw, backend_id):
         land_info_data = []
         land_indices = set()
@@ -2241,13 +2223,13 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
         # Extract valid land indices from the input data
         valid_keys = [key for key in kw.keys() if "{9999}" not in key]
-        
+
         for key in valid_keys:
             if key.startswith("land_ownership_type_"):
                 try:
                     land_index = int(key.split("_")[-1])
                     land_indices.add(land_index)
-                    
+
                 except ValueError:
                     continue
 
@@ -2255,14 +2237,12 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         if not doc_tag:
             doc_tag = request.env["g2p.document.tag"].sudo().create({"name": "Land Certificate"})
 
-        existing_certificates = {}  
-        
+        existing_certificates = {}
+
         _logger.info(f"land_index: {land_indices}")
 
         for index in land_indices:
-            
-            
-            existing_land_info = self._get_existing_land_info(index) 
+            existing_land_info = self._get_existing_land_info(index)
             if existing_land_info:
                 existing_certificates[index] = existing_land_info
 
@@ -2270,23 +2250,16 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             ownership_type = kw.get(f"land_ownership_type_{index}")
             if ownership_type == "":
                 continue  # Skip if ownership type is empty
-     
 
             land_id = kw.get(f"land_id_{index}")
             land_area = kw.get(f"total_land_area_{index}")
-            
+
             _logger.info(f"land_index: {index}")
             _logger.info(kw.get(f"land_id_{index}"))
             _logger.info(kw.get(f"total_land_area_{index}"))
-            
-            
-            
-            
+
             land_ownership_type = (
-                request.env["ir.model.fields.selection"]
-                .sudo()
-                .search([("id", "=", ownership_type)])
-                .value
+                request.env["ir.model.fields.selection"].sudo().search([("id", "=", ownership_type)]).value
             )
 
             land_info_dict = {
@@ -2297,18 +2270,15 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             land_certificate_key = f"land_certificate_{index}"
             updated_certificate_key = f"updated_certificate_{index}"
-            
-            
+
             # _logger.info(f"land_certificate_{index}")
             # _logger.info(kw.get(f"land_certificate_{index}"))
             # _logger.info(kw.get(f"updated_certificate_{index}"))
-            
-
 
             if kw.get(updated_certificate_key) is None:
                 _logger.info("new")
                 _logger.info(kw.get(updated_certificate_key))
-                
+
                 # New certificate upload
                 land_certificate = kw.get(land_certificate_key)
                 binary_content = base64.b64encode(land_certificate.read()).decode("utf-8")
@@ -2326,81 +2296,54 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 )
                 land_info_dict["land_certificate"] = storage_file.id
 
-            
-            
             elif kw.get(updated_certificate_key).startswith("updated"):
                 _logger.info("updated")
                 _logger.info(kw.get(updated_certificate_key))
-                
-                
+
                 _logger.info(f" before the extract_id_from_string  {kw.get(updated_certificate_key)}")
                 land_id = self._extract_id_from_string(kw.get(updated_certificate_key))
                 land = self._get_existing_land_info(land_id)
-                
-                
-              
-                
+
                 storage_file_old = (
-                    request.env['storage.file']
-                    .sudo()
-                    .search([("id", "=", land.land_certificate.id)])
+                    request.env["storage.file"].sudo().search([("id", "=", land.land_certificate.id)])
                 )
-                
+
                 # storage_file_old = self.env['storage.file'].browse(land.land_certificate.id)
                 storage_file_old.unlink()
-                
+
                 land_certificate = kw.get(land_certificate_key)
                 binary_content = base64.b64encode(land_certificate.read()).decode("utf-8")
                 storage_file = (
-                request.env["storage.file"]
-                .sudo()
-                .create(
-                    {
-                        "backend_id": backend_id,
-                        "name": land_certificate.filename,
-                        "data": binary_content,
-                        "tags_ids": [(4, doc_tag.id)],
-                    }
+                    request.env["storage.file"]
+                    .sudo()
+                    .create(
+                        {
+                            "backend_id": backend_id,
+                            "name": land_certificate.filename,
+                            "data": binary_content,
+                            "tags_ids": [(4, doc_tag.id)],
+                        }
+                    )
                 )
-            )
                 land_info_dict["land_certificate"] = storage_file.id
-                    
-                   
-                        
-                        
-            elif not kw.get(updated_certificate_key).startswith("updated") and kw.get(updated_certificate_key) is not None:
+
+            elif (
+                not kw.get(updated_certificate_key).startswith("updated")
+                and kw.get(updated_certificate_key) is not None
+            ):
                 _logger.info("not updated")
                 _logger.info(kw.get(updated_certificate_key))
                 _logger.info(existing_certificates)
-                
-                
+
                 land_id = int(kw.get(updated_certificate_key))
                 land = self._get_existing_land_info(land_id)
                 land_info_dict["land_certificate"] = land.land_certificate.id
-                
-                
-                
-                
-                
-       
-                
-                
-
-         
-                
-
 
             # Append the land info dictionary to the data list
             land_info_data.append((0, 0, land_info_dict))
- 
+
         return land_info_data
 
-
-
-
-
-
-    
     # def get_land_info_data(self, kw, backend_id):
     #     land_info_data = []
     #     land_indices = set()
@@ -2470,25 +2413,20 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     #             )
     #             land_info_dict["land_certificate"] = storage_file.id
 
-
     #         else:
     #             if index in existing_certificates:
     #                 land_info_dict["land_certificate"] = existing_certificates[index].land_certificate.id
 
     #         # Append the land info dict to the data list
     #         land_info_data.append((0, 0, land_info_dict))
-            
-            
+
     #     _logger.info(land_info_data)
     #     return land_info_data
-
-
-
 
     # def get_land_info_data(self, kw, backend_id):
     #     land_info_data = []
     #     land_indices = set()
-        
+
     #     _logger.info("The KW")
     #     _logger.info(kw)
 
@@ -2567,10 +2505,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
     #     return land_info_data
 
-
-
     # def get_land_info_data(self, kw, backend_id):
-        
+
     #     _logger.info(kw)
     #     land_info_data = []
     #     land_indices = set()
@@ -2588,9 +2524,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     #     if not doc_tag:
     #         doc_tag = request.env["g2p.document.tag"].sudo().create({"name": "Land Certificate"})
 
-
     #     existing_certificates = {}  # Dictionary to hold existing certificates by index
-
 
     #     # Retrieve existing land information for the current beneficiary
     #     for index in land_indices:
@@ -2618,9 +2552,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     #          # lnd_idx = kw.get(f"land_certificate_{index}")
 
     #         existing_certificate_id = kw.get(f"land_certificate_{index}")
-            
+
     #         # Check if the certificate is updated
-            
+
     #         land_certificate_key = f"land_certificate_{index}"
     #         if kw.get(land_certificate_key) and kw.get(land_certificate_key).read():
     #             land_certificate = kw.get(land_certificate_key)
@@ -2656,8 +2590,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         # For example, you can use:
         return request.env["g2p.land.information"].sudo().search([("id", "=", index)], limit=1)
 
-
-
     def get_crop_info_data(self, kw):
         crop_info_data = []
         crop_indices = set()
@@ -2682,7 +2614,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 continue
 
             crop_info_data.append((0, 0, {"crop": crop_id, "collected_gc": crop_planted_date_id}))
-
 
         return crop_info_data
 
@@ -2799,7 +2730,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
     def individual_list(self, **kw):
         user_id = request.env.user.id
         partner = request.env.user.partner_id
-            
 
         individual = (
             request.env["res.partner"]
@@ -2811,12 +2741,12 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     ("is_group", "=", False),
                     ("is_farmer", "=", "yes"),
                     "|",  # Logical OR operator
-            ("enumerator_user_id", "=", user_id),
-            ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
+                    ("enumerator_user_id", "=", user_id),
+                    ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id),
                 ]
             )
         )
-        
+
         region = request.env["g2p.region"].sudo().search([])
         zone = []
         woreda = []
@@ -2839,10 +2769,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     ("active", "=", True),
                     ("is_registrant", "=", True),
                     ("is_group", "=", True),
-                   "|",  # Logical OR operator
-            ("enumerator_user_id", "=", user_id),
-            ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id)
-
+                    "|",  # Logical OR operator
+                    ("enumerator_user_id", "=", user_id),
+                    ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id),
                 ]
             )
         )
@@ -2911,7 +2840,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         website=True,
         csrf=False,
     )
-    def update_family_member_submit(self,**kw):
+    def update_family_member_submit(self, **kw):
         res = dict()
         try:
             group_id = kw.get("group_id")
@@ -3090,7 +3019,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             member = request.env["res.partner"].sudo().browse(member_id)
             group_rec = request.env["res.partner"].sudo().browse(group_id)
 
-
             if not member.exists():
                 return json.dumps({"error": "Member not found"})
 
@@ -3140,7 +3068,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
     def process_land(self, kw, vals):
         land_records = json.loads(kw.get("landRecords", "[]"))
-
 
         land_info_data = []
         supporting_documents_ids = []
@@ -3243,12 +3170,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             group_rec = self._get_or_create_group(kw, region, zone, woreda, kebele, enumerator)
 
-
             vals = self._prepare_individual_vals(kw, region, zone, woreda, kebele)
 
             vals = self.process_land(kw, vals)
-
-
 
             vals["crop_information_ids"] = self._prepare_crop_information(kw.get("cropRecords"))
             vals["livestock_information_ids"] = self._livestock_information(kw.get("livestockRecord"))
@@ -3475,11 +3399,11 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         selected_id = selected_id.replace(" ", "")
         if has_national_id == "yes":
             id_type = request.env["g2p.id.type"].sudo().search([("name", "=", "UID")], limit=1)
-            vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": selected_id, "status":"valid"})]
+            vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": selected_id, "status": "valid"})]
 
         elif has_national_id == "no":
             id_type = request.env["g2p.id.type"].sudo().search([("name", "=", "RID")], limit=1)
-            vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": selected_id, "status":"valid"})]
+            vals["reg_ids"] = [(0, 0, {"id_type": id_type.id, "value": selected_id, "status": "valid"})]
 
     def _prepare_socioeconomic_data(self, kw, vals):
         fields = {

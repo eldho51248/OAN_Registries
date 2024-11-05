@@ -1,7 +1,6 @@
 import json
-import logging
 
-from odoo import fields, models, api
+from odoo import fields, models
 
 from ..json_encoder import CustomJSONEncoder
 
@@ -28,8 +27,6 @@ class ResPartner(models.Model):
     update_request_ids = fields.One2many("res.partner.change.request", "partner_id", string="Update Requests")
     edit_suggestion_ids = fields.One2many("request", "record_id", string="Edit Suggestions")
 
-
-
     def _sanitize_vals(self, vals):
         sanitized = {}
         for key, value in vals.items():
@@ -40,20 +37,19 @@ class ResPartner(models.Model):
                 sanitized[key] = value
         return sanitized
 
-
     def write(self, vals):
-        state = {'state': 'update_requested'}
+        state = {"state": "update_requested"}
         sanitized_vals = self._sanitize_vals(vals)
         no_of_edits = self.env["no.of.edits"].search([])
         user = self.env.user
         for record in self:
-            if self.env.user.has_group('base.group_portal'):
+            if self.env.user.has_group("base.group_portal"):
                 if record.edit_count >= no_of_edits.edit_amount + 1:
                     vals["edit_state"] = "locked"
                 vals["edit_count"] = record.edit_count + 1
 
-        if self.env.user.has_group('base.group_portal') and record.edit_state == "locked" :
-            if 'given_name' in vals :
+        if self.env.user.has_group("base.group_portal") and record.edit_state == "locked":
+            if "given_name" in vals:
                 for partner in self:
                     self.env["res.partner.change.request"].create(
                         {
@@ -64,7 +60,7 @@ class ResPartner(models.Model):
                             "state": "pending",
                         }
                     )
-                    vals['state'] = "update_requested"
+                    vals["state"] = "update_requested"
                     # Return a meaningful value; for example, the count of records 'affected'
                 return super().write(state)
             else:
@@ -83,7 +79,6 @@ class ResPartner(models.Model):
         else:
             # Create a change request for each record that is being updated
             for partner in self:
-
                 self.env["res.partner.change.request"].create(
                     {
                         "partner_id": partner.id,
@@ -201,14 +196,9 @@ class ResPartnerChangeRequest(models.Model):
         # Mark the activities as done or unlink them (remove them)
         activities.action_done()
 
-        edit_suggestions = self.env["request"].search(
-            [("record_id", "=", self.partner_id.id)
-            ]
-        )
+        edit_suggestions = self.env["request"].search([("record_id", "=", self.partner_id.id)])
         for suggests in edit_suggestions:
             suggests.status = "updated"
-
-
 
     def reject_changes(self):
         for request in self:
