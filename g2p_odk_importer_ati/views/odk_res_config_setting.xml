@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="g2p_odk_importer.odk_res_config_settings_view_form" />
         <field name="arch" type="xml">
 
-            <xpath expr="//app" position="attributes">
+            <xpath expr="app[@name='odk_instance_config']" position="attributes">
                 <attribute
                     name="groups"
                 >g2p_ati.group_system_admin,g2p_registry_base.group_g2p_admin</attribute>
