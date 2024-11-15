@@ -75,7 +75,7 @@
   
       <div class="modal fade" id="successModal" tabindex="-1" role="dialog">
 
-        <div style="margin: 0 auto !importnat;" class="modal-dialog modal-sm-down modal-md md-up" role="document">
+        <div style="margin: 0 auto !importnat;  transform: translate(0%, 0%) !important;" class="modal-dialog modal-sm-down modal-md md-up" role="document">
           <div style="background-color: white; border-radius: 1rem; text-align: center;" class=" py-5 modal_container">
 
             <div class="py-4" style="margin: 0 auto !important;">

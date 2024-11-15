@@ -38,7 +38,7 @@
 
 @media (min-width: 576px) {
     .modal-content {
-        top: 0 !important;
+        top: 50% !important;
     }
 }
 
@@ -227,9 +227,11 @@ input[type="radio"].invalid-radio {
 
 
 .modal.show .modal-dialog {
-    transform: translate(10px, 10px);
-    transform: translate(0%, 50%) !important;
+    /* transform: translate(10px, 10px); */
+    /* transform: translate(0%, 50%) !important; */
 }
+
+
 
 .modal_filter select {
     font-size: 12px;
@@ -903,7 +905,26 @@ hr {
     .sidebar {
         width: 250px;
     }
+
+    /* .sidebar .nav-item:not(.active) {
+        display: block;
+    } */
+  
+
+ 
 }
+
+
+/* @media (max-width: 768px) {
+    .sidebar .nav-item:not(.active) {
+        display: none;
+    }
+
+ 
+} */
+
+
+
 
 .modal-body {
     padding: 0px !important;
