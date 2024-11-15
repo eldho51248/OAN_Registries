@@ -2067,6 +2067,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                 "do_you_use_insecticide": do_you_use_insecticide,
                 "do_you_use_improved_seed": do_you_use_improved_seed,
                 "additional_g2p_info": additional_info_json,
+                "supporting_documents_ids": kw.get("supporting_documents_ids", [])
             }
             # Update member details
             user = request.env.user
@@ -2223,6 +2224,10 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
         # Extract valid land indices from the input data
         valid_keys = [key for key in kw.keys() if "{9999}" not in key]
+        
+        kw['supporting_documents_ids'] = []
+        
+        
 
         for key in valid_keys:
             if key.startswith("land_ownership_type_"):
@@ -2254,9 +2259,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             land_id = kw.get(f"land_id_{index}")
             land_area = kw.get(f"total_land_area_{index}")
 
-            _logger.info(f"land_index: {index}")
-            _logger.info(kw.get(f"land_id_{index}"))
-            _logger.info(kw.get(f"total_land_area_{index}"))
 
             land_ownership_type = (
                 request.env["ir.model.fields.selection"].sudo().search([("id", "=", ownership_type)]).value
@@ -2295,12 +2297,14 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     )
                 )
                 land_info_dict["land_certificate"] = storage_file.id
+                kw['supporting_documents_ids'].append((4, storage_file.id))
 
             elif kw.get(updated_certificate_key).startswith("updated"):
                 _logger.info("updated")
                 _logger.info(kw.get(updated_certificate_key))
 
                 _logger.info(f" before the extract_id_from_string  {kw.get(updated_certificate_key)}")
+                
                 land_id = self._extract_id_from_string(kw.get(updated_certificate_key))
                 land = self._get_existing_land_info(land_id)
 
@@ -2326,18 +2330,43 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     )
                 )
                 land_info_dict["land_certificate"] = storage_file.id
+                kw['supporting_documents_ids'].append((4, storage_file.id))
+                
 
             elif (
                 not kw.get(updated_certificate_key).startswith("updated")
                 and kw.get(updated_certificate_key) is not None
             ):
-                _logger.info("not updated")
-                _logger.info(kw.get(updated_certificate_key))
-                _logger.info(existing_certificates)
 
                 land_id = int(kw.get(updated_certificate_key))
                 land = self._get_existing_land_info(land_id)
-                land_info_dict["land_certificate"] = land.land_certificate.id
+                # land_info_dict["land_certificate"] = land.land_certificate.id
+                _logger.info(f"land_certificate id {land.land_certificate.id}")
+                
+                storage_file_old = (
+                    request.env["storage.file"].sudo().search([("id", "=", land.land_certificate.id)])
+                )
+                storage_file_old.unlink()
+                
+                _logger.info(f"land_certificate id2 {storage_file_old.id}")
+                
+                storage_file = (
+                    request.env["storage.file"]
+                    .sudo()
+                    .create(
+                        {
+                            "backend_id": backend_id,
+                            "name": land.land_certificate.name,
+                            "data": land.land_certificate.data,
+                            "tags_ids": [(4, doc_tag.id)],
+                        }
+                    )
+                )
+
+                land_info_dict["land_certificate"] = storage_file.id
+             
+                kw['supporting_documents_ids'].append((4, storage_file.id))
+                
 
             # Append the land info dictionary to the data list
             land_info_data.append((0, 0, land_info_dict))

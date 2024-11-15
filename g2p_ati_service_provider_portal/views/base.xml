@@ -27,12 +27,17 @@
 
 
 <xpath expr="//div[hasclass('nav')]/a" position="attributes">
-    <attribute name="class">px-5 px-xl-0 mx-auto mx-md-0</attribute>
+    <attribute name="class">px-2 mx-auto mx-md-0</attribute>
 </xpath>
+
+
+<!-- <xpath expr="//div[hasclass('nav-user')]" position="before">
+    <attribute name="class">nav-user mx-auto mx-md-0</attribute>
+</xpath> -->
 
 <xpath expr="//div[hasclass('nav-user')]" position="attributes">
     <attribute name="class">nav-user mx-auto mx-md-0</attribute>
-</xpath>
+</xpath> 
 
 
 
@@ -43,37 +48,35 @@
 
 
 <xpath expr="//div[hasclass('footer-container')]/div[hasclass('nav')]/a" position="attributes">
-    <attribute name="class">px-5 px-xl-0 mx-auto mx-md-0</attribute>
+    <attribute name="class">d-flex px-3 flex-column flex-md-row</attribute>
 </xpath>
 
 
-<xpath expr="//div[hasclass('footer-container')]/div[hasclass('nav')]/a" position="attributes">
+<!-- <xpath expr="//div[hasclass('footer-container')]/div[hasclass('nav')]/a" position="attributes">
     <attribute name="class">px-5 px-xl-0 mx-auto mx-md-0</attribute>
-</xpath>
+</xpath> -->
 
 
 <xpath expr="//ul[hasclass('list-container')]" position="attributes">
-    <attribute name="class">list-container mt-0 mx-auto mx-md-0</attribute>
+    <attribute name="class">list-container mt-0</attribute>
+    <attribute name="style">padding-left: 5px;</attribute>
 </xpath>
+
+ <xpath expr="//body" position="attributes">
+    <attribute name="class">fade-in-ati</attribute>
+    <attribute name="id">content</attribute>
+    <attribute name="style">display:none;</attribute>
+
+ </xpath>
 
 
     <xpath expr="//body" position="inside">
 
-
+  
       <div class="modal fade" id="successModal" tabindex="-1" role="dialog">
 
-        <div
-                    style="margin: 0 auto !importnat;"
-                    class="modal-dialog modal-sm-down modal-md md-up"
-                    role="document"
-                >
-
-          <div
-                        style="background-color: white; border-radius: 1rem; text-align: center;"
-                        class=" py-5 modal_container"
-                    >
-
-
+        <div style="margin: 0 auto !importnat;" class="modal-dialog modal-sm-down modal-md md-up" role="document">
+          <div style="background-color: white; border-radius: 1rem; text-align: center;" class=" py-5 modal_container">
 
             <div class="py-4" style="margin: 0 auto !important;">
 
@@ -100,9 +103,15 @@
 
 
 
+
       <script>
 
             $(document).ready(function() {
+              
+              $(window).on('load', function() {
+                $('#content').fadeIn(200);
+                });
+
     const cookieValue = getCookie('popup_status');
     if (cookieValue === 'successful' || cookieValue === 'error') {
 
@@ -159,13 +168,22 @@
     </xpath>
 
     <xpath expr="//footer//img[@class='main-logo']" position="attributes">
-      <attribute name="src">/g2p_ati_service_provider_portal/static/src/img/logo@2x.png</attribute>
+      <attribute name="src">/g2p_ati_service_provider_portal/static/src/img/ati_footer.png</attribute>
       <attribute name="class">main-logo custom-logo</attribute>
     </xpath>
 
 
+     <xpath expr="//footer//div/div/a/img" position="inside">
+     <span style="font-size: 12px; padding-left: 4px;
+    padding-top: 5px;
+    color: black;">Ethiopian Agricultural Transformation Institute<p style="font-size: 10px; margin-bottom: 0px;">Copyright &#169; <script>document.write(new Date().getFullYear());</script> All rights Reserved</p>
+    </span>
+
+    </xpath>
+
+
     <xpath expr="//div[hasclass('footer-container')]" position="attributes">
-      <attribute name="style">height: 100px !important;</attribute>
+      <attribute name="style">height: 70px !important; padding-top:25px;</attribute>
     </xpath>
 
     <xpath expr="//div[hasclass('search-box')]" position="attributes">
