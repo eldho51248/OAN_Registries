@@ -396,7 +396,7 @@
                                                                 t-att-value="group.id"
                                                             />
                                                             <table id="memberlist">
-                                                                <thead>
+                                                                <thead class="d-none d-lg-table-header-group">
                                                                     <tr class="list-row">
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
@@ -432,30 +432,30 @@
                                                                             t-foreach="farmer_member_ids"
                                                                             t-as="individual"
                                                                         >
-                                                                            <tr>
+                                                                            <tr class="tr_grid_item1 grid2_table" data-label="Sr.No">
                                                                                 <td style="color:#b3b3b3;">
                                                                                     <t t-out="counter" />
                                                                                 </td>
-                                                                                <td
+                                                                                <td class="tr_grid_item2" data-label="Name"
                                                                                     style="color:#078148; font: normal normal 600 13px/16px Inter;"
                                                                                 >
                                                                                     <t
                                                                                         t-out="individual['name']"
                                                                                     />
                                                                                 </td>
-                                                                                <td>
+                                                                                <td class="tr_grid_item6 text-end text-lg-start" data-label="Age">
                                                                                     <t
                                                                                         t-out="individual['age']"
                                                                                     />
                                                                                 </td>
-                                                                                <td class="text-capitalize">
+                                                                                <td data-label="Gender" class=" tr_grid_item4  text-capitalize">
                                                                                     <t
                                                                                         t-out="individual['gender']"
                                                                                     />
                                                                                 </td>
 
-                                                                                <td
-                                                                                    class="fw-bold text-center"
+                                                                                <td data-label="Household Head"
+                                                                                    class="fw-bold  text-end text-lg-center tr_grid_item5"
                                                                                 >
                                                                                     <t
                                                                                         t-if="individual['hh_is_household_head'] == 'yes'"
@@ -473,7 +473,7 @@
                                                                                     </t>
                                                                                 </td>
 
-                                                                                <td class="text-center">
+                                                                                <td data-label="Action" class="tr_grid_item3 text-end text-lg-center">
                                                                                     <a
                                                                                         t-attf-href="/serviceprovider/individual/update/{{ individual.id }}?group={{ group.id }}"
                                                                                     >
