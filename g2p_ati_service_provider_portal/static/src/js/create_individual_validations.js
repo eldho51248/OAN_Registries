@@ -107,9 +107,13 @@ $(document).ready(function () {
         const selectElement = document.getElementById(selectElementId);
         const field = document.getElementById(fieldId);
         // Const input = document.getElementById(inputId);
+        
+        const selectedOptionText = null
+        if (selectElement.options.length > 0 && selectElement.selectedIndex >= 0) {
         const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
             .trim()
             .toLowerCase();
+        }
 
         if (selectedOptionText === yesText.toLowerCase()) {
             field.style.display = "block";
@@ -126,9 +130,14 @@ $(document).ready(function () {
         const selectElement = document.getElementById(selectElementId);
         const field = document.getElementById(fieldId);
         const input = document.getElementById(inputId);
+
+        const selectedOptionText = null
+        if (selectElement.options.length > 0 && selectElement.selectedIndex >= 0) {
         const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
             .trim()
             .toLowerCase();
+        }
+
         if (selectedOptionText === otherText.toLowerCase()) {
             field.style.display = "block";
             input.setAttribute("required", "required");
@@ -340,9 +349,13 @@ $(document).ready(function () {
 
         // Const ridInput = document.getElementById("rid_input");
         // Const uidInput = document.getElementById("uid_input");
-        const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
+
+        let selectedOptionText = null
+        if (selectElement.options.length > 0 && selectElement.selectedIndex >= 0) {
+         selectedOptionText = selectElement.options[selectElement.selectedIndex].text
             .trim()
             .toLowerCase();
+        }
 
         if (selectedOptionText === "yes") {
             uidDiv.style.display = "block";
@@ -403,9 +416,12 @@ $(document).ready(function () {
         const divElement = document.getElementById(divElementId);
         const inputElement = document.getElementById(inputElementId);
 
+        const selectedOptionText = null
+        if (selectElement.options.length > 0 && selectElement.selectedIndex >= 0) {
         const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
             .trim()
             .toLowerCase();
+        }
 
         if (selectedOptionText === "yes") {
             divElement.style.display = "block";
@@ -423,9 +439,12 @@ $(document).ready(function () {
         const roleDiv = document.getElementById("role_div");
         const clusterRole = document.getElementById("role_in_cluster");
 
+        const selectedOptionText = null
+        if (selectElement.options.length > 0 && selectElement.selectedIndex >= 0) {
         const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
             .trim()
             .toLowerCase();
+        }
 
         if (selectedOptionText === "yes") {
             primaryCommodityDiv.style.display = "block";
@@ -451,9 +470,13 @@ $(document).ready(function () {
         const otherPhoneDiv = document.getElementById("other-div");
         const primaryPhone = document.getElementById("primary_phone");
         const otherPhone = document.getElementById("other_phone");
+
+        const selectedOptionText = null
+        if (selectElement.options.length > 0 && selectElement.selectedIndex >= 0) {
         const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
             .trim()
             .toLowerCase();
+        }
 
         if (selectedOptionText === "yes") {
             primaryPhoneDiv.style.display = "block";
@@ -493,7 +516,12 @@ $(document).ready(function () {
             success: function (options) {
                 var selectedvalue = " ";
                 const selectElement = document.getElementById(targetSelectId);
-                const selectedName = selectElement.options[selectElement.selectedIndex].text;
+
+
+                if (selectElement.options.length > 0 && selectElement.selectedIndex >= 0) {
+                    const selectedName = selectElement.options[selectElement.selectedIndex].text;
+                } 
+
                 if (
                     originalEvent !== "" &&
                     (selectdropdown === "current_region" || selectdropdown === "region")
@@ -553,6 +581,8 @@ $(document).ready(function () {
         "region",
         (initialValue = initialZoneId)
     );
+
+
     updateOptions(
         "/update_woreda_options",
         {zone_id: initialZoneId},
@@ -562,6 +592,7 @@ $(document).ready(function () {
         "zone",
         (initialValue = initialWoredaId)
     );
+    
     updateOptions(
         "/update_kebele_options",
         {woreda_id: initialWoredaId},
@@ -953,32 +984,7 @@ function validateSection(sectionId) {
     return valid;
 }
 
-// Function validateSection(sectionId) {
-//     const section = document.getElementById(sectionId);
-//     const requiredFields = section.querySelectorAll("[required]");
-//     let valid = true;
 
-//     requiredFields.forEach((field) => {
-//         if (field.value.trim() === "") {
-//             field.classList.add("is-invalid");
-//             valid = false;
-//         } else {
-//             field.classList.remove("is-invalid");
-//         }
-
-//         // Special validation for UID and RID in 'id-section'
-//         if (sectionId === "id-section" && field.name === "uid") {
-//             valid = valid && validateUID();
-//         }
-//         if (sectionId === "id-section" && field.name === "rid") {
-//             valid = valid && validateRID();
-//         }
-//     });
-
-//     return valid;
-// }
-
-// Let previousSection = "id-section";
 
 function showSection(sectionId, element, fromGroup = false) {
     // Val = validateSection(previousSection);
