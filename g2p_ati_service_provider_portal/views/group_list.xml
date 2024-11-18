@@ -196,7 +196,7 @@
                                 </thead>
                                 <tbody>
                                     <t t-foreach="groups" t-as="group">
-                                        <tr>
+                                        <tr class="grid3_table">
                                             <td  class="sr-column tr_grid_item1" style="color:#b3b3b3;" />
 
                                             <td data-label="Name" class="name-column tr_grid_item2" style="color:#078148; font: normal normal 600 13px/16px Inter;"

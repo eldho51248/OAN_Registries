@@ -200,7 +200,7 @@
                             <tbody>
 
                                 <t t-foreach="individual" t-as="group">
-                                    <tr t-att-data-selection="group['region']">
+                                    <tr class="grid3_table" t-att-data-selection="group['region']">
                                         <td class="sr-column r_grid_item1" style="color:#b3b3b3;" />
                                         
                                         <td data-label="Name"

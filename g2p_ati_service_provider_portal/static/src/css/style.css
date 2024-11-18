@@ -1117,7 +1117,7 @@ hr {
 
 
 
-.tables-values-container table tbody tr {
+.grid3_table {
     /* width: calc(50% - 10px); */
     /* position: relative; */
     display: grid;
@@ -1129,6 +1129,23 @@ hr {
 
 
 }
+
+.grid2_table {
+
+    display: grid;
+    grid-template-columns: 5% 1fr 1fr;
+    padding: 5px ;
+    row-gap: 8px ;
+    grid-template-rows: repeat(3, auto) ;
+    border-bottom: 1px solid #ddd;
+
+
+}
+
+
+
+
+
 
 
 
