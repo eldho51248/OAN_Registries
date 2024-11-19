@@ -666,7 +666,9 @@ SelectionWoredaModal?.addEventListener("input", function () {
         });
 });
 
-SelectionKebele?.addEventListener("input", handleSearch(false));
+SelectionKebele?.addEventListener("input", function () {
+    handleSearch(false);
+});
 SelectionKebeleGroup?.addEventListener("input", function () {
     handleSearch(true);
 });
