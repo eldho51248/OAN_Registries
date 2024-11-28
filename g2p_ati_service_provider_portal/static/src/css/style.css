@@ -42,8 +42,8 @@
 
 @media (min-width: 1024px) {
     .modal-content {
-        width: 1150px; /* Desired width for medium and larger screens */
-        height: 750px; /* Desired height for medium and larger screens */
+        width: 1000px; 
+        height: 750px;
     }
 }
 

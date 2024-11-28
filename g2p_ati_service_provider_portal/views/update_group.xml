@@ -411,6 +411,9 @@
                                                                 id="group_id"
                                                                 t-att-value="group.id"
                                                             />
+
+                                                                    <t t-if="farmer_member_ids">
+
                                                             <table id="memberlist">
                                                                 <thead class="d-none d-lg-table-header-group">
                                                                     <tr class="list-row">
@@ -443,7 +446,7 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <t t-set="counter" t-value="1" />
-                                                                    <t t-if="farmer_member_ids">
+
                                                                         <t
                                                                             t-foreach="farmer_member_ids"
                                                                             t-as="individual"
@@ -517,27 +520,10 @@
                                                                                 t-value="counter + 1"
                                                                             />
                                                                         </t>
-                                                                    </t>
+
+
                                                                   
-                                                                  
-                                                                    <t t-if="not farmer_member_ids">
-                                                                       
-                                                                       
-                                                                       
-                                                                      
 
-
-
-
-  <div style="text-align:center;" class="no_list mt-4">
-                                                            <img
-                                                                src="/g2p_service_provider_beneficiary_management/static/src/img/no_mem.png"
-                                                            />
-                                                            <div>
-                                                                <p>No Members!</p>
-                                                            </div>
-
-                                                        </div>
 
 
                                                                                     
@@ -545,7 +531,6 @@
 
 
                                                                         
-                                                                    </t>
 
 
 
@@ -558,7 +543,41 @@
 
                                                                 </tbody>
                                                             </table>
+
+                                                                    </t>
+
+
+
+
+                                                                    
+
+                                                                    <t t-else="">
+
+
+  <div  style="text-align:center;" class="no_list mt-4">
+                                                            <img
+                                                                src="/g2p_service_provider_beneficiary_management/static/src/img/no_mem.png"
+                                                            />
+                                                            <div>
+                                                                <p>No Members!</p>
+                                                            </div>
+
+                                                        </div> 
+                                                        </t>
+
+
+
+
+
                                                         </div>
+
+
+
+
+                                                        
+
+
+
                                                         <div style="text-align: center; margin-top: 20px;">
                                                             <button
                                                                 type="button"
@@ -570,6 +589,10 @@
                                                                 Add Farmer
                                                             </button>
                                                         </div>
+
+
+
+
                                                     </div>
                                                 </div>
 
@@ -4016,6 +4039,8 @@
                                                                 t-att-value="group.id"
                                                             />
 
+                                                        <t t-if="member_ids">
+
                                                             <table id="familylist">
                                                                 <thead class="d-none d-lg-table-header-group">
                                                                   
@@ -4049,7 +4074,6 @@
                                                                 <tbody>
                                                                     <t t-set="counter" t-value="1" />
 
-                                                                    <t t-if="member_ids">
                                                                         <t
                                                                             t-foreach="member_ids"
                                                                             t-as="individual"
@@ -4120,14 +4144,24 @@
                                                                             />
                                                                         </t>
 
-                                                                    </t>
-
-                                                                    <t t-if="not member_ids">
 
 
 
 
-  <div style="text-align:center;" class="no_list mt-4">
+
+
+
+
+
+                                                     
+                                                                </tbody>
+                                                            </table>
+                                                        </t>
+
+<t t-else="">
+
+
+  <div id="no-member-div2" style="text-align:center;" class="no_list mt-4">
                                                             <img
                                                                 src="/g2p_service_provider_beneficiary_management/static/src/img/no_mem.png"
                                                             />
@@ -4135,16 +4169,13 @@
                                                                 <p>No Members!</p>
                                                             </div>
 
-                                                        </div>
+                                                        </div> 
+                                                        </t>
 
 
 
 
 
-
-                                                                    </t>
-                                                                </tbody>
-                                                            </table>
 
 
                                                             <div class="mt-4" style="text-align:center;">
@@ -4723,6 +4754,7 @@
 
                                 validateFileInput(input);
                                 }
+
                             </script>
 
                             <script>
