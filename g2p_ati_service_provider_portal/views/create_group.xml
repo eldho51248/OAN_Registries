@@ -141,6 +141,14 @@
                                         </div>
                                         <main role="main" class="content">
 
+
+                                       <div class="section-header accord-active  d-md-none" onclick="toggleAccordionSection(this)">
+        <h4 class="section-title">Location Details</h4>
+    </div>
+
+     <div class="section-content-wrapper" style="max-height: none;">
+
+
                                             <div id="location-details" class="section-container">
                                                 <div class="section-content">
                                                     <div class="row">
@@ -367,7 +375,7 @@
 
                                                 </div>
 
-                                                <div class="section-footer d-flex justify-content-end">
+                                                <div class="section-footer d-none d-md-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-sm btn-outline-secondary"
@@ -377,6 +385,19 @@
                                                     </button>
                                                 </div>
                                             </div>
+
+
+</div>
+
+
+                                 <div class="section-header   d-md-none" onclick="toggleAccordionSection(this)">
+        <h4 class="section-title">Farmer Details</h4>
+    </div>
+
+     <div class="section-content-wrapper" >
+
+
+
                                             <div
                                                 id="farmer-details"
                                                 class="section-container"
@@ -494,7 +515,7 @@
                                                                 src="/g2p_service_provider_beneficiary_management/static/src/img/no_mem.png"
                                                             />
                                                             <div>
-                                                                <p>No members!</p>
+                                                                <p>No Members!</p>
                                                             </div>
 
                                                         </div>
@@ -515,7 +536,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="section-footer d-flex justify-content-end">
+                                                <div class="section-footer d-none d-md-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-sm btn-outline-secondary"
@@ -525,6 +546,9 @@
                                                     </button>
                                                 </div>
                                             </div>
+</div>
+
+
                                             <div
                                                 class="modal fade"
                                                 id="farmerDetailModal"
@@ -552,6 +576,11 @@
                                                         <div class="modal-body">
                                                             <!--                                                            <main role="main"
                                                             class="content">-->
+
+
+
+
+                                            
                                                             <div
                                                                 id="individual-details"
                                                                 class="section-container-group"
@@ -1284,7 +1313,6 @@
                                                                                     class="s_website_form_label"
                                                                                     for="primary_phone"
                                                                                 >
-                                                                                    <br />
                                                                                     <span
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
@@ -1322,7 +1350,6 @@
                                                                                     class="s_website_form_label"
                                                                                     for="other_phone"
                                                                                 >
-                                                                                    <br />
                                                                                     <span
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
@@ -1526,6 +1553,15 @@
                                                                     </button>
                                                                 </div>
                                                             </div>
+
+
+
+
+
+
+
+
+
                                                             <div
                                                                 id="socio-economic-data"
                                                                 class="section-container-group"
@@ -3966,6 +4002,12 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                                                             <div class="section-header  d-md-none" onclick="toggleAccordionSection(this)">
+        <h4 class="section-title">Family Members</h4>
+    </div>
+
+     <div class="section-content-wrapper">
                                             <div
                                                 id="family-members"
                                                 class="section-container"
@@ -4113,6 +4155,9 @@
 
 
                                             </div>
+</div>
+
+
                                             <div
                                                 class="modal fade"
                                                 id="editFamilyMemberModal"

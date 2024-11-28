@@ -4,9 +4,10 @@
     <record id="no_of_edits_view_tree" model="ir.ui.view">
         <field name="name">no.of.edits.view.tree</field>
         <field name="model">no.of.edits</field>
+
         <field name="arch" type="xml">
-            <tree editable="top" class="text-left">
-            <field name="edit_amount" string="Number of edits allowed" />
+            <tree editable="top" >
+            <field  name="edit_amount" string="Number of edits allowed" />
             </tree>
         </field>
     </record>

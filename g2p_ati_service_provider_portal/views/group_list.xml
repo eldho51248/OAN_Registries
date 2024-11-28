@@ -28,10 +28,8 @@
                         </div>
 
                             <a t-attf-href="/serviceprovider/group/create/" style="float:right;">
-                                <button type="button" class="btn btn-sm py-2 btn-primary create-new"> Create New <span
-                                        class="mx-2"
-                                    />
-                            <span class="fa fa-plus" />
+                            <button type="button" data-bs-toggle="tooltip" data-bs-title="Create" class="btn btn-sm py-2 d-flex align-items-center btn-primary create-new" style="
+                                row-gap: 4px;"> <span class="create_new mx-1">Create New </span><span class="fa fa-plus"></span>
                                 </button>
                             </a>
 

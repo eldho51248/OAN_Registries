@@ -106,11 +106,31 @@
 
       <script>
 
-            $(document).ready(function() {
-              
-              $(window).on('load', function() {
-                $('#content').fadeIn(200);
-                });
+    $(document).ready(function() {               
+      $(window).on('load', function() {
+        $('#content').fadeIn(200);
+
+
+
+
+        });
+
+       
+
+
+
+<!-- function toggleAccordionSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section.style.display === 'none') {
+        section.style.display = 'block'; // Open
+    } else {
+        section.style.display = 'none'; // Close
+    }
+} -->
+
+
+
+
 
     const cookieValue = getCookie('popup_status');
     if (cookieValue === 'successful' || cookieValue === 'error') {

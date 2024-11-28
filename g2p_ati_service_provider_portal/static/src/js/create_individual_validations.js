@@ -108,9 +108,9 @@ $(document).ready(function () {
         const field = document.getElementById(fieldId);
         // Const input = document.getElementById(inputId);
         
-        const selectedOptionText = null
+        let selectedOptionText = null
         if (selectElement.options.length > 0 && selectElement.selectedIndex >= 0) {
-        const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
+         selectedOptionText = selectElement.options[selectElement.selectedIndex].text
             .trim()
             .toLowerCase();
         }
@@ -131,9 +131,9 @@ $(document).ready(function () {
         const field = document.getElementById(fieldId);
         const input = document.getElementById(inputId);
 
-        const selectedOptionText = null
+        let selectedOptionText = null
         if (selectElement.options.length > 0 && selectElement.selectedIndex >= 0) {
-        const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
+         selectedOptionText = selectElement.options[selectElement.selectedIndex].text
             .trim()
             .toLowerCase();
         }
@@ -416,9 +416,9 @@ $(document).ready(function () {
         const divElement = document.getElementById(divElementId);
         const inputElement = document.getElementById(inputElementId);
 
-        const selectedOptionText = null
+        let selectedOptionText = null
         if (selectElement.options.length > 0 && selectElement.selectedIndex >= 0) {
-        const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
+         selectedOptionText = selectElement.options[selectElement.selectedIndex].text
             .trim()
             .toLowerCase();
         }
@@ -439,9 +439,9 @@ $(document).ready(function () {
         const roleDiv = document.getElementById("role_div");
         const clusterRole = document.getElementById("role_in_cluster");
 
-        const selectedOptionText = null
+        let selectedOptionText = null
         if (selectElement.options.length > 0 && selectElement.selectedIndex >= 0) {
-        const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
+         selectedOptionText = selectElement.options[selectElement.selectedIndex].text
             .trim()
             .toLowerCase();
         }
@@ -465,15 +465,20 @@ $(document).ready(function () {
     }
 
     function handlePhoneNumberSelection() {
+
+        console.log("in phone number change")
+
         const selectElement = document.getElementById("have-phone-no-selection");
         const primaryPhoneDiv = document.getElementById("primary-div");
         const otherPhoneDiv = document.getElementById("other-div");
         const primaryPhone = document.getElementById("primary_phone");
         const otherPhone = document.getElementById("other_phone");
 
-        const selectedOptionText = null
+        let selectedOptionText;
+
         if (selectElement.options.length > 0 && selectElement.selectedIndex >= 0) {
-        const selectedOptionText = selectElement.options[selectElement.selectedIndex].text
+
+         selectedOptionText = selectElement.options[selectElement.selectedIndex].text
             .trim()
             .toLowerCase();
         }
@@ -1085,6 +1090,7 @@ $("#farmerDetailModal").on("show.bs.modal", function () {
     resetFormFields();
 });
 
+
 function toggleFieldBasedOnSelect(
     fieldIdToToggle,
     value,
@@ -1102,6 +1108,7 @@ function toggleFieldBasedOnSelect(
     const container_div2 = document.getElementById(containerId2);
 
     if (!shouldShowField) {
+        console.log("when false")
         if (selectionFieldToClear) {
             selectionFieldToClear.selectedIndex = 0;
         } else {
@@ -1123,6 +1130,9 @@ function toggleFieldBasedOnSelect(
     }
 
     const fieldToToggle = document.getElementById(fieldIdToToggle);
+
+    console.log("fieldtotoggle, this is container_div, containerdiv2")
+    console.log(container_div)
 
     if (fieldToToggle) {
         fieldToToggle.style.display = shouldShowField ? "block" : "none";

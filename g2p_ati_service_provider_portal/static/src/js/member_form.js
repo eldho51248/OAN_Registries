@@ -783,6 +783,7 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
     // Function to handle the display of the 'Other' field for Woreda and Kebele
 
+
     function handleOtherFields(selectElementId, otherFieldId) {
         const selectElement = document.getElementById(selectElementId);
         const otherField = document.getElementById(otherFieldId);
