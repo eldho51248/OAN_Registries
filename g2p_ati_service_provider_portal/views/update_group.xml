@@ -4077,7 +4077,6 @@
                                                                 <tbody>
                                                                    <t t-if="member_ids">
                                                                     <t t-set="counter" t-value="1" />
-
                                                                         <t
                                                                             t-foreach="member_ids"
                                                                             t-as="individual"
