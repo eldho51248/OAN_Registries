@@ -28,7 +28,7 @@
                             <li class="show_all">
                                 <a
                                     href="#"
-                                    class="link"
+                                    class="mx-auto link"
                                     id="view_all_notif"
                                     onclick="viewAllNotifications()"
                                 >View All Notifications</a>

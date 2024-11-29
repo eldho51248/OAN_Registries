@@ -407,7 +407,7 @@
                                                     <div class="">
                                                         <div class="tables-values-container">
                                                             <table id="memberlist">
-                                                                <thead>
+                                                                <thead class="d-none d-lg-table-header-group">
                                                                     <tr class="list-row">
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
@@ -442,27 +442,30 @@
                                                                         t-foreach="individuals"
                                                                         t-as="individual"
                                                                     >
-                                                                        <tr>
-                                                                            <td style="color:#b3b3b3;" />
-                                                                            <td
+                                                                        <tr  class="grid2_table">
+                                                                            
+                                                                            <td  class="tr_grid_item1" style="color:#b3b3b3;" />
+                                                                            <td class="tr_grid_item2" data-label="Name"
                                                                                 style="color:#078148; font: normal normal 600 13px/16px Inter;"
                                                                             >
                                                                                 <t
                                                                                     t-out="individual['name']"
                                                                                 />
                                                                             </td>
-                                                                            <td>
+                                                                            <td class="tr_grid_item6 text-end text-lg-start" data-label="Age">
                                                                                 <t
                                                                                     t-out="individual['age']"
                                                                                 />
                                                                             </td>
-                                                                            <td class="text-capitalize">
+                                                                           <td data-label="Gender" class=" tr_grid_item4  text-capitalize">
                                                                                 <t
                                                                                     t-out="individual['gender']"
                                                                                 />
                                                                             </td>
 
-                                                                            <td class="fw-bold text-center">
+                                                                             <td data-label="Household Head"
+                                                                                    class="fw-bold  text-end text-lg-center tr_grid_item5"
+                                                                                >
                                                                                 <t
                                                                                     t-if="individual['hh_is_household_head'] == 'yes'"
                                                                                 >
@@ -482,7 +485,7 @@
                                                                             </td>
 
 
-                                                                            <td>
+                                                                            <td data-label="Action" class="tr_grid_item3 text-end text-lg-center">
                                                                                 <a
                                                                                     t-attf-href="/serviceprovider/individual/update/{{ individual.id }}?group={{ group.id }}"
                                                                                 >
@@ -494,6 +497,8 @@
                                                                                         />
                                                                                     </div>
                                                                                 </a>
+
+                                                                                
                                                                                 <!-- <button
                                                                                     type="button"
                                                                                     class="btn btn-outline-secondary btn-sm my-3"
@@ -503,6 +508,8 @@
                                                                                         class="fas fa-trash-alt"
                                                                                     />
                                                                                 </button> -->
+
+
                                                                             </td>
                                                                         </tr>
                                                                     </t>
@@ -4018,7 +4025,7 @@
 
                                                         <div class="tables-values-container">
                                                             <table id="familylist">
-                                                                <thead>
+                                                                <thead class="d-none d-lg-table-header-group" >
                                                                     <tr class="list-row">
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
@@ -4051,31 +4058,32 @@
                                                                         t-foreach="individuals"
                                                                         t-as="individual"
                                                                     >
-                                                                        <tr
+                                                                        <tr class="grid2_table"
                                                                             t-att-data-member-id="individual.id"
                                                                         >
-                                                                            <td style="color:#b3b3b3;" />
-                                                                            <td
+                                                                            <td class="tr_grid_item1" style="color:#b3b3b3;" />
+                                                                           
+                                                                            <td class="tr_grid_item2" data-label="Name"
                                                                                 style="color:#078148; font: normal normal 600 13px/16px Inter;"
                                                                             >
                                                                                 <t t-out="individual.name" />
                                                                             </td>
-                                                                            <td>
+                                                                            <td class="tr_grid_item6" data-label="Age" >
                                                                                 <t t-out="individual.age" />
                                                                             </td>
-                                                                            <td class="text-capitalize">
+                                                                            <td data-label="Gender" class="tr_grid_item4 text-capitalize">
                                                                                 <t
                                                                                     t-out="individual.gender"
                                                                                 />
                                                                             </td>
-                                                                            <td>
+                                                                            <td data-label="Relationship" class="tr_grid_item5" >
                                                                                 <t
                                                                                     t-out="individual.individual_membership_ids.kind.name"
                                                                                 />
                                                                             </td>
 
 
-                                                                            <td>
+                                                                            <td data-label="Action" class="tr_grid_item3 text-end text-lg-center"  >
                                                                                 <button
                                                                                     type="button"
                                                                                     class="btn btn-icon rounded-0"
@@ -4364,7 +4372,6 @@
                                                     role="document"
                                                 >
                                                     <div
-                                                        style="top: 50% !important"
                                                         class="modal-content beneficiary-modal-content"
                                                     >
                                                         <div

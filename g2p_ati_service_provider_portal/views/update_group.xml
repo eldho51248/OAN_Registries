@@ -147,6 +147,7 @@
 
                                             </ul>
                                         </div>
+                                     
                                         <!-- <div class="s_website_form_field" style="display:
                                         none;">
                                             <label class="s_website_form_label" for="group id holder">
@@ -166,6 +167,8 @@
                                                 t-att-value="group.id"
                                             />
                                         </div> -->
+
+
                                         <main role="main" class="content">
 
 
@@ -451,8 +454,8 @@
                                                                             t-foreach="farmer_member_ids"
                                                                             t-as="individual"
                                                                         >
-                                                                            <tr class="tr_grid_item1 grid2_table" >
-                                                                                <td style="color:#b3b3b3;"> 
+                                                                            <tr class="grid2_table" >
+                                                                                <td class="tr_grid_item1" style="color:#b3b3b3;"> 
                                                                                     <t t-out="counter" />
                                                                                 </td>
                                                                                 <td class="tr_grid_item2" data-label="Name"
@@ -4039,7 +4042,7 @@
                                                                 t-att-value="group.id"
                                                             />
 
-                                                        <t t-if="member_ids">
+                                                     
 
                                                             <table id="familylist">
                                                                 <thead class="d-none d-lg-table-header-group">
@@ -4072,16 +4075,17 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
+                                                                   <t t-if="member_ids">
                                                                     <t t-set="counter" t-value="1" />
 
                                                                         <t
                                                                             t-foreach="member_ids"
                                                                             t-as="individual"
                                                                         >
-                                                                            <tr class="tr_grid_item1 grid2_table"
+                                                                            <tr class="grid2_table"
                                                                                 t-att-data-member-id="individual.id"
                                                                             >
-                                                                                <td style="color:#b3b3b3;">
+                                                                                <td class="tr_grid_item1" style="color:#b3b3b3;">
                                                                                     <t t-out="counter" />
                                                                                 </td>
                                                                                 <td class="tr_grid_item2" data-label="Name"
@@ -4145,6 +4149,7 @@
                                                                         </t>
 
 
+                                                        </t>
 
 
 
@@ -4155,10 +4160,11 @@
 
                                                      
                                                                 </tbody>
-                                                            </table>
-                                                        </t>
 
-<t t-else="">
+                                                            </table>
+
+
+   <t t-if="not member_ids">
 
 
   <div id="no-member-div2" style="text-align:center;" class="no_list mt-4">
