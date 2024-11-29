@@ -63,6 +63,7 @@
                             <div class="row">
                                 <div class="container-fluid">
                                     <div class="rounded-card d-flex flex-column flex-md-row">
+                                        
                                         <div class="sidebar">
                                             <ul
                                                 class="nav d-flex flex-row flex-md-column justify-content-center"
@@ -160,6 +161,7 @@
                                                 </li>
                                             </ul>
                                         </div>
+
                                         <div class="s_website_form_field" style="display: none;">
                                             <label class="s_website_form_label" for="id holder">
                                                 <span
@@ -178,65 +180,13 @@
                                             />
                                         </div>
                                         <main role="main" class="content">
-                                            <!-- <div id="id-section" class="section-container">
-                                                <div class=" section-content">
-                                                    <div class="col-lg-6 col-md-6 col-sm-12">
-                                                        <div class="s_website_form_field">
-                                                            <label class="s_website_form_label" for="name">
-                                                                <span class="s_website_form_label_content" style="color: #666666;">Do you
-                                                                    have
-                                                                    a
-                                                                    national ID?</span>
-                                                                <span class="s_website_form_mark"> *</span>
-                                                            </label>
+                                          
+                                          
+                                          <div class="section-header accord-active  d-md-none" onclick="toggleAccordionSection(this)">
+        <h4 class="section-title">ID Section</h4>
+    </div>
 
-
-
-                                                            <select class="form-select" name="has_national_id" required="required" onchange="validateElement(this)" id="have-national-id-selection">
-
-                                                                <t t-foreach="has_national_id" t-as="option">
-                                                                    <option
-                                                                        t-att-value="option.id"
-
-                                                                        t-att-selected="(has_uid and option.name == 'Yes') or (not has_uid and option.id == have_national_id_selection_id)"
-                                                                        t-att-disabled="(has_uid)"
-                                                                        >
-                                                                        <t t-esc="option.name" />
-                                                                    </option>
-                                                                </t>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6 col-md-6 col-sm-12">
-                                                        <div class="s_website_form_field" id="uid-div" style="display: {% if has_uid %}block{% else %}none{% endif %};">
-                                                            <label class="s_website_form_label" for="name">
-                                                                <span class="s_website_form_label_content" style="color: #666666;">UID</span>
-                                                                <span class="s_website_form_mark"> *</span>
-                                                            </label>
-                                                            <input type="text" id="uid_input" name="uid" class="form-control" placeholder="UID" t-att-value="uid" required="required"  />
-                                                        </div>
-                                                        <div class="error-message col-12 s_website_form_field" id="uid_error" style="display: none;color: red;">
-                                                            UID must be exactly 12 Digits Only.
-                                                        </div>
-                                                        <div class="s_website_form_field" id="rid-div" style="display: {% if not has_uid %}block{% else %}none{% endif %};">
-                                                            <label class="s_website_form_label" for="name">
-                                                                <span class="s_website_form_label_content" style="color: #666666;">RID
-                                                                </span>
-                                                                <span class="s_website_form_mark"> *</span>
-                                                            </label>
-                                                            <input type="text" id="rid_input" name="rid" class="form-control" t-att-value="rid" placeholder="RID" />
-                                                            <div class="error-message col-12 s_website_form_field" id="rid_error" style="display: none;color: red;">
-                                                                RID must be exactly
-                                                                29 digits only.
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="section-footer d-flex justify-content-end">
-                                                    <button type="button" class=" btn-sm btn-outline-secondary next-btn" onclick="showNextSection('individual-details', 'id-section')" id="nextButton">NEXT<span>&#x276F;</span>
-                                                    </button>
-                                                </div>
-                                            </div> -->
+     <div class="section-content-wrapper" style="max-height: none;">
 
                                             <div id="id-section" class="section-container">
                                                 <div class=" section-content">
@@ -349,12 +299,21 @@
                                                     </button>
                                                 </div>
                                             </div>
+</div>
+
+
 
                                             <div
                                                 id="individual-details"
                                                 class="section-container"
                                                 style="display: none;"
                                             >
+
+                                                                                 <div class="section-header  d-md-none" onclick="toggleAccordionSection(this)">
+        <h4 class="section-title">Individual Details</h4>
+    </div>
+
+     <div class="section-content-wrapper">
                                                 <div class="section-content">
                                                     <div class="row">
                                                         <div class="col-lg-4">
@@ -1019,6 +978,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
+                                                        
                                                         <div
                                                             class="col-lg-4"
                                                             id="primary-div"
@@ -1032,13 +992,10 @@
                                                                     class="s_website_form_label"
                                                                     for="primary_phone"
                                                                 >
-                                                                    <br />
                                                                     <span
                                                                         class="s_website_form_label_content"
                                                                         style="color: #666666;"
-                                                                    >
-                                                                        Primary Phone Number
-                                                                    </span>
+                                                                    >Primary Phone Number</span>
                                                                     <span class="s_website_form_mark">
                                                                         *</span>
                                                                 </label>
@@ -1067,7 +1024,6 @@
                                                                     class="s_website_form_label"
                                                                     for="other_phone"
                                                                 >
-                                                                    <br />
                                                                     <span
                                                                         class="s_website_form_label_content"
                                                                         style="color: #666666;"
@@ -1208,7 +1164,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="section-footer d-flex justify-content-end">
+                                </div>
+                                                <div class="section-footer d-none d-md-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-sm btn-outline-secondary"
@@ -1218,11 +1175,19 @@
                                                     </button>
                                                 </div>
                                             </div>
+
                                             <div
                                                 id="socio-economic-data"
                                                 class="section-container"
                                                 style="display: none;"
                                             >
+
+
+                                                                        <div class="section-header  d-md-none" onclick="toggleAccordionSection(this)">
+        <h4 class="section-title">Socio Economic Data</h4>
+    </div>
+
+     <div class="section-content-wrapper">
                                                 <div class="section-content">
                                                     <div class="row">
                                                         <div class="col-lg-6">
@@ -1359,7 +1324,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="section-footer d-flex justify-content-end">
+
+                                    </div>
+                                                <div class="section-footer d-none d-md-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-sm btn-outline-secondary"
@@ -1374,6 +1341,12 @@
                                                 class="section-container"
                                                 style="display: none;"
                                             >
+
+                                                                        <div class="section-header  d-md-none" onclick="toggleAccordionSection(this)">
+        <h4 class="section-title">Membership Details</h4>
+    </div>
+
+     <div class="section-content-wrapper">
                                                 <div class="section-content">
                                                     <div class="row">
                                                         <div class="col-lg-6">
@@ -1732,7 +1705,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="section-footer d-flex justify-content-end">
+                                    </div>
+                                                <div class="section-footer d-none d-md-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-sm btn-outline-secondary"
@@ -1747,6 +1721,13 @@
                                                 class="section-container"
                                                 style="display: none;"
                                             >
+
+
+                                                                        <div class="section-header  d-md-none" onclick="toggleAccordionSection(this)">
+        <h4 class="section-title">Land Information</h4>
+    </div>
+
+     <div class="section-content-wrapper">
                                                 <div class="section-content">
                                                     <div id="section-content-land">
                                                         <t t-if="not land_info_data">
@@ -2339,7 +2320,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="section-footer d-flex justify-content-end">
+                                                </div>
+
+                                                <div class="section-footer d-none d-md-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-sm btn-outline-secondary"
@@ -2367,6 +2350,13 @@
                                                 class="section-container"
                                                 style="display: none;"
                                             >
+
+
+                                                                                                            <div class="section-header  d-md-none" onclick="toggleAccordionSection(this)">
+        <h4 class="section-title">Crop Information</h4>
+    </div>
+
+     <div class="section-content-wrapper">
                                                 <div
                                                     class="section-content crop-mixed-err-msg error-message s_website_form_field"
                                                     style="display: none;color: red;"
@@ -2375,23 +2365,7 @@
                                                     types.
                                                 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
 
 
 
@@ -2774,7 +2748,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="section-footer d-flex justify-content-end">
+
+                                                </div>
+                                                <div class="section-footer d-none d-md-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-sm btn-outline-secondary"
@@ -2795,6 +2771,14 @@
                                                 class="section-container"
                                                 style="display: none;"
                                             >
+
+                                                                                                            <div class="section-header  d-md-none" onclick="toggleAccordionSection(this)">
+        <h4 class="section-title">Livestock Information</h4>
+    </div>
+
+     <div class="section-content-wrapper">
+
+
                                                 <div
                                                     class="section-content livestock-err-msg error-message s_website_form_field"
                                                     style="display: none;color: red;"
@@ -3194,7 +3178,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="section-footer d-flex justify-content-end">
+
+                                                </div>
+                                                <div class="section-footer d-none d-md-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-sm btn-outline-secondary"
@@ -3209,6 +3195,15 @@
                                                 class="section-container"
                                                 style="display: none;"
                                             >
+
+
+
+                                                                                                            <div class="section-header  d-md-none" onclick="toggleAccordionSection(this)">
+        <h4 class="section-title">Agricultural Input</h4>
+    </div>
+
+     <div class="section-content-wrapper">
+
                                                 <div
                                                     class="section-content crop-mixed-err-msg error-message s_website_form_field"
                                                     style="display: none;color: red;"
@@ -3359,8 +3354,10 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                </div>
                                                 <div
-                                                    class="section-footer d-flex
+                                                    class="section-footer d-none d-md-flex
                                             justify-content-end"
                                                 >
                                                     <button
@@ -3377,6 +3374,15 @@
                                                 class="section-container"
                                                 style="display: none;"
                                             >
+
+
+
+                                            
+                                                                                                            <div class="section-header  d-md-none" onclick="toggleAccordionSection(this)">
+        <h4 class="section-title">Acess to Resource</h4>
+    </div>
+
+     <div class="section-content-wrapper">
                                                 <div
                                                     class="section-content crop-mixed-err-msg error-message s_website_form_field"
                                                     style="display: none;color: red;"
@@ -3468,7 +3474,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="section-footer d-flex justify-content-end">
+
+                                                </div>
+                                                <div class="section-footer d-none d-md-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-sm btn-outline-secondary"
@@ -3483,6 +3491,14 @@
                                                 class="section-container"
                                                 style="display: none;"
                                             >
+
+
+                                            
+                                                                                                            <div class="section-header  d-md-none" onclick="toggleAccordionSection(this)">
+        <h4 class="section-title">Financial Service</h4>
+    </div>
+
+     <div class="section-content-wrapper">
                                                 <div class="section-content">
 
                                                      <div class="row">
@@ -3570,7 +3586,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="section-footer d-flex justify-content-end">
+                                                </div>
+                                                <div class="section-footer  d-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-sm btn-outline-secondary"

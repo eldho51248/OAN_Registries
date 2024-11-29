@@ -210,7 +210,8 @@ li a {
     border: none;
     background-color: rgba(7, 129, 72, 0.1);
     color: #078148;
-    border-radius: 2px;
+    width: 64px;
+    border-radius: 4px;
     padding: 2px 6px;
     box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.075);
 }
