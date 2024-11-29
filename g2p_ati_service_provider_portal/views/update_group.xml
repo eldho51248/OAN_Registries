@@ -11,9 +11,12 @@
         <xpath expr="//div[hasclass('main-container')]" position="replace">
             <div style="padding-top: 15px !important; padding-bottom: 0px !important;" class="main-container">
                 <div class="">
-                    <div  style="max-width:1400px" class="form-template mx-auto">
+                    <div style="max-width:1400px" class="form-template mx-auto">
 <div class="top-content">
-    <h5 style="font: normal 600 18px / 22px Inter !important; height: auto !important;" class="all-title">Update Household</h5>
+    <h5
+                                style="font: normal 600 15px / 22px Inter !important; height: auto !important;"
+                                class="all-title"
+                            >Update Household</h5>
 
     <ol class="breadcrumb form-layout-breadcrumb d-flex flex-col flex-md-row">
         <li class="breadcrumb-item">
@@ -43,7 +46,9 @@
                                 <div class="container-fluid">
                                     <div class="rounded-card d-flex flex-column flex-md-row">
                                         <div class="sidebar">
-                                            <ul class="nav d-flex flex-row flex-md-column justify-content-center">
+                                            <ul
+                                                class="nav d-flex flex-row flex-md-column justify-content-center"
+                                            >
                                                 <li class="nav-item">
                                                     <a
                                                         id="location-details-link"
@@ -163,13 +168,19 @@
                                         </div> -->
                                         <main role="main" class="content">
 
+
+                                                                         <div class="section-header accord-active  d-md-none" onclick="toggleAccordionSection(this)">
+        <h4 class="section-title">Location Details</h4>
+    </div>
+
+     <div class="section-content-wrapper" style="max-height: none;">
+
                                             <div id="location-details" class="section-container">
+    
                                                 <div class="section-content">
                                                     <div class="row">
                                                         <div class="col-lg-5 left-margin-input">
-                                                            <div
-                                                                class="s_website_form_field lmargin-input"
-                                                            >
+                                                            <div class="s_website_form_field lmargin-input">
                                                                 <label class="s_website_form_label">
                                                                     <span
                                                                         class="s_website_form_label_content"
@@ -205,10 +216,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-5 left-margin-input">
-                                                            <div
-                                                                class="s_website_form_field lmargin-input"
-                                                                
-                                                            >
+                                                            <div class="s_website_form_field lmargin-input">
                                                                 <label class="s_website_form_label">
                                                                     <span
                                                                         class="s_website_form_label_content"
@@ -243,10 +251,7 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-lg-5">
-                                                            <div
-                                                                class="s_website_form_field lmargin-input"
-                                                                
-                                                            >
+                                                            <div class="s_website_form_field lmargin-input">
                                                                 <label class="s_website_form_label">
                                                                     <span
                                                                         class="s_website_form_label_content"
@@ -282,10 +287,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-5">
-                                                            <div
-                                                                class="s_website_form_field lmargin-input"
-                                                                
-                                                            >
+                                                            <div class="s_website_form_field lmargin-input">
                                                                 <label class="s_website_form_label">
                                                                     <span
                                                                         class="s_website_form_label_content"
@@ -375,7 +377,7 @@
 
                                                 </div>
 
-                                                <div class="section-footer d-flex justify-content-end">
+                                                <div class="section-footer d-none d-md-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-sm btn-outline-secondary"
@@ -386,7 +388,15 @@
                                                 </div>
                                             </div>
 
+                                            </div>
 
+
+                                                                   <div class="section-header  d-md-none" onclick="toggleAccordionSection(this)">
+        <h4 class="section-title">Farmer Details</h4>
+    </div>
+
+     <div class="section-content-wrapper">
+                                          
                                             <div
                                                 id="farmer-details"
                                                 class="section-container"
@@ -402,7 +412,7 @@
                                                                 t-att-value="group.id"
                                                             />
                                                             <table id="memberlist">
-                                                                <thead>
+                                                                <thead class="d-none d-lg-table-header-group">
                                                                     <tr class="list-row">
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
@@ -438,30 +448,30 @@
                                                                             t-foreach="farmer_member_ids"
                                                                             t-as="individual"
                                                                         >
-                                                                            <tr>
-                                                                                <td style="color:#b3b3b3;">
+                                                                            <tr class="tr_grid_item1 grid2_table" >
+                                                                                <td style="color:#b3b3b3;"> 
                                                                                     <t t-out="counter" />
                                                                                 </td>
-                                                                                <td
+                                                                                <td class="tr_grid_item2" data-label="Name"
                                                                                     style="color:#078148; font: normal normal 600 13px/16px Inter;"
                                                                                 >
                                                                                     <t
                                                                                         t-out="individual['name']"
                                                                                     />
                                                                                 </td>
-                                                                                <td>
+                                                                                <td class="tr_grid_item6 text-end text-lg-start" data-label="Age">
                                                                                     <t
                                                                                         t-out="individual['age']"
                                                                                     />
                                                                                 </td>
-                                                                                <td class="text-capitalize">
+                                                                                <td data-label="Gender" class=" tr_grid_item4  text-capitalize">
                                                                                     <t
                                                                                         t-out="individual['gender']"
                                                                                     />
                                                                                 </td>
 
-                                                                                <td
-                                                                                    class="fw-bold text-center"
+                                                                                <td data-label="Household Head"
+                                                                                    class="fw-bold  text-end text-lg-center tr_grid_item5"
                                                                                 >
                                                                                     <t
                                                                                         t-if="individual['hh_is_household_head'] == 'yes'"
@@ -480,26 +490,20 @@
                                                                                 </td>
 
                                                                                 <td class="text-center">
-                                                                                    <a
-                                                                                        t-attf-href="/serviceprovider/individual/update/{{ individual.id }}?group={{ group.id }}"
-                                                                                    >
-                                                                                        <div
-                                                                                            class="btn btn-icon rounded-0"
+                                                                                    <t t-if="individual['state'] != 'update_requested'">
+                                                                                        <a
+                                                                                            t-attf-href="/serviceprovider/individual/update/{{ individual.id }}?group={{ group.id }}"
                                                                                         >
-                                                                                            <i
-                                                                                                class="fa fa-pencil"
-                                                                                            />
+                                                                                            <div class="btn btn-icon rounded-0">
+                                                                                                <i class="fa fa-pencil"/>
+                                                                                            </div>
+                                                                                        </a>
+                                                                                    </t>
+                                                                                    <t t-else="">
+                                                                                        <div class="btn btn-icon rounded-0 text-muted" title="Edit disabled">
+                                                                                            <i class="fa fa-pencil" style="pointer-events: none;"/>
                                                                                         </div>
-                                                                                    </a>
-                                                                                    <!-- <button
-                                                                                        type="button"
-                                                                                        class="btn btn-outline-secondary btn-sm my-3"
-                                                                                        onclick="deleteMember(this)"
-                                                                                    >
-                                                                                        <i
-                                                                                            class="fas fa-trash-alt"
-                                                                                        />
-                                                                                    </button> -->
+                                                                                    </t>
                                                                                 </td>
                                                                             </tr>
                                                                             <t
@@ -508,24 +512,44 @@
                                                                             />
                                                                         </t>
                                                                     </t>
+                                                                  
+                                                                  
                                                                     <t t-if="not farmer_member_ids">
-                                                                        <tr>
-                                                                            <td
-                                                                                colspan="7"
-                                                                                style="text-align: center; padding: 0; border: none;"
-                                                                            >
-                                                                                <img
-                                                                                    src="/g2p_service_provider_beneficiary_management/static/src/img/no_mem.png"
-                                                                                    alt="No Members"
-                                                                                    style="display: block; margin: 0 auto;"
-                                                                                />
-                                                                                <p
-                                                                                    style="margin: 0; padding: 0; font-size: 16px;"
-                                                                                >No
-                                                                                    members!</p>
-                                                                            </td>
-                                                                        </tr>
+                                                                       
+                                                                       
+                                                                       
+                                                                      
+
+
+
+
+  <div style="text-align:center;" class="no_list mt-4">
+                                                            <img
+                                                                src="/g2p_service_provider_beneficiary_management/static/src/img/no_mem.png"
+                                                            />
+                                                            <div>
+                                                                <p>No Members!</p>
+                                                            </div>
+
+                                                        </div>
+
+
+                                                                                    
+
+
+
+                                                                        
                                                                     </t>
+
+
+
+                                                                    
+
+
+
+
+
+
                                                                 </tbody>
                                                             </table>
                                                         </div>
@@ -543,7 +567,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="section-footer d-flex justify-content-end">
+                                                <div class="section-footer d-none d-md-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-sm btn-outline-secondary"
@@ -552,6 +576,8 @@
                                                     >NEXT <span>&#x276F;</span>
                                                     </button>
                                                 </div>
+                                            </div>
+
                                             </div>
 
 
@@ -588,13 +614,13 @@
                                                             >
                                                             <div class="row">
                                                                 <div
-                                                                    class="container-fluid heading-header"
-                                                                    style="background-color: #d6eae0; width: 95%;"
-                                                                >
-                                                                    <span
-                                                                        class="heading-text"
-                                                                        style="color: #0e802a;"
+                                                                        class="container-fluid heading-header"
+                                                                        style="background-color: #d6eae0; width: 95%;"
                                                                     >
+                                                                    <span
+                                                                            class="heading-text"
+                                                                            style="color: #0e802a;"
+                                                                        >
                                                                         Basic Details
                                                                     </span>
                                                                 </div>
@@ -605,9 +631,8 @@
                                                                     <div class="row">
                                                                         <div class="col-lg-4">
                                                                             <div
-
-
-                                                                                class="s_website_form_field ">
+                                                                                class="s_website_form_field "
+                                                                            >
 
 
                                                                                 <label
@@ -1577,7 +1602,7 @@
                                                                             >
                                                                                 Socio Economic Data
                                                                             </span>
-                                                                          
+
                                                                         </div>
                                                                     </div>
 
@@ -1782,7 +1807,7 @@
                                                                             >
                                                                                 Membership Details
                                                                             </span>
-                                                                          
+
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
@@ -2243,7 +2268,7 @@
                                                                             >
                                                                                 Land Information
                                                                             </span>
-                                                                          
+
                                                                         </div>
                                                                     </div>
                                                                     <div id="section-content-land">
@@ -2258,9 +2283,7 @@
                                                                                 id="land-section-repeat"
                                                                                 data-index="0"
                                                                             >
-                                                                                <div
-                                                                                    class="container-fluid"
-                                                                                >
+                                                                                <div class="container-fluid">
 
                                                                                     <div
                                                                                         class="row pt-3 pb-1"
@@ -2480,9 +2503,7 @@
                                                                                 id="land-section-repeat"
                                                                                 t-att-data-index="{9999}"
                                                                             >
-                                                                                <div
-                                                                                    class="container-fluid"
-                                                                                >
+                                                                                <div class="container-fluid">
 
                                                                                     <div
                                                                                         class="row pt-3 pb-1"
@@ -2732,11 +2753,11 @@
                                                                             >
                                                                                 Crop Information
                                                                             </span>
-                                                                          
+
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
-                                                                      
+
                                                                         <div class="col-6">
                                                                             <div class="s_website_form_field">
                                                                                 <label
@@ -2800,9 +2821,7 @@
                                                                                 id="crop-section-repeat"
                                                                                 data-index="0"
                                                                             >
-                                                                                <div
-                                                                                    class="container-fluid"
-                                                                                >
+                                                                                <div class="container-fluid">
 
                                                                                     <div
                                                                                         class="row pt-3 pb-1"
@@ -2931,9 +2950,7 @@
                                                                                 id="crop-section-repeat"
                                                                                 t-att-data-index="{9999}"
                                                                             >
-                                                                                <div
-                                                                                    class="container-fluid"
-                                                                                >
+                                                                                <div class="container-fluid">
 
                                                                                     <div
                                                                                         class="row pt-3 pb-1"
@@ -3105,11 +3122,11 @@
                                                                             >
                                                                                 Livestock Information
                                                                             </span>
-                                                                          
+
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
-                                                                      
+
                                                                         <div class="col-6">
                                                                             <div class="s_website_form_field">
                                                                                 <label
@@ -3175,9 +3192,7 @@
                                                                                 id="livestock-section-repeat"
                                                                                 data-index="0"
                                                                             >
-                                                                                <div
-                                                                                    class="container-fluid"
-                                                                                >
+                                                                                <div class="container-fluid">
 
                                                                                     <div
                                                                                         class="row pt-3 pb-1"
@@ -3494,7 +3509,7 @@
                                                                             >
                                                                                 Agricultural Input
                                                                             </span>
-                                                                          
+
                                                                         </div>
                                                                     </div>
 
@@ -3719,11 +3734,11 @@
                                                                             >
                                                                                 Access To Resource
                                                                             </span>
-                                                                          
+
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
-                                                                       
+
                                                                         <div class="col-lg-6">
                                                                             <div class="s_website_form_field">
                                                                                 <label
@@ -3747,7 +3762,6 @@
                                                                                 <select
                                                                                     class="form-select"
                                                                                     name="access_to_machinery"
-                                                                                   
                                                                                     onchange="validateElement(this)"
                                                                                     id="access-to-machinery-selection"
                                                                                 >
@@ -3838,7 +3852,7 @@
                                                                             >
                                                                                 Financial Services
                                                                             </span>
-                                                                          
+
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
@@ -3973,6 +3987,14 @@
                                                 </div>
                                             </div>
 
+
+
+                                                                                                               <div class="section-header   d-md-none" onclick="toggleAccordionSection(this)">
+        <h4 class="section-title">Family Members</h4>
+    </div>
+
+     <div class="section-content-wrapper" >
+
                                             <div
                                                 id="family-members"
                                                 class="section-container"
@@ -3989,16 +4011,8 @@
                                                             />
 
                                                             <table id="familylist">
-                                                                <thead>
-                                                                    <!-- <tr
-                                                                        class="col-lg-12 container-fluid heading-header"
-                                                                        style="background-color: #f0fff0;">
-                                                                        <th>Name</th>
-                                                                        <th>Gender </th>
-                                                                        <th>Date Of Birth </th>
-                                                                        <th>Relationship</th>
-                                                                        <th>Actions</th>
-                                                                    </tr> -->
+                                                                <thead class="d-none d-lg-table-header-group">
+                                                                  
                                                                     <tr class="list-row">
                                                                         <th
                                                                             style="color:#078148; font: normal normal 600 14px/17px Inter;"
@@ -4034,37 +4048,38 @@
                                                                             t-foreach="member_ids"
                                                                             t-as="individual"
                                                                         >
-                                                                            <tr
+                                                                            <tr class="tr_grid_item1 grid2_table"
                                                                                 t-att-data-member-id="individual.id"
                                                                             >
                                                                                 <td style="color:#b3b3b3;">
                                                                                     <t t-out="counter" />
                                                                                 </td>
-                                                                                <td
+                                                                                <td class="tr_grid_item2" data-label="Name"
                                                                                     style="color:#078148; font: normal normal 600 13px/16px Inter;"
                                                                                 >
                                                                                     <t
                                                                                         t-out="individual.name"
                                                                                     />
                                                                                 </td>
-                                                                                <td>
+                                                                                <td class="tr_grid_item6" data-label="Age" >
                                                                                     <t
                                                                                         t-out="individual.age"
                                                                                     />
                                                                                 </td>
-                                                                                <td class="text-capitalize">
+
+                                                                                <td data-label="Gender" class=" tr_grid_item4 text-capitalize">
                                                                                     <t
                                                                                         t-out="individual.gender"
                                                                                     />
                                                                                 </td>
-                                                                                <td>
+                                                                                <td data-label="Relationship" class="tr_grid_item5"  >
                                                                                     <t
                                                                                         t-out="individual.individual_membership_ids.kind.name"
                                                                                     />
                                                                                 </td>
 
 
-                                                                                <td>
+                                                                                <td data-label="Action" class="tr_grid_item3 text-end text-lg-center">
                                                                                     <button
                                                                                         type="button"
                                                                                         class="btn btn-icon rounded-0"
@@ -4102,22 +4117,25 @@
                                                                     </t>
 
                                                                     <t t-if="not member_ids">
-                                                                        <tr>
-                                                                            <td
-                                                                                colspan="7"
-                                                                                style="text-align: center; padding: 0; border: none;"
-                                                                            >
-                                                                                <img
-                                                                                    src="/g2p_service_provider_beneficiary_management/static/src/img/no_mem.png"
-                                                                                    alt="No Members"
-                                                                                    style="display: block; margin: 0 auto;"
-                                                                                />
-                                                                                <p
-                                                                                    style="margin: 0; padding: 0; font-size: 16px;"
-                                                                                >No
-                                                                                    members!</p>
-                                                                            </td>
-                                                                        </tr>
+
+
+
+
+  <div style="text-align:center;" class="no_list mt-4">
+                                                            <img
+                                                                src="/g2p_service_provider_beneficiary_management/static/src/img/no_mem.png"
+                                                            />
+                                                            <div>
+                                                                <p>No Members!</p>
+                                                            </div>
+
+                                                        </div>
+
+
+
+
+
+
                                                                     </t>
                                                                 </tbody>
                                                             </table>
@@ -4156,6 +4174,8 @@
                                                         CLOSE
                                                     </button>
                                                 </div>
+                                            </div>
+
                                             </div>
 
 
@@ -4367,7 +4387,8 @@
                                                     role="document"
                                                 >
                                                     <div
-                                                        style="top: 50% !important" class="modal-content beneficiary-modal-content">
+                                                        class="modal-content beneficiary-modal-content"
+                                                    >
                                                         <div
                                                             class="card-header form-card-header"
                                                             style="margin:15px"

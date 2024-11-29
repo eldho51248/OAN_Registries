@@ -64,12 +64,14 @@ a {
     position: relative;
 }
 
-.navbar .profile .profile_dd,
-.notification_dd {
+
+
+.navbar .profile .profile_dd, .notification_dd {
     position: absolute;
-    top: 114%;
-    right: -573%;
-    width: 1200%;
+    top: 121%;
+    right: -180px;
+    width: 997%;
+    font-size: 12px;
     user-select: none;
     background: #fff;
     border: 1px solid #c7d8e2;
@@ -78,6 +80,12 @@ a {
     border-radius: 7px;
     box-shadow: 10px 10px 35px rgba(0, 0, 0, 0.125), -10px -10px 35px rgba(0, 0, 0, 0.125);
 }
+
+
+
+
+
+
 
 .navbar .profile .profile_dd:before,
 .notification_dd:before {
@@ -220,7 +228,7 @@ a {
 }
 
 .navbar .profile .profile_dd ul li a {
-    display: block; 
+    display: block;
     padding: 15px 35px;
     position: relative;
 }
@@ -372,10 +380,10 @@ button#show_notification {
 }
 
 .notifications_button_div {
-    margin-top: 0px;
-    margin-left: 70px;
+    /* margin-top: 0px;
+    margin-left: 70px; */
     position: relative;
-    display: inline-block;
+    /* display: inline-block; */
 }
 
 .trial_notify {
@@ -385,8 +393,8 @@ button#show_notification {
 
 .notification_number {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 24px;
+    right: -6px;
     background-color: red;
     color: white;
     border-radius: 30%;

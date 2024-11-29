@@ -51,9 +51,15 @@ function updateLanguage(langElement) {
 
     if (selectedLang) {
         if (allowedLanguages.includes(selectedLang.label)) {
-            givenName.textContent = `(${selectedLang.label})`;
-            fatherName.textContent = `(${selectedLang.label})`;
-            gfName.textContent = `(${selectedLang.label})`;
+            if (givenName) {
+                givenName.textContent = `(${selectedLang.label})`;
+            }
+            if (fatherName) {
+                fatherName.textContent = `(${selectedLang.label})`;
+            }
+            if (gfName) {
+                gfName.textContent = `(${selectedLang.label})`;
+            }
 
             givenNameAmh.removeAttribute("required");
             fatherNameAmh.removeAttribute("required");

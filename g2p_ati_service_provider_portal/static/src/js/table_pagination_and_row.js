@@ -22,6 +22,16 @@ const SelectionZonGroup = document.getElementById("zone_selection_group");
 const SelectionWoredaGroup = document.getElementById("woreda_selection_group");
 const SelectionKebeleGroup = document.getElementById("kebele_selection_group");
 
+const SelectionRegionGroupModal = document.getElementById("region_selection_group_modal");
+const SelectionZonGroupModal = document.getElementById("zone_selection_group_modal");
+const SelectionWoredaGroupModal = document.getElementById("woreda_selection_group_modal");
+const SelectionKebeleGroupModal = document.getElementById("kebele_selection_group_modal");
+
+const SelectionRegionModal = document.getElementById("region_selection_modal");
+const SelectionZonModal = document.getElementById("zone_selection_modal");
+const SelectionWoredaModal = document.getElementById("woreda_selection_modal");
+const SelectionKebeleModal = document.getElementById("kebele_selection_modal");
+
 searchClearText.style.display = "none";
 
 function addTableSrNo() {
@@ -77,47 +87,67 @@ function applySearchFilter(searchValue) {
         );
     });
 }
-function applySelectionFilter(selectionValue, isGroup) {
 
+function applySelectionFilter(selectionValue, isGroup, modal = false) {
     filteredRows = allRows.filter((row) => {
         // Assuming each row has a data attribute or a cell with the selection value
         var cellValue2 = null;
+
         if (isGroup) {
             cellValue2 = row.cells[3].innerText.trim().replace(/\s/g, "");
         } else {
             cellValue2 = row.cells[2].innerText.trim().replace(/\s/g, "");
         }
 
-       
         const selectedText = selectionValue.options[selectionValue.selectedIndex].text
             .trim()
             .replace(/\s/g, "");
-        
 
         return cellValue2 === selectedText || selectedText === "Region";
     });
 }
-function applySelectionFilterZone(isGroup) {
+
+function applySelectionFilterZone(isGroup, modal = false) {
     filteredRows = allRows.filter((row) => {
         var cellValue2 = null;
         var text_i = null;
+
         if (isGroup) {
             cellValue2 = row.cells[4].innerText.trim().replace(/\s/g, "");
-            text_i = SelectionZonGroup.options[SelectionZonGroup.selectedIndex].text
-                .trim()
-                .replace(/\s/g, "");
+
+            if (!modal) {
+                text_i = SelectionZonGroup.options[SelectionZonGroup.selectedIndex].text
+                    .trim()
+                    .replace(/\s/g, "");
+            }
+
+            if (modal) {
+                text_i = SelectionZonGroupModal.options[SelectionZonGroupModal.selectedIndex].text
+                    .trim()
+                    .replace(/\s/g, "");
+            }
         } else {
             cellValue2 = row.cells[3].innerText.trim().replace(/\s/g, "");
-            text_i = SelectionZon.options[SelectionZon.selectedIndex].text.trim().replace(/\s/g, "");
-        }
-        // Const cellValue2 = row.cells[3].value
 
+            if (!modal) {
+                text_i = SelectionZon.options[SelectionZon.selectedIndex].text.trim().replace(/\s/g, "");
+            }
+
+            if (modal) {
+                text_i = SelectionZonModal.options[SelectionZonModal.selectedIndex].text
+                    .trim()
+                    .replace(/\s/g, "");
+            }
+        }
+
+        // Const cellValue2 = row.cells[3].value
         // return cellValue2 === selectionValue;
+
         return cellValue2 === text_i || text_i === "Zone";
     });
 }
 
-function applySelectionFilterWoreda(selectionValue, isGroup) {
+function applySelectionFilterWoreda(selectionValue, isGroup, modal = false) {
     filteredRows = allRows.filter((row) => {
         // Const cellValue2 = row.cells[4].innerText.trim().replace(/\s/g, "");
         // const selectedText = selectionValue.options[selectionValue.selectedIndex].text;
@@ -126,33 +156,88 @@ function applySelectionFilterWoreda(selectionValue, isGroup) {
         var text_i = null;
         if (isGroup) {
             cellValue2 = row.cells[5].innerText.trim().replace(/\s/g, "");
-            text_i = SelectionWoredaGroup.options[SelectionWoredaGroup.selectedIndex].text
-                .trim()
-                .replace(/\s/g, "");
+
+            if (!modal) {
+                text_i = SelectionWoredaGroup.options[SelectionWoredaGroup.selectedIndex].text
+                    .trim()
+                    .replace(/\s/g, "");
+            }
+            if (modal) {
+                text_i = SelectionWoredaGroupModal.options[SelectionWoredaGroupModal.selectedIndex].text
+                    .trim()
+                    .replace(/\s/g, "");
+            }
         } else {
             cellValue2 = row.cells[4].innerText.trim().replace(/\s/g, "");
-            text_i = SelectionWoreda.options[SelectionWoreda.selectedIndex].text.trim().replace(/\s/g, "");
+
+            if (!modal) {
+                text_i = SelectionWoreda.options[SelectionWoreda.selectedIndex].text
+                    .trim()
+                    .replace(/\s/g, "");
+            }
+
+            if (modal) {
+                text_i = SelectionWoredaModal.options[SelectionWoredaModal.selectedIndex].text
+                    .trim()
+                    .replace(/\s/g, "");
+            }
         }
 
         return cellValue2 === text_i || text_i === "Woreda";
     });
 }
 
-function applySelectionFilterKebele(selectionValue, isGroup) {
+function applySelectionFilterKebele(selectionValue, isGroup, modal = false) {
     filteredRows = allRows.filter((row) => {
         var cellValue2 = null;
         var text_i = null;
         if (isGroup) {
             cellValue2 = row.cells[6].innerText.trim().replace(/\s/g, "");
-            text_i = SelectionKebeleGroup.options[SelectionKebeleGroup.selectedIndex].text
-                .trim()
-                .replace(/\s/g, "");
+
+            if (!modal) {
+                text_i = SelectionKebeleGroup.options[SelectionKebeleGroup.selectedIndex].text
+                    .trim()
+                    .replace(/\s/g, "");
+            }
+
+            if (modal) {
+                text_i = SelectionKebeleGroupModal.options[SelectionKebeleGroupModal.selectedIndex].text
+                    .trim()
+                    .replace(/\s/g, "");
+            }
         } else {
             cellValue2 = row.cells[5].innerText.trim().replace(/\s/g, "");
-            text_i = SelectionKebele.options[SelectionKebele.selectedIndex].text.trim().replace(/\s/g, "");
+
+            if (!modal) {
+                text_i = SelectionKebele.options[SelectionKebele.selectedIndex].text
+                    .trim()
+                    .replace(/\s/g, "");
+            }
+
+            if (modal) {
+                text_i = SelectionKebeleModal.options[SelectionKebeleModal.selectedIndex].text
+                    .trim()
+                    .replace(/\s/g, "");
+            }
         }
 
         return cellValue2 === text_i || text_i === "Kebele";
+    });
+}
+
+function applySelectionFilterAny(selectionValue, isGroup, selectElement, column_name) {
+    filteredRows = allRows.filter((row) => {
+        var cellValue2 = null;
+        var text_i = null;
+        if (isGroup) {
+            cellValue2 = row.cells[6].innerText.trim().replace(/\s/g, "");
+            text_i = selectElement.options[selectElement.selectedIndex].text.trim().replace(/\s/g, "");
+        } else {
+            cellValue2 = row.cells[5].innerText.trim().replace(/\s/g, "");
+            text_i = selectElement.options[selectElement.selectedIndex].text.trim().replace(/\s/g, "");
+        }
+
+        return cellValue2 === text_i || text_i === "column_name";
     });
 }
 
@@ -339,34 +424,42 @@ function resetFilters() {
     searchResultCount.textContent = "";
 }
 
-function getSelectionValues(isGroup) {
-    return {
-        SelectionRegionValue: isGroup ? SelectionRegionGroup : SelectionRegion,
-        SelectionZonValue: isGroup ? SelectionZonGroup?.value : SelectionZon?.value,
-        SelectionWoredaValue: isGroup ? SelectionWoredaGroup?.value : SelectionWoreda?.value,
-        SelectionKebeleValue: isGroup ? SelectionKebeleGroup?.value : SelectionKebele?.value,
-    };
+function getSelectionValues(isGroup, modal = false) {
+    if (!modal) {
+        return {
+            SelectionRegionValue: isGroup ? SelectionRegionGroup : SelectionRegion,
+            SelectionZonValue: isGroup ? SelectionZonGroup?.value : SelectionZon?.value,
+            SelectionWoredaValue: isGroup ? SelectionWoredaGroup?.value : SelectionWoreda?.value,
+            SelectionKebeleValue: isGroup ? SelectionKebeleGroup?.value : SelectionKebele?.value,
+        };
+    } else {
+        return {
+            SelectionRegionValue: isGroup ? SelectionRegionGroupModal : SelectionRegionModal,
+            SelectionZonValue: isGroup ? SelectionZonGroupModal?.value : SelectionZonModal?.value,
+            SelectionWoredaValue: isGroup ? SelectionWoredaGroupModal?.value : SelectionWoredaModal?.value,
+            SelectionKebeleValue: isGroup ? SelectionKebeleGroupModal?.value : SelectionKebeleModal?.value,
+        };
+    }
 }
 
-function handleSearch(isGroup = true) {
+function handleSearch(isGroup = true, modal = false) {
     var {SelectionRegionValue, SelectionZonValue, SelectionWoredaValue, SelectionKebeleValue} =
-        getSelectionValues(isGroup);
+        getSelectionValues(isGroup, modal);
     var searchValue = searchInputText.value.trim().toLowerCase();
-
     filteredRows = allRows;
 
     function applyFilters() {
         if (SelectionRegionValue?.value.trim()) {
-            applySelectionFilter(SelectionRegionValue, isGroup);
+            applySelectionFilter(SelectionRegionValue, isGroup, (modal = modal));
         }
         if (SelectionZonValue?.trim()) {
-            applySelectionFilterZone(isGroup);
+            applySelectionFilterZone(isGroup, (modal = modal));
         }
         if (SelectionWoredaValue?.trim()) {
-            applySelectionFilterWoreda(SelectionWoredaValue, isGroup);
+            applySelectionFilterWoreda(SelectionWoredaValue, isGroup, (modal = modal));
         }
         if (SelectionKebeleValue?.trim()) {
-            applySelectionFilterKebele(SelectionKebeleValue, isGroup);
+            applySelectionFilterKebele(SelectionKebeleValue, isGroup, (modal = modal));
         }
         if (searchValue) {
             applySearchFilter(searchValue, isGroup);
@@ -391,6 +484,7 @@ function handleSearch(isGroup = true) {
 
     searchClearText.style.display = searchValue ? "block" : "none";
 }
+
 searchInputText.addEventListener("input", handleSearch);
 
 SelectionRegion?.addEventListener("input", function () {
@@ -411,6 +505,8 @@ SelectionRegion?.addEventListener("input", function () {
 
 SelectionRegionGroup?.addEventListener("input", function () {
     const regionId = this.value;
+    console.log("before region group call");
+
     Promise.all([
         updateOptions("/update_zone_options", {region_id: regionId}, "zone_selection_group", "Zone"),
         updateOptions("/update_woreda_options", {zone_id: null}, "woreda_selection_group", "Woreda"),
@@ -418,6 +514,39 @@ SelectionRegionGroup?.addEventListener("input", function () {
     ])
         .then(() => {
             handleSearch(true);
+        })
+        .catch((error) => {
+            console.error("Error in one of the updateOptions calls:", error);
+        });
+});
+
+SelectionRegionGroupModal?.addEventListener("input", function () {
+    const regionId = this.value;
+    console.log("before region group call");
+
+    Promise.all([
+        updateOptions("/update_zone_options", {region_id: regionId}, "zone_selection_group_modal", "Zone"),
+        updateOptions("/update_woreda_options", {zone_id: null}, "woreda_selection_group_modal", "Woreda"),
+        updateOptions("/update_kebele_options", {woreda_id: null}, "kebele_selection_group_modal", "Kebele"),
+    ])
+        .then(() => {
+            handleSearch(true, (modal = true));
+        })
+        .catch((error) => {
+            console.error("Error in one of the updateOptions calls:", error);
+        });
+});
+
+SelectionRegionModal?.addEventListener("input", function () {
+    const regionId = this.value;
+
+    Promise.all([
+        updateOptions("/update_zone_options", {region_id: regionId}, "zone_selection_modal", "Zone"),
+        updateOptions("/update_woreda_options", {zone_id: null}, "woreda_selection_modal", "Woreda"),
+        updateOptions("/update_kebele_options", {woreda_id: null}, "kebele_selection_modal", "Kebele"),
+    ])
+        .then(() => {
+            handleSearch(false, (modal = true));
         })
         .catch((error) => {
             console.error("Error in one of the updateOptions calls:", error);
@@ -452,6 +581,34 @@ SelectionZonGroup?.addEventListener("input", function () {
         });
 });
 
+SelectionZonGroupModal?.addEventListener("input", function () {
+    const zoneId = this.value;
+    Promise.all([
+        updateOptions("/update_woreda_options", {zone_id: zoneId}, "woreda_selection_group_modal", "Woreda"),
+        updateOptions("/update_kebele_options", {woreda_id: null}, "kebele_selection_group_modal", "Kebele"),
+    ])
+        .then(() => {
+            handleSearch(true, (modal = true));
+        })
+        .catch((error) => {
+            console.error("Error in one of the updateOptions calls:", error);
+        });
+});
+
+SelectionZonModal?.addEventListener("input", function () {
+    const zoneId = this.value;
+    Promise.all([
+        updateOptions("/update_woreda_options", {zone_id: zoneId}, "woreda_selection_modal", "Woreda"),
+        updateOptions("/update_kebele_options", {woreda_id: null}, "kebele_selection_modal", "Kebele"),
+    ])
+        .then(() => {
+            handleSearch(false, (modal = true));
+        })
+        .catch((error) => {
+            console.error("Error in one of the updateOptions calls:", error);
+        });
+});
+
 SelectionWoreda?.addEventListener("input", function () {
     const woredaId = this.value;
     Promise.all([
@@ -478,8 +635,51 @@ SelectionWoredaGroup?.addEventListener("input", function () {
         });
 });
 
-SelectionKebele?.addEventListener("input", handleSearch(false));
-SelectionKebeleGroup?.addEventListener("input", handleSearch(true));
+SelectionWoredaGroupModal?.addEventListener("input", function () {
+    const woredaId = this.value;
+    Promise.all([
+        updateOptions(
+            "/update_kebele_options",
+            {woreda_id: woredaId},
+            "kebele_selection_group_modal",
+            "Kebele"
+        ),
+    ])
+        .then(() => {
+            handleSearch(true, (modal = true));
+        })
+        .catch((error) => {
+            console.error("Error in one of the updateOptions calls:", error);
+        });
+});
+
+SelectionWoredaModal?.addEventListener("input", function () {
+    const woredaId = this.value;
+    Promise.all([
+        updateOptions("/update_kebele_options", {woreda_id: woredaId}, "kebele_selection_modal", "Kebele"),
+    ])
+        .then(() => {
+            handleSearch(false, (modal = true));
+        })
+        .catch((error) => {
+            console.error("Error in one of the updateOptions calls:", error);
+        });
+});
+
+SelectionKebele?.addEventListener("input", function () {
+    handleSearch(false);
+});
+SelectionKebeleGroup?.addEventListener("input", function () {
+    handleSearch(true);
+});
+SelectionKebeleGroupModal?.addEventListener("input", function () {
+    handleSearch(true, (modal = true));
+});
+SelectionKebeleModal?.addEventListener("input", function () {
+    handleSearch(false, (modal = true));
+});
+
+// SelectionKebeleGroupModal?.addEventListener("change", handleSearch(true, modal=true));
 
 searchClearText.addEventListener("click", function () {
     searchInputText.value = "";

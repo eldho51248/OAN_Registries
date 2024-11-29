@@ -12,12 +12,15 @@
             <div style="padding-top: 15px !important; padding-bottom: 0px !important;" class="main-container">
                 <div class="">
                     <div style="max-width:1400px;" class="form-template mx-auto">
-                    
-                    <div class="top-content px-3">
-                    <h5 style="font: normal 600 18px / 22px Inter !important; height: auto !important;" class="all-title">Create New Household</h5>
 
-                        
-                        
+                    <div class="top-content px-3">
+                    <h5
+                                style="font: normal 600 15px / 22px Inter !important; height: auto !important;"
+                                class="all-title"
+                            >Create New Household</h5>
+
+
+
                         <ol class="breadcrumb form-layout-breadcrumb d-flex flex-col flex-md-row">
                             <li class="breadcrumb-item">
                                 <a href="/serviceprovider/home">
@@ -41,14 +44,15 @@
                             method="POST"
                             enctype="multipart/form-data"
                             class="mx-auto px-3 px-lg-0"
-
                         >
                             <input type="hidden" name="group_id" value="" />
                             <div class="row">
                                 <div class="container-fluid">
                                     <div class="rounded-card d-flex flex-column flex-md-row">
                                         <div class="sidebar">
-                                            <ul class="nav d-flex flex-row flex-md-column justify-content-center">
+                                            <ul
+                                                class="nav d-flex flex-row flex-md-column justify-content-center"
+                                            >
                                                 <li class="nav-item">
                                                     <a
                                                         id="location-details-link"
@@ -136,6 +140,14 @@
                                             </ul>
                                         </div>
                                         <main role="main" class="content">
+
+
+                                       <div class="section-header accord-active  d-md-none" onclick="toggleAccordionSection(this)">
+        <h4 class="section-title">Location Details</h4>
+    </div>
+
+     <div class="section-content-wrapper" style="max-height: none;">
+
 
                                             <div id="location-details" class="section-container">
                                                 <div class="section-content">
@@ -363,7 +375,7 @@
 
                                                 </div>
 
-                                                <div class="section-footer d-flex justify-content-end">
+                                                <div class="section-footer d-none d-md-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-sm btn-outline-secondary"
@@ -373,6 +385,19 @@
                                                     </button>
                                                 </div>
                                             </div>
+
+
+</div>
+
+
+                                 <div class="section-header   d-md-none" onclick="toggleAccordionSection(this)">
+        <h4 class="section-title">Farmer Details</h4>
+    </div>
+
+     <div class="section-content-wrapper" >
+
+
+
                                             <div
                                                 id="farmer-details"
                                                 class="section-container"
@@ -490,7 +515,7 @@
                                                                 src="/g2p_service_provider_beneficiary_management/static/src/img/no_mem.png"
                                                             />
                                                             <div>
-                                                                <p>No members!</p>
+                                                                <p>No Members!</p>
                                                             </div>
 
                                                         </div>
@@ -511,7 +536,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="section-footer d-flex justify-content-end">
+                                                <div class="section-footer d-none d-md-flex justify-content-end">
                                                     <button
                                                         type="button"
                                                         class="btn btn-sm btn-outline-secondary"
@@ -521,6 +546,9 @@
                                                     </button>
                                                 </div>
                                             </div>
+</div>
+
+
                                             <div
                                                 class="modal fade"
                                                 id="farmerDetailModal"
@@ -548,6 +576,11 @@
                                                         <div class="modal-body">
                                                             <!--                                                            <main role="main"
                                                             class="content">-->
+
+
+
+
+                                            
                                                             <div
                                                                 id="individual-details"
                                                                 class="section-container-group"
@@ -1280,7 +1313,6 @@
                                                                                     class="s_website_form_label"
                                                                                     for="primary_phone"
                                                                                 >
-                                                                                    <br />
                                                                                     <span
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
@@ -1318,7 +1350,6 @@
                                                                                     class="s_website_form_label"
                                                                                     for="other_phone"
                                                                                 >
-                                                                                    <br />
                                                                                     <span
                                                                                         class="s_website_form_label_content"
                                                                                         style="color: #666666;"
@@ -1522,6 +1553,15 @@
                                                                     </button>
                                                                 </div>
                                                             </div>
+
+
+
+
+
+
+
+
+
                                                             <div
                                                                 id="socio-economic-data"
                                                                 class="section-container-group"
@@ -1540,10 +1580,10 @@
                                                                             >
                                                                                 Socio Economic Data
                                                                             </span>
-                                                                          
+
                                                                         </div>
                                                                     </div>
-                                                                    
+
 
                                                                     <div class="row">
 
@@ -1748,7 +1788,7 @@
                                                                             >
                                                                                 Membership Details
                                                                             </span>
-                                                                          
+
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
@@ -2214,7 +2254,7 @@
                                                                             >
                                                                                 Land Information
                                                                             </span>
-                                                                          
+
                                                                         </div>
                                                                     </div>
                                                                     <div id="section-content-land">
@@ -2229,9 +2269,7 @@
                                                                                 id="land-section-repeat"
                                                                                 data-index="0"
                                                                             >
-                                                                                <div
-                                                                                    class="container-fluid"
-                                                                                >
+                                                                                <div class="container-fluid">
 
                                                                                     <div
                                                                                         class="row pt-3 pb-1"
@@ -2329,7 +2367,7 @@
                                                                                                 </div>
                                                                                             </div> -->
 
-                                                                                               
+
                                                                                             </div>
 
                                                                                             <div
@@ -2455,191 +2493,189 @@
                                                                                         class="land-separator"
                                                                                     />
                                                                                 </div>
-                                                                               
+
                                                                         </div>
 
                                                                         <div
-                                                                            id="land-hidden-template"
-                                                                            style="display: none;"
-                                                                        >
-                                                                            <div
-                                                                                class="land-section-wrapper"
-                                                                                id="land-section-repeat"
-                                                                                t-att-data-index="{9999}"
+                                                                                id="land-hidden-template"
+                                                                                style="display: none;"
                                                                             >
-                                                                                <div
-                                                                                    class="container-fluid"
+                                                                            <div
+                                                                                    class="land-section-wrapper"
+                                                                                    id="land-section-repeat"
+                                                                                    t-att-data-index="{9999}"
                                                                                 >
+                                                                                <div class="container-fluid">
 
                                                                                     <div
-                                                                                        class="row pt-3 pb-1"
-                                                                                    >
-                                                                                        <div
-                                                                                            class="d-flex flex-column flex-lg-row col-lg-11 land_container2"
+                                                                                            class="row pt-3 pb-1"
                                                                                         >
+                                                                                        <div
+                                                                                                class="d-flex flex-column flex-lg-row col-lg-11 land_container2"
+                                                                                            >
 
                                                                                             <div
-                                                                                                class="col-lg-3"
-                                                                                            >
-                                                                                                <label
-                                                                                                    class="s_website_form_label"
+                                                                                                    class="col-lg-3"
                                                                                                 >
-                                                                                                    <span
-                                                                                                        class="s_website_form_label_content"
-                                                                                                        style="color: #666666;"
+                                                                                                <label
+                                                                                                        class="s_website_form_label"
                                                                                                     >
+                                                                                                    <span
+                                                                                                            class="s_website_form_label_content"
+                                                                                                            style="color: #666666;"
+                                                                                                        >
                                                                                                         Ownership
                                                                                                         Type
                                                                                                     </span>
                                                                                                     <span
-                                                                                                        class="s_website_form_mark land_astrix"
-                                                                                                    >
+                                                                                                            class="s_website_form_mark land_astrix"
+                                                                                                        >
                                                                                                         *
                                                                                                     </span>
                                                                                                 </label>
                                                                                                 <select
-                                                                                                    id="land_selection"
-                                                                                                    class="form-select"
-                                                                                                    t-att-name="'land_ownership_type_' + str({9999})"
-                                                                                                    onchange="validateElement(this)"
-                                                                                                    required="required"
-                                                                                                >
-                                                                                                    <option
-                                                                                                        value=""
+                                                                                                        id="land_selection"
+                                                                                                        class="form-select"
+                                                                                                        t-att-name="'land_ownership_type_' + str({9999})"
+                                                                                                        onchange="validateElement(this)"
+                                                                                                        required="required"
                                                                                                     >
+                                                                                                    <option
+                                                                                                            value=""
+                                                                                                        >
                                                                                                         Select
                                                                                                         Type
                                                                                                     </option>
                                                                                                     <t
-                                                                                                        t-foreach="ownership_type_selections"
-                                                                                                        t-as="option"
-                                                                                                    >
-                                                                                                        <option
-                                                                                                            t-att-value="option.id"
+                                                                                                            t-foreach="ownership_type_selections"
+                                                                                                            t-as="option"
                                                                                                         >
+                                                                                                        <option
+                                                                                                                t-att-value="option.id"
+                                                                                                            >
                                                                                                             <t
-                                                                                                                t-esc="option.name"
-                                                                                                            />
+                                                                                                                    t-esc="option.name"
+                                                                                                                />
                                                                                                         </option>
                                                                                                     </t>
                                                                                                 </select>
                                                                                             </div>
                                                                                             <div
-                                                                                                class="col-lg-3"
-                                                                                            >
-                                                                                                <label
-                                                                                                    class="s_website_form_label"
+                                                                                                    class="col-lg-3"
                                                                                                 >
-                                                                                                    <span
-                                                                                                        class="s_website_form_label_content"
-                                                                                                        style="color: #666666;"
+                                                                                                <label
+                                                                                                        class="s_website_form_label"
                                                                                                     >
+                                                                                                    <span
+                                                                                                            class="s_website_form_label_content"
+                                                                                                            style="color: #666666;"
+                                                                                                        >
                                                                                                         Land
                                                                                                         Area
                                                                                                         (in
                                                                                                         Hectares)
                                                                                                     </span>
                                                                                                     <span
-                                                                                                        class="s_website_form_mark land_astrix"
-                                                                                                    >
+                                                                                                            class="s_website_form_mark land_astrix"
+                                                                                                        >
                                                                                                         *
                                                                                                     </span>
                                                                                                 </label>
                                                                                                 <input
-                                                                                                    type="text"
-                                                                                                    id="total_land_area"
-                                                                                                    t-att-name="'total_land_area_' + str({9999})"
-                                                                                                    class="form-control"
-                                                                                                    required="required"
-                                                                                                    oninput="validateElement(this)"
-                                                                                                    placeholder="Enter Land Area"
-                                                                                                />
-                                                                                               
+                                                                                                        type="text"
+                                                                                                        id="total_land_area"
+                                                                                                        t-att-name="'total_land_area_' + str({9999})"
+                                                                                                        class="form-control"
+                                                                                                        required="required"
+                                                                                                        oninput="validateElement(this)"
+                                                                                                        placeholder="Enter Land Area"
+                                                                                                    />
+
                                                                                             </div>
                                                                                             <div
-                                                                                                class="col-lg-3"
-                                                                                            >
-                                                                                                <label
-                                                                                                    class="s_website_form_label"
+                                                                                                    class="col-lg-3"
                                                                                                 >
-                                                                                                    <span
-                                                                                                        class="s_website_form_label_content"
-                                                                                                        style="color: #666666;"
+                                                                                                <label
+                                                                                                        class="s_website_form_label"
                                                                                                     >
+                                                                                                    <span
+                                                                                                            class="s_website_form_label_content"
+                                                                                                            style="color: #666666;"
+                                                                                                        >
                                                                                                         Land
                                                                                                         ID
                                                                                                         (Parcel
                                                                                                         ID)
                                                                                                     </span>
                                                                                                     <span
-                                                                                                        class="s_website_form_mark land_astrix"
-                                                                                                    >
+                                                                                                            class="s_website_form_mark land_astrix"
+                                                                                                        >
                                                                                                         *
                                                                                                     </span>
                                                                                                 </label>
                                                                                                 <input
-                                                                                                    type="text"
-                                                                                                    id="land_id"
-                                                                                                    t-att-name="'land_id_' + str({9999})"
-                                                                                                    class="form-control"
-                                                                                                    required="required"
-                                                                                                    oninput="validateElement(this)"
-                                                                                                    placeholder="Enter Land ID"
-                                                                                                />
+                                                                                                        type="text"
+                                                                                                        id="land_id"
+                                                                                                        t-att-name="'land_id_' + str({9999})"
+                                                                                                        class="form-control"
+                                                                                                        required="required"
+                                                                                                        oninput="validateElement(this)"
+                                                                                                        placeholder="Enter Land ID"
+                                                                                                    />
                                                                                             </div>
 
                                                                                             <div
-                                                                                                class="col-lg-3"
-                                                                                            >
-                                                                                                <label
-                                                                                                    class="s_website_form_label"
+                                                                                                    class="col-lg-3"
                                                                                                 >
-                                                                                                    <span
-                                                                                                        class="s_website_form_label_content"
-                                                                                                        style="color: #666666;"
+                                                                                                <label
+                                                                                                        class="s_website_form_label"
                                                                                                     >
+                                                                                                    <span
+                                                                                                            class="s_website_form_label_content"
+                                                                                                            style="color: #666666;"
+                                                                                                        >
                                                                                                         Land
                                                                                                         Certificate
                                                                                                     </span>
                                                                                                     <span
-                                                                                                        class="s_website_form_mark land_astrix"
-                                                                                                    >
+                                                                                                            class="s_website_form_mark land_astrix"
+                                                                                                        >
                                                                                                         *
                                                                                                     </span>
                                                                                                 </label>
                                                                                                 <div
-                                                                                                    class="file-upload-wrapper"
-                                                                                                >
-                                                                                                    <label
-                                                                                                        t-att-for="'land_certificate_' + str({9999})"
-                                                                                                        class="custom-file-upload"
+                                                                                                        class="file-upload-wrapper"
                                                                                                     >
-                                                                                                        <span
-                                                                                                            class="upload-text"
+                                                                                                    <label
+                                                                                                            t-att-for="'land_certificate_' + str({9999})"
+                                                                                                            class="custom-file-upload"
                                                                                                         >
+                                                                                                        <span
+                                                                                                                class="upload-text"
+                                                                                                            >
                                                                                                             Upload
                                                                                                             Certificate
                                                                                                         </span>
 
                                                                                                         <span>
                                                                                                             <i
-                                                                                                                class="fas fa-upload"
-                                                                                                            />
+                                                                                                                    class="fas fa-upload"
+                                                                                                                />
                                                                                                         </span>
                                                                                                     </label>
                                                                                                     <input
-                                                                                                        type="file"
-                                                                                                        t-att-id="'land_certificate_' + str({9999})"
-                                                                                                        t-att-name="'land_certificate_' + str({9999})"
-                                                                                                        class="form-control"
-                                                                                                        onchange="updateFileName(this)"
-                                                                                                        required="required"
-                                                                                                    />
+                                                                                                            type="file"
+                                                                                                            t-att-id="'land_certificate_' + str({9999})"
+                                                                                                            t-att-name="'land_certificate_' + str({9999})"
+                                                                                                            class="form-control"
+                                                                                                            onchange="updateFileName(this)"
+                                                                                                            required="required"
+                                                                                                        />
                                                                                                     <small
-                                                                                                        id="file-error"
-                                                                                                        class="text-danger"
-                                                                                                        style="display:none;"
-                                                                                                    >
+                                                                                                            id="file-error"
+                                                                                                            class="text-danger"
+                                                                                                            style="display:none;"
+                                                                                                        >
                                                                                                     Please
                                                                                                     upload
                                                                                                     a
@@ -2648,24 +2684,24 @@
                                                                                             </div>
                                                                                         </div>
                                                                                         <div
-                                                                                            class="col-1 mx-auto my-3"
-                                                                                        >
-                                                                                            <button
-                                                                                                type="button"
-                                                                                                class="btn btn-outline-secondary btn-sm my-3 "
-                                                                                                onclick="deleteLand(this)"
+                                                                                                class="col-1 mx-auto my-3"
                                                                                             >
+                                                                                            <button
+                                                                                                    type="button"
+                                                                                                    class="btn btn-outline-secondary btn-sm my-3 "
+                                                                                                    onclick="deleteLand(this)"
+                                                                                                >
                                                                                                 <i
-                                                                                                    class="fas fa-trash-alt"
-                                                                                                />
+                                                                                                        class="fas fa-trash-alt"
+                                                                                                    />
                                                                                             </button>
                                                                                         </div>
                                                                                     </div>
 
-                                                                                   
-                                                                                    
+
+
                                                                                 </div>
-                                                                               
+
                                                                                 </div>
                                                                                 <div
                                                                                     class="container-fluid pl-3 pr-5"
@@ -2675,7 +2711,7 @@
                                                                                     />
                                                                                 </div>
 
-                                                                                
+
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -2729,10 +2765,14 @@
                                                                             >
                                                                                 Crop Information
                                                                             </span>
-                                                                          
+
                                                                         </div>
                                                                     </div>
-                                                                        <div class="row">                                                                        <div class="col-6">
+                                                                        <div
+                                                                        class="row"
+                                                                    >                                                                        <div
+                                                                            class="col-6"
+                                                                        >
                                                                             <div class="s_website_form_field">
                                                                                 <label
                                                                                     class="s_website_form_label"
@@ -2795,9 +2835,7 @@
                                                                                 id="crop-section-repeat"
                                                                                 data-index="0"
                                                                             >
-                                                                                <div
-                                                                                    class="container-fluid"
-                                                                                >
+                                                                                <div class="container-fluid">
 
                                                                                     <div
                                                                                         class="row pt-3 pb-1"
@@ -2925,9 +2963,7 @@
                                                                                 id="crop-section-repeat"
                                                                                 t-att-data-index="{9999}"
                                                                             >
-                                                                                <div
-                                                                                    class="container-fluid"
-                                                                                >
+                                                                                <div class="container-fluid">
 
                                                                                     <div
                                                                                         class="row pt-3 pb-1"
@@ -3099,7 +3135,7 @@
                                                                             >
                                                                                 Livestock Information
                                                                             </span>
-                                                                          
+
                                                                         </div>
                                                                     </div>
                                                                         <div class="row">
@@ -3168,9 +3204,7 @@
                                                                                 id="livestock-section-repeat"
                                                                                 data-index="0"
                                                                             >
-                                                                                <div
-                                                                                    class="container-fluid"
-                                                                                >
+                                                                                <div class="container-fluid">
 
                                                                                     <div
                                                                                         class="row pt-3 pb-1"
@@ -3487,7 +3521,7 @@
                                                                             >
                                                                                 Agricultural Input
                                                                             </span>
-                                                                          
+
                                                                         </div>
                                                                     </div>
 
@@ -3712,7 +3746,7 @@
                                                                             >
                                                                                 Access To Resource
                                                                             </span>
-                                                                          
+
                                                                         </div>
                                                                     </div>
                                                                         <div class="row">
@@ -3742,7 +3776,6 @@
                                                                                     required="required"
                                                                                     onchange="validateElement(this)"
                                                                                     id="access-to-machinery-selection"
-                                                                                    
                                                                                 >
                                                                                     <option value="">
                                                                                         Select
@@ -3821,7 +3854,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    
+
 
                                                                     <div class="row">
                                                                         <div
@@ -3834,7 +3867,7 @@
                                                                             >
                                                                                 Financial Services
                                                                             </span>
-                                                                          
+
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
@@ -3969,6 +4002,12 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                                                             <div class="section-header  d-md-none" onclick="toggleAccordionSection(this)">
+        <h4 class="section-title">Family Members</h4>
+    </div>
+
+     <div class="section-content-wrapper">
                                             <div
                                                 id="family-members"
                                                 class="section-container"
@@ -4116,6 +4155,9 @@
 
 
                                             </div>
+</div>
+
+
                                             <div
                                                 class="modal fade"
                                                 id="editFamilyMemberModal"
@@ -4321,7 +4363,10 @@
                                                     class="modal-dialog modal-dialog-centered"
                                                     role="document"
                                                 >
-                                                    <div style="top: 50% !important" class="modal-content beneficiary-modal-content">
+                                                    <div
+                                                        style="top: 50% !important"
+                                                        class="modal-content beneficiary-modal-content"
+                                                    >
                                                         <div
                                                             class="card-header form-card-header"
                                                             style="margin:15px"
