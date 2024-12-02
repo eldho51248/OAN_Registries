@@ -529,10 +529,7 @@ $(document).on("click", "#member_submit", async function () {
                             <td style="color:#704880; font: normal normal 600 13px/16px Inter;">${member.name}</td>
                             <td>${member.age}</td>
                             <td>${member.gender}</td>
-
-                            <td class="fw-bold text-center">
-                ${isHouseholdHead}
-            </td>
+                            <td class="fw-bold text-center">${isHouseholdHead}</td>
 
                             <td>
                                  <a href="/serviceprovider/individual/update/${member.id}" class="btn btn-icon rounded-0 edit-btn" title="Edit">
@@ -545,6 +542,14 @@ $(document).on("click", "#member_submit", async function () {
                         tableBody.append(newRowHtml);
                     });
                     $("#member_submit").prop("disabled", false);
+
+                    var $formContainer = $("#section-content-land");
+                    $formContainer.children().slice(1).remove();
+
+                    var $formContainerCrop = $("#section-content-crop");
+                    $formContainerCrop.children().slice(1).remove();
+
+
                     showSuccessModal("Member Added Successfully!");
                 }
             } else {
@@ -777,6 +782,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // Modal other fields
 document.addEventListener("DOMContentLoaded", function () {
     // Function to handle the display of the 'Other' field for Woreda and Kebele
+
 
     function handleOtherFields(selectElementId, otherFieldId) {
         const selectElement = document.getElementById(selectElementId);

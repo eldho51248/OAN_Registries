@@ -596,7 +596,7 @@ li div p {
 
 .all-title {
     margin-bottom: 0px;
-    height: 26px;
+    height: unset !important;
     text-align: left;
     font: normal 600 18px/22px Inter !important;
     letter-spacing: 0px;
