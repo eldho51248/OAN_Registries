@@ -69,13 +69,16 @@
 
  </xpath>
 
+ jhadbfjhbshjfbjhdsbjhbdsfhbhjdbfb
+
 
     <xpath expr="//body" position="inside">
 
   
       <div class="modal fade" id="successModal" tabindex="-1" role="dialog">
 
-        <div style="margin: 0 auto !importnat;  transform: translate(0%, 0%) !important;" class="modal-dialog modal-sm-down modal-md md-up" role="document">
+        <div style="margin: 0 auto !important;  max-width:500px !important; transform: translate(0%, 0%) !important;" class="modal-dialog px-3 modal-sm-down modal-md md-up" role="document">
+         
           <div style="background-color: white; border-radius: 1rem; text-align: center;" class=" py-5 modal_container">
 
             <div class="py-4" style="margin: 0 auto !important;">
@@ -113,7 +116,7 @@
 
 
 
-        });
+     
 
        
 
@@ -127,7 +130,6 @@
         section.style.display = 'none'; // Close
     }
 } -->
-
 
 
 
@@ -170,8 +172,14 @@
     function deleteCookie(name) {
       document.cookie = name + '=; Max-Age=0; path=/';
     }
+
+
+
   });
 
+
+
+   });
       </script>
 
 

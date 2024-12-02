@@ -84,9 +84,6 @@ a {
 
 
 
-
-
-
 .navbar .profile .profile_dd:before,
 .notification_dd:before {
     content: "";
@@ -100,7 +97,8 @@ a {
 
 .notification_dd li {
     border-bottom: 1px solid #f1f2f4;
-    padding: 10px 20px;
+    padding: 10px 0px;
+    padding-left: 5px;
     display: flex;
     align-items: center;
 }
@@ -163,7 +161,7 @@ a {
 }
 
 .notification_ul {
-    padding-left: 1rem;
+    padding-left: 0;
 }
 
 .notification_dd li.success .notify_status p {
@@ -177,7 +175,7 @@ a {
 .notification_dd li.show_all {
     color: #2196f3;
     font-family: Roboto;
-    font-size: 13px;
+    font-size: 12px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
