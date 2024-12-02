@@ -394,9 +394,11 @@
                                             </div>
 
 
+
                                                                    <div class="section-header  d-md-none" onclick="toggleAccordionSection(this)">
         <h4 class="section-title">Farmer Details</h4>
     </div>
+
 
      <div class="section-content-wrapper">
                                           
@@ -495,10 +497,12 @@
                                                                                     </t>
                                                                                 </td>
 
-                                                                                <td class="text-center">
+
+                                                                                <td data-label="Action" class="tr_grid_item3 text-end text-lg-center">
                                                                                     <t t-if="individual['state'] != 'update_requested'">
                                                                                         <a
                                                                                             t-attf-href="/serviceprovider/individual/update/{{ individual.id }}?group={{ group.id }}"
+
                                                                                         >
                                                                                             <div class="btn btn-icon rounded-0">
                                                                                                 <i class="fa fa-pencil"/>
