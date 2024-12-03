@@ -66,11 +66,16 @@ a {
 
 
 
+
+
 .navbar .profile .profile_dd, .notification_dd {
     position: absolute;
-    top: 121%;
-    right: -180px;
-    width: 997%;
+    top: 96%;
+    /* margin: 60px 0; */
+    left: 50%;
+    transform: translateX(-67%);
+    min-width: 300px;
+    max-width: 450px;
     font-size: 12px;
     user-select: none;
     background: #fff;
@@ -80,12 +85,6 @@ a {
     border-radius: 7px;
     box-shadow: 10px 10px 35px rgba(0, 0, 0, 0.125), -10px -10px 35px rgba(0, 0, 0, 0.125);
 }
-
-
-
-
-
-
 
 .navbar .profile .profile_dd:before,
 .notification_dd:before {
@@ -100,7 +99,8 @@ a {
 
 .notification_dd li {
     border-bottom: 1px solid #f1f2f4;
-    padding: 10px 20px;
+    padding: 10px 0px;
+    padding-left: 5px;
     display: flex;
     align-items: center;
 }
@@ -163,7 +163,7 @@ a {
 }
 
 .notification_ul {
-    padding-left: 1rem;
+    padding-left: 0;
 }
 
 .notification_dd li.success .notify_status p {
@@ -338,7 +338,12 @@ a {
 button#show_notification {
     border: none;
     background: white;
-    margin-top: 35px;
+    /* margin-top: 35px; */
+
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .notification_header_new {
@@ -383,8 +388,18 @@ button#show_notification {
     /* margin-top: 0px;
     margin-left: 70px; */
     position: relative;
+    padding: 0 1.5rem;
     /* display: inline-block; */
 }
+
+/* .notifications_button_div > * {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+} */
+
+
 
 .trial_notify {
     width: 23%;
@@ -393,8 +408,8 @@ button#show_notification {
 
 .notification_number {
     position: absolute;
-    top: 24px;
-    right: -6px;
+    top: -10px;
+    right: -5px;
     background-color: red;
     color: white;
     border-radius: 30%;
