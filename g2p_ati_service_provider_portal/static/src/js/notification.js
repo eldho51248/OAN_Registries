@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     // Add content to the item
                     const itemContent = document.createElement("a");
                     itemContent.href = notification.url;
-                    itemContent.className = "link";
+                    itemContent.className = "mx-auto link";
                     itemContent.textContent = notification.message;
 
                     notificationItem.appendChild(itemContent);
