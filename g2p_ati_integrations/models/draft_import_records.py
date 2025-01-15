@@ -122,12 +122,12 @@ class G2PDraftImportedRecord(models.Model):
                 
             elif field.type == 'many2one':
                 # _logger.info(f"the many2one field 01 {field_name}")
-                try:
+                
                     if isinstance(field_value, int):
                         field_value = int(field_value)
                         context_data[f"default_{field_name}"] = json_data[field_name]
                         _logger.info(f"the many2one field {field_name}")
-                except ValueError as e:
+                        
                     if not isinstance(field_value, int): 
                         additional_g2p_info[field_name] = field_value
              

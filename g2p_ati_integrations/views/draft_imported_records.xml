@@ -94,7 +94,7 @@
     </record>
 
 
-<menuitem id="g2p_draft_publish.menu_g2p_integration_root" name="Integratons"  web_icon="g2p_ati_integrations,static/description/icon.png"/>
+<menuitem id="g2p_draft_publish.menu_g2p_integration_root" name="Integrations"  web_icon="g2p_ati_integrations,static/description/icon.png"/>
 
 
     <!-- <menuitem id="menu_submitted_records"  parent="g2p_draft_publish.menu_g2p_integration_root" action="action_submitted_draft_imported_farmer_record" sequence="11"/>
