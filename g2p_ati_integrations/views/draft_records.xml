@@ -1,0 +1,204 @@
+<odoo>
+     <record id="view_draft_imported_kanban" model="ir.ui.view">
+        <field name="name">draft.record</field>
+        <field name="model">draft.record</field>
+        <field name="arch" type="xml">
+        <kanban
+            default_group_by="validation_status"
+            string="Enrichment Status"
+            class="o_kanban_small_column o_kanban_project_tasks"
+            on_create="quick_create"
+            quick_create_view="view_g2p_validation_status_form"
+            editable="top"
+            records_draggable="0" >
+            <field name="name"/>
+            <templates>
+                <t t-name="kanban-box">
+                    <div t-attf-class="my-2 oe_kanban_global_click o_kanban_card shadow-sm border rounded p-3">
+                        <!-- Card Header -->
+                        <div class="o_kanban_details">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <strong class="text-primary">
+                                    <field name="name" />
+                                </strong>
+                                <div>
+                                    <field
+                                            invisible="true"
+                                        widget="badge"
+                                        name="state"
+                                        class="badge"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="mt-2">
+                            <div class="d-flex flex-wrap gap-2 justify-content-between">
+                                <!-- Left Section Buttons -->
+                                <button
+                                    string="Change State"
+                                    type="object"
+                                    name="action_change_state"
+                                    groups="g2p_draft_publish.group_int_validator,g2p_draft_publish.group_int_admin"
+                                    class="btn btn-secondary btn-sm"
+                                />
+                                <button
+                                    string="Edit"
+                                    invisible="state!='draft'"
+                                    type="object"
+                                    name="action_open_wizard"
+                                    groups="g2p_draft_publish.group_int_validator,g2p_draft_publish.group_int_admin"
+                                    class="btn btn-primary btn-sm"
+                                />
+                                <button
+                                    string="Submit"
+                                    invisible="state!='draft'"
+                                    type="object"
+                                    name="action_submit"
+                                    groups="g2p_draft_publish.group_int_validator,g2p_draft_publish.group_int_admin"
+                                    class="btn btn-success btn-sm"
+                                />
+
+                                <!-- Right Section Buttons -->
+                                <button
+                                    string="Publish"
+                                    invisible="state!='submitted'"
+                                    type="object"
+                                    name="action_publish"
+                                    groups="g2p_draft_publish.group_int_approver,g2p_draft_publish.group_int_admin"
+                                    class="btn btn-success btn-sm"
+                                />
+                                <button
+                                    string="Reject"
+                                    invisible="state!='submitted'"
+                                    type="object"
+                                    name="action_reject"
+                                    groups="g2p_draft_publish.group_int_approver,g2p_draft_publish.group_int_admin"
+                                    class="btn btn-danger btn-sm"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <strong class="text-muted">Remark:</strong>
+                                    <field name="rejection_reason" />
+                        </div>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+        </field>
+    </record>
+
+
+    <record id="view_partner_form_inherited" model="ir.ui.view">
+        <field name="name">res.partner.form.inherited.lang</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+             <xpath expr="//field[@name='lang']" position="after">
+                <field name="asigned_region"/>
+                <field name="language_skills" widget="many2many_tags"/>
+             </xpath>
+        </field>
+    </record>
+    <record id="view_draft_imported_farmer_record_tree" model="ir.ui.view">
+        <field name="name">draft.record.tree</field>
+        <field name="model">draft.record</field>
+        <field name="inherit_id" ref="g2p_draft_publish.view_draft_imported_record_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='addl_name']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='family_name']" position="after">
+                <field name="gf_name_eng"/>
+            </xpath>
+            <xpath expr="//field[@name='region']" position="after">
+                <field name="zone"/>
+                <field name="woreda"/>
+                <field name="kebele"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="g2p_validation_farmer_form_view" model="ir.ui.view">
+        <field name="name">Validation Farmer Form View</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="g2p_ati.g2p_registry_farmer_form_view_inherit_no_create"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//notebook" position="after">
+                <footer>
+                    <button class="btn btn-info" name="action_update" string="Save" type="object"/>
+                    <button string="Discard" class="btn btn-warning" special="cancel" data-hotkey="x"/>
+                    <button class="btn btn-success" name="action_submit" string="Submit" type="object"/>
+                    <button class="btn btn-success" name="action_publish" string="Publish" type="object"
+                            groups="g2p_draft_publish.group_int_approver,g2p_draft_publish.group_int_admin"/>
+                </footer>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_draft_imported_farmer_record" model="ir.actions.act_window">
+        <field name="name">Draft</field>
+        <field name="res_model">draft.record</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[('state', '!=', 'submitted')]</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                (0,0,{'view_mode': 'kanban', 'view_id': ref('view_draft_imported_kanban')}),
+                (0,0,{'view_mode': 'tree', 'view_id': ref('view_draft_imported_farmer_record_tree')}),
+                (0,0,{'view_mode': 'form', 'view_id': ref('g2p_draft_publish.view_draft_imported_record_form')})]"/>
+    </record>
+
+    <record id="action_ati_cleaned_record" model="ir.actions.act_window">
+        <field name="name">Cleaned</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                (0,0,{'view_mode': 'tree', 'view_id': ref('g2p_ati.g2p_registry_farmer_tree_view_inherit_no_create')}),
+                (0,0,{'view_mode': 'form', 'view_id': ref('g2p_registry_individual.view_individuals_form')})]"/>
+        <field name="domain">[('db_import', '=', 'yes')]</field>
+        <field name="context">{'create': False}</field>
+    </record>
+
+
+    <record id="action_g2p_validation_status" model="ir.actions.act_window">
+        <field name="name">Validation Status</field>
+        <field name="res_model">g2p.validation.status</field>
+        <field name="view_mode">tree</field>
+        <field name="context">{}</field>
+    </record>
+
+
+      <record id="action_draft_imported_record" model="ir.actions.act_window">
+        <field name="name">Draft</field>
+        <field name="res_model">draft.record</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[('state', '!=', 'submitted')]</field>
+        <field
+            name="view_ids"
+            eval="[(5, 0, 0),
+                (0,0,{'view_mode': 'kanban', 'view_id': ref('view_draft_imported_kanban')}),
+                (0,0,{'view_mode': 'tree', 'view_id': ref('view_draft_imported_farmer_record_tree')}),
+                (0,0,{'view_mode': 'form', 'view_id': ref('g2p_draft_publish.view_draft_imported_record_form')})]"
+        />
+    </record>
+
+    <record id="g2p_draft_publish.menu_draft_imported_farmer_record" model="ir.ui.menu">
+    <field name="action" ref="action_draft_imported_record"/>
+    </record>
+
+    <menuitem id="menu_g2p_integration_configurations" name="Configurations" parent="g2p_draft_publish.draft_publish_main_menu" sequence="100"/>
+    <menuitem id="menu_g2p_validation_status" name="Enrichment Status" parent="menu_g2p_integration_configurations" action="action_g2p_validation_status"/>
+
+    <menuitem id="g2p_draft_publish.menu_ati_cleand_records_root" name="Cleaned Records" action="action_ati_cleaned_record"/>
+
+
+</odoo>
+
+

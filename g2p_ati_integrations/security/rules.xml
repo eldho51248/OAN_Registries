@@ -1,0 +1,9 @@
+<odoo>
+
+<record model="ir.module.category" id="g2p_draft_publish.integration_module">
+    <field name="name">ATI Integrations</field>
+</record>
+
+   
+
+</odoo>
