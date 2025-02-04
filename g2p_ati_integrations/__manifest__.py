@@ -10,9 +10,11 @@
     "data": [
              "security/rules.xml",
             "security/ir.model.access.csv",
+             "views/configurations.xml",
              "views/draft_records.xml",
              "views/imported_farmer_records.xml",
             "views/imported_record.xml",
+            "wizards/add_followers.xml",
             "wizards/assign_records.xml",
             "wizards/change_kanban_state.xml",
 
