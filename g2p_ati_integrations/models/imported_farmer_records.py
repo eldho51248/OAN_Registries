@@ -66,7 +66,7 @@ class G2PImportedRecord(models.Model):
     def create_draft_imported_record(self):
         self.ensure_one()
 
-
+        started = self.env["g2p.validation.status"].sudo().search([("name", "=", "Started")])
         partner_data = {
             "given_name": self.given_name,
             "family_name": self.family_name,
@@ -85,6 +85,7 @@ class G2PImportedRecord(models.Model):
             "gender": self.gender,
             "region": self.region,
             "import_record_id": self.id,
+            "validation_status": started.id,
             "partner_data": json.dumps(partner_data),
         }
 

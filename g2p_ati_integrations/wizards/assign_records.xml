@@ -29,6 +29,9 @@
             </group>
              <footer>
                     <button name="assign_groups" string="Assign Follower's" type="object" class="btn btn-primary"/>
+                      <button string="Cancel"
+                            class="btn-secondary"
+                            special="cancel" />
                 </footer>
         </form>
     </field>

@@ -181,9 +181,7 @@
         />
     </record>
 
-    <record id="g2p_draft_publish.menu_draft_imported_farmer_record" model="ir.ui.menu">
-    <field name="action" ref="action_draft_imported_record"/>
-    </record>
+
 
     <menuitem id="menu_g2p_integration_configurations" name="Configurations" parent="g2p_draft_publish.draft_publish_main_menu" sequence="100"/>
     <menuitem id="menu_g2p_validation_status" name="Enrichment Status" parent="menu_g2p_integration_configurations" action="g2p_ati_integrations.action_g2p_validation_status"/>
