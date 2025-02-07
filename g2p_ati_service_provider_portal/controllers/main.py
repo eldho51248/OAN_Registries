@@ -29,9 +29,9 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
             .search(
                 [
                     ("is_group", "=", True),
-                    "|",  # Logical OR operator
+                    # "|",  # Logical OR operator
                     ("enumerator_user_id", "=", user_id),
-                    ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id),
+                    # ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id),
                 ]
             )
         )
@@ -42,9 +42,9 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
                 [
                     ("is_group", "=", False),
                     ("is_farmer", "=", "yes"),
-                    "|",  # Logical OR operator
+                    # "|",  # Logical OR operator
                     ("enumerator_user_id", "=", user_id),
-                    ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id),
+                    # ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id),
                 ]
             )
         )
@@ -2769,9 +2769,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     ("is_registrant", "=", True),
                     ("is_group", "=", False),
                     ("is_farmer", "=", "yes"),
-                    "|",  # Logical OR operator
+                    # "|",  # Logical OR operator
                     ("enumerator_user_id", "=", user_id),
-                    ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id),
+                    # ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id),
                 ]
             )
         )
@@ -2798,9 +2798,9 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
                     ("active", "=", True),
                     ("is_registrant", "=", True),
                     ("is_group", "=", True),
-                    "|",  # Logical OR operator
+                    # "|",  # Logical OR operator
                     ("enumerator_user_id", "=", user_id),
-                    ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id),
+                    # ("enumerator_user_id", "=", partner.odk_app_user.odk_user_id),
                 ]
             )
         )

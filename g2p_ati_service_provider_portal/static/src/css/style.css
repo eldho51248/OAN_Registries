@@ -1479,4 +1479,21 @@ hr {
 }
 
 
+@media (max-width: 576px) { /* Target screens smaller than 576px */
+    .custom-dashboard-background .row {
+        display: flex;
+        flex-direction: column; /* Stack cards vertically */
+        align-items: center; /* Center cards horizontally */
+    }
+    .custom-dashboard-background .card {
+        margin: 0 auto; /* Center the card horizontally */
+        margin-bottom: 20px; /* Add spacing between cards */
+    }
+    .custom-dashboard-background .card:last-child {
+        margin-bottom: 40px; /* Extra margin for the last card */
+    }
+}
+
+
+
 

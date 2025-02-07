@@ -5271,9 +5271,9 @@ INSERT INTO g2p_kebele (code, name, woreda) VALUES ('101008101001', 'Hadaro Kate
 INSERT INTO g2p_kebele (code, name, woreda) VALUES ('101008101002', 'Hadaro Katema Kebele 01', (SELECT id FROM g2p_woreda WHERE code = '101008'));
 INSERT INTO g2p_kebele (code, name, woreda) VALUES ('101008101003', 'Hadaro Katema Kebele 02', (SELECT id FROM g2p_woreda WHERE code = '101008'));
 INSERT INTO g2p_kebele (code, name, woreda) VALUES ('101008101004', 'Hadaro Katema Kebele 04', (SELECT id FROM g2p_woreda WHERE code = '101008'));
-INSERT INTO g2p_kebele (code, name, woreda) VALUES ('101009101001', 'Doyogena  Lino', (SELECT id FROM g2p_woreda WHERE code = '101009'));
-INSERT INTO g2p_kebele (code, name, woreda) VALUES ('101009101002', 'Doyogena Zeraro', (SELECT id FROM g2p_woreda WHERE code = '101009'));
-INSERT INTO g2p_kebele (code, name, woreda) VALUES ('101009101003', 'Hawora', (SELECT id FROM g2p_woreda WHERE code = '101009'));
+INSERT INTO g2p_kebele (code, name, woreda) VALUES ('101009101001', 'Doyogena  Lino', (SELECT id FROM g2p_woreda WHERE code = '101003'));
+INSERT INTO g2p_kebele (code, name, woreda) VALUES ('101009101002', 'Doyogena Zeraro', (SELECT id FROM g2p_woreda WHERE code = '101003'));
+INSERT INTO g2p_kebele (code, name, woreda) VALUES ('101009101003', 'Hawora', (SELECT id FROM g2p_woreda WHERE code = '101003'));
 INSERT INTO g2p_kebele (code, name, woreda) VALUES ('101010101001', 'Angacha 02', (SELECT id FROM g2p_woreda WHERE code = '101010'));
 INSERT INTO g2p_kebele (code, name, woreda) VALUES ('101010101002', 'Angacha 01', (SELECT id FROM g2p_woreda WHERE code = '101010'));
 INSERT INTO g2p_kebele (code, name, woreda) VALUES ('101010101003', 'Angacha 04', (SELECT id FROM g2p_woreda WHERE code = '101010'));
