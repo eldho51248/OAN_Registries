@@ -103,7 +103,7 @@
  <xpath expr="//body" position="attributes">
     <attribute name="class">fade-in-ati</attribute>
     <attribute name="id">content</attribute>
-    <attribute name="style">display:none;</attribute>
+    <attribute name="style">opacity:0;</attribute>
  </xpath>
 
 
@@ -141,38 +141,24 @@
       </div>
 
 
+      <script>
+   document.addEventListener('DOMContentLoaded', function () {
+                    document.body.style.opacity = 1;
+                    document.body.style.transition = "opacity 0.2s ease-in";
+    });
+</script>
+
+
 
 
       <script>
 
     $(document).ready(function() {               
-      $(window).on('load', function() {
-        $('#content').fadeIn(200);
-
-
+     
 
   $('#hamburger-icon').click(function() {
     $(this).toggleClass('active');
   });
-
-
-        <!-- $('#hamburger-icon').click(function() {
-            $('#nav-user-rsp').toggle.();
-        }); -->
-
-
-       
-
-
-
-<!-- function toggleAccordionSection(sectionId) {
-    const section = document.getElementById(sectionId);
-    if (section.style.display === 'none') {
-        section.style.display = 'block'; // Open
-    } else {
-        section.style.display = 'none'; // Close
-    }
-} -->
 
 
 
@@ -222,7 +208,6 @@
 
 
 
-   });
       </script>
 
 

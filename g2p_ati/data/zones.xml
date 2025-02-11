@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
 
+
     <record id="zone_gulele_subcity_1401" model="g2p.zone">
         <field name="code">ET1401</field>
         <field name="name">Gulele Subcity</field>
