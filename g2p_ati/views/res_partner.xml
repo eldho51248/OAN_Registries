@@ -106,6 +106,7 @@
 					<field name="gf_name_other" />
 				</group>
 			</xpath>
+			
 			<xpath expr="//div[contains(@class, 'o_row')]" position="attributes">
 				<attribute name="invisible">1</attribute>
 			</xpath>
@@ -428,12 +429,14 @@
 			<xpath expr="//div[contains(@class, 'o_row')]" position="attributes">
 				<attribute name="invisible">1</attribute>
 			</xpath>
-			<xpath expr="//page[@name='other']" position="inside">
+			
+			<!-- <xpath expr="//page[@name='other']" position="inside">
 				<group>
 					<field name="enumerator_id" readonly="True" />
 					<field name="data_collection_date" readonly="True" />
 				</group>
-			</xpath>
+			</xpath> -->
+
 			<xpath expr="//field[@name='phone_number_ids']/tree" position="attributes">
 				<attribute name="editable">bottom</attribute>
 			</xpath>

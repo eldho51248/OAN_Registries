@@ -10,6 +10,7 @@
     "data": [
              "security/rules.xml",
             "security/ir.model.access.csv",
+
              "views/configurations.xml",
              "data/enrichment_status.xml",
              "views/draft_records.xml",
@@ -32,7 +33,9 @@
     "author": "",
     'website': "",
     "installable": True,
+
     "application": True,
+
     "auto_install": False,
     # "images": ["static/description/Banner.gif"],
     "license":'',

@@ -15,3 +15,4 @@ access_g2p_validation_status,status_manager_validator,model_g2p_validation_statu
 
 access_assign_records_wizard,group_reject_wizard_all,model_assign_records_wizard,g2p_draft_publish.group_int_validator,1,1,1,1
 access_reject_wizard,group_reject_wizard_all,model_reject_wizard,g2p_draft_publish.group_int_validator,1,1,1,1
+

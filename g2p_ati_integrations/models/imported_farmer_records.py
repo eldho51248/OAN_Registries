@@ -2,7 +2,6 @@ from odoo import models, fields, api
 import json
 from odoo.exceptions import ValidationError
 
-
 class G2PImportedRecord(models.Model):
     _name = "g2p.imported.record"
     _description = "Imported Record"

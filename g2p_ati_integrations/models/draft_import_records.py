@@ -11,6 +11,7 @@ _logger = logging.getLogger(__name__)
 class G2PDraftRecord(models.Model):
     _inherit = "draft.record"
 
+
     gf_name_eng = fields.Char(string="Last Name")
     zone = fields.Char(string="Zone")
     woreda = fields.Char(string="Woreda")
@@ -28,6 +29,7 @@ class G2PDraftRecord(models.Model):
             "view_id": self.env.ref("g2p_ati_integrations.change_state_wizard_view").id,
             "target": "new",
         }
+
     
     def action_publish(self):
         self.ensure_one()
@@ -208,6 +210,7 @@ class G2PRespartnerIntegration(models.Model):
 
     asigned_region = fields.Many2one("g2p.region")
     language_skills = fields.Many2many('g2p.lang', string='Languages')
+
 
     def action_save_to_draft(self,vals):
         
