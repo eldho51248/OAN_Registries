@@ -11,8 +11,8 @@
                 class="container-adjuster custom-dashboard-background"
                 style="margin-top: 2%; margin-bottom: 100px;"
             >
-                <!-- Added margin-left to shift cards to the right -->
-                <div class="row justify-content-center mx-auto" style="max-width: 1200px; margin-left: 10%;">
+                <!-- Added 'd-flex' and removed 'margin-left: 10%' -->
+                <div class="row justify-content-center d-flex mx-auto" style="max-width: 1200px;">
                     <!-- Card for Farmers -->
                     <div
                         class="col-lg-5 col-md-5 col-12"
