@@ -1,6 +1,7 @@
 <<<<<<< Updated upstream
 <?xml version="1.0" encoding="utf-8" ?>
-<odoo noupdate="1">
+<odoo>
+<!-- <odoo noupdate="1"> -->
     <record id="woreda_wereda_01_140101" model="g2p.woreda">
         <field name="code">140101</field>
         <field name="name">Wereda 01</field>

@@ -1,0 +1,62 @@
+<odoo>
+    <!-- Tree View -->
+    <record id="view_imported_farmer_record_tree" model="ir.ui.view">
+        <field name="name">g2p.imported.farmer.record.tree</field>
+        <field name="model">g2p.imported.record</field>
+        <field name="inherit_id" ref="g2p_draft_publish.view_imported_record_tree"/>
+        <field name="arch" type="xml">
+
+           <xpath expr="//field[@name='region']" position="after">
+                <field name="zone"/>
+                <field name="woreda"/>
+                <field name="kebele"/>
+            </xpath>
+        </field>
+    </record>
+
+
+
+    
+    <record id="view_imported_farmer_record_form" model="ir.ui.view">
+        <field name="name">g2p.imported.farmer.record.form</field>
+        <field name="model">g2p.imported.record</field>
+        <field name="inherit_id" ref="g2p_draft_publish.view_imported_record_form"/>
+
+        <field name="arch" type="xml">
+
+             <xpath expr="//field[@name='region']" position="attributes">
+                 <attribute name="invisible">1</attribute>
+             </xpath>
+
+
+         
+
+
+           <xpath expr="//field[@name='gender']" position="after">
+                            <field name="region" />
+                            <field name="zone"  />
+                            <field name="woreda" />
+                            <field name="kebele" />
+
+            </xpath>
+
+        </field>
+    </record>
+
+
+
+
+
+
+
+
+
+    <!-- Action -->
+    <!-- <record id="action_imported_farmer_record" model="ir.actions.act_window">
+        <field name="name">Imported</field>
+        <field name="res_model">g2p.imported.farmer.record</field>
+        <field name="view_mode">tree,form,kanban</field>
+    </record> -->
+    <!-- Menu -->
+    <!-- <menuitem id="menu_imported_farmer_record" name="Imported" parent="g2p_ati_integrations.menu_g2p_integration_root" action="action_imported_farmer_record" sequence="1"/> -->
+</odoo>
