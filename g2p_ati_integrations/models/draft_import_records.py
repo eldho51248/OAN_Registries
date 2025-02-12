@@ -8,15 +8,27 @@ _logger = logging.getLogger(__name__)
 
 
 
-class G2PDraftImportedRecord(models.Model):
-    _inherit = "draft.imported.record"
+class G2PDraftRecord(models.Model):
+    _inherit = "draft.record"
+
 
     gf_name_eng = fields.Char(string="Last Name")
     zone = fields.Char(string="Zone")
     woreda = fields.Char(string="Woreda")
     kebele = fields.Char(string="Kebele")
-    
- 
+    validation_status = fields.Many2one("g2p.validation.status")
+    import_record_id = fields.Many2one("g2p.imported.record", string="Import Record")
+
+
+    def action_change_state(self):
+        return {
+            "name": "Confirm Rejection",
+            "type": "ir.actions.act_window",
+            "res_model": "change.state.wizard",
+            "view_mode": "form",
+            "view_id": self.env.ref("g2p_ati_integrations.change_state_wizard_view").id,
+            "target": "new",
+        }
 
     
     def action_publish(self):
@@ -195,7 +207,10 @@ class G2PDraftImportedRecord(models.Model):
 
 class G2PRespartnerIntegration(models.Model):
     _inherit = 'res.partner'
-    
+
+    asigned_region = fields.Many2one("g2p.region")
+    language_skills = fields.Many2many('g2p.lang', string='Languages')
+
 
     def action_save_to_draft(self,vals):
         

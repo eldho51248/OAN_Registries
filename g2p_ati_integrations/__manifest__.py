@@ -10,11 +10,17 @@
     "data": [
              "security/rules.xml",
             "security/ir.model.access.csv",
-             "views/draft_imported_records.xml",
+
+             "views/configurations.xml",
+             "data/enrichment_status.xml",
+             "views/draft_records.xml",
              "views/imported_farmer_records.xml",
-    
-             
-             ],
+            "views/imported_record.xml",
+            "wizards/add_followers.xml",
+            "wizards/assign_records.xml",
+            "wizards/change_kanban_state.xml",
+
+    ],
     
        "assets": {
         "web.assets_backend": [
@@ -27,7 +33,9 @@
     "author": "",
     'website': "",
     "installable": True,
-    "application": False,
+
+    "application": True,
+
     "auto_install": False,
     # "images": ["static/description/Banner.gif"],
     "license":'',
