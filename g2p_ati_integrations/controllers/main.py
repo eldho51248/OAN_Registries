@@ -1,26 +1,5 @@
 from odoo import http
 from odoo.http import request
-class FarmerAPI(http.Controller):
-    @http.route('/api/farmer_profile', type='http', auth='user')
-
-    def get_farmer_profile(self, **kwargs):
-        farmer_id = request.env.user.id
-        print("the farmer is",farmer_id)
-
-        farmer = request.env['res.partner'].sudo().browse(farmer_id)
-        if farmer:
-            return {
-                'name': farmer.name,
-                'land_info': [{'id': land.id, 'area': land.area} for land in farmer.land_information_ids],
-            }
-        return {'error': 'Farmer not found'}
-
-class NarlisIntegrationController(http.Controller):
-    @http.route('/get_narlis_url', type='json', auth='user')
-    def get_narlis_url(self):
-        integration = request.env['narlis.integration'].sudo().search([], limit=1)
-        return {'url': integration.url if integration else ''}
-
 
 class LandAPIController(http.Controller):
 
