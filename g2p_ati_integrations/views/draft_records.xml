@@ -122,6 +122,14 @@
         </field>
     </record>
 
+    <record id="view_draft_imported_farmer_record_lmap" model="ir.ui.view">
+        <field name="name">draft.record.map</field>
+        <field name="model">draft.record</field>
+        <field name="arch" type="xml">
+            <lmap/>
+        </field>
+    </record>
+
 
     <record id="g2p_validation_farmer_form_view" model="ir.ui.view">
         <field name="name">Validation Farmer Form View</field>
@@ -170,7 +178,7 @@
     <record id="action_draft_imported_record" model="ir.actions.act_window">
         <field name="name">Draft</field>
         <field name="res_model">draft.record</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">kanban,tree,form,lmap</field>
         <field name="domain">[('state', '!=', 'submitted')]</field>
         <field
             name="view_ids"

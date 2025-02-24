@@ -6,3 +6,11 @@ class G2PValidationStatus(models.Model):
     
     fold = fields.Boolean(string= 'Folded in Kanban', default=False)
     name = fields.Char()
+
+
+class NarlisIntegration(models.Model):
+    _name = 'narlis.integration'
+
+    end_point_url = fields.Char()
+    api_key = fields.Char()
+    host_url = fields.Char()
