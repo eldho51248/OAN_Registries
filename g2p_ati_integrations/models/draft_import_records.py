@@ -33,35 +33,24 @@ class G2PLandInformation(models.Model):
                 raise UserError(_("No data received from the API."))
             self.polygon_data = polygon_coords
 
-            # Display success message
-            return {
-                'type': 'ir.actions.client',
-                'tag': 'display_notification',
-                'params': {
-                    'title': _("Success"),
-                    'message': _("Map data retrieved successfully."),
-                    'type': 'success',
-                    'sticky': False,
-                }
+            action = {
+                'type': 'ir.actions.act_window',
+                'name': 'Partner Map',
+                'res_model': 'g2p.land.information',
+                'view_mode': 'lmap',
+                'view_id': self.env.ref('g2p_ati_integrations.action_partner_map_view').id,
+                'target': 'new',
+                'context': {'polygon_coords': polygon_coords,
+                            'partner_latitiude': self.partner_id.partner_latitude,
+                            'partner_longitude': self.partner_id.partner_longitude
+                            },  # Passing polygon data
             }
+            return action
 
         except requests.exceptions.RequestException as e:
             raise UserError(_("Failed to fetch map data: %s") % str(e))
 
 
-        action = {
-            'type': 'ir.actions.act_window',
-            'name': 'Partner Map',
-            'res_model': 'g2p.land.information',
-            'view_mode': 'lmap',
-            'view_id': self.env.ref('g2p_ati_integrations.action_partner_map_view').id,
-            'target': 'new',
-            'context': {'polygon_coords': polygon_coords,
-                        'partner_latitiude': self.partner_id.partner_latitude,
-                        'partner_longitude': self.partner_id.partner_longitude
-                        },  # Passing polygon data
-        }
-        return  action
 
 class G2PDraftRecord(models.Model):
     _inherit = "draft.record"
