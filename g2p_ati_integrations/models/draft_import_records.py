@@ -1,5 +1,5 @@
 import requests
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 import json
 from odoo.exceptions import UserError, ValidationError
 from datetime import date, datetime
@@ -12,19 +12,42 @@ class G2PLandInformation(models.Model):
 
     polygon_data = fields.Text(string="Polygon Data", compute="_compute_polygon_data")
 
-
     def action_open_map_view(self):
-        api_parameters = self.env["narlis.integration"].sudo().search([])
+        api_parameters = self.env["narlis.integration"].sudo().search([], limit=1)
+
+        if not api_parameters:
+            raise UserError(_("API configuration is missing. Please configure in settings"))
 
         url = f"{api_parameters.host_url}{api_parameters.end_point_url}={self.land_id}&data-depth=2"
+        headers = {
+            "api-key": api_parameters.api_key,
+            "Host": api_parameters.host_url,
+        }
 
-        headers = {"api-key": f"{api_parameters.api_key}", "Host": f"{api_parameters.host_url}"}
+        try:
+            response = requests.get(url, headers=headers, timeout=10)
+            response.raise_for_status()  # Raise an error for HTTP status codes 4xx or 5xx
+            polygon_coords = response.json()
 
-        response = requests.get(url, headers=headers)
+            if not polygon_coords:
+                raise UserError(_("No data received from the API."))
+            self.polygon_data = polygon_coords
 
-        polygon_coords = response.json()
+            # Display success message
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': _("Success"),
+                    'message': _("Map data retrieved successfully."),
+                    'type': 'success',
+                    'sticky': False,
+                }
+            }
 
-        self.polygon_data = polygon_coords
+        except requests.exceptions.RequestException as e:
+            raise UserError(_("Failed to fetch map data: %s") % str(e))
+
 
         action = {
             'type': 'ir.actions.act_window',
