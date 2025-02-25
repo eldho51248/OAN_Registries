@@ -6,16 +6,16 @@
     "category": "tools",
     "description": """ 
 """,
-    "depends": ['g2p_draft_publish', 'g2p_ati'],
+    "depends": ['g2p_draft_publish', 'g2p_ati', 'g2p_leaflet_map'],
     "data": [
              "security/rules.xml",
             "security/ir.model.access.csv",
-
              "views/configurations.xml",
              "data/enrichment_status.xml",
              "views/draft_records.xml",
              "views/imported_farmer_records.xml",
             "views/imported_record.xml",
+            "views/show_map.xml",
             "wizards/add_followers.xml",
             "wizards/assign_records.xml",
             "wizards/change_kanban_state.xml",
@@ -33,9 +33,7 @@
     "author": "",
     'website': "",
     "installable": True,
-
     "application": True,
-
     "auto_install": False,
     # "images": ["static/description/Banner.gif"],
     "license":'',

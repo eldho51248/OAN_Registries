@@ -1,3 +1,4 @@
+import requests
 from odoo import models, fields, api
 import json
 from odoo.exceptions import UserError, ValidationError
@@ -6,11 +7,41 @@ import logging
 from typing import Dict, List
 _logger = logging.getLogger(__name__)
 
+class G2PLandInformation(models.Model):
+    _inherit = "g2p.land.information"
 
+    polygon_data = fields.Text(string="Polygon Data", compute="_compute_polygon_data")
+
+
+    def action_open_map_view(self):
+        api_parameters = self.env["narlis.integration"].sudo().search([])
+
+        url = f"{api_parameters.host_url}{api_parameters.end_point_url}={self.land_id}&data-depth=2"
+
+        headers = {"api-key": f"{api_parameters.api_key}", "Host": f"{api_parameters.host_url}"}
+
+        response = requests.get(url, headers=headers)
+
+        polygon_coords = response.json()
+
+        self.polygon_data = polygon_coords
+
+        action = {
+            'type': 'ir.actions.act_window',
+            'name': 'Partner Map',
+            'res_model': 'g2p.land.information',
+            'view_mode': 'lmap',
+            'view_id': self.env.ref('g2p_ati_integrations.action_partner_map_view').id,
+            'target': 'new',
+            'context': {'polygon_coords': polygon_coords,
+                        'partner_latitiude': self.partner_id.partner_latitude,
+                        'partner_longitude': self.partner_id.partner_longitude
+                        },  # Passing polygon data
+        }
+        return  action
 
 class G2PDraftRecord(models.Model):
     _inherit = "draft.record"
-
 
     gf_name_eng = fields.Char(string="Last Name")
     zone = fields.Char(string="Zone")
@@ -29,7 +60,6 @@ class G2PDraftRecord(models.Model):
             "view_id": self.env.ref("g2p_ati_integrations.change_state_wizard_view").id,
             "target": "new",
         }
-
     
     def action_publish(self):
         self.ensure_one()
@@ -199,10 +229,6 @@ class G2PDraftRecord(models.Model):
                         'default_reg_ids': json_data.get('reg_ids', [])
                         },
         }
-    
-    
-  
-
 
 
 class G2PRespartnerIntegration(models.Model):
@@ -277,6 +303,7 @@ class G2PRespartnerIntegration(models.Model):
         active_record.write({
             'partner_data': json.dumps(draft_record)
         })
+
 
 
     
