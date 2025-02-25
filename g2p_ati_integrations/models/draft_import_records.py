@@ -1,5 +1,5 @@
 import requests
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 import json
 from odoo.exceptions import UserError, ValidationError
 from datetime import date, datetime
@@ -12,33 +12,45 @@ class G2PLandInformation(models.Model):
 
     polygon_data = fields.Text(string="Polygon Data", compute="_compute_polygon_data")
 
-
     def action_open_map_view(self):
-        api_parameters = self.env["narlis.integration"].sudo().search([])
+        api_parameters = self.env["narlis.integration"].sudo().search([], limit=1)
+
+        if not api_parameters:
+            raise UserError(_("API configuration is missing. Please configure in settings"))
 
         url = f"{api_parameters.host_url}{api_parameters.end_point_url}={self.land_id}&data-depth=2"
-
-        headers = {"api-key": f"{api_parameters.api_key}", "Host": f"{api_parameters.host_url}"}
-
-        response = requests.get(url, headers=headers)
-
-        polygon_coords = response.json()
-
-        self.polygon_data = polygon_coords
-
-        action = {
-            'type': 'ir.actions.act_window',
-            'name': 'Partner Map',
-            'res_model': 'g2p.land.information',
-            'view_mode': 'lmap',
-            'view_id': self.env.ref('g2p_ati_integrations.action_partner_map_view').id,
-            'target': 'new',
-            'context': {'polygon_coords': polygon_coords,
-                        'partner_latitiude': self.partner_id.partner_latitude,
-                        'partner_longitude': self.partner_id.partner_longitude
-                        },  # Passing polygon data
+        headers = {
+            "api-key": api_parameters.api_key,
+            "Host": api_parameters.host_url,
         }
-        return  action
+
+        try:
+            response = requests.get(url, headers=headers, timeout=10)
+            response.raise_for_status()  # Raise an error for HTTP status codes 4xx or 5xx
+            polygon_coords = response.json()
+
+            if not polygon_coords:
+                raise UserError(_("No data received from the API."))
+            self.polygon_data = polygon_coords
+
+            action = {
+                'type': 'ir.actions.act_window',
+                'name': 'Partner Map',
+                'res_model': 'g2p.land.information',
+                'view_mode': 'lmap',
+                'view_id': self.env.ref('g2p_ati_integrations.action_partner_map_view').id,
+                'target': 'new',
+                'context': {'polygon_coords': polygon_coords,
+                            'partner_latitiude': self.partner_id.partner_latitude,
+                            'partner_longitude': self.partner_id.partner_longitude
+                            },  # Passing polygon data
+            }
+            return action
+
+        except requests.exceptions.RequestException as e:
+            raise UserError(_("Failed to fetch map data: %s") % str(e))
+
+
 
 class G2PDraftRecord(models.Model):
     _inherit = "draft.record"
