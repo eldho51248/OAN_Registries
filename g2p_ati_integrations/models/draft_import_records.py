@@ -17,15 +17,10 @@ class G2PLandInformation(models.Model):
         api_parameters = self.env["narlis.integration"].sudo().search([])
 
         url = f"{api_parameters.host_url}{api_parameters.end_point_url}={self.land_id}&data-depth=2"
-        print("url", url)
+
         headers = {"api-key": f"{api_parameters.api_key}", "Host": f"{api_parameters.host_url}"}
 
         response = requests.get(url, headers=headers)
-        print(response)
-
-
-
-        self.ensure_one()
 
         polygon_coords = response.json()
 
