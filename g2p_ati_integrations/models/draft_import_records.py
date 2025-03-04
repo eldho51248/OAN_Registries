@@ -6,32 +6,28 @@ from datetime import date, datetime
 import logging
 from typing import Dict, List
 _logger = logging.getLogger(__name__)
+import ast
+
 
 class G2PLandInformation(models.Model):
     _inherit = "g2p.land.information"
 
-    polygon_data = fields.Text(string="Polygon Data", compute="_compute_polygon_data")
+    polygon_data = fields.Text(string="Polygon Data")
+
 
     def action_open_map_view(self):
-        api_parameters = self.env["narlis.integration"].sudo().search([], limit=1)
 
-        if not api_parameters:
-            raise UserError(_("API configuration is missing. Please configure in settings"))
+        if self.polygon_data:
+            land_details = []
+            polygone_data = ast.literal_eval(self.polygon_data)
 
-        url = f"{api_parameters.host_url}{api_parameters.end_point_url}={self.land_id}&data-depth=2"
-        headers = {
-            "api-key": api_parameters.api_key,
-            "Host": api_parameters.host_url,
-        }
-
-        try:
-            response = requests.get(url, headers=headers, timeout=10)
-            response.raise_for_status()  # Raise an error for HTTP status codes 4xx or 5xx
-            polygon_coords = response.json()
-
-            if not polygon_coords:
-                raise UserError(_("No data received from the API."))
-            self.polygon_data = polygon_coords
+            land_info = {
+                'total_land_area': self.total_land_area,
+                'polygon_data': polygone_data,
+                'ownership_type': self.ownership_type
+            }
+            land_details.append(land_info)
+            # List to store details of all lands
 
             action = {
                 'type': 'ir.actions.act_window',
@@ -40,15 +36,49 @@ class G2PLandInformation(models.Model):
                 'view_mode': 'lmap',
                 'view_id': self.env.ref('g2p_ati_integrations.action_partner_map_view').id,
                 'target': 'new',
-                'context': {'polygon_coords': polygon_coords,
+                'context': {'polygon_coords': land_details,
                             'partner_latitiude': self.partner_id.partner_latitude,
                             'partner_longitude': self.partner_id.partner_longitude
                             },  # Passing polygon data
             }
             return action
+        else:
+            try:
+                api_parameters = self.env["narlis.integration"].sudo().search([], limit=1)
 
-        except requests.exceptions.RequestException as e:
-            raise UserError(_("Failed to fetch map data: %s") % str(e))
+                if not api_parameters:
+                    raise UserError(_("API configuration is missing. Please configure in settings"))
+
+                url = f"{api_parameters.host_url}{api_parameters.end_point_url}={self.land_id}&data-depth=2"
+                headers = {
+                    "api-key": api_parameters.api_key,
+                    "Host": api_parameters.host_url,
+                }
+                response = requests.get(url, headers=headers, timeout=10)
+                response.raise_for_status()  # Raise an error for HTTP status codes 4xx or 5xx
+                polygon_coords = response.json()
+
+                if not polygon_coords:
+                    raise UserError(_("No data received from the API."))
+                self.polygon_data = polygon_coords
+                polygone_data = ast.literal_eval(self.polygon_data)
+
+                action = {
+                        'type': 'ir.actions.act_window',
+                        'name': 'Partner Map',
+                        'res_model': 'g2p.land.information',
+                        'view_mode': 'lmap',
+                        'view_id': self.env.ref('g2p_ati_integrations.action_partner_map_view').id,
+                        'target': 'new',
+                        'context': {'polygon_coords':  polygone_data,
+                                    'partner_latitiude': self.partner_id.partner_latitude,
+                                    'partner_longitude': self.partner_id.partner_longitude
+                                    },  # Passing polygon data
+                    }
+                return action
+            except requests.exceptions.RequestException as e:
+                raise UserError(_( "Failed to fetch map data: %s") % str(e))
+
 
 
 
@@ -316,6 +346,39 @@ class G2PRespartnerIntegration(models.Model):
             'partner_data': json.dumps(draft_record)
         })
 
+
+    def view_all_lands(self):
+        land_details = []  # List to store details of all lands
+        for land in self.land_information_ids:
+            if land.polygon_data:
+            # Parse the string representation of the polygon data into an actual list of coordinates
+                try:
+                    polygon = ast.literal_eval(land.polygon_data)
+                except (ValueError, SyntaxError):
+                    print(f"Invalid polygon data: {land.polygon_data}")
+                    continue
+
+                # Collect all the relevant land information in a dictionary
+                land_info = {
+                    'total_land_area': land.total_land_area,
+                    'polygon_data': polygon,
+                    'ownership_type': land.ownership_type
+                }
+
+                land_details.append(land_info)
+        action = {
+            'type': 'ir.actions.act_window',
+            'name': 'Partner Map',
+            'res_model': 'res.partner',
+            'view_mode': 'lmap',
+            'view_id': self.env.ref('g2p_ati_integrations.action_partner_map_view').id,
+            'target': 'new',
+            'context': {'polygon_coords': land_details,
+                        'partner_latitiude': self.partner_latitude,
+                        'partner_longitude': self.partner_longitude
+                        },  # Passing polygon data
+        }
+        return action
 
 
     

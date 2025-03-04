@@ -27,4 +27,17 @@
     <field name="view_id" ref="your_map_view_id"/>
     <field name="target">new</field>
 </record>
+
+<record id="g2p_multiple_map_shapes_n_farmer_form_view" model="ir.ui.view">
+        <field name="name">Land Polygone Map View</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="g2p_registry_individual.view_individuals_form"/>
+        <field name="arch" type="xml">
+           <xpath expr="//group[@name='computed_land_info']" position="after">
+               <group name="show_land_on_map">
+                   <button name="view_all_lands" type="object" class="oe_stat_button" icon="fa-map-marker"/>
+               </group>
+        </xpath>
+        </field>
+    </record>
 </odoo>
