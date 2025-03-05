@@ -14,6 +14,28 @@ class G2PLandInformation(models.Model):
 
     polygon_data = fields.Text(string="Polygon Data")
 
+    def fetch_land_records(self):
+
+        try:
+            api_parameters = self.env["narlis.integration"].sudo().search([], limit=1)
+            land_records = self.env["g2p.land.information"].sudo().search([])
+            if not api_parameters:
+                raise UserError(_("API configuration is missing. Please configure in settings"))
+
+            for land in land_records:
+                url = f"{api_parameters.host_url}{api_parameters.end_point_url}={land.land_id}&data-depth=2"
+                headers = {
+                    "api-key": api_parameters.api_key,
+                    "Host": api_parameters.host_url,
+                }
+                response = requests.get(url, headers=headers, timeout=10)
+                response.raise_for_status()  # Raise an error for HTTP status codes 4xx or 5xx
+                polygon_coords = response.json()
+                land.polygon_data = polygon_coords
+
+
+        except requests.exceptions.RequestException as e:
+            raise UserError(_("Failed to fetch land data: %s") % str(e))
 
     def action_open_map_view(self):
 
