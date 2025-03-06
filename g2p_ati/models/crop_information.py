@@ -77,10 +77,17 @@ class G2PCropInformation(models.Model):
         cdate = date(record.collected_gc.year, record.collected_gc.month, record.collected_gc.day)
         ethiopian_date_str = eth_date.to_ethiopian(cdate.year, cdate.month, cdate.day)
         record.collected_ec = eth_date.convert_tuple_to_string_with_separator(ethiopian_date_str)
-        season = self.env["g2p.season"].search(
-            [("start_gc", "<=", record.collected_gc), ("end_gc", ">=", record.collected_gc)], limit=1
-        )
+
+
+        season = self.env["g2p.season"].search([
+            ("start_month", "<=",record.collected_gc.month),
+            ("end_month", ">=", record.collected_gc.month),
+            ("start_day", "<=", record.collected_gc.day),
+            ("end_day", ">=", record.collected_gc.day),
+                ], limit=1)
+
         if season:
+            _logger.info("found a  season")
             record.season = season.id
-        else:
-            record.season = False
+
+    

@@ -322,11 +322,12 @@ class G2PFarmer(models.Model):
             years_months_days = str(delta.years)
         return years_months_days
 
-    @api.depends("ref_id", "is_farmer")
+
+    @api.depends("unique_id", "is_farmer")
     def _compute_farmer_id(self):
         for record in self:
-            if record.is_farmer == "yes" and record.ref_id:
-                record.farmer_id = f"FR-{record.ref_id}"
+            if record.is_farmer == "yes" and record.unique_id:
+                record.farmer_id = f"FR-{record.unique_id}"
             else:
                 record.farmer_id = False
 
