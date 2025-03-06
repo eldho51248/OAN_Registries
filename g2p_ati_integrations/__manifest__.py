@@ -12,6 +12,7 @@
             "security/ir.model.access.csv",
              "views/configurations.xml",
              "data/enrichment_status.xml",
+             "data/land_integration_scheduled_action.xml",
              "views/draft_records.xml",
              "views/imported_farmer_records.xml",
             "views/imported_record.xml",
