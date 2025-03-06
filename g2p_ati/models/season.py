@@ -3,98 +3,63 @@ from datetime import date
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
-
 from .utils import eth_date
-
 
 class G2PSeason(models.Model):
     _name = "g2p.season"
     _description = "Season"
 
     name = fields.Char(required=True)
-    start_gc = fields.Date(index=True)
-    start_ec = fields.Char()
-    end_gc = fields.Date()
-    end_ec = fields.Char()
-    year_gc = fields.Integer(index=True)
-    year_ec = fields.Integer()
+    start_gc = fields.Date(index=True, string="Start GC", required=True)
+    end_gc = fields.Date(required=True, string="End GC")
+    start_month = fields.Integer("Start Month", compute="_compute_start_date", store=True)
+    start_day = fields.Integer("Start Day", compute="_compute_start_date", store=True)
+    end_month = fields.Integer("End Month", compute="_compute_end_date", store=True)
+    end_day = fields.Integer("End Day", compute="_compute_end_date", store=True)
 
-    @api.onchange("start_gc")
-    def _compute_start_ec_from_start_gc(self):
+    @api.depends("start_gc")
+    def _compute_start_date(self):
+        """Computes start month and start day."""
         for record in self:
             if record.start_gc:
-                cdate = date(self.start_gc.year, self.start_gc.month, self.start_gc.day)
-                ethiopian_date_str = eth_date.to_ethiopian(cdate.year, cdate.month, cdate.day)
-                if self.end_gc and self.start_gc:
-                    if self.end_gc < self.start_gc:
-                        error_msg = "Season end must be greater than or equal to season start"
-                        raise ValidationError(error_msg)
-                self.start_ec = eth_date.convert_tuple_to_string_with_separator(ethiopian_date_str)
-                self.year_gc = self.start_gc.year
+                record.start_month = record.start_gc.month
+                record.start_day = record.start_gc.day
             else:
-                record.start_ec = False
+                record.start_month = record.start_day = 0  
 
-    @api.onchange("start_ec")
-    def _compute_start_gc_from_start_ec(self):
+    @api.depends("end_gc")
+    def _compute_end_date(self):
+        """Computes end month and end day."""
         for record in self:
-            if record.start_ec:
-                eth_date.check_ethipian_date_str(record.start_ec, future_date=True)
-                date_list = re.split("[-/,]", self.start_ec)
-                gc_date = eth_date.to_gregorian(int(date_list[2]), int(date_list[1]), int(date_list[0]))
-                self.start_gc = gc_date
-                self.year_ec = int(date_list[2])
+            if record.end_gc:
+                record.end_month = record.end_gc.month
+                record.end_day = record.end_gc.day
             else:
-                record.start_gc = False
-
-    @api.onchange("end_gc")
-    def _compute_end_ec_from_end_gc(self):
-        for record in self:
-            if record.end_gc and self.start_gc:
-                if record.end_gc < self.start_gc:
-                    error_msg = "Season end must be greater than or equal to season start"
-                    raise ValidationError(error_msg)
-
-                cdate = date(self.end_gc.year, self.end_gc.month, self.end_gc.day)
-                ethiopian_date_str = eth_date.to_ethiopian(cdate.year, cdate.month, cdate.day)
-                self.end_ec = eth_date.convert_tuple_to_string_with_separator(ethiopian_date_str)
-
-    @api.onchange("end_ec")
-    def _compute_end_gc_from_end_ec(self):
-        for record in self:
-            if record.end_ec:
-                eth_date.check_ethipian_date_str(record.end_ec, future_date=True)
-                date_list = re.split("[-/,]", self.end_ec)
-                gc_date = eth_date.to_gregorian(int(date_list[2]), int(date_list[1]), int(date_list[0]))
-                if gc_date and self.start_gc:
-                    if gc_date < self.start_gc:
-                        error_msg = "Season end must be greater than or equal to season start"
-                        raise ValidationError(error_msg)
-                self.end_gc = gc_date
-
-    @api.constrains("start_gc", "start_ec")
-    def _check_start_dates(self):
-        for record in self:
-            if not record.start_gc and not record.start_ec:
-                raise ValidationError(_("Either Start date GC or Start date GC should not be empty."))
-
-    @api.constrains("end_ec", "end_gc")
-    def _check_end_dates(self):
-        for record in self:
-            if not record.end_gc and not record.end_ec:
-                raise ValidationError(_("Either End date EC or End date GC should not be empty."))
+                record.end_month = record.end_day = 0 
 
     @api.constrains("start_gc", "end_gc")
-    def _check_no_overlap_within_same_year_gc(self):
+    def _check_valid_season_dates(self):
+        """Ensure the start date is before the end date."""
         for record in self:
-            overlapping_seasons = self.search(
-                [
-                    ("year_gc", "=", record.year_gc),
-                    ("id", "!=", record.id),
-                    "&",
-                    ("start_gc", "<=", record.end_gc),
-                    ("end_gc", ">=", record.start_gc),
-                ],
-                limit=1,
-            )
+            if record.start_gc and record.end_gc and record.start_gc > record.end_gc:
+                raise ValidationError("Start date must be before end date.")
+
+    @api.constrains("start_gc", "end_gc")
+    def _check_overlapping_seasons(self):
+        """Ensure that no two seasons overlap, ignoring the year."""
+        for record in self:
+            overlapping_seasons = self.search([
+                ("id", "!=", record.id),  
+                "|",
+                "&",  
+                ("start_month", "<=", record.end_month),
+                ("end_month", ">=", record.start_month),
+                "&", 
+                ("start_month", "<=", record.end_month),
+                ("end_month", ">=", record.start_month),
+            ])
+
             if overlapping_seasons:
-                raise ValidationError(_("There cannot be overlapping seasons within the same year."))
+                raise ValidationError(
+                    f"Season '{record.name}' overlaps with '{', '.join(overlapping_seasons.mapped('name'))}' (ignoring year)."
+                )
