@@ -35,11 +35,11 @@ class G2PFarmer(models.Model):
     zone = fields.Many2one("g2p.zone", domain="[('region', '=', region)]")
     woreda = fields.Many2one("g2p.woreda", domain="[('zone', '=', zone)]")
     kebele = fields.Many2one("g2p.kebele", domain="[('woreda', '=', woreda)]")
-    
+
     given_name = fields.Char(string="First Name(English)", translate=False)
     family_name = fields.Char(string="Father's Name(English)", translate=False)
     gf_name_eng = fields.Char(string="Grand Father's Name(English)", translate=False)
-    
+
     first_name_amh = fields.Char(string="First Name(Amharic)", translate=False)
     family_name_amh = fields.Char(string="Father's Name(Amharic)", translate=False)
     gf_name_amh = fields.Char(string="Grand Father's Name(Amharic)", translate=False)
@@ -221,7 +221,7 @@ class G2PFarmer(models.Model):
     # @api.onchange("woreda")
     # def _onchange_woreda(self):
     #     self.kebele = False
-    
+
 
     @api.onchange("is_group", "family_name", "given_name", "gf_name_eng")
     def name_change_farmer(self):
@@ -234,7 +234,7 @@ class G2PFarmer(models.Model):
                 name += self.family_name + " "
             if self.gf_name_eng:
                 name += self.gf_name_eng
-            
+
             self.name = name.upper()
             # vals.update({"name": name.upper()})
             # self.update(vals)
@@ -252,7 +252,7 @@ class G2PFarmer(models.Model):
                 owner_count = len(land_info_records.filtered(lambda r: r.ownership_type == "owner"))
                 tenant_count = len(land_info_records.filtered(lambda r: r.ownership_type == "tenant"))
                 if owner_count > 0 and tenant_count == 0:
-                    record.land_ownership = "owner"  
+                    record.land_ownership = "owner"
                 elif tenant_count > 0 and owner_count == 0:
                     record.land_ownership = "tenant"
                 elif owner_count > 0 and tenant_count > 0:
