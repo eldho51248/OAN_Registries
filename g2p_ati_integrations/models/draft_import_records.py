@@ -18,14 +18,13 @@ class G2PLandInformation(models.Model):
     means_of_acquisition = fields.Text(string="Means Of Acquisition")
     year_of_acquisition = fields.Date(string="Year Of Acquisition")
 
-
     def fetch_land_records(self):
-
         try:
             api_parameters = self.env["narlis.integration"].sudo().search([], limit=1)
             land_records = self.env["g2p.land.information"].sudo().search([])
+
             if not api_parameters:
-                raise UserError(_("API configuration is missing. Please configure in settings"))
+                raise UserError(_("API configuration is missing. Please configure it in settings."))
 
             for land in land_records:
                 url = f"{api_parameters.host_url}{api_parameters.end_point_url}"
@@ -37,19 +36,33 @@ class G2PLandInformation(models.Model):
                     "upid": land.land_id,
                     "data-depth": "2"
                 }
+
                 response = requests.get(url, headers=headers, params=params, timeout=10)
-                response.raise_for_status()  # Raise an error for HTTP status codes 4xx or 5xx
-                land_informations = response.json()
-                isorphan = land_informations.get("parcel", {}).get("rights", [{}])[0].get("party", {}).get("isorphan")
-                land.partner_id.is_orphan = isorphan.lower()
-                land.polygon_data = land_informations["parcel"]["geometryWkt"]
-                land.current_land_use = land_informations["parcel"]["landUse"]
-                land.total_land_area = land_informations["parcel"]["parcelArea"]
-                # land.polygon_data = land_informations
 
+                if response.status_code != 200:
+                    raise UserError(_("Failed to fetch data from NARLIS API. Status Code: %s, Response: %s") % (
+                    response.status_code, response.text))
 
+                try:
+                    land_informations = response.json()
+                except ValueError:
+                    raise UserError(_("Invalid JSON response from NARLIS API."))
+
+                parcel_data = land_informations.get("parcel", {})
+                rights_data = parcel_data.get("rights", [{}])[0]
+                party_data = rights_data.get("party", {})
+
+                land.partner_id.is_orphan = party_data.get("isorphan", "").lower()
+                land.polygon_data = parcel_data.get("geometryWkt", "")
+                land.current_land_use = parcel_data.get("landUse", "")
+                land.total_land_area = parcel_data.get("parcelArea", 0)
+
+        except requests.exceptions.Timeout:
+            raise UserError(_("The request to the NARLIS API timed out. Please try again later."))
+        except requests.exceptions.ConnectionError:
+            raise UserError(_("Could not connect to the NARLIS API. Please check your network connection."))
         except requests.exceptions.RequestException as e:
-            raise UserError(_("Failed to fetch land data: %s") % str(e))
+            raise UserError(_("An error occurred while communicating with the NARLIS API: %s") % str(e))
 
     def action_open_map_view(self):
 
