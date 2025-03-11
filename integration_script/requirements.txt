@@ -1,2 +1,0 @@
-asyncio==3.4.3
-asyncpg==0.30.0
