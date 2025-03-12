@@ -157,56 +157,6 @@ class G2PDraftRecord(models.Model):
             "target": "new",
         }
 
-    def action_publish(self):
-        self.ensure_one()
-        partner_data = json.loads(self.partner_data)
-        res_partner_model = self.env['res.partner']
-
-        # Fetch all fields metadata from res.partner
-        fields_metadata = res_partner_model.fields_get()
-
-        # Dictionary to store valid fields and values
-        valid_data = {}
-
-        given_name = partner_data.get('given_name', '')
-        family_name = partner_data.get('family_name', '')
-        gf_name_en = partner_data.get('gf_name_eng', '')
-
-        for field_name, value in partner_data.items():
-            if field_name in fields_metadata:
-                field_info = fields_metadata[field_name]
-                field_type = field_info.get('type')
-
-                # Validation based on field type
-                if field_type == 'char' and isinstance(value, str):
-                    valid_data[field_name] = value
-                if (field_type == 'date' or field_type =='datetime')  and isinstance(value, str):
-                    valid_data[field_name] = date.fromisoformat(value)
-                elif field_type == 'integer' and isinstance(value, int):
-                    valid_data[field_name] = value
-                elif field_type == 'float' and isinstance(value, (int, float)):
-                    valid_data[field_name] = float(value)
-                elif field_type == 'boolean' and isinstance(value, bool):
-                    valid_data[field_name] = value
-                elif field_type == 'many2one' and isinstance(value, int):
-                    # Check if the referenced record exists
-                    if self.env[field_info['relation']].browse(value).exists():
-                        valid_data[field_name] = value
-                elif field_type == 'selection':
-                    selection_options = [option[0] for option in field_info.get('selection', [])]
-                    if value in selection_options:
-                        valid_data[field_name] = value
-
-        # Create the res.partner record with valid data
-        if valid_data:
-            valid_data['db_import'] = 'yes'
-            valid_data['name'] = f"{given_name} {family_name} {gf_name_en}".upper()
-
-            new_partner = res_partner_model.create(valid_data)
-            self.write({'state':'published'})
-        else:
-            raise ValueError("No valid data found to create a partner record.")
-
 class G2PRespartnerIntegration(models.Model):
     _inherit = 'res.partner'
 

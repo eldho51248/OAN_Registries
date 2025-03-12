@@ -9,7 +9,6 @@
             <xpath expr="//field[@name='registration_date']" position="after">
                 <field string="Status" name="edit_state" />
             </xpath>
-
         </field>
         </record>
 

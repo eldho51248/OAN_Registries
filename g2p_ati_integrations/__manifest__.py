@@ -4,7 +4,7 @@
     # "currency": 'EUR',
     "summary": "Integration Module",
     "category": "tools",
-    "description": """ 
+    "description": """
 """,
     "depends": ['g2p_draft_publish', 'g2p_ati', 'g2p_leaflet_map'],
     "data": [
@@ -22,13 +22,13 @@
             "wizards/change_kanban_state.xml",
 
     ],
-    
+
        "assets": {
         "web.assets_backend": [
             "g2p_ati_integrations/static/src/**/*.js",
             "g2p_ati_integrations/static/src/**/*.css",
             "g2p_ati_integrations/static/src/**/*.scss",
-            "g2p_ati_integrations/static/src/**/*.xml",
+            "g2p_ati_integrations/static/src/my_map_template.xml",
         ],
     },
     "author": "",
