@@ -5,7 +5,7 @@
     <field name="inherit_id" ref="g2p_registry_individual.view_individuals_form"/>
     <field name="arch" type="xml">
         <xpath expr="//field[@name='land_information_ids']/tree" position="inside">
-            <button name="action_open_map_view" type="object" class="oe_stat_button" icon="fa-map-marker" title="show on map"/>
+            <button name="action_open_map_view" type="object" class="oe_stat_button" icon="fa-map-marker" title="show on map" />
         </xpath>
     </field>
 </record>
@@ -35,9 +35,10 @@
         <field name="arch" type="xml">
            <xpath expr="//group[@name='computed_land_info']" position="after">
                <group name="show_land_on_map">
-                   <button name="view_all_lands" type="object" class="oe_stat_button" icon="fa-map-marker"/>
+                   <button name="view_all_lands" type="object" class="oe_stat_button" icon="fa-map-marker" title="Show Map"/>
                </group>
         </xpath>
         </field>
     </record>
+
 </odoo>

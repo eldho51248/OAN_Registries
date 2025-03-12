@@ -3,7 +3,7 @@ import logging
 from odoo import http
 from odoo.http import request
 
-_logger = logging.getLogger(name)
+_logger = logging.getLogger(__name__)
 
 class LandAPIController(http.Controller):
     @http.route('/api/land_info', type='http', auth='public', methods=['GET'], csrf=False)

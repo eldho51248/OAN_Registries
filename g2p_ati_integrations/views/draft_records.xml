@@ -136,7 +136,7 @@
         <field name="view_mode">kanban,tree,form</field>
         <field name="domain">[('state', '!=', 'submitted')]</field>
         <field name="view_ids" eval="[(5, 0, 0),
-                (0,0,{'view_mode': 'kanban', 'view_id': ref('view_draft_imported_kanban')}),
+                (0,0,{'view_mode': 'kanban', 'view_id': ref('g2p_ati_integrations.view_draft_imported_kanban')}),
                 (0,0,{'view_mode': 'tree', 'view_id': ref('view_draft_imported_farmer_record_tree')}),
                 (0,0,{'view_mode': 'form', 'view_id': ref('g2p_draft_publish.view_draft_imported_record_form')})]"/>
     </record>
@@ -167,6 +167,10 @@
         />
     </record>
 
+    <record id="g2p_draft_publish.menu_draft_imported_farmer_record" model="ir.ui.menu">
+        <field name="name">Drafts</field>
+        <field name="action" ref="action_draft_imported_farmer_record"/>
+    </record>
 
 
     <menuitem id="menu_g2p_integration_configurations" name="Configurations" parent="g2p_draft_publish.draft_publish_main_menu" sequence="100"/>
