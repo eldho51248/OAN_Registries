@@ -1,11 +1,13 @@
 import re
 from datetime import date
 
+import logging
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 from .utils import eth_date
 
+_logger = logging.getLogger(__name__)
 
 class G2PCropInformation(models.Model):
     _name = "g2p.crop.information"
