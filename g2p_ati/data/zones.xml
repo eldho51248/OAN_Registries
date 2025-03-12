@@ -1,13 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
-
-
     <record id="zone_gulele_subcity_1401" model="g2p.zone">
         <field name="code">ET1401</field>
         <field name="name">Gulele Subcity</field>
         <field name="region" ref="g2p_ati.region_addis_ababa_14" />
     </record>
-    
+
     <record id="zone_addis_ketema_subcity_1402" model="g2p.zone">
         <field name="code">1402</field>
         <field name="name">Addis Ketema Subcity</field>
@@ -19,7 +17,7 @@
         <field name="name">Kolfe Keraniyo Subcity</field>
         <field name="region" ref="g2p_ati.region_addis_ababa_14" />
     </record>
-    
+
     <record id="zone_lideta_subcity_1404" model="g2p.zone">
         <field name="code">1404</field>
         <field name="name">Lideta Subcity</field>
@@ -450,7 +448,7 @@
         <field name="name">Dukam Liyu Zone</field>
         <field name="region" ref="g2p_ati.region_oromiya_4" />
     </record>
-  
+
     <record id="zone_nekemte_liyu_zone_428" model="g2p.zone">
         <field name="code">428</field>
         <field name="name">Nekemte Liyu Zone</field>
@@ -461,13 +459,13 @@
         <field name="name">Jimma Liyu</field>
         <field name="region" ref="g2p_ati.region_oromiya_4" />
     </record>
-   
+
     <record id="zone_shashamane_liyu_zone_431" model="g2p.zone">
         <field name="code">431</field>
         <field name="name">Shashamane Liyu Zone</field>
         <field name="region" ref="g2p_ati.region_oromiya_4" />
     </record>
-   
+
     <record id="zone_robe_liyu_zone_433" model="g2p.zone">
         <field name="code">433</field>
         <field name="name">Robe Liyu Zone</field>

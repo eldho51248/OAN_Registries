@@ -130,28 +130,6 @@
         </field>
     </record>
 
-
-    <record id="g2p_validation_farmer_form_view" model="ir.ui.view">
-        <field name="name">Validation Farmer Form View</field>
-        <field name="model">res.partner</field>
-        <field name="inherit_id" ref="g2p_ati.g2p_registry_farmer_form_view_inherit_no_create"/>
-        <field name="mode">primary</field>
-        <field name="arch" type="xml">
-            <xpath expr="//header" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
-            <xpath expr="//notebook" position="after">
-                <footer>
-                    <button class="btn btn-info" name="action_update" string="Save" type="object"/>
-                    <button string="Discard" class="btn btn-warning" special="cancel" data-hotkey="x"/>
-                    <button class="btn btn-success" name="action_submit" string="Submit" type="object"/>
-                    <button class="btn btn-success" name="action_publish" string="Publish" type="object"
-                            groups="g2p_draft_publish.group_int_approver,g2p_draft_publish.group_int_admin"/>
-                </footer>
-            </xpath>
-        </field>
-    </record>
-
     <record id="action_draft_imported_farmer_record" model="ir.actions.act_window">
         <field name="name">Draft</field>
         <field name="res_model">draft.record</field>
@@ -168,7 +146,7 @@
         <field name="res_model">res.partner</field>
         <field name="view_mode">tree,form</field>
         <field name="view_ids" eval="[(5, 0, 0),
-                (0,0,{'view_mode': 'tree', 'view_id': ref('g2p_ati.g2p_registry_farmer_tree_view_inherit_no_create')}),
+                (0,0,{'view_mode': 'tree', 'view_id': ref('g2p_registry_individual.view_individuals_list_tree')}),
                 (0,0,{'view_mode': 'form', 'view_id': ref('g2p_registry_individual.view_individuals_form')})]"/>
         <field name="domain">[('db_import', '=', 'yes')]</field>
         <field name="context">{'create': False}</field>
