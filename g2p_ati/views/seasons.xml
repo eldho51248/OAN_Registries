@@ -9,10 +9,11 @@
                 <field name="name" />
                 <field name="start_gc" />
                 <field name="end_gc" />
-                <field name="year_gc" />
-                <field name="start_ec" />
-                <field name="end_ec" />
-                <field name="year_ec" />
+                <field name="start_month" />
+                <field name="start_day" />
+                <field name="end_month" />
+                <field name="end_day" />
+
             </tree>
         </field>
     </record>

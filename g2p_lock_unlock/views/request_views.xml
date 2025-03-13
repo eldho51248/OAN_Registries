@@ -58,6 +58,7 @@
         <sheet>
           <group>
             <field name="record_id" readonly="1" />
+            <field name="enumerator_id" invisible="true" />
             <field name="requester_id" readonly="1" />
             <field name="status" readonly="1" />
             <field name="type" readonly="1" />

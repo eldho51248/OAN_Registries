@@ -2,7 +2,7 @@
 {
     "name": "OpenG2P Country Config: ATI",
     "category": "G2P",
-    "version": "17.0.0.0.0",
+    "version": "17.0.1.5.0",
     "sequence": 1,
     "author": "OpenG2P",
     "website": "https://openg2p.org",
@@ -29,7 +29,7 @@
         "data/primary_language.xml",
         "data/primary_commodity.xml",
         "data/water_source.xml",
-        "data/farmer_id_cron_job.xml",
+        # "data/farmer_id_cron_job.xml",
         "views/seasons.xml",
         "views/farmer_profile_menu.xml",
         "views/livestock.xml",
@@ -60,6 +60,12 @@
             "g2p_ati/static/src/components/**/*.xml",
             "g2p_ati/static/src/js/preview_document.js",
         ],
+    },
+    'migrations': {
+        '17.0.1.5.0': {
+            'pre': 'g2p_ati/migrations/17.0.1.5.0/pre-migration.py',
+            'post': 'g2p_ati/migrations/17.0.1.5.0/post-migration.py',
+        },
     },
     "demo": [],
     "images": [],

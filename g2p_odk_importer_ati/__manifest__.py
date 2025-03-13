@@ -2,7 +2,7 @@
 {
     "name": "OpenG2P ODK Config: ATI",
     "category": "G2P",
-    "version": "17.0.0.0.0",
+    "version": "17.0.1.3.0",
     "sequence": 1,
     "author": "OpenG2P",
     "website": "https://openg2p.org",
@@ -10,11 +10,11 @@
     "depends": ["g2p_ati", "g2p_odk_importer", "g2p_registry_addl_info"],
     "external_dependencies": {},
     "data": [
-        "data/odk_config.xml",
-        "data/odk_import.xml",
         "security/ir.model.access.csv",
         "views/views.xml",
         "views/odk_res_config_setting.xml",
+        "data/odk_config.xml",
+        "data/odk_import.xml",
     ],
     "assets": {"web.assets_backend": []},
     "demo": [],
