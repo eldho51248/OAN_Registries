@@ -48,7 +48,9 @@
                     <div class="list-view">
 
 
-                    <div class="table-head-container align-items-lg-center py-3 d-flex flex-column flex-lg-row flex-md-wrap justify-content-between px-3 mx-auto ">
+                    <div
+                            class="table-head-container align-items-lg-center py-3 d-flex flex-column flex-lg-row flex-md-wrap justify-content-between px-3 mx-auto "
+                        >
 
                         <div id="head_name_rec">
                             <p class="table-title d-flex flex-row"> Farmer List - <span
@@ -151,23 +153,32 @@
                                         </span>
 
                                     </div>
-                                    
+
                                     <div
                                         id="search-result-count"
                                         style="position:absolute; margin-top: 70px;color: #078148;font-weight:500;font-size: 12px;padding:5px"
                                     >
                                     </div>
 
-                                    <div onclick="showModal()"  class="filter-box">
-                                    <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel filter-icon" viewBox="0 0 16 16">
-                                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
+                                    <div onclick="showModal()" class="filter-box">
+                                    <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="16"
+                                            height="16"
+                                            fill="currentColor"
+                                            class="bi bi-funnel filter-icon"
+                                            viewBox="0 0 16 16"
+                                        >
+                                    <path
+                                                d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"
+                                            />
                                     </svg>
                                     <input
-                                        placeholder="Filters"
-                                        class="flter-input"
-                                        name="f_input"
-                                        id="f_input"
-                                        readonly="readonly"
+                                            placeholder="Filters"
+                                            class="flter-input"
+                                            name="f_input"
+                                            id="f_input"
+                                            readonly="readonly"
                                         />
                                     </div>
 
@@ -188,7 +199,9 @@
                                     <th class="fixed-width-column">Region <i class="fas fa-sort fa-3x" /></th>
                                     <th class="fixed-width-column">Zone <i class="fas fa-sort fa-3x" /></th>
                                     <th class="fixed-width-column">Woreda <i class="fas fa-sort fa-3x" /></th>
-                                    <th class="fixed-width-column">Kebele <i class="fas fa-sort fa-2xl"/></th>
+                                    <th class="fixed-width-column">Kebele <i
+                                                class="fas fa-sort fa-2xl"
+                                            /></th>
                                     <th class="fixed-width-column last-updated-header">Last Updated <i
                                                 class="fas fa-sort fa-3x"
                                             /></th>
@@ -202,15 +215,20 @@
                                 <t t-foreach="individual" t-as="group">
                                     <tr class="grid3_table" t-att-data-selection="group['region']">
                                         <td class="sr-column r_grid_item1" style="color:#b3b3b3;" />
-                                        
-                                        <td data-label="Name"
+
+                                        <td
+                                                data-label="Name"
                                                 class="name-column  tr_grid_item2"
                                                 style="color:#078148; font: normal normal 600 13px/16px Inter;"
                                             >
                                             <t t-out="group['name']" />
-                                        
+
                                         </td>
-                                        <td data-label="Region" class="fixed-width-column tr_grid_item4 " id="region_row">
+                                        <td
+                                                data-label="Region"
+                                                class="fixed-width-column tr_grid_item4 "
+                                                id="region_row"
+                                            >
                                             <t t-out="group['region']['name']" />
                                         </td>
                                         <td data-label="Zone" class="fixed-width-column tr_grid_item5">
@@ -219,10 +237,13 @@
                                         <td data-label="Woreda" class="fixed-width-column tr_grid_item6 ">
                                             <t t-out="group['woreda']['name']" />
                                         </td>
-                                        <td data-label="Kebele"  class="fixed-width-column tr_grid_item7 ">
+                                        <td data-label="Kebele" class="fixed-width-column tr_grid_item7 ">
                                             <t t-out="group['kebele']['name']" />
                                         </td>
-                                        <td data-label="Last Update" class="fixed-width-column tr_grid_item3 ">
+                                        <td
+                                                data-label="Last Update"
+                                                class="fixed-width-column tr_grid_item3 "
+                                            >
                                             <t t-out="group['write_date']" />
                                         </td>
                                         <td data-label="Status" class="status-column tr_grid_item8">
@@ -273,19 +294,31 @@
 
 
         <div class="d-none filter_modal_back " id="filterModal" tabindex="-1" role="dialog">
-        
+
             <div style="margin: 0 auto !important;" class=" filter_modal px-5 " role="document">
 
-                <div style="background-color: white; border-radius: 1rem; text-align: center;" class=" py-2 modal_container">
+                <div
+                            style="background-color: white; border-radius: 1rem; text-align: center;"
+                            class=" py-2 modal_container"
+                        >
 
                     <div class="modal-header">
                         <!-- Icon and Title -->
                         <h5 class="modal-title d-flex gap-1 fs-6 align-items-center" id="exampleModalLabel">
 
                         Filters
-                        
-                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-funnel filter-icon" viewBox="0 0 16 16">
-                                                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"></path>
+
+                        <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="22"
+                                        height="22"
+                                        fill="currentColor"
+                                        class="bi bi-funnel filter-icon"
+                                        viewBox="0 0 16 16"
+                                    >
+                                                    <path
+                                            d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"
+                                        />
                                                     </svg>
                         </h5>
                 </div>
@@ -294,15 +327,15 @@
 
                 <div class="additional_filter_container p-1">
 
-                        <div class="modal_filter_container"> 
+                        <div class="modal_filter_container">
 
                             <div class="additional_filter modal_filter  mf1 ">
                                                     <select
-                                                        id="region_selection_modal"
-                                                        class="form-select"
-                                                        name="region"
-                                                        required="required"
-                                                    >
+                                            id="region_selection_modal"
+                                            class="form-select"
+                                            name="region"
+                                            required="required"
+                                        >
                                                         <option value=" ">Region</option>
                                                         <t t-foreach="region" t-as="option">
                                                             <option t-att-value="option.id">
@@ -314,11 +347,11 @@
 
                             <div class="additional_filter modal_filter mf2 ">
                                 <select
-                                    id="zone_selection_modal"
-                                    class="form-select"
-                                    name="zone"
-                                    required="required"
-                                >
+                                            id="zone_selection_modal"
+                                            class="form-select"
+                                            name="zone"
+                                            required="required"
+                                        >
                                     <option value=" ">Zone</option>
                                     <t t-foreach="zone" t-as="option">
                                         <option t-att-value="option.id">
@@ -327,7 +360,7 @@
                                     </t>
                                 </select>
                             </div>
-                            
+
                             <div class="additional_filter modal_filter mf3">
                                 <select id="woreda_selection_modal" class="form-select" name="woreda">
                                     <option value=" ">Woreda</option>
@@ -352,7 +385,11 @@
                             </div>
 
                         </div>
-                             <button type="button" onclick="closeModal()" class="btn btn-sm py-1 mt-4 btn-primary create-new">Submit</button>
+                             <button
+                                    type="button"
+                                    onclick="closeModal()"
+                                    class="btn btn-sm py-1 mt-4 btn-primary create-new"
+                                >Submit</button>
 
                 </div>
 

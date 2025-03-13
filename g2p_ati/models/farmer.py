@@ -191,8 +191,6 @@ class G2PFarmer(models.Model):
 
     farmer_id = fields.Char(string="Farmer ID", compute="_compute_farmer_id", store=True, index=True)
 
-
-
     # @api.onchange("is_member_of_primary_cooperative")
     # def _onchange_is_member_of_primary_cooperative(self):
     #     self.primary_cooperatives = False
@@ -205,7 +203,6 @@ class G2PFarmer(models.Model):
     # def _onchange_is_member_in_farmer_cluster(self):
     #     self.role_in_farmer_cluster = False
     #     self.primary_commodity = False
-
 
     # @api.onchange("region")
     # def _onchange_region(self):
@@ -221,7 +218,6 @@ class G2PFarmer(models.Model):
     # @api.onchange("woreda")
     # def _onchange_woreda(self):
     #     self.kebele = False
-
 
     @api.onchange("is_group", "family_name", "given_name", "gf_name_eng")
     def name_change_farmer(self):
@@ -321,7 +317,6 @@ class G2PFarmer(models.Model):
             delta = relativedelta(now, dob)
             years_months_days = str(delta.years)
         return years_months_days
-
 
     @api.depends("unique_id", "is_farmer")
     def _compute_farmer_id(self):

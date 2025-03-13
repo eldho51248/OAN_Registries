@@ -15,9 +15,9 @@
                 <field name="phone" />
                 <field name="gender" />
                 <field name="region" />
-                <field name="zone"/>
-                <field name="woreda"/>
-                <field name="kebele"/>
+                <field name="zone" />
+                <field name="woreda" />
+                <field name="kebele" />
             </tree>
         </field>
     </record>
@@ -76,7 +76,7 @@
                         <field name="phone" />
                         <field name="gender" />
                          <field name="region" />
-                        <field name="zone"  />
+                        <field name="zone" />
                         <field name="woreda" />
                         <field name="kebele" />
 

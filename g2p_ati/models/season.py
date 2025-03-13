@@ -1,9 +1,6 @@
-import re
-from datetime import date
-
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import ValidationError
-from .utils import eth_date
+
 
 class G2PSeason(models.Model):
     _name = "g2p.season"
@@ -25,7 +22,7 @@ class G2PSeason(models.Model):
                 record.start_month = record.start_gc.month
                 record.start_day = record.start_gc.day
             else:
-                record.start_month = record.start_day = 0  
+                record.start_month = record.start_day = 0
 
     @api.depends("end_gc")
     def _compute_end_date(self):
@@ -35,7 +32,7 @@ class G2PSeason(models.Model):
                 record.end_month = record.end_gc.month
                 record.end_day = record.end_gc.day
             else:
-                record.end_month = record.end_day = 0 
+                record.end_month = record.end_day = 0
 
     @api.constrains("start_gc", "end_gc")
     def _check_valid_season_dates(self):
@@ -48,16 +45,18 @@ class G2PSeason(models.Model):
     def _check_overlapping_seasons(self):
         """Ensure that no two seasons overlap, ignoring the year."""
         for record in self:
-            overlapping_seasons = self.search([
-                ("id", "!=", record.id),  
-                "|",
-                "&",  
-                ("start_month", "<=", record.end_month),
-                ("end_month", ">=", record.start_month),
-                "&", 
-                ("start_month", "<=", record.end_month),
-                ("end_month", ">=", record.start_month),
-            ])
+            overlapping_seasons = self.search(
+                [
+                    ("id", "!=", record.id),
+                    "|",
+                    "&",
+                    ("start_month", "<=", record.end_month),
+                    ("end_month", ">=", record.start_month),
+                    "&",
+                    ("start_month", "<=", record.end_month),
+                    ("end_month", ">=", record.start_month),
+                ]
+            )
 
             if overlapping_seasons:
                 raise ValidationError(

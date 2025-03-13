@@ -2,7 +2,7 @@
 {
     "name": "OpenG2P Lock Unlock",
     "category": "G2P",
-    "version": "17.0.1.3.0",
+    "version": "17.0.0.0.0",
     "sequence": 1,
     "author": "OpenG2P",
     "website": "https://openg2p.org",
@@ -23,8 +23,7 @@
         "views/g2p_lock_social_registry.xml",
         "views/res_partner.xml",
     ],
-    
-       "assets": {
+    "assets": {
         "web.assets_backend": [
             # "g2p_lock_unlock/static/src/components/*",
             "g2p_lock_unlock/static/src/*.css",
@@ -34,7 +33,6 @@
             # "g2p_lock_unlock/static/src/js/preview_document.js",
         ],
     },
-    
     "demo": [],
     "images": [],
     "application": True,

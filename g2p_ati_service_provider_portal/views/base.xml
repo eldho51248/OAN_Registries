@@ -46,27 +46,34 @@
 
 
 <xpath expr="//div[hasclass('nav-user')]" position="inside">
-  <div class="nav-logged-in-user-labels d-sm-none nav-user_grid_item2"><a style="color:black !important;" href="/serviceprovider/myprofile" t-esc="env.user.name"/></div>
-  <div style="font-size: 13px;" class="logout-div nav-user_grid_item5 text-black fw-bold"><a href="/web/session/logout?redirect=/serviceprovider/login" class="text-black fw-bold link">Logout</a></div>
-</xpath> 
+  <div class="nav-logged-in-user-labels d-sm-none nav-user_grid_item2"><a
+                    style="color:black !important;"
+                    href="/serviceprovider/myprofile"
+                    t-esc="env.user.name"
+                /></div>
+  <div style="font-size: 13px;" class="logout-div nav-user_grid_item5 text-black fw-bold"><a
+                    href="/web/session/logout?redirect=/serviceprovider/login"
+                    class="text-black fw-bold link"
+                >Logout</a></div>
+</xpath>
 
 
 <xpath expr="//div[hasclass('nav-user')]" position="attributes">
     <attribute name="class">nav-user fade-in-nav-user </attribute>
     <attribute name="id">nav-user-resp</attribute>
-</xpath> 
+</xpath>
 
 
 
 
 <xpath expr="//div[hasclass('language-dropdown')]" position="attributes">
   <attribute name="class">language-dropdown label_and_row nav-user_grid_item4 mb-3 language-box</attribute>
-</xpath> 
+</xpath>
 
 
 <xpath expr="//div[hasclass('language-dropdown')]/button" position="before">
   <div class="nav-user-labels">Language</div>
-</xpath> 
+</xpath>
 
 
 
@@ -110,12 +117,19 @@
 
     <xpath expr="//body" position="inside">
 
-  
+
       <div class="modal fade" id="successModal" tabindex="-1" role="dialog">
 
-        <div style="margin: 0 auto !important;  max-width:500px !important; transform: translate(0%, 0%) !important;" class="modal-dialog px-3 modal-sm-down modal-md md-up" role="document">
-         
-          <div style="background-color: white; border-radius: 1rem; text-align: center;" class=" py-5 modal_container">
+        <div
+                    style="margin: 0 auto !important;  max-width:500px !important; transform: translate(0%, 0%) !important;"
+                    class="modal-dialog px-3 modal-sm-down modal-md md-up"
+                    role="document"
+                >
+
+          <div
+                        style="background-color: white; border-radius: 1rem; text-align: center;"
+                        class=" py-5 modal_container"
+                    >
 
             <div class="py-4" style="margin: 0 auto !important;">
 
@@ -153,8 +167,8 @@
 
       <script>
 
-    $(document).ready(function() {               
-     
+    $(document).ready(function() {
+
 
   $('#hamburger-icon').click(function() {
     $(this).toggleClass('active');
@@ -235,9 +249,14 @@
 
 
      <xpath expr="//footer//div/div/a/img" position="inside">
-     <span style="font-size: 12px; padding-left: 4px;
+     <span
+                style="font-size: 12px; padding-left: 4px;
     padding-top: 5px;
-    color: black;">Ethiopian Agricultural Transformation Institute<p style="font-size: 10px; margin-bottom: 0px;">Copyright &#169; <script>document.write(new Date().getFullYear());</script> All rights Reserved</p>
+    color: black;"
+            >Ethiopian Agricultural Transformation Institute<p
+                    style="font-size: 10px; margin-bottom: 0px;"
+                >Copyright &#169; <script
+                    >document.write(new Date().getFullYear());</script> All rights Reserved</p>
     </span>
 
     </xpath>

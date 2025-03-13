@@ -107,12 +107,10 @@ $(document).ready(function () {
         const selectElement = document.getElementById(selectElementId);
         const field = document.getElementById(fieldId);
         // Const input = document.getElementById(inputId);
-        
-        let selectedOptionText = null
+
+        let selectedOptionText = null;
         if (selectElement.options.length > 0 && selectElement.selectedIndex >= 0) {
-         selectedOptionText = selectElement.options[selectElement.selectedIndex].text
-            .trim()
-            .toLowerCase();
+            selectedOptionText = selectElement.options[selectElement.selectedIndex].text.trim().toLowerCase();
         }
 
         if (selectedOptionText === yesText.toLowerCase()) {
@@ -131,11 +129,9 @@ $(document).ready(function () {
         const field = document.getElementById(fieldId);
         const input = document.getElementById(inputId);
 
-        let selectedOptionText = null
+        let selectedOptionText = null;
         if (selectElement.options.length > 0 && selectElement.selectedIndex >= 0) {
-         selectedOptionText = selectElement.options[selectElement.selectedIndex].text
-            .trim()
-            .toLowerCase();
+            selectedOptionText = selectElement.options[selectElement.selectedIndex].text.trim().toLowerCase();
         }
 
         if (selectedOptionText === otherText.toLowerCase()) {
@@ -350,11 +346,9 @@ $(document).ready(function () {
         // Const ridInput = document.getElementById("rid_input");
         // Const uidInput = document.getElementById("uid_input");
 
-        let selectedOptionText = null
+        let selectedOptionText = null;
         if (selectElement.options.length > 0 && selectElement.selectedIndex >= 0) {
-         selectedOptionText = selectElement.options[selectElement.selectedIndex].text
-            .trim()
-            .toLowerCase();
+            selectedOptionText = selectElement.options[selectElement.selectedIndex].text.trim().toLowerCase();
         }
 
         if (selectedOptionText === "yes") {
@@ -416,11 +410,9 @@ $(document).ready(function () {
         const divElement = document.getElementById(divElementId);
         const inputElement = document.getElementById(inputElementId);
 
-        let selectedOptionText = null
+        let selectedOptionText = null;
         if (selectElement.options.length > 0 && selectElement.selectedIndex >= 0) {
-         selectedOptionText = selectElement.options[selectElement.selectedIndex].text
-            .trim()
-            .toLowerCase();
+            selectedOptionText = selectElement.options[selectElement.selectedIndex].text.trim().toLowerCase();
         }
 
         if (selectedOptionText === "yes") {
@@ -439,11 +431,9 @@ $(document).ready(function () {
         const roleDiv = document.getElementById("role_div");
         const clusterRole = document.getElementById("role_in_cluster");
 
-        let selectedOptionText = null
+        let selectedOptionText = null;
         if (selectElement.options.length > 0 && selectElement.selectedIndex >= 0) {
-         selectedOptionText = selectElement.options[selectElement.selectedIndex].text
-            .trim()
-            .toLowerCase();
+            selectedOptionText = selectElement.options[selectElement.selectedIndex].text.trim().toLowerCase();
         }
 
         if (selectedOptionText === "yes") {
@@ -465,8 +455,7 @@ $(document).ready(function () {
     }
 
     function handlePhoneNumberSelection() {
-
-        console.log("in phone number change")
+        console.log("in phone number change");
 
         const selectElement = document.getElementById("have-phone-no-selection");
         const primaryPhoneDiv = document.getElementById("primary-div");
@@ -477,10 +466,7 @@ $(document).ready(function () {
         let selectedOptionText;
 
         if (selectElement.options.length > 0 && selectElement.selectedIndex >= 0) {
-
-         selectedOptionText = selectElement.options[selectElement.selectedIndex].text
-            .trim()
-            .toLowerCase();
+            selectedOptionText = selectElement.options[selectElement.selectedIndex].text.trim().toLowerCase();
         }
 
         if (selectedOptionText === "yes") {
@@ -522,10 +508,9 @@ $(document).ready(function () {
                 var selectedvalue = " ";
                 const selectElement = document.getElementById(targetSelectId);
 
-
                 if (selectElement.options.length > 0 && selectElement.selectedIndex >= 0) {
                     const selectedName = selectElement.options[selectElement.selectedIndex].text;
-                } 
+                }
 
                 if (
                     originalEvent !== "" &&
@@ -587,7 +572,6 @@ $(document).ready(function () {
         (initialValue = initialZoneId)
     );
 
-
     updateOptions(
         "/update_woreda_options",
         {zone_id: initialZoneId},
@@ -597,7 +581,7 @@ $(document).ready(function () {
         "zone",
         (initialValue = initialWoredaId)
     );
-    
+
     updateOptions(
         "/update_kebele_options",
         {woreda_id: initialWoredaId},
@@ -989,8 +973,6 @@ function validateSection(sectionId) {
     return valid;
 }
 
-
-
 function showSection(sectionId, element, fromGroup = false) {
     // Val = validateSection(previousSection);
     var val = true;
@@ -1090,7 +1072,6 @@ $("#farmerDetailModal").on("show.bs.modal", function () {
     resetFormFields();
 });
 
-
 function toggleFieldBasedOnSelect(
     fieldIdToToggle,
     value,
@@ -1108,7 +1089,7 @@ function toggleFieldBasedOnSelect(
     const container_div2 = document.getElementById(containerId2);
 
     if (!shouldShowField) {
-        console.log("when false")
+        console.log("when false");
         if (selectionFieldToClear) {
             selectionFieldToClear.selectedIndex = 0;
         } else {
@@ -1131,8 +1112,8 @@ function toggleFieldBasedOnSelect(
 
     const fieldToToggle = document.getElementById(fieldIdToToggle);
 
-    console.log("fieldtotoggle, this is container_div, containerdiv2")
-    console.log(container_div)
+    console.log("fieldtotoggle, this is container_div, containerdiv2");
+    console.log(container_div);
 
     if (fieldToToggle) {
         fieldToToggle.style.display = shouldShowField ? "block" : "none";

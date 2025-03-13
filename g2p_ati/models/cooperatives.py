@@ -29,15 +29,11 @@ class G2PPrimaryCooperative(models.Model):
             if not record.code:
                 error_message = _("Code should not empty.")
                 raise ValidationError(error_message)
-            
-        duplicate = self.search([
-            ('code', '=', record.code),
-            ('id', '!=', record.id) 
-        ], limit=1)  
-        
+
+        duplicate = self.search([("code", "=", record.code), ("id", "!=", record.id)], limit=1)
+
         if duplicate:
             raise ValidationError(_("The code '%s' must be unique!" % record.code))
-
 
 
 class G2PCooperativeUnion(models.Model):

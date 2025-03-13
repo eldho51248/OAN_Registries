@@ -5,12 +5,18 @@
             <t t-set="title">List of group beneficiary | Service Provider Portal</t>
             <div class="main-container1">
                 <div class="mx-auto">
-                    <div style="max-width: 1400px" class="top-content mx-auto d-flex flex-row justify-content-between align-items-center px-2 py-3">
+                    <div
+                        style="max-width: 1400px"
+                        class="top-content mx-auto d-flex flex-row justify-content-between align-items-center px-2 py-3"
+                    >
 
                     <div class="d-flex flex-row justify-content-between">
 
                         <div class="d-flex flex-column  justify-content-start ">
-                            <h5 style="font: normal 600 15px / 22px Inter !important;" class="all-title">Suggestion List</h5>
+                            <h5
+                                    style="font: normal 600 15px / 22px Inter !important;"
+                                    class="all-title"
+                                >Suggestion List</h5>
 
                             <ol class="breadcrumb bg-transparent d-flex flex-col ">
                                 <li class="breadcrumb-item">
@@ -38,7 +44,9 @@
                     <div class="list-view">
 
 
-                        <div class="table-head-container align-items-lg-center py-3  d-flex flex-column flex-lg-row flex-md-wrap justify-content-between px-3 mx-auto ">
+                        <div
+                            class="table-head-container align-items-lg-center py-3  d-flex flex-column flex-lg-row flex-md-wrap justify-content-between px-3 mx-auto "
+                        >
 
 
                             <div id="head_name_rec">
@@ -96,14 +104,16 @@
                                 <tbody>
                                     <t t-foreach="updte_suggests" t-as="update">
                                         <tr class="grid2_table">
-                                            <td  class="tr_grid_item1">
+                                            <td class="tr_grid_item1">
                                             </td>
-                                            <td data-label="Suggester" class="tr_grid_item2"
+                                            <td
+                                                data-label="Suggester"
+                                                class="tr_grid_item2"
                                                 style="color:#078148; font: normal normal 600 13px/16px Inter;"
                                             >
                                                 <t t-out="update['requester_id']['name']" />
                                             </td>
-                                            <td data-label="Record" class="tr_grid_item4" >
+                                            <td data-label="Record" class="tr_grid_item4">
                                                 <t t-out="update['record_id']['name']" />
                                             </td>
                                             <td data-label="Reason" class="tr_grid_item5">

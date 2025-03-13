@@ -17,9 +17,7 @@
                         type="object"
                         class="btn btn-primary"
                     />
-                    <button string="Cancel"
-                        class="btn-secondary"
-                        special="cancel" />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
                 </footer>
             </form>
         </field>

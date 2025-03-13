@@ -549,7 +549,6 @@ $(document).on("click", "#member_submit", async function () {
                     var $formContainerCrop = $("#section-content-crop");
                     $formContainerCrop.children().slice(1).remove();
 
-
                     showSuccessModal("Member Added Successfully!");
                 }
             } else {
@@ -782,7 +781,6 @@ document.addEventListener("DOMContentLoaded", function () {
 // Modal other fields
 document.addEventListener("DOMContentLoaded", function () {
     // Function to handle the display of the 'Other' field for Woreda and Kebele
-
 
     function handleOtherFields(selectElementId, otherFieldId) {
         const selectElement = document.getElementById(selectElementId);

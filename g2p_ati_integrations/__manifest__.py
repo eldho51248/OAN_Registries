@@ -3,10 +3,9 @@
     "version": "17.0.0.2",
     "summary": "Integration Module",
     "category": "tools",
-
     "description": """
 """,
-    "depends": ['g2p_draft_publish', 'g2p_ati', 'g2p_leaflet_map'],
+    "depends": ["g2p_draft_publish", "g2p_ati", "g2p_leaflet_map"],
     "data": [
         "security/rules.xml",
         "security/ir.model.access.csv",
@@ -19,11 +18,9 @@
         "views/show_map.xml",
         "wizards/add_followers.xml",
         "wizards/assign_records.xml",
-        "wizards/change_kanban_state.xml"
+        "wizards/change_kanban_state.xml",
     ],
-
-
-       "assets": {
+    "assets": {
         "web.assets_backend": [
             "g2p_ati_integrations/static/src/**/*.js",
             "g2p_ati_integrations/static/src/**/*.css",
@@ -32,10 +29,10 @@
         ],
     },
     "author": "",
-    "website": "",
+    "website": "https://openg2p.org",
     "installable": True,
     "application": True,
     "auto_install": False,
     # "images": ["static/description/Banner.gif"],
-    "license":'',
+    "license": "",
 }

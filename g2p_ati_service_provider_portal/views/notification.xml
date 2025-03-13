@@ -10,7 +10,7 @@
         <xpath expr="//div[hasclass('search-box')]" position="before">
             <div class="navbar_right label_and_row nav-user_grid_item3 d-flex">
   <div class="nav-user-labels">Notifications</div>
-            
+
                 <div class="notifications_button_div">
                     <button id="show_notification">
                         <p class="notification_number" style="display: none;"><span /></p>
@@ -29,7 +29,7 @@
                             <!-- Notifications will be dynamically inserted here by JavaScript -->
                             <li class="show_all">
                                 <a
-                                style="margin: 0  auto !important; margin"
+                                    style="margin: 0  auto !important; margin"
                                     href="#"
                                     class="mx-auto link"
                                     id="view_all_notif"

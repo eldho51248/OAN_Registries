@@ -142,7 +142,10 @@
                                         <main role="main" class="content">
 
 
-                                       <div class="section-header accord-active  d-md-none" onclick="toggleAccordionSection(this)">
+                                       <div
+                                                class="section-header accord-active  d-md-none"
+                                                onclick="toggleAccordionSection(this)"
+                                            >
         <h4 class="section-title">Location Details</h4>
     </div>
 
@@ -154,13 +157,13 @@
                                                     <div class="row">
                                                         <div class="col-lg-5 left-margin-input">
                                                             <div
-                                                                class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
-                                                            >
+                                                                    class="s_website_form_field lmargin-input"
+                                                                    style="margin-right: -10%"
+                                                                >
                                                                 <label class="s_website_form_label">
                                                                     <span
-                                                                        class="s_website_form_label_content"
-                                                                    >
+                                                                            class="s_website_form_label_content"
+                                                                        >
                                                                         Region
                                                                     </span>
                                                                     <span class="s_website_form_mark">
@@ -169,22 +172,22 @@
                                                                 <div class="row">
                                                                     <div class="col">
                                                                         <select
-                                                                            id="region_selection"
-                                                                            class="form-select"
-                                                                            name="region"
-                                                                            required="required"
-                                                                            onchange="validateElement(this)"
-                                                                        >
+                                                                                id="region_selection"
+                                                                                class="form-select"
+                                                                                name="region"
+                                                                                required="required"
+                                                                                onchange="validateElement(this)"
+                                                                            >
                                                                             <option value="">Select
 
                                                                             </option>
                                                                             <t
-                                                                                t-foreach="region"
-                                                                                t-as="option"
-                                                                            >
-                                                                                <option
-                                                                                    t-att-value="option.id"
+                                                                                    t-foreach="region"
+                                                                                    t-as="option"
                                                                                 >
+                                                                                <option
+                                                                                        t-att-value="option.id"
+                                                                                    >
                                                                                     <t t-esc="option.name" />
                                                                                 </option>
                                                                             </t>
@@ -196,13 +199,13 @@
                                                         </div>
                                                         <div class="col-lg-5 left-margin-input">
                                                             <div
-                                                                class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
-                                                            >
+                                                                    class="s_website_form_field lmargin-input"
+                                                                    style="margin-right: -10%"
+                                                                >
                                                                 <label class="s_website_form_label">
                                                                     <span
-                                                                        class="s_website_form_label_content"
-                                                                    >
+                                                                            class="s_website_form_label_content"
+                                                                        >
                                                                         Zone
                                                                     </span>
                                                                     <span class="s_website_form_mark">
@@ -212,19 +215,19 @@
                                                                 <div class="row">
                                                                     <div class="col">
                                                                         <select
-                                                                            id="zon_selection"
-                                                                            class="form-select"
-                                                                            name="zone"
-                                                                            required="required"
-                                                                            onchange="validateElement(this)"
-                                                                        >
+                                                                                id="zon_selection"
+                                                                                class="form-select"
+                                                                                name="zone"
+                                                                                required="required"
+                                                                                onchange="validateElement(this)"
+                                                                            >
                                                                             <option value="">Select
 
                                                                             </option>
                                                                             <t t-foreach="zone" t-as="option">
                                                                                 <option
-                                                                                    t-att-value="option.id"
-                                                                                >
+                                                                                        t-att-value="option.id"
+                                                                                    >
                                                                                     <t t-esc="option.name" />
                                                                                 </option>
                                                                             </t>
@@ -237,13 +240,13 @@
                                                     <div class="row">
                                                         <div class="col-lg-5">
                                                             <div
-                                                                class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
-                                                            >
+                                                                    class="s_website_form_field lmargin-input"
+                                                                    style="margin-right: -10%"
+                                                                >
                                                                 <label class="s_website_form_label">
                                                                     <span
-                                                                        class="s_website_form_label_content"
-                                                                    >
+                                                                            class="s_website_form_label_content"
+                                                                        >
                                                                         Woreda
                                                                     </span>
                                                                     <span class="s_website_form_mark">
@@ -253,22 +256,22 @@
                                                                 <div class="row">
                                                                     <div class="col">
                                                                         <select
-                                                                            id="woreda_selection"
-                                                                            class="form-select"
-                                                                            name="woreda"
-                                                                            required="required"
-                                                                            onchange="validateElement(this)"
-                                                                        >
+                                                                                id="woreda_selection"
+                                                                                class="form-select"
+                                                                                name="woreda"
+                                                                                required="required"
+                                                                                onchange="validateElement(this)"
+                                                                            >
                                                                             <option value="">Select
 
                                                                             </option>
                                                                             <t
-                                                                                t-foreach="woreda"
-                                                                                t-as="option"
-                                                                            >
-                                                                                <option
-                                                                                    t-att-value="option.id"
+                                                                                    t-foreach="woreda"
+                                                                                    t-as="option"
                                                                                 >
+                                                                                <option
+                                                                                        t-att-value="option.id"
+                                                                                    >
                                                                                     <t t-esc="option.name" />
                                                                                 </option>
                                                                             </t>
@@ -280,13 +283,13 @@
 
                                                         <div class="col-lg-5">
                                                             <div
-                                                                class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%"
-                                                            >
+                                                                    class="s_website_form_field lmargin-input"
+                                                                    style="margin-right: -10%"
+                                                                >
                                                                 <label class="s_website_form_label">
                                                                     <span
-                                                                        class="s_website_form_label_content"
-                                                                    >
+                                                                            class="s_website_form_label_content"
+                                                                        >
                                                                         Kebele
                                                                     </span>
                                                                     <span class="s_website_form_mark">
@@ -296,22 +299,22 @@
                                                                 <div class="row">
                                                                     <div class="col">
                                                                         <select
-                                                                            id="kebele_selection"
-                                                                            class="form-select"
-                                                                            name="kebele"
-                                                                            required="required"
-                                                                            onchange="validateElement(this)"
-                                                                        >
+                                                                                id="kebele_selection"
+                                                                                class="form-select"
+                                                                                name="kebele"
+                                                                                required="required"
+                                                                                onchange="validateElement(this)"
+                                                                            >
                                                                             <option value="">Select
 
                                                                             </option>
                                                                             <t
-                                                                                t-foreach="kebele"
-                                                                                t-as="option"
-                                                                            >
-                                                                                <option
-                                                                                    t-att-value="option.id"
+                                                                                    t-foreach="kebele"
+                                                                                    t-as="option"
                                                                                 >
+                                                                                <option
+                                                                                        t-att-value="option.id"
+                                                                                    >
                                                                                     <t t-esc="option.name" />
                                                                                 </option>
                                                                             </t>
@@ -326,48 +329,48 @@
                                                         <!-- Other Woreda Input Field -->
                                                         <div class="col-lg-5">
                                                             <div
-                                                                class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%; display: none;"
-                                                                id="otherModalWoredaField"
-                                                            >
+                                                                    class="s_website_form_field lmargin-input"
+                                                                    style="margin-right: -10%; display: none;"
+                                                                    id="otherModalWoredaField"
+                                                                >
                                                                 <label class="s_website_form_label">
                                                                     <span
-                                                                        class="s_website_form_label_content"
-                                                                    >
+                                                                            class="s_website_form_label_content"
+                                                                        >
                                                                         Please Specify Woreda
                                                                     </span>
                                                                 </label>
                                                                 <input
-                                                                    type="text"
-                                                                    class="form-control"
-                                                                    id="other_woreda"
-                                                                    name="other_woreda_details"
-                                                                    placeholder="Please specify"
-                                                                />
+                                                                        type="text"
+                                                                        class="form-control"
+                                                                        id="other_woreda"
+                                                                        name="other_woreda_details"
+                                                                        placeholder="Please specify"
+                                                                    />
                                                             </div>
                                                         </div>
 
                                                         <!-- Other Kebele Input Field -->
                                                         <div class="col-lg-5">
                                                             <div
-                                                                class="s_website_form_field lmargin-input"
-                                                                style="margin-right: -10%; display: none;"
-                                                                id="otherModalKebeleField"
-                                                            >
+                                                                    class="s_website_form_field lmargin-input"
+                                                                    style="margin-right: -10%; display: none;"
+                                                                    id="otherModalKebeleField"
+                                                                >
                                                                 <label class="s_website_form_label">
                                                                     <span
-                                                                        class="s_website_form_label_content"
-                                                                    >
+                                                                            class="s_website_form_label_content"
+                                                                        >
                                                                         Please Specify Kebele
                                                                     </span>
                                                                 </label>
                                                                 <input
-                                                                    type="text"
-                                                                    class="form-control"
-                                                                    id="other_kebele"
-                                                                    name="other_kebele_details"
-                                                                    placeholder="Please specify"
-                                                                />
+                                                                        type="text"
+                                                                        class="form-control"
+                                                                        id="other_kebele"
+                                                                        name="other_kebele_details"
+                                                                        placeholder="Please specify"
+                                                                    />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -375,13 +378,15 @@
 
                                                 </div>
 
-                                                <div class="section-footer d-none d-md-flex justify-content-end">
+                                                <div
+                                                        class="section-footer d-none d-md-flex justify-content-end"
+                                                    >
                                                     <button
-                                                        type="button"
-                                                        class="btn btn-sm btn-outline-secondary"
-                                                        onclick="showNextSection('farmer-details', 'location-details')"
-                                                        id="some-button-or-link"
-                                                    >NEXT <span>&#x276F;</span>
+                                                            type="button"
+                                                            class="btn btn-sm btn-outline-secondary"
+                                                            onclick="showNextSection('farmer-details', 'location-details')"
+                                                            id="some-button-or-link"
+                                                        >NEXT <span>&#x276F;</span>
                                                     </button>
                                                 </div>
                                             </div>
@@ -390,19 +395,22 @@
 </div>
 
 
-                                 <div class="section-header   d-md-none" onclick="toggleAccordionSection(this)">
+                                 <div
+                                                class="section-header   d-md-none"
+                                                onclick="toggleAccordionSection(this)"
+                                            >
         <h4 class="section-title">Farmer Details</h4>
     </div>
 
-     <div class="section-content-wrapper" >
+     <div class="section-content-wrapper">
 
 
 
                                             <div
-                                                id="farmer-details"
-                                                class="section-container"
-                                                style="display: none;"
-                                            >
+                                                    id="farmer-details"
+                                                    class="section-container"
+                                                    style="display: none;"
+                                                >
                                                 <div class="section-content">
                                                     <div class="">
                                                         <div class="tables-values-container">
@@ -410,95 +418,110 @@
                                                                 <thead class="d-none d-lg-table-header-group">
                                                                     <tr class="list-row">
                                                                         <th
-                                                                            style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >
+                                                                                style="color:#078148; font: normal normal 600 14px/17px Inter;"
+                                                                            >
                                                                             No.</th>
                                                                         <th
-                                                                            style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >
+                                                                                style="color:#078148; font: normal normal 600 14px/17px Inter;"
+                                                                            >
                                                                             Name</th>
                                                                         <th
-                                                                            style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >
+                                                                                style="color:#078148; font: normal normal 600 14px/17px Inter;"
+                                                                            >
                                                                             Age</th>
                                                                         <th
-                                                                            style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >
+                                                                                style="color:#078148; font: normal normal 600 14px/17px Inter;"
+                                                                            >
                                                                             Gender</th>
                                                                         <th
-                                                                            class="text-center"
-                                                                            style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >Household
+                                                                                class="text-center"
+                                                                                style="color:#078148; font: normal normal 600 14px/17px Inter;"
+                                                                            >Household
                                                                             Head</th>
                                                                         <th
-                                                                            class="text-center"
-                                                                            style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >
+                                                                                class="text-center"
+                                                                                style="color:#078148; font: normal normal 600 14px/17px Inter;"
+                                                                            >
                                                                             Actions</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     <t
-                                                                        t-foreach="individuals"
-                                                                        t-as="individual"
-                                                                    >
-                                                                        <tr  class="grid2_table">
-                                                                            
-                                                                            <td  class="tr_grid_item1" style="color:#b3b3b3;" />
-                                                                            <td class="tr_grid_item2" data-label="Name"
-                                                                                style="color:#078148; font: normal normal 600 13px/16px Inter;"
-                                                                            >
-                                                                                <t
-                                                                                    t-out="individual['name']"
+                                                                            t-foreach="individuals"
+                                                                            t-as="individual"
+                                                                        >
+                                                                        <tr class="grid2_table">
+
+                                                                            <td
+                                                                                    class="tr_grid_item1"
+                                                                                    style="color:#b3b3b3;"
                                                                                 />
+                                                                            <td
+                                                                                    class="tr_grid_item2"
+                                                                                    data-label="Name"
+                                                                                    style="color:#078148; font: normal normal 600 13px/16px Inter;"
+                                                                                >
+                                                                                <t
+                                                                                        t-out="individual['name']"
+                                                                                    />
                                                                             </td>
-                                                                            <td class="tr_grid_item6 text-end text-lg-start" data-label="Age">
+                                                                            <td
+                                                                                    class="tr_grid_item6 text-end text-lg-start"
+                                                                                    data-label="Age"
+                                                                                >
                                                                                 <t
-                                                                                    t-out="individual['age']"
-                                                                                />
+                                                                                        t-out="individual['age']"
+                                                                                    />
                                                                             </td>
-                                                                           <td data-label="Gender" class=" tr_grid_item4  text-capitalize">
+                                                                           <td
+                                                                                    data-label="Gender"
+                                                                                    class=" tr_grid_item4  text-capitalize"
+                                                                                >
                                                                                 <t
-                                                                                    t-out="individual['gender']"
-                                                                                />
+                                                                                        t-out="individual['gender']"
+                                                                                    />
                                                                             </td>
 
-                                                                             <td data-label="Household Head"
+                                                                             <td
+                                                                                    data-label="Household Head"
                                                                                     class="fw-bold  text-end text-lg-center tr_grid_item5"
                                                                                 >
                                                                                 <t
-                                                                                    t-if="individual['hh_is_household_head'] == 'yes'"
-                                                                                >
-                                                                                    <span
-                                                                                        style="background-color: #06916b; font-size: 0.75rem;"
-                                                                                        class="rounded-pill text-white  py-1 px-2"
+                                                                                        t-if="individual['hh_is_household_head'] == 'yes'"
                                                                                     >
+                                                                                    <span
+                                                                                            style="background-color: #06916b; font-size: 0.75rem;"
+                                                                                            class="rounded-pill text-white  py-1 px-2"
+                                                                                        >
                                                                                         Yes</span>
                                                                                 </t>
                                                                                 <t t-else="">
                                                                                     <span
-                                                                                        style="background-color: red; font-size: 0.75rem;"
-                                                                                        class=" rounded-pill text-white py-1 px-2"
-                                                                                    >
+                                                                                            style="background-color: red; font-size: 0.75rem;"
+                                                                                            class=" rounded-pill text-white py-1 px-2"
+                                                                                        >
                                                                                         No</span>
                                                                                 </t>
                                                                             </td>
 
 
-                                                                            <td data-label="Action" class="tr_grid_item3 text-end text-lg-center">
-                                                                                <a
-                                                                                    t-attf-href="/serviceprovider/individual/update/{{ individual.id }}?group={{ group.id }}"
+                                                                            <td
+                                                                                    data-label="Action"
+                                                                                    class="tr_grid_item3 text-end text-lg-center"
                                                                                 >
-                                                                                    <div
-                                                                                        class="btn btn-icon rounded-0"
+                                                                                <a
+                                                                                        t-attf-href="/serviceprovider/individual/update/{{ individual.id }}?group={{ group.id }}"
                                                                                     >
+                                                                                    <div
+                                                                                            class="btn btn-icon rounded-0"
+                                                                                        >
                                                                                         <i
-                                                                                            class="fa fa-pencil"
-                                                                                        />
+                                                                                                class="fa fa-pencil"
+                                                                                            />
                                                                                     </div>
                                                                                 </a>
 
-                                                                                
+
                                                                                 <!-- <button
                                                                                     type="button"
                                                                                     class="btn btn-outline-secondary btn-sm my-3"
@@ -519,8 +542,8 @@
 
                                                         <div style="text-align:center;" class="no_list mt-4">
                                                             <img
-                                                                src="/g2p_service_provider_beneficiary_management/static/src/img/no_mem.png"
-                                                            />
+                                                                    src="/g2p_service_provider_beneficiary_management/static/src/img/no_mem.png"
+                                                                />
                                                             <div>
                                                                 <p>No Members!</p>
                                                             </div>
@@ -530,12 +553,12 @@
 
                                                         <div style="text-align: center; margin-top: 20px;">
                                                             <button
-                                                                type="button"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#farmerDetailModal"
-                                                                onclick="showNextModal('individual-details', 'farmer-details')"
-                                                                class="btn btn-sm btn-primary create-new"
-                                                            >
+                                                                    type="button"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#farmerDetailModal"
+                                                                    onclick="showNextModal('individual-details', 'farmer-details')"
+                                                                    class="btn btn-sm btn-primary create-new"
+                                                                >
                                                                 Add Farmer
                                                             </button>
                                                         </div>
@@ -543,13 +566,15 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="section-footer d-none d-md-flex justify-content-end">
+                                                <div
+                                                        class="section-footer d-none d-md-flex justify-content-end"
+                                                    >
                                                     <button
-                                                        type="button"
-                                                        class="btn btn-sm btn-outline-secondary"
-                                                        onclick="showNextSection('family-members', 'farmer-details')"
-                                                        id="some-button-or-link"
-                                                    >NEXT <span>&#x276F;</span>
+                                                            type="button"
+                                                            class="btn btn-sm btn-outline-secondary"
+                                                            onclick="showNextSection('family-members', 'farmer-details')"
+                                                            id="some-button-or-link"
+                                                        >NEXT <span>&#x276F;</span>
                                                     </button>
                                                 </div>
                                             </div>
@@ -587,7 +612,7 @@
 
 
 
-                                            
+
                                                             <div
                                                                 id="individual-details"
                                                                 class="section-container-group"
@@ -4010,90 +4035,111 @@
                                                 </div>
                                             </div>
 
-                                                                             <div class="section-header  d-md-none" onclick="toggleAccordionSection(this)">
+                                                                             <div
+                                                class="section-header  d-md-none"
+                                                onclick="toggleAccordionSection(this)"
+                                            >
         <h4 class="section-title">Family Members</h4>
     </div>
 
      <div class="section-content-wrapper">
                                             <div
-                                                id="family-members"
-                                                class="section-container"
-                                                style="display: none;"
-                                            >
+                                                    id="family-members"
+                                                    class="section-container"
+                                                    style="display: none;"
+                                                >
                                                 <div class="section-content">
                                                     <div class="">
 
                                                         <div class="tables-values-container">
                                                             <table id="familylist">
-                                                                <thead class="d-none d-lg-table-header-group" >
+                                                                <thead class="d-none d-lg-table-header-group">
                                                                     <tr class="list-row">
                                                                         <th
-                                                                            style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >
+                                                                                style="color:#078148; font: normal normal 600 14px/17px Inter;"
+                                                                            >
                                                                             No.</th>
                                                                         <th
-                                                                            style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >
+                                                                                style="color:#078148; font: normal normal 600 14px/17px Inter;"
+                                                                            >
                                                                             Name</th>
                                                                         <th
-                                                                            style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >
+                                                                                style="color:#078148; font: normal normal 600 14px/17px Inter;"
+                                                                            >
                                                                             Age</th>
                                                                         <th
-                                                                            style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >
+                                                                                style="color:#078148; font: normal normal 600 14px/17px Inter;"
+                                                                            >
                                                                             Gender</th>
                                                                         <th
-                                                                            style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >
+                                                                                style="color:#078148; font: normal normal 600 14px/17px Inter;"
+                                                                            >
                                                                             Role</th>
                                                                         <th
-                                                                            style="color:#078148; font: normal normal 600 14px/17px Inter;"
-                                                                        >
+                                                                                style="color:#078148; font: normal normal 600 14px/17px Inter;"
+                                                                            >
                                                                             Actions</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     <t
-                                                                        t-foreach="individuals"
-                                                                        t-as="individual"
-                                                                    >
-                                                                        <tr class="grid2_table"
-                                                                            t-att-data-member-id="individual.id"
+                                                                            t-foreach="individuals"
+                                                                            t-as="individual"
                                                                         >
-                                                                            <td class="tr_grid_item1" style="color:#b3b3b3;" />
-                                                                           
-                                                                            <td class="tr_grid_item2" data-label="Name"
-                                                                                style="color:#078148; font: normal normal 600 13px/16px Inter;"
+                                                                        <tr
+                                                                                class="grid2_table"
+                                                                                t-att-data-member-id="individual.id"
                                                                             >
+                                                                            <td
+                                                                                    class="tr_grid_item1"
+                                                                                    style="color:#b3b3b3;"
+                                                                                />
+
+                                                                            <td
+                                                                                    class="tr_grid_item2"
+                                                                                    data-label="Name"
+                                                                                    style="color:#078148; font: normal normal 600 13px/16px Inter;"
+                                                                                >
                                                                                 <t t-out="individual.name" />
                                                                             </td>
-                                                                            <td class="tr_grid_item6" data-label="Age" >
+                                                                            <td
+                                                                                    class="tr_grid_item6"
+                                                                                    data-label="Age"
+                                                                                >
                                                                                 <t t-out="individual.age" />
                                                                             </td>
-                                                                            <td data-label="Gender" class="tr_grid_item4 text-capitalize">
-                                                                                <t
-                                                                                    t-out="individual.gender"
-                                                                                />
-                                                                            </td>
-                                                                            <td data-label="Relationship" class="tr_grid_item5" >
-                                                                                <t
-                                                                                    t-out="individual.individual_membership_ids.kind.name"
-                                                                                />
-                                                                            </td>
-
-
-                                                                            <td data-label="Action" class="tr_grid_item3 text-end text-lg-center"  >
-                                                                                <button
-                                                                                    type="button"
-                                                                                    class="btn btn-icon rounded-0"
-                                                                                    title="Edit"
-                                                                                    data-bs-toggle="modal"
-                                                                                    id="hh_member_update"
-                                                                                    t-attf-store="{{ individual.id }}"
-                                                                                    data-bs-target="#editFamilyMemberModal"
-                                                                                    onclick="populateEditModal('{{ individual.id }}')"
+                                                                            <td
+                                                                                    data-label="Gender"
+                                                                                    class="tr_grid_item4 text-capitalize"
                                                                                 >
+                                                                                <t
+                                                                                        t-out="individual.gender"
+                                                                                    />
+                                                                            </td>
+                                                                            <td
+                                                                                    data-label="Relationship"
+                                                                                    class="tr_grid_item5"
+                                                                                >
+                                                                                <t
+                                                                                        t-out="individual.individual_membership_ids.kind.name"
+                                                                                    />
+                                                                            </td>
+
+
+                                                                            <td
+                                                                                    data-label="Action"
+                                                                                    class="tr_grid_item3 text-end text-lg-center"
+                                                                                >
+                                                                                <button
+                                                                                        type="button"
+                                                                                        class="btn btn-icon rounded-0"
+                                                                                        title="Edit"
+                                                                                        data-bs-toggle="modal"
+                                                                                        id="hh_member_update"
+                                                                                        t-attf-store="{{ individual.id }}"
+                                                                                        data-bs-target="#editFamilyMemberModal"
+                                                                                        onclick="populateEditModal('{{ individual.id }}')"
+                                                                                    >
                                                                                     <i class="fa fa-pencil" />
                                                                                 </button>
 
@@ -4117,8 +4163,8 @@
 
                                                         <div style="text-align:center;" class="no_list mt-4">
                                                             <img
-                                                                src="/g2p_service_provider_beneficiary_management/static/src/img/no_mem.png"
-                                                            />
+                                                                    src="/g2p_service_provider_beneficiary_management/static/src/img/no_mem.png"
+                                                                />
                                                             <div>
                                                                 <p>No members!</p>
                                                             </div>
@@ -4130,11 +4176,11 @@
 
 
                                                             <button
-                                                                type="button"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#familyMemberModal"
-                                                                class="btn btn-sm btn-primary create-new"
-                                                            >
+                                                                    type="button"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#familyMemberModal"
+                                                                    class="btn btn-sm btn-primary create-new"
+                                                                >
                                                                 Add Family Member
                                                             </button>
                                                         </div>
@@ -4143,20 +4189,20 @@
 
                                                 <div class="section-footer d-flex justify-content-end">
                                                     <button
-                                                        type="button"
-                                                        class="btn btn-sm btn-outline-secondary"
-                                                        onclick="location.href = '/serviceprovider/group';"
-                                                        style="width: 90px;"
-                                                    >
+                                                            type="button"
+                                                            class="btn btn-sm btn-outline-secondary"
+                                                            onclick="location.href = '/serviceprovider/group';"
+                                                            style="width: 90px;"
+                                                        >
                                                         CANCEL
                                                     </button>
                                                     <button
-                                                        id="beneficiary_submit"
-                                                        type="button"
-                                                        onclick="customvalidateFormGroup(true);"
-                                                        class="btn btn-sm  btn-primary"
-                                                        style="width: 90px;"
-                                                    >
+                                                            id="beneficiary_submit"
+                                                            type="button"
+                                                            onclick="customvalidateFormGroup(true);"
+                                                            class="btn btn-sm  btn-primary"
+                                                            style="width: 90px;"
+                                                        >
                                                         Close
                                                     </button>
                                                 </div>
@@ -4371,9 +4417,7 @@
                                                     class="modal-dialog modal-dialog-centered"
                                                     role="document"
                                                 >
-                                                    <div
-                                                        class="modal-content beneficiary-modal-content"
-                                                    >
+                                                    <div class="modal-content beneficiary-modal-content">
                                                         <div
                                                             class="card-header form-card-header"
                                                             style="margin:15px"

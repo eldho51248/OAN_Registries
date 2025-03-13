@@ -1,6 +1,6 @@
 /** @odoo-module */
-import { G2PLeafletMapRenderer } from "@g2p_leaflet_map/g2p_lmap_renderer";
-import { useRef } from "@odoo/owl";
+import {G2PLeafletMapRenderer} from "@g2p_leaflet_map/g2p_lmap_renderer";
+import {useRef} from "@odoo/owl";
 
 export class CustomLeafletMapRenderer extends G2PLeafletMapRenderer {
     setup() {
@@ -31,10 +31,7 @@ export class CustomLeafletMapRenderer extends G2PLeafletMapRenderer {
                         <b>Owner:</b> ${land.ownership_type || "Unknown"}<br>
                         <b>Size:</b> ${land.total_land_area || "N/A"} hectares<br>
                     `;
-                    L.popup()
-                        .setLatLng(e.latlng)
-                        .setContent(popupContent)
-                        .openOn(this.map);
+                    L.popup().setLatLng(e.latlng).setContent(popupContent).openOn(this.map);
                 });
             });
         }

@@ -1,16 +1,15 @@
-// function toggleAccordionSection(header) {
+// Function toggleAccordionSection(header) {
 // console.log("in here the side bar")
 
-//     const contentWrapper = header.nextElementSibling; 
-    
+//     const contentWrapper = header.nextElementSibling;
+
 //     // Toggle display of the content
 //     if (contentWrapper.style.display === 'none') {
-//         contentWrapper.style.display = 'block !important'; 
+//         contentWrapper.style.display = 'block !important';
 //     } else {
-//         contentWrapper.style.display = 'none !important'; 
+//         contentWrapper.style.display = 'none !important';
 //     }
 // }
-
 
 // function toggleAccordionSection(header) {
 //     const contentWrapper = header.nextElementSibling; // Get the next sibling, the content-wrapper
@@ -26,33 +25,29 @@
 //     }
 // }
 
-
 function toggleAccordionSection(header) {
     const contentWrapper = header.nextElementSibling; // Get the content wrapper (next sibling)
 
     // Check if the section is already active
-    const isActive = header.classList.contains('accord-active');
+    const isActive = header.classList.contains("accord-active");
 
     // Collapse all sections by setting maxHeight to null
-    const allContentWrappers = document.querySelectorAll('.section-content-wrapper');
-    const allHeaders = document.querySelectorAll('.section-header');
+    const allContentWrappers = document.querySelectorAll(".section-content-wrapper");
+    const allHeaders = document.querySelectorAll(".section-header");
 
-    allContentWrappers.forEach(function(content) {
+    allContentWrappers.forEach(function (content) {
         content.style.maxHeight = null;
     });
 
-    allHeaders.forEach(function(otherHeader) {
-        otherHeader.classList.remove('accord-active');
-        otherHeader.style.setProperty('--triangle-display', 'none');
-
+    allHeaders.forEach(function (otherHeader) {
+        otherHeader.classList.remove("accord-active");
+        otherHeader.style.setProperty("--triangle-display", "none");
     });
 
     if (!isActive) {
         // Expand the clicked section and add active class
-        header.classList.add('accord-active');
-        contentWrapper.style.maxHeight = contentWrapper.scrollHeight + 'px';
-        header.style.setProperty('--triangle-display', 'block');
+        header.classList.add("accord-active");
+        contentWrapper.style.maxHeight = contentWrapper.scrollHeight + "px";
+        header.style.setProperty("--triangle-display", "block");
     }
-
-
 }
