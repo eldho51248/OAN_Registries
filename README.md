@@ -1,6 +1,6 @@
 <!-- /!\ Non OCA Context : Set here the badge of your runbot / runboat instance. -->
-[![Pre-commit Status](https://github.com/OpenG2P/openg2p-edrmc/actions/workflows/pre-commit.yml/badge.svg?branch=17.0-develop)](https://github.com/OpenG2P/openg2p-edrmc/actions/workflows/pre-commit.yml?query=branch%3A17.0-develop)
-[![Build Status](https://github.com/OpenG2P/openg2p-edrmc/actions/workflows/test.yml/badge.svg?branch=17.0-develop)](https://github.com/OpenG2P/openg2p-edrmc/actions/workflows/test.yml?query=branch%3A17.0-develop)
+[![Pre-commit Status](https://github.com/OpenG2P/openg2p-edrmc/actions/workflows/pre-commit.yml/badge.svg?branch=17.0-1.5)](https://github.com/OpenG2P/openg2p-edrmc/actions/workflows/pre-commit.yml?query=branch%3A17.0-1.5)
+[![Build Status](https://github.com/OpenG2P/openg2p-edrmc/actions/workflows/test.yml/badge.svg?branch=17.0-1.5)](https://github.com/OpenG2P/openg2p-edrmc/actions/workflows/test.yml?query=branch%3A17.0-1.5)
 <!-- /!\ Non OCA Context : Set here the badge of your translation instance. -->
 
 <!-- /!\ do not modify above this line -->
