@@ -27,65 +27,53 @@ class ResPartner(models.Model):
     update_request_ids = fields.One2many("res.partner.change.request", "partner_id", string="Update Requests")
     edit_suggestion_ids = fields.One2many("request", "record_id", string="Edit Suggestions")
 
-    def _filter_json_compatible(self, vals):
-        """
-        Filters out fields with non-JSON-serializable data and returns a message indicating the changes.
-        """
-        filtered_vals = {}
-        change_messages = []
-
-        # Get the current user
-        current_user = self.env.user.name
-
-        for key, new_value in vals.items():
-            field = self._fields.get(key)
-            if field and isinstance(field, fields.Binary):
-                # Skip binary fields
-                continue
-
-            try:
-                # Attempt to serialize the value to JSON to check if it's compatible
-                json.dumps(new_value)
-                filtered_vals[key] = new_value
-
-                # Retrieve the old value from the record
-                old_value = self[key]
-
-                # Format both values for the message
-                old_value_str = str(old_value)
-                new_value_str = str(new_value)
-
-                # Create the change message
-                change_message = (
-                    f"User {current_user} wants to change the field '{field.string}' "
-                    f"from '{old_value_str}' to '{new_value_str}'."
-                )
-                change_messages.append(change_message)
-            except (TypeError, ValueError):
-                # If serialization fails, skip the field
-                continue
-
-        # Combine all change messages into a single string
-        change_message_str = " ".join(change_messages)
-        return change_message_str
+    def _sanitize_vals(self, vals):
+        sanitized = {}
+        for key, value in vals.items():
+            # Check if value is an Odoo recordset
+            if isinstance(value, models.BaseModel):
+                sanitized[key] = value.id  # Store the ID instead of the recordset
+            else:
+                sanitized[key] = value
+        return sanitized
 
     def write(self, vals):
+        state = {"state": "update_requested"}
+        sanitized_vals = self._sanitize_vals(vals)
         no_of_edits = self.env["no.of.edits"].search([])
-        json_compatible_vals = self._filter_json_compatible(vals)
         user = self.env.user
-
         for record in self:
-            if record.edit_count >= no_of_edits.edit_amount - 1:
-                vals["edit_state"] = "locked"
-            vals["edit_count"] = record.edit_count + 1
+            if self.env.user.has_group("base.group_portal"):
+                if record.edit_count >= no_of_edits.edit_amount + 1:
+                    vals["edit_state"] = "locked"
+                vals["edit_count"] = record.edit_count + 1
 
-        if (
+        if self.env.user.has_group("base.group_portal") and record.edit_state == "locked":
+            if "given_name" in vals:
+                for partner in self:
+                    self.env["res.partner.change.request"].create(
+                        {
+                            "partner_id": partner.id,
+                            "requested_by": user.id,
+                            "new_values": CustomJSONEncoder.python_dict_to_json_dict(sanitized_vals),
+                            # "update_message": update_message,
+                            "state": "pending",
+                        }
+                    )
+                    vals["state"] = "update_requested"
+                    # Return a meaningful value; for example, the count of records 'affected'
+                return super().write(state)
+            else:
+                return super().write(vals)
+
+        elif (
             self.env.context.get("bypass_write")
             or record.edit_state != "locked"
             or self.env.is_superuser()
             or user.has_group("g2p_ati.group_data_validator")
             or user.has_group("g2p_registry_base.group_g2p_admin")
         ):
+            # vals["state"] = "approved"
             # Allow write operations if the bypass context is set
             return super().write(vals)
         else:
@@ -95,12 +83,12 @@ class ResPartner(models.Model):
                     {
                         "partner_id": partner.id,
                         "new_values": CustomJSONEncoder.python_dict_to_json_dict(vals),
-                        "update_message": json_compatible_vals,
+                        # "update_message": update_message,
                         "state": "pending",
                     }
                 )
                 # Return a meaningful value; for example, the count of records 'affected'
-            return len(self)
+            return super().write(state)
 
 
 class ResPartnerChangeRequest(models.Model):
@@ -111,12 +99,12 @@ class ResPartnerChangeRequest(models.Model):
     _description = "Update Request"
 
     name = fields.Char(string="Request")
-    partner_id = fields.Many2one("res.partner", string="Partner", required=True)
+    partner_id = fields.Many2one("res.partner", string="Record", required=True)
     # new_values = fields.Text(string="New Values", required=True)
     requested_by = fields.Many2one("res.users", default=lambda self: self.env.user)
     validator = fields.Many2one("res.users")
     new_values = fields.Json(string="Changes", required=True)
-    update_message = fields.Char(string="Message", required=True)
+    update_message = fields.Char(string="Message")
     new_values_display = fields.Char(string="New Values (Preview)", compute="_compute_new_values_display")
 
     state = fields.Selection(
@@ -151,7 +139,7 @@ class ResPartnerChangeRequest(models.Model):
                         "res_id": change_request.id,  # The record ID of the res.partner.change.request
                         "user_id": user.id,
                         "date_deadline": fields.Date.context_today(self),  # Deadline in 3 days
-                        "summary": "New Partner Change Request",
+                        "summary": "New Update Request",
                         "note": "A new request has been created. Please review and approve it.",
                     }
                 )
@@ -171,15 +159,23 @@ class ResPartnerChangeRequest(models.Model):
             try:
                 # Safely parse the new_values string to a dictionary
                 new_vals = request.new_values
+                new_vals["state"] = "approved"
                 if isinstance(new_vals, dict):
                     # Apply the new values directly using the super method
+                    request.partner_id.reg_ids.unlink()
+                    request.partner_id.phone_number_ids.unlink()
+                    request.partner_id.land_information_ids.unlink()
+                    request.partner_id.crop_information_ids.unlink()
+                    request.partner_id.livestock_information_ids.unlink()
+                    request.partner_id.supporting_documents_ids.unlink()
                     request.partner_id.with_context(bypass_write=True).sudo().write(new_vals)
                     # Mark the request as approved
                     request.state = "approved"
                     # Add the user who validated (approved) the request
                     request.validator = self.env.user
                     # Log the applied changes for debugging
-                    request.partner_id.message_post(body=f"Changes approved and applied: {new_vals}")
+                    # request.partner_id.message_post(body=f"Changes approved and applied: {new_vals}")
+
                 else:
                     raise ValueError("Parsed new_values is not a dictionary")
             except Exception as e:
@@ -199,6 +195,10 @@ class ResPartnerChangeRequest(models.Model):
 
         # Mark the activities as done or unlink them (remove them)
         activities.action_done()
+
+        edit_suggestions = self.env["request"].search([("record_id", "=", self.partner_id.id)])
+        for suggests in edit_suggestions:
+            suggests.status = "updated"
 
     def reject_changes(self):
         for request in self:

@@ -5,6 +5,8 @@ from odoo.exceptions import ValidationError
 class Region(models.Model):
     _inherit = "g2p.region"
 
+    name = fields.Char("Region")
+
     @api.constrains("name")
     def _check_name(self):
         for record in self:
@@ -20,7 +22,7 @@ class Region(models.Model):
                 error_message = _("Region Code should not empty.")
                 raise ValidationError(error_message)
         for region in regions:
-            if self.code.lower() == region.code.lower() and self.id != region.id:
+            if str(self.code.lower()) == str(region.code.lower()) and self.id != region.id:
                 raise ValidationError(_("The code must be unique!"))
 
     @api.constrains("iso_code")

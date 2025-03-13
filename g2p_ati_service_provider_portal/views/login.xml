@@ -16,11 +16,10 @@
         </xpath>
 
         <xpath expr="//div[@class='ssp-login-body']" position="replace">
-            <h1> Farmers Profile </h1>
-            <!-- Your custom content here -->
+            <!-- <h1> Farmers Profile </h1> -->
 
              <div class="ssp-login-body">
-                <h1> Farmers Profile </h1>
+                <!-- <h1> Farmers Profile </h1> -->
             <div>
                 <div class="ssp-login-box">
                     <div class="logo-box">

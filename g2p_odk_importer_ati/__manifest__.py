@@ -10,11 +10,11 @@
     "depends": ["g2p_ati", "g2p_odk_importer", "g2p_registry_addl_info"],
     "external_dependencies": {},
     "data": [
-        "data/odk_config.xml",
-        "data/odk_import.xml",
         "security/ir.model.access.csv",
         "views/views.xml",
         "views/odk_res_config_setting.xml",
+        "data/odk_config.xml",
+        "data/odk_import.xml",
     ],
     "assets": {"web.assets_backend": []},
     "demo": [],

@@ -35,9 +35,11 @@ class G2PFarmer(models.Model):
     zone = fields.Many2one("g2p.zone", domain="[('region', '=', region)]")
     woreda = fields.Many2one("g2p.woreda", domain="[('zone', '=', zone)]")
     kebele = fields.Many2one("g2p.kebele", domain="[('woreda', '=', woreda)]")
+
     given_name = fields.Char(string="First Name(English)", translate=False)
     family_name = fields.Char(string="Father's Name(English)", translate=False)
     gf_name_eng = fields.Char(string="Grand Father's Name(English)", translate=False)
+
     first_name_amh = fields.Char(string="First Name(Amharic)", translate=False)
     family_name_amh = fields.Char(string="Father's Name(Amharic)", translate=False)
     gf_name_amh = fields.Char(string="Grand Father's Name(Amharic)", translate=False)
@@ -58,9 +60,9 @@ class G2PFarmer(models.Model):
     )
     farming_type = fields.Selection(
         selection=[
-            ("crop_farming", "Crop farming"),
-            ("livestock_farming", "livestock Farming"),
-            ("mixed_farming", "mixed farming"),
+            ("crop_farming", "Crop Farming"),
+            ("livestock_farming", "Livestock Farming"),
+            ("mixed_farming", "Mixed Farming"),
         ]
     )
     is_disabled = fields.Selection(string="Are you disabled? ", selection=[("yes", "Yes"), ("no", "No")])
@@ -189,24 +191,37 @@ class G2PFarmer(models.Model):
 
     farmer_id = fields.Char(string="Farmer ID", compute="_compute_farmer_id", store=True, index=True)
 
-    @api.onchange("region")
-    def _onchange_region(self):
-        self.zone = False
-        self.woreda = False
-        self.kebele = False
+    # @api.onchange("is_member_of_primary_cooperative")
+    # def _onchange_is_member_of_primary_cooperative(self):
+    #     self.primary_cooperatives = False
 
-    @api.onchange("zone")
-    def _onchange_zone(self):
-        self.woreda = False
-        self.kebele = False
+    # @api.onchange("is_member_of_cooperative_union")
+    # def _onchange_is_member_of_cooperative_union(self):
+    #     self.cooperative_unions = False
 
-    @api.onchange("woreda")
-    def _onchange_woreda(self):
-        self.kebele = False
+    # @api.onchange("is_member_in_farmer_cluster")
+    # def _onchange_is_member_in_farmer_cluster(self):
+    #     self.role_in_farmer_cluster = False
+    #     self.primary_commodity = False
+
+    # @api.onchange("region")
+    # def _onchange_region(self):
+    #     self.zone = False
+    #     self.woreda = False
+    #     self.kebele = False
+
+    # @api.onchange("zone")
+    # def _onchange_zone(self):
+    #     self.woreda = False
+    #     self.kebele = False
+
+    # @api.onchange("woreda")
+    # def _onchange_woreda(self):
+    #     self.kebele = False
 
     @api.onchange("is_group", "family_name", "given_name", "gf_name_eng")
     def name_change_farmer(self):
-        vals = {}
+        # vals = {}
         if not self.is_group:
             name = ""
             if self.given_name:
@@ -215,8 +230,10 @@ class G2PFarmer(models.Model):
                 name += self.family_name + " "
             if self.gf_name_eng:
                 name += self.gf_name_eng
-            vals.update({"name": name.upper()})
-            self.update(vals)
+
+            self.name = name.upper()
+            # vals.update({"name": name.upper()})
+            # self.update(vals)
 
     @api.depends("land_information_ids.total_land_area")
     def _compute_total_land_area(self):
@@ -301,11 +318,11 @@ class G2PFarmer(models.Model):
             years_months_days = str(delta.years)
         return years_months_days
 
-    @api.depends("ref_id", "is_farmer")
+    @api.depends("unique_id", "is_farmer")
     def _compute_farmer_id(self):
         for record in self:
-            if record.is_farmer == "yes" and record.ref_id:
-                record.farmer_id = f"FR-{record.ref_id}"
+            if record.is_farmer == "yes" and record.unique_id:
+                record.farmer_id = f"FR-{record.unique_id}"
             else:
                 record.farmer_id = False
 

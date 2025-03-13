@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template
         id="ati_dashboard_template"
@@ -10,49 +9,40 @@
         <xpath expr="//div[hasclass('container-adjuster')]" position="replace">
             <div
                 class="container-adjuster custom-dashboard-background"
-                style="display: flex; justify-content: center; align-items: center;"
+                style="margin-top: 2%; margin-bottom: 100px;"
             >
-                <!-- <div style="margin-top: -38%;margin-right: -8%;">
-                    <h5 class="all-title" style="height:13px;font-size:16px;margin-left: 100%">Dashboard</h5>
-                    <a href="/serviceprovider/home" style="font-size:12px;margin-left: 100%; color: #09A261;">
-                        Dashboard
-                    </a>
-                </div> -->
-                <div
-                    class="card-container"
-                    style="height:420px;justify-content: space-evenly; margin-top: 2%;margin-bottom:100px"
-                >
-                    <div
-                        class="card-container-mini"
-                        style="border-radius: 20px; margin-top:2%; margin-left: -6%; width: 85%;height:130%;"
-                    >
+                <!-- Added 'd-flex' and removed 'margin-left: 10%' -->
+                <div class="row justify-content-center d-flex mx-auto" style="max-width: 1200px;">
+                    <!-- Card for Farmers -->
+                    <div class="col-lg-5 col-md-5 col-12" style="border-radius: 20px; margin-top: 2%;">
                         <a href="/serviceprovider/individual">
                             <div
                                 class="card gradient-card"
-                                style="height: 70%; width: 55%; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"
+                                style="height: auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"
                             >
                                 <h5
                                     class="card-heading"
                                     style="margin-left: 8%; margin-top: 40px; font-size: 18px;"
-                                >Farmers</h5>
+                                >
+                                    Farmers
+                                </h5>
                                 <img
                                     src="/g2p_ati_service_provider_portal/static/src/img/dashboard.png"
                                     class="img"
                                     style="width: 70px; height: 70px; margin-top: 8%; margin-left: 40%; margin-bottom: 3%;"
                                 />
-                                <center><strong style="font-size:16px;color: #09A261; margin-top: 5%;">
-                                    <t t-out="len(individuals)" />
-                                    Farmers
-                                </strong></center>
+                                <center>
+                                    <strong style="font-size: 16px; color: #09A261; margin-top: 5%;">
+                                        <t t-out="len(individuals)" /> Farmers
+                                    </strong>
+                                </center>
                                 <div
                                     style="display: flex; justify-content: center; align-items: center; padding-left: 5%; padding-right: 5%;"
                                 >
                                     <p
-                                        style="font-size:12px;text-align: center; display: -webkit-box; -webkit-box-orient: vertical;overflow: hidden;"
+                                        style="font-size: 12px; text-align: center; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden;"
                                     >
-                                        More than
-                                        <t t-out="len(individuals)" />
-                                        farmers created.
+                                        More than <t t-out="len(individuals)" /> farmers created.
                                     </p>
                                 </div>
                                 <hr style="width: 70%; margin-left: 15%; margin-top: 7%;" />
@@ -60,7 +50,7 @@
                                     <a
                                         href="/serviceprovider/individual"
                                         class="justify-content-center viewprograms group"
-                                        style="color: #09A261;font-size:16px;"
+                                        style="color: #09A261; font-size: 16px;"
                                     >
                                         View Farmer List
                                         <img
@@ -74,37 +64,36 @@
                         </a>
                     </div>
 
-                    <div
-                        class="card-container-mini"
-                        style="border-radius: 20px; margin-top:2%; margin-left: -6%; width: 85%;height:130%;"
-                    >
+                    <!-- Card for Households -->
+                    <div class="col-lg-5 col-md-5 col-12" style="border-radius: 20px; margin-top: 2%;">
                         <a href="/serviceprovider/group">
                             <div
                                 class="card gradient-card"
-                                style="height: 70%; width: 55%; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"
+                                style="height: auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"
                             >
                                 <h5
                                     class="card-heading"
                                     style="margin-left: 8%; margin-top: 40px; font-size: 18px;"
-                                >Households</h5>
+                                >
+                                    Households
+                                </h5>
                                 <img
                                     src="/g2p_ati_service_provider_portal/static/src/img/dashboard.png"
                                     class="img"
                                     style="width: 70px; height: 70px; margin-top: 8%; margin-left: 40%; margin-bottom: 3%;"
                                 />
-                                <center><strong style="font-size:16px;color: #09A261; margin-top: 5%;">
-                                    <t t-out="len(households)" />
-                                    Households
-                                </strong></center>
+                                <center>
+                                    <strong style="font-size: 16px; color: #09A261; margin-top: 5%;">
+                                        <t t-out="len(households)" /> Households
+                                    </strong>
+                                </center>
                                 <div
                                     style="display: flex; justify-content: center; align-items: center; padding-left: 5%; padding-right: 5%;"
                                 >
                                     <p
-                                        style="font-size:12px;text-align: center; display: -webkit-box; -webkit-box-orient: vertical;overflow: hidden;"
+                                        style="font-size: 12px; text-align: center; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden;"
                                     >
-                                        More than
-                                        <t t-out="len(households)" />
-                                        Households created.
+                                        More than <t t-out="len(households)" /> Households created.
                                     </p>
                                 </div>
                                 <hr style="width: 70%; margin-left: 15%; margin-top: 7%;" />
@@ -112,7 +101,7 @@
                                     <a
                                         href="/serviceprovider/group"
                                         class="justify-content-center viewprograms group"
-                                        style="color: #09A261;font-size:16px;"
+                                        style="color: #09A261; font-size: 16px;"
                                     >
                                         View Household List
                                         <img

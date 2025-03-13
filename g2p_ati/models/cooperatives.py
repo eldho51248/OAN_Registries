@@ -25,15 +25,15 @@ class G2PPrimaryCooperative(models.Model):
 
     @api.constrains("code")
     def _check_code(self):
-        records = self.search([])
         for record in self:
             if not record.code:
                 error_message = _("Code should not empty.")
                 raise ValidationError(error_message)
 
-        for rec in records:
-            if self.code.lower() == rec.code.lower() and self.id != rec.id:
-                raise ValidationError(_("The code must be unique!"))
+        duplicate = self.search([("code", "=", record.code), ("id", "!=", record.id)], limit=1)
+
+        if duplicate:
+            raise ValidationError(_("The code '%s' must be unique!" % record.code))
 
 
 class G2PCooperativeUnion(models.Model):

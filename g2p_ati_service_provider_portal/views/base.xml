@@ -1,36 +1,277 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <template
+
+  <template
         id="base_inh"
         name="G2P Service Provider ATI Portal Base"
         inherit_id="g2p_service_provider_portal_base.base"
         priority="200"
     >
-        <!-- Include custom CSS -->
-        <xpath expr="//header" position="inside">
-            <link rel="stylesheet" href="/g2p_ati_service_provider_portal/static/src/css/style.css" />
-        </xpath>
+    <xpath expr="//header" position="inside">
+      <link rel="stylesheet" href="/g2p_ati_service_provider_portal/static/src/css/style.css" />
+    </xpath>
+    <xpath expr="//div[hasclass('dropdown')]" position="attributes">
+    <attribute name="style">width: auto !important;</attribute>
+    </xpath>
 
-        <!-- Change the header logo image, apply the custom CSS class -->
-        <xpath expr="//header//img[@class='main-logo']" position="attributes">
-            <attribute name="src">/g2p_ati_service_provider_portal/static/src/img/logo@2x.png</attribute>
-            <attribute name="class">main-logo custom-logo</attribute>
-        </xpath>
 
-        <!-- Change the footer logo image, apply the custom CSS class -->
-        <xpath expr="//footer//img[@class='main-logo']" position="attributes">
-            <attribute name="src">/g2p_ati_service_provider_portal/static/src/img/logo@2x.png</attribute>
-            <attribute name="class">main-logo custom-logo</attribute>
-        </xpath>
+<xpath expr="//div[hasclass('nav')]" position="attributes">
+    <attribute name="style">max-width: 1400px !important;</attribute>
+</xpath>
 
-        <!-- Hide the search box -->
-        <xpath expr="//div[hasclass('search-box')]" position="attributes">
-            <attribute name="style">display: none;</attribute>
-        </xpath>
 
-        <!-- Hide the copyright text -->
-        <xpath expr="//div[hasclass('copyright')]" position="attributes">
-            <attribute name="style">display: none;</attribute>
-        </xpath>
-    </template>
+
+
+
+
+
+
+<xpath expr="//div[hasclass('nav')]/a" position="attributes">
+    <attribute name="class">px-2 mx-md-0</attribute>
+</xpath>
+
+
+<!-- <xpath expr="//div[hasclass('nav-user')]" position="before">
+    <attribute name="class">nav-user mx-auto mx-md-0</attribute>
+</xpath> -->
+
+
+<xpath expr="//div[hasclass('nav-user')]" position="before">
+    <div id="hamburger-icon" class="fa-bars fa">
+        </div>
+</xpath>
+
+
+
+
+
+<xpath expr="//div[hasclass('nav-user')]" position="inside">
+  <div class="nav-logged-in-user-labels d-sm-none nav-user_grid_item2"><a
+                    style="color:black !important;"
+                    href="/serviceprovider/myprofile"
+                    t-esc="env.user.name"
+                /></div>
+  <div style="font-size: 13px;" class="logout-div nav-user_grid_item5 text-black fw-bold"><a
+                    href="/web/session/logout?redirect=/serviceprovider/login"
+                    class="text-black fw-bold link"
+                >Logout</a></div>
+</xpath>
+
+
+<xpath expr="//div[hasclass('nav-user')]" position="attributes">
+    <attribute name="class">nav-user fade-in-nav-user </attribute>
+    <attribute name="id">nav-user-resp</attribute>
+</xpath>
+
+
+
+
+<xpath expr="//div[hasclass('language-dropdown')]" position="attributes">
+  <attribute name="class">language-dropdown label_and_row nav-user_grid_item4 mb-3 language-box</attribute>
+</xpath>
+
+
+<xpath expr="//div[hasclass('language-dropdown')]/button" position="before">
+  <div class="nav-user-labels">Language</div>
+</xpath>
+
+
+
+
+
+<xpath expr="//div[hasclass('nav-user')]/div[hasclass('user')]" position="attributes">
+    <attribute name="class">dropdown user nav-user_grid_item1</attribute>
+</xpath>
+
+
+
+
+
+<xpath expr="//div[hasclass('footer-container')]/div[hasclass('nav')]" position="attributes">
+    <attribute name="style">max-width: 1400px !important;</attribute>
+</xpath>
+
+
+
+<xpath expr="//div[hasclass('footer-container')]/div[hasclass('nav')]/a" position="attributes">
+    <attribute name="class">d-flex px-3 flex-column flex-md-row</attribute>
+</xpath>
+
+
+<!-- <xpath expr="//div[hasclass('footer-container')]/div[hasclass('nav')]/a" position="attributes">
+    <attribute name="class">px-5 px-xl-0 mx-auto mx-md-0</attribute>
+</xpath> -->
+
+<xpath expr="//ul[hasclass('list-container')]" position="attributes">
+    <attribute name="class">list-container mt-0</attribute>
+    <attribute name="style">padding-left: 5px;</attribute>
+</xpath>
+
+ <xpath expr="//body" position="attributes">
+    <attribute name="class">fade-in-ati</attribute>
+    <attribute name="id">content</attribute>
+    <attribute name="style">opacity:0;</attribute>
+ </xpath>
+
+
+
+    <xpath expr="//body" position="inside">
+
+
+      <div class="modal fade" id="successModal" tabindex="-1" role="dialog">
+
+        <div
+                    style="margin: 0 auto !important;  max-width:500px !important; transform: translate(0%, 0%) !important;"
+                    class="modal-dialog px-3 modal-sm-down modal-md md-up"
+                    role="document"
+                >
+
+          <div
+                        style="background-color: white; border-radius: 1rem; text-align: center;"
+                        class=" py-5 modal_container"
+                    >
+
+            <div class="py-4" style="margin: 0 auto !important;">
+
+              <img src="" class="popup_img" style="width: 15%; height: 15%;" />
+
+              <h4 style="color: black !important;" class="mt-1 fw-bolder" />
+              <p style="max-width-75%;" class="text-muted fs- popup_msg" />
+
+              <div class="border-0 justify-content-center">
+                <button
+                                    style="background-color: black !important; border: none !important; color:white !important;"
+                                    type="button"
+                                    class="btn btn-secondary mt-2 fw-bold px-4 rounded-md"
+                                    data-dismiss="modal"
+                                >Close</button>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+
+      <script>
+   document.addEventListener('DOMContentLoaded', function () {
+                    document.body.style.opacity = 1;
+                    document.body.style.transition = "opacity 0.2s ease-in";
+    });
+</script>
+
+
+
+
+      <script>
+
+    $(document).ready(function() {
+
+
+  $('#hamburger-icon').click(function() {
+    $(this).toggleClass('active');
+  });
+
+
+
+
+    const cookieValue = getCookie('popup_status');
+    if (cookieValue === 'successful' || cookieValue === 'error') {
+
+      // Update image, h4 text, and popup_msg content
+      const imgElement = document.getElementById('successModal').querySelector('.popup_img');
+      const h4Element = document.getElementById('successModal').querySelector('h4');
+      const msgElement = document.getElementById('successModal').querySelector('.popup_msg');
+      const msg = getCookie('popup_msg');
+
+      if (cookieValue === 'successful') {
+        imgElement.src = "/g2p_ati_service_provider_portal/static/src/img/ok.png";
+        h4Element.textContent = "Success!";
+
+      } else {
+        imgElement.src = "/g2p_ati_service_provider_portal/static/src/img/no.png";
+        h4Element.textContent = "Error";
+      }
+      msgElement.textContent = msg.replace(/^"|"$/g, '');
+
+      $('#successModal').modal('show');
+
+    }
+
+
+
+    $('#successModal').on('hidden.bs.modal', function () {
+      deleteCookie('popup_status');
+    });
+
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    function deleteCookie(name) {
+      document.cookie = name + '=; Max-Age=0; path=/';
+    }
+
+
+
+  });
+
+
+
+      </script>
+
+
+
+
+
+
+
+    </xpath>
+
+
+
+
+
+
+    <xpath expr="//header//img[@class='main-logo']" position="attributes">
+      <attribute name="src">/g2p_ati_service_provider_portal/static/src/img/logo@2x.png</attribute>
+      <attribute name="class">main-logo custom-logo</attribute>
+    </xpath>
+
+    <xpath expr="//footer//img[@class='main-logo']" position="attributes">
+      <attribute name="src">/g2p_ati_service_provider_portal/static/src/img/ati_footer.png</attribute>
+      <attribute name="class">main-logo custom-logo</attribute>
+    </xpath>
+
+
+     <xpath expr="//footer//div/div/a/img" position="inside">
+     <span
+                style="font-size: 12px; padding-left: 4px;
+    padding-top: 5px;
+    color: black;"
+            >Ethiopian Agricultural Transformation Institute<p
+                    style="font-size: 10px; margin-bottom: 0px;"
+                >Copyright &#169; <script
+                    >document.write(new Date().getFullYear());</script> All rights Reserved</p>
+    </span>
+
+    </xpath>
+
+
+    <xpath expr="//div[hasclass('footer-container')]" position="attributes">
+      <attribute name="style">height: 70px !important; padding-top:25px;</attribute>
+    </xpath>
+
+    <xpath expr="//div[hasclass('search-box')]" position="attributes">
+      <attribute name="style">display: none;</attribute>
+    </xpath>
+
+    <xpath expr="//div[hasclass('copyright')]" position="attributes">
+      <attribute name="style">display: none;</attribute>
+    </xpath>
+  </template>
 </odoo>

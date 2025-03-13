@@ -4,12 +4,19 @@
         <t t-call="g2p_service_provider_portal_base.base">
             <t t-set="title">List of group beneficiary | Service Provider Portal</t>
             <div class="main-container1">
-                <div class="container-adjuster">
+                <div class="mx-auto">
+                    <div
+                        style="max-width: 1400px"
+                        class="top-content mx-auto d-flex flex-row justify-content-between align-items-center px-2 py-3"
+                    >
 
                     <div class="d-flex flex-row justify-content-between">
 
                         <div class="d-flex flex-column  justify-content-start ">
-                            <h5 class="all-title">Suggestion List</h5>
+                            <h5
+                                    style="font: normal 600 15px / 22px Inter !important;"
+                                    class="all-title"
+                                >Suggestion List</h5>
 
                             <ol class="breadcrumb bg-transparent d-flex flex-col ">
                                 <li class="breadcrumb-item">
@@ -18,9 +25,10 @@
                                 <li class="breadcrumb-item active" aria-current="page">Suggestions</li>
                             </ol>
                         </div>
+                        </div>
 
 
-                        <div>
+                        <!-- <div>
                             <a t-attf-href="/serviceprovider/group/create/" style="float:right;">
                                 <button type="button" class="btn btn-primary create-new"> Create New <span
                                         class="mx-1"
@@ -28,7 +36,7 @@
                                     <span class="fa fa-plus" />
                                 </button>
                             </a>
-                        </div>
+                        </div> -->
 
                     </div>
 
@@ -36,7 +44,9 @@
                     <div class="list-view">
 
 
-                        <div class="table-head-container d-flex flex-row justify-content-between px-3 ">
+                        <div
+                            class="table-head-container align-items-lg-center py-3  d-flex flex-column flex-lg-row flex-md-wrap justify-content-between px-3 mx-auto "
+                        >
 
 
                             <div id="head_name_rec">
@@ -63,7 +73,7 @@
                                         />
                                     </svg>
                                     <input
-                                        placeholder="Search by / Beneficiary"
+                                        placeholder="Search"
                                         class="search-text"
                                         name="q"
                                         id="search-text"
@@ -79,36 +89,38 @@
                             </form>
                         </div>
 
-                        <div class="tables-values-container">
+                        <div class="tables-values-container px-3">
                             <table id="newreimbursements">
-                                <thead>
+                                <thead class="d-none d-lg-table-header-group">
                                     <tr>
-                                        <th>Sr.No.</th>
-                                        <th>Suggester<i class="fa fa-sort" /></th>
-                                        <th>Record</th>
-                                        <th>Reason</th>
-                                        <th>Status </th>
-                                        <th>Action</th>
+                                        <th class="sr-column">Sr.No.</th>
+                                        <th class="name-column">Suggester<i class="fa fa-sort" /></th>
+                                        <th class="fixed-width-column-group">Record</th>
+                                        <th class="fixed-width-column-group">Reason</th>
+                                        <th class="fixed-width-column-group">Status </th>
+                                        <th class="fixed-width-column-group">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <t t-foreach="updte_suggests" t-as="update">
-                                        <tr>
-                                            <td>
+                                        <tr class="grid2_table">
+                                            <td class="tr_grid_item1">
                                             </td>
                                             <td
+                                                data-label="Suggester"
+                                                class="tr_grid_item2"
                                                 style="color:#078148; font: normal normal 600 13px/16px Inter;"
                                             >
                                                 <t t-out="update['requester_id']['name']" />
                                             </td>
-                                            <td>
+                                            <td data-label="Record" class="tr_grid_item4">
                                                 <t t-out="update['record_id']['name']" />
                                             </td>
-                                            <td>
+                                            <td data-label="Reason" class="tr_grid_item5">
                                                 <t t-out="update['reason']" />
                                             </td>
 
-                                            <td>
+                                            <td data-label="Status" class="tr_grid_item6">
                                                 <div class="status-icon">
 
                                                     <t t-if="update['status'] == 'newSuggestion'">
@@ -126,7 +138,7 @@
                                                 </div>
                                             </td>
 
-                                            <td>
+                                            <td data-label="Action" class="tr_grid_item3">
                                                 <a
                                                     t-attf-href="/serviceprovider/individual/update/{{ update.record_id.id }}"
                                                 >

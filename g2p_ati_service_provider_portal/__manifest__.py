@@ -12,6 +12,8 @@
         "g2p_service_provider_beneficiary_management",
         "g2p_registry_base",
         "g2p_service_provider_portal_base",
+        "g2p_registry_addl_info",
+        "g2p_ati",
         "portal",
     ],
     "data": [
