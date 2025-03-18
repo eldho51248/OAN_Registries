@@ -48,7 +48,7 @@
         "views/crop_category.xml",
         "views/crop.xml",
         "views/land_info.xml",
-        "views/main_menu.xml",
+        # "views/main_menu.xml",
         "wizard/rejection_reason_wizard.xml",
     ],
     "assets": {

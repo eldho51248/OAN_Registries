@@ -12,7 +12,7 @@
     "data": [
         "security/ir.model.access.csv",
         "views/views.xml",
-        "views/odk_res_config_setting.xml",
+        # "views/odk_res_config_setting.xml",
         "data/odk_config.xml",
         "data/odk_import.xml",
     ],
