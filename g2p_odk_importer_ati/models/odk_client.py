@@ -83,6 +83,7 @@ class OdkImportInherit(models.Model):
                 )
                 land_certificate_id = None
                 if land_certificate:
+                    print(json_data)
                     supporting_document_id, land_certificate_id = self.process_land_certificate(
                         land_certificate, json_data.get("instance_id")
                     )
@@ -352,6 +353,7 @@ class OdkImportInherit(models.Model):
 
 
     def get_individual_data(self, individual, is_member, enumerator):
+        print("getting individual data **********")
         vals = {
             "is_registrant": True,
             "is_group": False,
@@ -561,6 +563,7 @@ class OdkImportInherit(models.Model):
             mapped_json.get("data_enumerator_odk_id"),
             submission_time,
         )
+        print("enumerator is ",enumerator)
 
         if mapped_json["hh_is_household_head"] == "yes":
             group = {
