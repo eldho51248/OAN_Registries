@@ -222,7 +222,7 @@ class G2PFarmer(models.Model):
     def _onchange_zone(self):
         if self._is_integration_form():
             return
-        
+
         self.woreda = False
         self.kebele = False
 
@@ -231,7 +231,6 @@ class G2PFarmer(models.Model):
         if self._is_integration_form():
             return
         self.kebele = False
-
 
     def _is_integration_form(self):
         active_model = self.env.context.get("active_model", False)
