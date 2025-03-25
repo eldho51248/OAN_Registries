@@ -191,33 +191,50 @@ class G2PFarmer(models.Model):
 
     farmer_id = fields.Char(string="Farmer ID", compute="_compute_farmer_id", store=True, index=True)
 
-    # @api.onchange("is_member_of_primary_cooperative")
-    # def _onchange_is_member_of_primary_cooperative(self):
-    #     self.primary_cooperatives = False
+    @api.onchange("is_member_of_primary_cooperative")
+    def _onchange_is_member_of_primary_cooperative(self):
+        if self._is_integration_form():
+            return
+        self.primary_cooperatives = False
 
-    # @api.onchange("is_member_of_cooperative_union")
-    # def _onchange_is_member_of_cooperative_union(self):
-    #     self.cooperative_unions = False
+    @api.onchange("is_member_of_cooperative_union")
+    def _onchange_is_member_of_cooperative_union(self):
+        if self._is_integration_form():
+            return
+        self.cooperative_unions = False
 
-    # @api.onchange("is_member_in_farmer_cluster")
-    # def _onchange_is_member_in_farmer_cluster(self):
-    #     self.role_in_farmer_cluster = False
-    #     self.primary_commodity = False
+    @api.onchange("is_member_in_farmer_cluster")
+    def _onchange_is_member_in_farmer_cluster(self):
+        if self._is_integration_form():
+            return
+        self.role_in_farmer_cluster = False
+        self.primary_commodity = False
 
-    # @api.onchange("region")
-    # def _onchange_region(self):
-    #     self.zone = False
-    #     self.woreda = False
-    #     self.kebele = False
+    @api.onchange("region")
+    def _onchange_region(self):
+        if self._is_integration_form():
+            return
+        self.zone = False
+        self.woreda = False
+        self.kebele = False
 
-    # @api.onchange("zone")
-    # def _onchange_zone(self):
-    #     self.woreda = False
-    #     self.kebele = False
+    @api.onchange("zone")
+    def _onchange_zone(self):
+        if self._is_integration_form():
+            return
 
-    # @api.onchange("woreda")
-    # def _onchange_woreda(self):
-    #     self.kebele = False
+        self.woreda = False
+        self.kebele = False
+
+    @api.onchange("woreda")
+    def _onchange_woreda(self):
+        if self._is_integration_form():
+            return
+        self.kebele = False
+
+    def _is_integration_form(self):
+        active_model = self.env.context.get("active_model", False)
+        return active_model and active_model == "draft.record"
 
     @api.onchange("is_group", "family_name", "given_name", "gf_name_eng")
     def name_change_farmer(self):
