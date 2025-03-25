@@ -25,7 +25,7 @@
             "g2p_ati_integrations/static/src/**/*.js",
             "g2p_ati_integrations/static/src/**/*.css",
             "g2p_ati_integrations/static/src/**/*.scss",
-            "g2p_ati_integrations/static/src/my_map_template.xml",
+            # "g2p_ati_integrations/static/src/my_map_template.xml",
         ],
     },
     "author": "",
