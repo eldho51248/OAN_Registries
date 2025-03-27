@@ -61,12 +61,7 @@
             "g2p_ati/static/src/js/preview_document.js",
         ],
     },
-    "migrations": {
-        "17.0.1.5.0": {
-            "pre": "g2p_ati/migrations/17.0.1.5.0/pre-migration.py",
-            "post": "g2p_ati/migrations/17.0.1.5.0/post-migration.py",
-        },
-    },
+  
     "demo": [],
     "images": [],
     "application": True,
