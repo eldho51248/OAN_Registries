@@ -112,7 +112,7 @@
 					<field name="gf_name_other" />
 				</group>
 			</xpath>
-			
+
 			<xpath expr="//div[contains(@class, 'o_row')]" position="attributes">
 				<attribute name="invisible">1</attribute>
 			</xpath>
@@ -435,7 +435,7 @@
 			<xpath expr="//div[contains(@class, 'o_row')]" position="attributes">
 				<attribute name="invisible">1</attribute>
 			</xpath>
-			
+
 			<!-- <xpath expr="//page[@name='other']" position="inside">
 				<group>
 					<field name="enumerator_id" readonly="True" />

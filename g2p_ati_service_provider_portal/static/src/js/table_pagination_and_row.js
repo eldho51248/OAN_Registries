@@ -432,14 +432,13 @@ function getSelectionValues(isGroup, modal = false) {
             SelectionWoredaValue: isGroup ? SelectionWoredaGroup?.value : SelectionWoreda?.value,
             SelectionKebeleValue: isGroup ? SelectionKebeleGroup?.value : SelectionKebele?.value,
         };
-    } else {
-        return {
-            SelectionRegionValue: isGroup ? SelectionRegionGroupModal : SelectionRegionModal,
-            SelectionZonValue: isGroup ? SelectionZonGroupModal?.value : SelectionZonModal?.value,
-            SelectionWoredaValue: isGroup ? SelectionWoredaGroupModal?.value : SelectionWoredaModal?.value,
-            SelectionKebeleValue: isGroup ? SelectionKebeleGroupModal?.value : SelectionKebeleModal?.value,
-        };
     }
+    return {
+        SelectionRegionValue: isGroup ? SelectionRegionGroupModal : SelectionRegionModal,
+        SelectionZonValue: isGroup ? SelectionZonGroupModal?.value : SelectionZonModal?.value,
+        SelectionWoredaValue: isGroup ? SelectionWoredaGroupModal?.value : SelectionWoredaModal?.value,
+        SelectionKebeleValue: isGroup ? SelectionKebeleGroupModal?.value : SelectionKebeleModal?.value,
+    };
 }
 
 function handleSearch(isGroup = true, modal = false) {

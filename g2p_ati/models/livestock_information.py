@@ -86,15 +86,19 @@ class G2PLiveStockInformation(models.Model):
 
         record.season = season.id if season else False
 
-        season = self.env["g2p.season"].search([
-            ("start_month", "<=", record.collected_gc.month),
-            ("end_month", ">=", record.collected_gc.month),
-            ("start_day", "<=", record.collected_gc.day),
-            ("end_day", ">=", record.collected_gc.day),
-                ], limit=1)
-        
+        season = self.env["g2p.season"].search(
+            [
+                ("start_month", "<=", record.collected_gc.month),
+                ("end_month", ">=", record.collected_gc.month),
+                ("start_day", "<=", record.collected_gc.day),
+                ("end_day", ">=", record.collected_gc.day),
+            ],
+            limit=1,
+        )
+
         if season:
             record.season = season.id
+
 
 class G2PIllnessType(models.Model):
     _name = "g2p.illness.type"

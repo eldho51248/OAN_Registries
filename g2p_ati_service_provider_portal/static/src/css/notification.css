@@ -64,11 +64,8 @@ a {
     position: relative;
 }
 
-
-
-
-
-.navbar .profile .profile_dd, .notification_dd {
+.navbar .profile .profile_dd,
+.notification_dd {
     position: absolute;
     top: 96%;
     /* margin: 60px 0; */
@@ -400,8 +397,6 @@ button#show_notification {
     transform: translate(-50%, -50%);
 } */
 
-
-
 .trial_notify {
     width: 23%;
     height: 40%;
@@ -419,7 +414,6 @@ button#show_notification {
     font-weight: bold;
     display: none; /* Hidden by default */
 }
-
 
 .show_all .link {
     margin: 0 auto !important;

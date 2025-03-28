@@ -184,8 +184,3 @@ class G2PRespartnerIntegration(models.Model):
                         },  # Passing polygon data
         }
         return action
-
-
-
-
-

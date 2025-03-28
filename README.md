@@ -1,39 +1,25 @@
-
 <!-- /!\ Non OCA Context : Set here the badge of your runbot / runboat instance. -->
-[![Pre-commit Status](https://github.com/OpenG2P/openg2p-ati/actions/workflows/pre-commit.yml/badge.svg?branch=17.0-1.3)](https://github.com/OpenG2P/openg2p-ati/actions/workflows/pre-commit.yml?query=branch%3A17.0-1.3)
-[![Build Status](https://github.com/OpenG2P/openg2p-ati/actions/workflows/test.yml/badge.svg?branch=17.0-1.3)](https://github.com/OpenG2P/openg2p-ati/actions/workflows/test.yml?query=branch%3A17.0-1.3)
+[![Pre-commit Status](https://github.com/OpenG2P/openg2p-edrmc/actions/workflows/pre-commit.yml/badge.svg?branch=17.0-1.5)](https://github.com/OpenG2P/openg2p-edrmc/actions/workflows/pre-commit.yml?query=branch%3A17.0-1.5)
+[![Build Status](https://github.com/OpenG2P/openg2p-edrmc/actions/workflows/test.yml/badge.svg?branch=17.0-1.5)](https://github.com/OpenG2P/openg2p-edrmc/actions/workflows/test.yml?query=branch%3A17.0-1.5)
 <!-- /!\ Non OCA Context : Set here the badge of your translation instance. -->
 
 <!-- /!\ do not modify above this line -->
 
 # OpenG2P ATI
+This repo contains Odoo modules used by OpenG2P for ATI. 
 
-This repo contains customised modules used by OpenG2P for ATI, Ethiopia
+## Versions
 
-
-<!-- /!\ do not modify below this line -->
-
-<!-- prettier-ignore-start -->
-
-[//]: # (addons)
-
-Available addons
-----------------
-addon | version | maintainers | summary
---- | --- | --- | ---
-[g2p_ati](g2p_ati/) | 17.0.1.3.0 |  | OpenG2P Country Config: ATI
-[g2p_ati_rest_api](g2p_ati_rest_api/) | 17.0.1.3.0 |  | G2P ATI: Rest API
-[g2p_ati_service_provider_portal](g2p_ati_service_provider_portal/) | 17.0.1.3.0 |  | OpenG2P Service Provider: ATI
-[g2p_lock_unlock](g2p_lock_unlock/) | 17.0.1.3.0 |  | OpenG2P Lock Unlock
-[g2p_odk_importer_ati](g2p_odk_importer_ati/) | 17.0.1.3.0 |  | OpenG2P ODK Config: ATI
-
-[//]: # (end addons)
-
-<!-- prettier-ignore-end -->
+| SR Docker version | Creation date | Notes |
+|-------------------|---------------|-------|
+| [1.3.3](https://github.com/OpenG2P/openg2p-packaging/blob/main/packaging/packages/ati-social-registry/1.3.3.txt) | 27-Sep-2024   |       |
+| [1.3.4](https://github.com/OpenG2P/openg2p-packaging/blob/main/packaging/packages/ati-social-registry/1.3.4.txt) | 10-Oct-2024   | Added online registration portal for collecting registration data. |
+| [1.3.5](https://github.com/OpenG2P/openg2p-packaging/blob/main/packaging/packages/ati-social-registry/1.3.5.txt) | 19-Oct-2024   | Bug fixes in online registration portal. |
+| [1.3.6](https://github.com/OpenG2P/openg2p-packaging/blob/main/packaging/packages/ati-social-registry/1.3.6.txt) | 20-Oct-2024   | Bug fixes in online registration portal. |
+| [1.3.7](https://github.com/OpenG2P/openg2p-packaging/blob/main/packaging/packages/ati-social-registry/1.3.7.txt) | 20-Oct-2024   | Bug fixes in online registration portal. | 
+| [1.3.8](https://github.com/OpenG2P/openg2p-packaging/blob/main/packaging/packages/ati-social-registry/1.3.8.txt) | 23-Oct-2024   | Bug fixes in online registration portal. | 
+| [1.3.9](https://github.com/OpenG2P/openg2p-packaging/blob/main/packaging/packages/ati-social-registry/1.3.9.txt) | 29-Oct-2024   | Bug fixes. | 
+| [1.3.10](https://github.com/OpenG2P/openg2p-packaging/blob/main/packaging/packages/ati-social-registry/1.3.10.txt) | 05-Nov-2024   | License update on service provider module. | 
 
 ## Licenses
-
-This repository is licensed under [LGPL-3.0](LICENSE).
-
-----
-<!-- /!\ Non OCA Context : Set here the full description of your organization. -->
+This repository is licensed under [LGPLv3](LICENSE).

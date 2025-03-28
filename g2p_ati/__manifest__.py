@@ -2,7 +2,7 @@
 {
     "name": "OpenG2P Country Config: ATI",
     "category": "G2P",
-    "version": "17.0.1.3.0",
+    "version": "17.0.1.5.0",
     "sequence": 1,
     "author": "OpenG2P",
     "website": "https://openg2p.org",
@@ -61,6 +61,7 @@
             "g2p_ati/static/src/js/preview_document.js",
         ],
     },
+  
     "demo": [],
     "images": [],
     "application": True,

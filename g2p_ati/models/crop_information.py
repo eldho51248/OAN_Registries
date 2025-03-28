@@ -1,3 +1,4 @@
+import logging
 import re
 from datetime import date
 
@@ -5,6 +6,8 @@ from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 from .utils import eth_date
+
+_logger = logging.getLogger(__name__)
 
 
 class G2PCropInformation(models.Model):
@@ -78,16 +81,16 @@ class G2PCropInformation(models.Model):
         ethiopian_date_str = eth_date.to_ethiopian(cdate.year, cdate.month, cdate.day)
         record.collected_ec = eth_date.convert_tuple_to_string_with_separator(ethiopian_date_str)
 
-
-        season = self.env["g2p.season"].search([
-            ("start_month", "<=",record.collected_gc.month),
-            ("end_month", ">=", record.collected_gc.month),
-            ("start_day", "<=", record.collected_gc.day),
-            ("end_day", ">=", record.collected_gc.day),
-                ], limit=1)
+        season = self.env["g2p.season"].search(
+            [
+                ("start_month", "<=", record.collected_gc.month),
+                ("end_month", ">=", record.collected_gc.month),
+                ("start_day", "<=", record.collected_gc.day),
+                ("end_day", ">=", record.collected_gc.day),
+            ],
+            limit=1,
+        )
 
         if season:
             _logger.info("found a  season")
             record.season = season.id
-
-    

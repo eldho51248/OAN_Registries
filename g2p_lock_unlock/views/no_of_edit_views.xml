@@ -6,8 +6,8 @@
         <field name="model">no.of.edits</field>
 
         <field name="arch" type="xml">
-            <tree editable="top" >
-            <field  name="edit_amount" string="Number of edits allowed" />
+            <tree editable="top">
+            <field name="edit_amount" string="Number of edits allowed" />
             </tree>
         </field>
     </record>

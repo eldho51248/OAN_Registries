@@ -7,11 +7,11 @@
     <field name="arch" type="xml">
         <form>
             <group>
-                <field name="rejection_reason"/>
+                <field name="rejection_reason" />
             </group>
 
             <footer>
-                <button name="action_reject" string="Reject" type="object"/>
+                <button name="action_reject" string="Reject" type="object" />
             </footer>
         </form>
     </field>
@@ -23,13 +23,16 @@
     <field name="arch" type="xml">
         <form>
             <group>
-                <field name="rejection_reason"/>
+                <field name="rejection_reason" />
             </group>
             <footer>
-                <button name="confirm_rejection" string="Confirm Rejection" type="object" class="btn btn-warning"/>
-                 <button string="Cancel"
-                    class="btn-secondary"
-                    special="cancel" />
+                <button
+                        name="confirm_rejection"
+                        string="Confirm Rejection"
+                        type="object"
+                        class="btn btn-warning"
+                    />
+                 <button string="Cancel" class="btn-secondary" special="cancel" />
             </footer>
         </form>
     </field>

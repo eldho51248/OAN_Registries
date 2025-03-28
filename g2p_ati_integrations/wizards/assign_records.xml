@@ -7,11 +7,11 @@
     <field name="arch" type="xml">
         <form>
             <group>
-                <field name="rejection_reason"/>
+                <field name="rejection_reason" />
             </group>
 
             <footer>
-                <button name="action_reject" string="Reject" type="object"/>
+                <button name="action_reject" string="Reject" type="object" />
             </footer>
         </form>
     </field>
@@ -24,14 +24,17 @@
         <field name="arch" type="xml">
         <form>
             <group>
-                <field name="assigned_region"/>
-                <field name="language_skills" widget="many2many_tags"/>
+                <field name="assigned_region" />
+                <field name="language_skills" widget="many2many_tags" />
             </group>
              <footer>
-                    <button name="assign_groups" string="Assign Follower's" type="object" class="btn btn-primary"/>
-                      <button string="Cancel"
-                            class="btn-secondary"
-                            special="cancel" />
+                    <button
+                        name="assign_groups"
+                        string="Assign Follower's"
+                        type="object"
+                        class="btn btn-primary"
+                    />
+                      <button string="Cancel" class="btn-secondary" special="cancel" />
                 </footer>
         </form>
     </field>
