@@ -157,12 +157,15 @@
         </field>
     </record>
 
+
     <!-- Action -->
     <record id="action_imported_record" model="ir.actions.act_window">
         <field name="name">Imported</field>
         <field name="res_model">g2p.imported.record</field>
         <field name="view_mode">tree,form,kanban</field>
     </record>
+
+
     <!-- Menu -->
     <menuitem
         id="menu_imported_record"
