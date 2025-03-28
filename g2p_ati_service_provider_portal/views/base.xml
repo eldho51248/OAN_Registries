@@ -4,7 +4,7 @@
   <template
         id="base_inh"
         name="G2P Service Provider ATI Portal Base"
-        inherit_id="g2p_service_provider_portal_base.base"
+        inherit_id="g2p_registration_portal_base.custom_base"
         priority="200"
     >
     <xpath expr="//header" position="inside">

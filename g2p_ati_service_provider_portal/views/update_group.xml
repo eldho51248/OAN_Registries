@@ -2,7 +2,7 @@
 <odoo>
     <template
         id="ati_update_group_form_template"
-        inherit_id="g2p_service_provider_beneficiary_management.group_update_form_template"
+        inherit_id="g2p_registration_portal_base.group_update_form_template"
         customize_show="True"
         name="ati"
         priority="200"
@@ -591,7 +591,7 @@
 
   <div style="text-align:center;" class="no_list mt-4">
                                                             <img
-                                                                            src="/g2p_service_provider_beneficiary_management/static/src/img/no_mem.png"
+                                                                            src="/g2p_registration_portal_base/static/src/img/no_mem.png"
                                                                         />
                                                             <div>
                                                                 <p>No Members!</p>
@@ -4223,7 +4223,7 @@
 
   <div id="no-member-div2" style="text-align:center;" class="no_list mt-4">
                                                             <img
-                                                                            src="/g2p_service_provider_beneficiary_management/static/src/img/no_mem.png"
+                                                                            src="/g2p_registration_portal_base/static/src/img/no_mem.png"
                                                                         />
                                                             <div>
                                                                 <p>No Members!</p>

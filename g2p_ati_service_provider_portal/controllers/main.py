@@ -7,15 +7,22 @@ from datetime import date
 from odoo import http
 from odoo.http import request
 
-from odoo.addons.g2p_service_provider_beneficiary_management.controllers.main import (
-    G2PServiceProviderBeneficiaryManagement,
-)
-from odoo.addons.g2p_service_provider_portal_base.controllers.main import ServiceProviderBaseContorller
+# from odoo.addons.g2p_agent_portal_base.controllers.main import (
+#     G2PServiceProviderBeneficiaryManagement,
+# )
+# from odoo.addons.g2p_agent_portal_base.controllers.main import ServiceProviderBaseContorller
+
+
+from odoo.addons.g2p_registration_portal_base.controllers.main import (G2PregistrationPortalBase)
+# from odoo.addons.g2p_agent_portal_base.controllers.main import ServiceProviderBaseContorller
+
+
+# from odoo.addons.g2p_agent_portal_base.controllers.main import AgentPortalBase
 
 _logger = logging.getLogger(__name__)
 
 
-class AtiServiceProviderContorller(ServiceProviderBaseContorller):
+class AtiServiceProviderContorller(G2PregistrationPortalBase):
     @http.route(["/serviceprovider/home"], type="http", auth="user", website=True)
     def portal_home(self, **kwargs):
         # domain = []
@@ -144,7 +151,7 @@ class AtiServiceProviderContorller(ServiceProviderBaseContorller):
         return json.dumps({"status": "success"})
 
 
-class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManagement):
+class AtiserviceProviderBeneficiaryManagement(G2PregistrationPortalBase):
     @http.route(
         ["/get_selection_name"],
         type="http",
@@ -443,7 +450,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             # if not beneficiary:
             #     return request.render(
-            #         "g2p_service_provider_beneficiary_management.error_template",
+            #         "g2p_agent_portal_base.error_template",
             #         {"error_message": "Beneficiary not found."},
             #     )
 
@@ -461,7 +468,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             return response
         except Exception:
             return request.render(
-                "g2p_service_provider_beneficiary_management.error_template",
+                "g2p_registration_portal_base.error_template",
                 {"error_message": "An error occurred. Please try again later."},
             )
 
@@ -477,7 +484,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             group = request.env["res.partner"].sudo().browse(_id)
             if not group:
                 return request.render(
-                    "g2p_service_provider_beneficiary_management.error_template",
+                    "g2p_registration_portal_base.error_template",
                     {"error_message": "Household not found."},
                 )
 
@@ -750,7 +757,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             )
         except Exception as e:
             return request.render(
-                "g2p_service_provider_beneficiary_management.error_template",
+                "g2p_registration_portal_base.error_template",
                 {"error_message": e},
             )
 
@@ -769,7 +776,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
             # if not group:
             #     return request.render(
-            #         "g2p_service_provider_beneficiary_management.error_template",
+            #         "g2p_agent_portal_base.error_template",
             #         {"error_message": "Household not found."},
             #     )
 
@@ -782,7 +789,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
         except Exception:
             return request.render(
-                "g2p_service_provider_beneficiary_management.error_template",
+                "g2p_registration_portal_base.error_template",
                 {"error_message": "An error occurred. Please try again later."},
             )
 
@@ -1032,7 +1039,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
         except Exception as e:
             return request.render(
-                "g2p_service_provider_beneficiary_management.error_template",
+                "g2p_registration_portal_base.error_template",
                 {"error_message": f"Error while creating individual, {e}"},
             )
 
@@ -1359,7 +1366,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             beneficiary = request.env["res.partner"].sudo().browse(_id)
             if not beneficiary:
                 return request.render(
-                    "g2p_service_provider_beneficiary_management.error_template",
+                    "g2p_registration_portal_base.error_template",
                     {"error_message": "Individual not found."},
                 )
             land_model_id = request.env["ir.model"].sudo().search([("model", "=", "g2p.land.information")])
@@ -1596,7 +1603,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
             )
         except Exception as e:
             return request.render(
-                "g2p_service_provider_beneficiary_management.error_template",
+                "g2p_registration_portal_base.error_template",
                 {"error_message": str(e)},
             )
 
@@ -2114,7 +2121,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
 
         except Exception as e:
             return request.render(
-                "g2p_service_provider_beneficiary_management.error_template",
+                "g2p_registration_portal_base.error_template",
                 {"error_message": f"An error occurred: {e}"},
             )
 
@@ -2775,7 +2782,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         woreda = []
         kebele = []
         return request.render(
-            "g2p_service_provider_beneficiary_management.individual_list",
+            "g2p_registration_portal_base.individual_list",
             {"individual": individual, "region": region, "zone": zone, "wereda": woreda, "kebele": kebele},
         )
 
@@ -2803,7 +2810,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PServiceProviderBeneficiaryManag
         woreda = []
         kebele = []
         return request.render(
-            "g2p_service_provider_beneficiary_management.group_list",
+            "g2p_registration_portal_base.group_list",
             {"groups": groups, "region": region, "zone": zone, "wereda": woreda, "kebele": kebele},
         )
 

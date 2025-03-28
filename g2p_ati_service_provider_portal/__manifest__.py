@@ -9,12 +9,10 @@
     "license": "LGPL-3",
     "depends": [
         "g2p_social_registry",
-        "g2p_service_provider_beneficiary_management",
+        "g2p_registration_portal_base",
         "g2p_registry_base",
-        "g2p_service_provider_portal_base",
         "g2p_registry_addl_info",
         "g2p_ati",
-        "portal",
     ],
     "data": [
         "security/ir.model.access.csv",

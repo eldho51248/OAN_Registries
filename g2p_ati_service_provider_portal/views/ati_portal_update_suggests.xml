@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template id="ati_update_suggests_template" name="G2P Service Provider group">
-        <t t-call="g2p_service_provider_portal_base.base">
+        <t t-call="g2p_agent_portal_base.base">
             <t t-set="title">List of group beneficiary | Service Provider Portal</t>
             <div class="main-container1">
                 <div class="mx-auto">
