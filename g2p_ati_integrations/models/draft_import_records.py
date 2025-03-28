@@ -120,8 +120,6 @@ class G2PLandInformation(models.Model):
         return True
 
 
-
-
 class G2PDraftRecord(models.Model):
     _inherit = "draft.record"
 
