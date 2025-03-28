@@ -2,7 +2,7 @@
 <odoo>
     <template
         id="ati_individual_list_template"
-        inherit_id="g2p_service_provider_beneficiary_management.individual_list"
+        inherit_id="g2p_registration_portal_base.individual_list"
         customize_show="True"
         name="farmers"
         priority="200"

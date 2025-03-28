@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-     <template id="inherited_language_dropdown" inherit_id="g2p_service_provider_portal_base.base">
+     <template id="inherited_language_dropdown" inherit_id="g2p_agent_portal_base.base">
 
 
 
@@ -34,7 +34,7 @@
 </odoo>
 <!-- <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<template id="inherited_template" inherit_id="g2p_service_provider_portal_base.base">
+<template id="inherited_template" inherit_id="g2p_agent_portal_base.base">
     <xpath expr="//div[@class='language-dropdown language-box']" position="replace">
         <div class="language-dropdown language-box">
             <button class="dropdown-toggle button" type="button" id="language-dropdown-button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -55,7 +55,7 @@
 </odoo> -->
 <!-- <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="inherited_language_dropdown" inherit_id="g2p_service_provider_portal_base.base">
+    <template id="inherited_language_dropdown" inherit_id="g2p_agent_portal_base.base">
        <xpath expr="//div[@class='language-dropdown language-box']" position="replace">
              <div class="dropdown-menu" aria-labelledby="language-dropdown-button">
                 <a class="dropdown-item" href="/website/lang/en_US?r=/serviceprovider/individual" data-url_code="en_US">

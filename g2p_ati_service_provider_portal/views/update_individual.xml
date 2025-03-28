@@ -2,7 +2,7 @@
 <odoo>
     <template
         id="ati_individual_registrant_update_form_template"
-        inherit_id="g2p_service_provider_beneficiary_management.individual_update_form_template"
+        inherit_id="g2p_registration_portal_base.individual_update_form_template"
         customize_show="True"
         name="ati"
         priority="200"

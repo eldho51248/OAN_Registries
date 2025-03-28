@@ -1,18 +1,18 @@
 <odoo>
 <menuitem
-        id="g2p_service_provider_portal_base.menu_account_supplier"
+        id="g2p_agent_portal_base.menu_account_supplier"
         name="Portal Users"
         sequence="10"
         web_icon="g2p_ati_service_provider_portal,static/src/img/sp.png"
     />
 
 
-  <record id="account.res_partner_action_supplier" model="ir.actions.act_window">
+  <!-- <record id="account.res_partner_action_supplier" model="ir.actions.act_window">
         <field name="name">Portal Users</field>
     </record>
 
 
-    <record id="g2p_service_provider_portal_base.res_partner_view_search_g2p_inherit" model="ir.ui.view">
+    <record id="g2p_registration_portal_base.res_partner_view_search_g2p_inherit" model="ir.ui.view">
         <field name="name">res.partner.search.inherit.base</field>
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
@@ -20,7 +20,7 @@
                 <attribute name="string">Portal User</attribute>
             </filter>
         </field>
-    </record>
+    </record> -->
 
 
 </odoo>
