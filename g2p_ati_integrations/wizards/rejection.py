@@ -18,14 +18,14 @@ class RejectWizard(models.TransientModel):
 
         record.write(
             {
-                "state": "in_enrichment",
+                "state": "draft",
                 "rejection_reason": self.rejection_reason,
             }
         )
 
         record.message_post(body=f"Record rejected: {self.rejection_reason}")
 
-        validator_group = self.env.ref("g2p_ati_integrations.group_int_validator")
+        validator_group = self.env.ref("g2p_ati.group_data_validator")
         validator_users = validator_group.users
 
         matching_users = validator_users.filtered(
