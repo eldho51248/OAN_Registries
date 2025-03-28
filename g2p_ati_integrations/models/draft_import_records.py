@@ -7,7 +7,7 @@ import logging
 from typing import Dict, List
 _logger = logging.getLogger(__name__)
 import ast
-
+BATCH_SIZE = 500
 
 class G2PLandInformation(models.Model):
     _inherit = "g2p.land.information"
@@ -17,52 +17,66 @@ class G2PLandInformation(models.Model):
     soil_fertility = fields.Text(string="Soil Fertility")
     means_of_acquisition = fields.Text(string="Means Of Acquisition")
     year_of_acquisition = fields.Date(string="Year Of Acquisition")
+    integration_status = fields.Selection([("valid", "Valid"), ("invalid", "Invalid")])
+
 
     def fetch_land_records(self):
         try:
             api_parameters = self.env["narlis.integration"].sudo().search([], limit=1)
-            land_records = self.env["g2p.land.information"].sudo().search([])
-
             if not api_parameters:
                 raise UserError(_("API configuration is missing. Please configure it in settings."))
 
-            for land in land_records:
-                url = f"{api_parameters.host_url}{api_parameters.end_point_url}"
-                headers = {
-                    "api-key": api_parameters.api_key,
-                }
-                params = {
-                    "version": "v1",
-                    "upid": land.land_id,
-                    "data-depth": "2"
-                }
+            domain = [("integration_status", "=", False)]
+            total_records = self.env["g2p.land.information"].sudo().search_count(domain)
 
-                response = requests.get(url, headers=headers, params=params, timeout=10)
+            for offset in range(0, total_records, BATCH_SIZE):
+                land_records = self.env["g2p.land.information"].sudo().search(domain, limit=BATCH_SIZE, offset=offset)
 
-                if response.status_code != 200:
-                    raise UserError(_("Failed to fetch data from NARLIS API. Status Code: %s, Response: %s") % (
-                    response.status_code, response.text))
+                for land in land_records:
+                    url = f"{api_parameters.host_url}{api_parameters.end_point_url}"
+                    headers = {
+                        "api-key": api_parameters.api_key,
+                    }
+                    params = {
+                        "version": "v1",
+                        "upid": land.land_id,
+                        "data-depth": "3"
+                    }
 
-                try:
-                    land_informations = response.json()
-                except ValueError:
-                    raise UserError(_("Invalid JSON response from NARLIS API."))
+                    try:
+                        response = requests.get(url, headers=headers, params=params, timeout=10)
+                        response.raise_for_status()  # Raises an error for non-200 status codes
 
-                parcel_data = land_informations.get("parcel", {})
-                rights_data = parcel_data.get("rights", [{}])[0]
-                party_data = rights_data.get("party", {})
+                        land_informations = response.json()
 
-                land.partner_id.is_orphan = party_data.get("isorphan", "").lower()
-                land.polygon_data = parcel_data.get("geometryWkt", "")
-                land.current_land_use = parcel_data.get("landUse", "")
-                land.total_land_area = parcel_data.get("parcelArea", 0)
+                        if not land_informations.get("parcel"):
+                            land.integration_status = "invalid"
+                            continue
 
-        except requests.exceptions.Timeout:
-            raise UserError(_("The request to the NARLIS API timed out. Please try again later."))
-        except requests.exceptions.ConnectionError:
-            raise UserError(_("Could not connect to the NARLIS API. Please check your network connection."))
-        except requests.exceptions.RequestException as e:
-            raise UserError(_("An error occurred while communicating with the NARLIS API: %s") % str(e))
+                        # Extracting parcel data
+                        parcel_data = land_informations.get("parcel", {})
+                        rights_data = parcel_data.get("rights", [{}])[0]
+                        party_data = rights_data.get("party", {})
+
+                        # Updating land record fields
+                        land.partner_id.is_orphan = party_data.get("isorphan", "").lower()
+                        land.polygon_data = parcel_data.get("geometryWkt", "")
+                        land.current_land_use = parcel_data.get("landUse", "")
+                        land.total_land_area = parcel_data.get("parcelArea", 0)
+                        land.integration_status = "valid"
+
+                    except (requests.exceptions.Timeout,
+                            requests.exceptions.ConnectionError,
+                            requests.exceptions.RequestException,
+                            ValueError):
+                        land.integration_status = "invalid"
+                        continue  # Skip this record and proceed with the next one
+
+                # Commit changes to the database after processing a batch
+                self.env.cr.commit()
+
+        except UserError as e:
+            raise e
 
     def action_open_map_view(self):
 
@@ -91,47 +105,19 @@ class G2PLandInformation(models.Model):
                             },  # Passing polygon data
             }
             return action
-        else:
-            try:
-                api_parameters = self.env["narlis.integration"].sudo().search([], limit=1)
-                if not api_parameters:
-                    raise UserError(_("API configuration is missing. Please configure in settings"))
 
 
-                url = f"{api_parameters.host_url}{api_parameters.end_point_url}"
-                headers = {
-                    "api-key": api_parameters.api_key,
-                }
-                params = {
-                    "version": "v1",
-                    "upid": self.land_id,
-                    "data-depth": "2"
-                }
-                response = requests.get(url, headers=headers, params=params, timeout=10)
-                response.raise_for_status()  # Raise an error for HTTP status codes 4xx or 5xx
-                land_informations = response.json()
-                isorphan = land_informations.get("parcel", {}).get("rights", [{}])[0].get("party", {}).get(
-                    "isorphan")
-                self.partner_id.is_orphan = isorphan.lower()
-                self.polygon_data = land_informations["parcel"]["geometryWkt"]
-                self.current_land_use = land_informations["parcel"]["landUse"]
-                self.total_land_area = land_informations["parcel"]["parcelArea"]
+    def update_land_id_prefix(self):
+        records = self.search([])
+        for record in records:
+            if record.land_id.startswith("04/"):
+                new_land_id = record.land_id.replace("04/", "OR/", 1)
+            else:
+                new_land_id = f"OR/07/06/{record.land_id}"
 
-                action = {
-                        'type': 'ir.actions.act_window',
-                        'name': 'Partner Map',
-                        'res_model': 'g2p.land.information',
-                        'view_mode': 'lmap',
-                        'view_id': self.env.ref('g2p_ati_integrations.action_partner_map_view').id,
-                        'target': 'new',
-                        'context': {'polygon_coords':  self.polygon_data,
-                                    'partner_latitiude': self.partner_id.partner_latitude,
-                                    'partner_longitude': self.partner_id.partner_longitude
-                                    },  # Passing polygon data
-                    }
-                return action
-            except requests.exceptions.RequestException as e:
-                raise UserError(_( "Failed to fetch map data: %s") % str(e))
+            record.land_id = new_land_id
+
+        return True
 
 
 
