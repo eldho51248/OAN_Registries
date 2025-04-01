@@ -26,7 +26,8 @@ class G2PLandInformation(models.Model):
             if not api_parameters:
                 raise UserError(_("API configuration is missing. Please configure it in settings."))
 
-            domain = [("integration_status", "=", False)]
+            domain = ["|", ("integration_status", "=", False), ("integration_status", "=", "invalid")]
+
             total_records = self.env["g2p.land.information"].sudo().search_count(domain)
 
             for offset in range(0, total_records, BATCH_SIZE):
@@ -120,8 +121,6 @@ class G2PLandInformation(models.Model):
         return True
 
 
-
-
 class G2PDraftRecord(models.Model):
     _inherit = "draft.record"
 
@@ -184,3 +183,17 @@ class G2PRespartnerIntegration(models.Model):
                         },  # Passing polygon data
         }
         return action
+
+
+class G2PRegIdInherit(models.Model):
+    _inherit = "g2p.reg.id"
+
+    @api.onchange('value')
+    def _onchange_value(self):
+        national_ids = self.env["g2p.reg.id"].sudo().search([], limit=1)
+
+        for rec in national_ids:
+            if self.value != False and self.value == rec.value and self.id_type == rec.id_type:
+                raise UserError(_("Farmer With the same id exists in the system"))
+
+

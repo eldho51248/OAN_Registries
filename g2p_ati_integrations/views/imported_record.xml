@@ -179,4 +179,15 @@
         <field name="name">Imported Records</field>
         <field name="action" ref="action_imported_record" />
     </record>
+
+
+    <record id="rule_imported_record_followers" model="ir.rule">
+        <field name="name">Imported Records - Followers Only</field>
+        <field name="model_id" ref="g2p_ati_integrations.model_g2p_imported_record"/>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>  <!-- Adjust if needed -->
+        <field name="domain_force">[
+            '|', ('create_uid', '=', user.id),
+            ('message_follower_ids.partner_id', '=', user.partner_id.id)
+        ]</field>
+    </record>
 </odoo>
