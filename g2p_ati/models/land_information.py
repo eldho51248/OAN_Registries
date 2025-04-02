@@ -18,8 +18,10 @@ class G2PLandInformation(models.Model):
     document_name = fields.Char(related="land_certificate.name")
     document_id = fields.Integer(related="land_certificate.id")
 
+
     @api.onchange("total_land_area")
     def _onchange_total_land_area(self):
         if self.total_land_area < 0.0:
             error_msg = "Area should not be negative"
             raise ValidationError(error_msg)
+

@@ -5,13 +5,17 @@
     <field name="inherit_id" ref="g2p_registry_individual.view_individuals_form" />
     <field name="arch" type="xml">
         <xpath expr="//field[@name='land_information_ids']/tree" position="inside">
-            <button
-                    name="action_open_map_view"
-                    type="object"
-                    class="oe_stat_button"
+
+                        <field name="soil_fertility" />
+                        <field name="current_land_use" />
+                        <field name="means_of_acquisition"/>
+                        <field name="year_of_acquisition" />
+                        <field name="integration_status" />
+            <button name="action_open_map_view" type="object" class="oe_stat_button"
                     icon="fa-map-marker"
                     title="show on map"
-                />
+                    invisible="integration_status!='valid'"/>
+
         </xpath>
     </field>
 </record>

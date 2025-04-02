@@ -258,6 +258,7 @@
 							<field name="document_name" column_invisible="1" />
 							<field name="document_id" column_invisible="1" />
 							<field name="document_url" column_invisible="1" />
+
 							<widget name="g2p_ati_document_preview" />
 						</tree>
 					</field>
@@ -285,7 +286,6 @@
 						<tree editable="bottom">
 							<field name="livestock_type" />
 							<field name="number_of_livestock" />
-
 						</tree>
 					</field>
 				</page>
