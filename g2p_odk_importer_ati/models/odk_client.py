@@ -213,6 +213,9 @@ class OdkImportInherit(models.Model):
         vals["family_name_amh"] = individual.get("family_name_amh")
         vals["gf_name_amh"] = individual.get("gf_name_amh")
         vals["first_name_other"] = individual.get("first_name_other")
+
+
+        
         vals["family_name_other"] = individual.get("family_name_other")
         vals["gf_name_other"] = individual.get("gf_name_other")
         vals["gender"] = individual.get("gender")
@@ -229,12 +232,23 @@ class OdkImportInherit(models.Model):
 
         vals["martial_status"] = individual.get("martial_status")
         vals["education"] = individual.get("education")
+
+
+        vals["size_of_family"] = individual.get("size_of_family")
+        vals["number_of_children_in_family"] = individual.get("number_of_children_in_family")
+        vals["number_of_males_in_family"] = individual.get("number_of_males_in_family")
+        vals["number_of_females_in_family"] = individual.get("number_of_females_in_family")
+        vals["other_family_member_own_land"] = individual.get("other_family_member_own_land")
+
+
+
         source_of_income_ids = self.process_many2many_field("g2p.hh.income", individual.get("hh_income_type"))
         if source_of_income_ids:
             if "other" in source_of_income_ids:
                 other_json["House Hold Income"] = individual.get("other_income_type")
                 source_of_income_ids.remove("other")
             vals["hh_income_type"] = [(6, 0, source_of_income_ids)]
+
 
     def process_membership(self, individual, vals, other_json):
         # MEMBERSHIP
