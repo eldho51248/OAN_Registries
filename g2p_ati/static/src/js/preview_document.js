@@ -3,7 +3,6 @@ import {registry} from "@web/core/registry";
 import {Widgetpreview} from "@g2p_documents/js/preview_document";
 
 export class DocumentPreview extends Widgetpreview {
-
     clickPreview() {
         const recordData = this.props.record.data;
         const mimetype = recordData.document_mimetype;
@@ -12,7 +11,7 @@ export class DocumentPreview extends Widgetpreview {
                 id: recordData.document_id,
                 displayName: recordData.document_name,
                 downloadUrl: recordData.document_url,
-                isViewable: mimetype.includes("image") || mimetype.includes("pdf"), 
+                isViewable: mimetype.includes("image") || mimetype.includes("pdf"),
                 defaultSource: recordData.document_url,
                 isImage: mimetype.includes("image"),
                 isPdf: mimetype.includes("pdf"),
@@ -26,9 +25,7 @@ export class DocumentPreview extends Widgetpreview {
             window.open(recordData.document_url, "_blank");
         }
     }
-
 }
-
 
 DocumentPreview.template = "g2p_ati.DocumentPreview";
 

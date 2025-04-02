@@ -11,9 +11,8 @@ from odoo.http import request
 #     G2PServiceProviderBeneficiaryManagement,
 # )
 # from odoo.addons.g2p_agent_portal_base.controllers.main import ServiceProviderBaseContorller
+from odoo.addons.g2p_registration_portal_base.controllers.main import G2PregistrationPortalBase
 
-
-from odoo.addons.g2p_registration_portal_base.controllers.main import (G2PregistrationPortalBase)
 # from odoo.addons.g2p_agent_portal_base.controllers.main import ServiceProviderBaseContorller
 
 

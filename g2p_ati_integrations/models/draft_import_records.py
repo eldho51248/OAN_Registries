@@ -12,11 +12,11 @@ import ast
 class G2PLandInformation(models.Model):
     _inherit = "g2p.land.information"
 
-    polygon_data = fields.Text(string="Polygon Data")
-    current_land_use = fields.Text(string="Current Land Use")
-    soil_fertility = fields.Text(string="Soil Fertility")
-    means_of_acquisition = fields.Text(string="Means Of Acquisition")
-    year_of_acquisition = fields.Date(string="Year Of Acquisition")
+    polygon_data = fields.Text()
+    current_land_use = fields.Text()
+    soil_fertility = fields.Text()
+    means_of_acquisition = fields.Text()
+    year_of_acquisition = fields.Date()
 
     def fetch_land_records(self):
         try:
@@ -136,9 +136,9 @@ class G2PDraftRecord(models.Model):
     _inherit = "draft.record"
 
     gf_name_eng = fields.Char(string="Last Name")
-    zone = fields.Char(string="Zone")
-    woreda = fields.Char(string="Woreda")
-    kebele = fields.Char(string="Kebele")
+    zone = fields.Char()
+    woreda = fields.Char()
+    kebele = fields.Char()
     validation_status = fields.Many2one("g2p.validation.status")
     import_record_id = fields.Many2one("g2p.imported.record", string="Import Record")
 

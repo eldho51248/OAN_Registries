@@ -9,10 +9,10 @@ class G2PSeason(models.Model):
     name = fields.Char(required=True)
     start_gc = fields.Date(index=True, string="Start GC", required=True)
     end_gc = fields.Date(required=True, string="End GC")
-    start_month = fields.Integer("Start Month", compute="_compute_start_date", store=True)
-    start_day = fields.Integer("Start Day", compute="_compute_start_date", store=True)
-    end_month = fields.Integer("End Month", compute="_compute_end_date", store=True)
-    end_day = fields.Integer("End Day", compute="_compute_end_date", store=True)
+    start_month = fields.Integer(compute="_compute_start_date", store=True)
+    start_day = fields.Integer(compute="_compute_start_date", store=True)
+    end_month = fields.Integer(compute="_compute_end_date", store=True)
+    end_day = fields.Integer(compute="_compute_end_date", store=True)
 
     @api.depends("start_gc")
     def _compute_start_date(self):
@@ -39,7 +39,7 @@ class G2PSeason(models.Model):
         """Ensure the start date is before the end date."""
         for record in self:
             if record.start_gc and record.end_gc and record.start_gc > record.end_gc:
-                raise ValidationError("Start date must be before end date.")
+                raise ValidationError(_("Start date must be before end date."))
 
     @api.constrains("start_gc", "end_gc")
     def _check_overlapping_seasons(self):
@@ -60,5 +60,7 @@ class G2PSeason(models.Model):
 
             if overlapping_seasons:
                 raise ValidationError(
-                    f"Season '{record.name}' overlaps with '{', '.join(overlapping_seasons.mapped('name'))}' (ignoring year)."
+                    _(
+                        f"Season '{record.name}' overlaps with '{', '.join(overlapping_seasons.mapped('name'))}' (ignoring year)."
+                    )
                 )
