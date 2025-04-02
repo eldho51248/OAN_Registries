@@ -26,17 +26,3 @@ class G2PLandInformation(models.Model):
             error_msg = "Area should not be negative"
             raise ValidationError(error_msg)
 
-    # @api.model
-    # def create(self, vals):
-    #     if "land_certificate" in vals:
-    #         storage_file = self.env["storage.file"].browse(vals["land_certificate"])
-    #         if storage_file:
-    #             vals["slug"] = storage_file.slug
-    #     return super().create(vals)
-
-    # def write(self, vals):
-    #     if "land_certificate" in vals:
-    #         storage_file = self.env["storage.file"].browse(vals["land_certificate"])
-    #         if storage_file:
-    #             vals["slug"] = storage_file.slug
-    #     return super().write(vals)
