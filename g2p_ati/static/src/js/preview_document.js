@@ -1,70 +1,35 @@
 /** @odoo-module **/
-import {Component, xml} from "@odoo/owl";
 import {registry} from "@web/core/registry";
-import {useFileViewer} from "@web/core/file_viewer/file_viewer_hook";
-import {useService} from "@web/core/utils/hooks";
+import {Widgetpreview} from "@g2p_documents/js/preview_document";
 
-class Widgetpreview extends Component {
-    static template = xml`<button class="btn btn-primary" icon="fa-file-text-o" t-on-click="clickPreview">Preview</button>`;
+export class DocumentPreview extends Widgetpreview {
 
-    setup() {
-        super.setup();
-        this.fileViewer = useFileViewer();
-        this.store = useService("mail.store");
-        this.rpc = useService("rpc");
-    }
-
-    clickPreview(ev) {
-        const currentRow = ev.target.closest(".o_data_row");
-        if (currentRow) {
-            const slugElement = currentRow.querySelector('.o_data_cell[name="slug"]');
-            if (slugElement) {
-                const slugValue = slugElement.textContent.trim();
-                console.log("Slug Value:", slugValue);
-
-                let recordID = 0;
-                if (slugValue.includes("-")) {
-                    const parts = slugValue.split("-");
-                    const lastPart = parts[parts.length - 1].split(".")[0];
-                    if (!isNaN(lastPart)) {
-                        recordID = parseInt(lastPart, 10);
-                    }
-                }
-                if (recordID) {
-                    this._onPreviewButtonClick(recordID);
-                }
-            }
-        }
-    }
-
-    async _onPreviewButtonClick(recordID) {
-        const result = await this.rpc("/web/dataset/call_kw/storage.file/get_record", {
-            model: "storage.file",
-            method: "get_record",
-            args: [[recordID]],
-            kwargs: {},
-        });
-        const mimetype = result.mimetype;
-
-        const file = {
-            id: recordID,
-            displayName: result.name,
-            downloadUrl: result.url,
-            isViewable: mimetype.includes("image") || mimetype.includes("pdf"),
-            defaultSource: result.url,
-            isImage: mimetype.includes("image"),
-            isPdf: mimetype.includes("pdf"),
-        };
-        if (file.isViewable) {
-            this.fileViewer.open(file);
-            const modalElement = document.querySelector(".modal");
-            if (modalElement) {
-                modalElement.style.zIndex = 1000;
+    clickPreview() {
+        const recordData = this.props.record.data;
+        const mimetype = recordData.document_mimetype;
+        if (typeof mimetype === "string" && mimetype) {
+            const file = {
+                id: recordData.document_id,
+                displayName: recordData.document_name,
+                downloadUrl: recordData.document_url,
+                isViewable: mimetype.includes("image") || mimetype.includes("pdf"), 
+                defaultSource: recordData.document_url,
+                isImage: mimetype.includes("image"),
+                isPdf: mimetype.includes("pdf"),
+            };
+            if (file.isViewable) {
+                this.fileViewer.open(file);
+            } else {
+                window.open(recordData.document_url, "_blank");
             }
         } else {
-            window.open(result.url, "_blank");
+            window.open(recordData.document_url, "_blank");
         }
     }
+
 }
 
-registry.category("view_widgets").add("action_preview_res_partner", {component: Widgetpreview});
+
+DocumentPreview.template = "g2p_ati.DocumentPreview";
+
+registry.category("view_widgets").add("g2p_ati_document_preview", {component: DocumentPreview});

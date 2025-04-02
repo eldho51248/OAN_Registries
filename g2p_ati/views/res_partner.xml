@@ -253,15 +253,21 @@
 							<field name="total_land_area" />
 							<field name="land_id" />
 							<field name="land_certificate" />
-							<field name="slug" />
-							<widget name="action_preview_res_partner" />
+							<field name="document_slug" column_invisible="1" />
+							<field name="document_mimetype" column_invisible="1"  />
+							<field name="document_name" column_invisible="1"  />
+							<field name="document_id" column_invisible="1"  />
+							<field name="document_url" column_invisible="1"  />
+							<widget name="g2p_ati_document_preview" />
 						</tree>
 					</field>
 				</page>
 				<page string="Crop Information" name="crops" invisible="is_farmer!='yes'">
+					
 					<group name="crop_water_source">
 						<field name="crop_water_sources" colspan="2" create="False" widget="many2many_tags" />
 					</group>
+
 					<field name="crop_information_ids">
 						<tree editable="bottom">
 							<field name="crop" />
@@ -279,10 +285,7 @@
 						<tree editable="bottom">
 							<field name="livestock_type" />
 							<field name="number_of_livestock" />
-							<!-- <field name="undisclosed"/> -->
-							<!-- <field name="collected_gc" /> -->
-							<!-- <field name="collected_ec" placeholder="dd/mm/yyyy" /> -->
-							<!-- <field name="season" /> -->
+						
 						</tree>
 					</field>
 				</page>
