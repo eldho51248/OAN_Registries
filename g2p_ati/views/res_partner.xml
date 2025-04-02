@@ -253,13 +253,11 @@
 							<field name="total_land_area" />
 							<field name="land_id" />
 							<field name="land_certificate" />
-							<field name="document_slug" invisible="1" />
-							<field name="document_mimetype" invisible="1"  />
-							<field name="document_name" invisible="1"  />
-							<field name="document_id" invisible="1"  />
-							<field name="document_url" invisible="1"  />
-
-
+							<field name="document_slug" column_invisible="1" />
+							<field name="document_mimetype" column_invisible="1"  />
+							<field name="document_name" column_invisible="1"  />
+							<field name="document_id" column_invisible="1"  />
+							<field name="document_url" column_invisible="1"  />
 							<widget name="g2p_ati_document_preview" />
 						</tree>
 					</field>
@@ -287,10 +285,7 @@
 						<tree editable="bottom">
 							<field name="livestock_type" />
 							<field name="number_of_livestock" />
-							<!-- <field name="undisclosed"/> -->
-							<!-- <field name="collected_gc" /> -->
-							<!-- <field name="collected_ec" placeholder="dd/mm/yyyy" /> -->
-							<!-- <field name="season" /> -->
+						
 						</tree>
 					</field>
 				</page>
