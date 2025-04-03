@@ -17,6 +17,7 @@ class G2PLandInformation(models.Model):
     soil_fertility = fields.Text(string="Soil Fertility")
     means_of_acquisition = fields.Text(string="Means Of Acquisition")
     year_of_acquisition = fields.Date(string="Year Of Acquisition")
+    
     integration_status = fields.Selection([("valid", "Valid"), ("invalid", "Invalid")])
 
 
