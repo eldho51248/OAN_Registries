@@ -28,7 +28,7 @@
             # "g2p_ati_integrations/static/src/my_map_template.xml",
         ],
     },
-    "author": "",
+    "author": "OpenG2P",
     "website": "https://openg2p.org",
     "installable": True,
     "application": True,

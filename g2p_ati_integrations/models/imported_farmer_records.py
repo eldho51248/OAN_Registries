@@ -1,6 +1,6 @@
 import json
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -21,9 +21,9 @@ class G2PImportedRecord(models.Model):
     record_from = fields.Char()
     record_type = fields.Selection(selection=[("single", "Single Source"), ("composed", "Composed")])
     db_import = fields.Boolean("Imported", default=False)
-    zone = fields.Char(string="Zone")
-    woreda = fields.Char(string="Woreda")
-    kebele = fields.Char(string="Kebele")
+    zone = fields.Char()
+    woreda = fields.Char()
+    kebele = fields.Char()
 
     @api.onchange("family_name", "given_name", "gf_name_eng")
     def name_change_farmer(self):

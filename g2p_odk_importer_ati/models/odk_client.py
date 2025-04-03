@@ -1,6 +1,8 @@
-from odoo import fields, models
 import base64
 import json
+
+from odoo import models
+
 
 class OdkImportInherit(models.Model):
     _inherit = "odk.import"
@@ -16,7 +18,6 @@ class OdkImportInherit(models.Model):
 
         return ids
 
-
     def get_value_many2one(self, model, value):
         id_val = False
         if value:
@@ -25,13 +26,11 @@ class OdkImportInherit(models.Model):
                 id_val = record.id
         return id_val
 
-
     def process_many2one_field(self, model_name, field_value):
         if field_value == "other":
             return field_value
         field_id = self.get_value_many2one(model_name, field_value)
         return field_id if field_id else None
-
 
     def process_many2many_field(self, model_name, field_value):
         if field_value is not None:
@@ -40,7 +39,6 @@ class OdkImportInherit(models.Model):
             field_list = []
         field_ids = self.get_value_ids(model_name, field_list)
         return field_ids
-
 
     def process_phone_ids(self, json_data):
         # Fetch the country ID for Ethiopia
@@ -91,7 +89,6 @@ class OdkImportInherit(models.Model):
                 land_information_ids.append((0, 0, land_info_dict))
         return [land_information_ids, supporting_documents_ids]
 
-
     def process_crop_ids(self, json_data, is_member):
         unique_crops = {}
         if json_data["crop_information_ids"] is not None:
@@ -114,7 +111,6 @@ class OdkImportInherit(models.Model):
 
         return crop_information_ids
 
-
     def process_livestock_ids(self, json_data, is_member):
         unique_livestock = {}
         if json_data["livestock_information_ids"] is not None:
@@ -123,7 +119,9 @@ class OdkImportInherit(models.Model):
                 if not live_type:
                     continue
                 livestock_type = self.get_value_many2one("g2p.livestock.type", live_type)
-                no_of_livestock = livestock_info.get("hh_member_num_animals" if is_member else "num_animals", 0)
+                no_of_livestock = livestock_info.get(
+                    "hh_member_num_animals" if is_member else "num_animals", 0
+                )
                 if no_of_livestock is None:
                     no_of_livestock = 0
                 if livestock_type:
@@ -140,7 +138,6 @@ class OdkImportInherit(models.Model):
         livestock_information_ids = [(0, 0, info) for info in unique_livestock.values()]
 
         return livestock_information_ids
-
 
     def process_reg_ids(self, json_data, id_type_name, id_value_key):
         id_type = self.env["g2p.id.type"].sudo().search([("name", "=", id_type_name)], limit=1)
@@ -163,7 +160,6 @@ class OdkImportInherit(models.Model):
             ]
         return json_data
 
-
     def process_basic_information(self, individual, vals, other_json):
         if individual.get("hh_is_household_head").strip():
             vals["hh_is_household_head"] = individual.get("hh_is_household_head")
@@ -175,7 +171,6 @@ class OdkImportInherit(models.Model):
         elif individual.get("has_national_id") == "no":
             individual = self.process_reg_ids(individual, "RID", "rid")
         vals["reg_ids"] = individual.get("reg_ids")
-
 
         # BASIC INFORMATION
         region_id = self.process_many2one_field("g2p.region", individual.get("region"))
@@ -218,6 +213,9 @@ class OdkImportInherit(models.Model):
         vals["family_name_amh"] = individual.get("family_name_amh")
         vals["gf_name_amh"] = individual.get("gf_name_amh")
         vals["first_name_other"] = individual.get("first_name_other")
+
+
+        
         vals["family_name_other"] = individual.get("family_name_other")
         vals["gf_name_other"] = individual.get("gf_name_other")
         vals["gender"] = individual.get("gender")
@@ -234,12 +232,23 @@ class OdkImportInherit(models.Model):
 
         vals["martial_status"] = individual.get("martial_status")
         vals["education"] = individual.get("education")
+
+
+        vals["size_of_family"] = individual.get("size_of_family")
+        vals["number_of_children_in_family"] = individual.get("number_of_children_in_family")
+        vals["number_of_males_in_family"] = individual.get("number_of_males_in_family")
+        vals["number_of_females_in_family"] = individual.get("number_of_females_in_family")
+        vals["other_family_member_own_land"] = individual.get("other_family_member_own_land")
+
+
+
         source_of_income_ids = self.process_many2many_field("g2p.hh.income", individual.get("hh_income_type"))
         if source_of_income_ids:
             if "other" in source_of_income_ids:
                 other_json["House Hold Income"] = individual.get("other_income_type")
                 source_of_income_ids.remove("other")
             vals["hh_income_type"] = [(6, 0, source_of_income_ids)]
+
 
     def process_membership(self, individual, vals, other_json):
         # MEMBERSHIP
@@ -272,12 +281,11 @@ class OdkImportInherit(models.Model):
 
         vals["role_in_farmer_cluster"] = individual.get("role_in_farmer_cluster")
 
-
     def process_land_crop_livestock_information(self, individual, vals, is_member):
         # LAND INFORMATION
         if "land_information_ids" in individual:
             vals["land_information_ids"], vals["supporting_documents_ids"] = self.process_land_ids(
-               individual, is_member
+                individual, is_member
             )
 
         # CROP INFORMATION
@@ -331,7 +339,6 @@ class OdkImportInherit(models.Model):
                     finance_accesses_ids.remove("other")
                 vals["finance_accesses"] = [(6, 0, finance_accesses_ids)]
 
-
     def create_enumerator(self, enumerator_name, enumerator_odk_id, data_collection_date):
         enumerator = (
             self.env["g2p.enumerator"]
@@ -345,7 +352,6 @@ class OdkImportInherit(models.Model):
             )
         )
         return enumerator
-
 
     def get_individual_data(self, individual, is_member, enumerator):
         vals = {
@@ -383,7 +389,6 @@ class OdkImportInherit(models.Model):
             vals["enumerator_id"] = enumerator.id
 
         return vals
-
 
     def get_member_data(self, member, head, enumerator):
         vals = {"is_registrant": True, "is_group": False, "is_farmer": "no", "hh_is_household_head": "no"}
@@ -434,7 +439,6 @@ class OdkImportInherit(models.Model):
             vals["enumerator_id"] = enumerator.id
         return vals
 
-
     def get_membership_kind(self, relationship):
         if relationship == "Wife":
             relationship = "Wife - Head"
@@ -447,7 +451,6 @@ class OdkImportInherit(models.Model):
         if not membership_kind:
             membership_kind = self.env["g2p.group.membership.kind"].sudo().create({"name": relationship})
         return membership_kind.id
-
 
     def process_land_certificate(self, land_certificate, instance_id):
         # return [None, None]
@@ -481,15 +484,15 @@ class OdkImportInherit(models.Model):
 
         return [(4, storage_file.id), storage_file.id]
 
-
     def handle_household_head_yes(self):
         return
-
 
     def handle_household_head_no(self, mapped_json, individual_data):
         if mapped_json.get("head_registered") == "yes":
             # Search for the head farmer that has this ID under "Farmer ODK ACK ID"
-            odk_ack_id_type = self.env["g2p.id.type"].sudo().search([("name", "=", "Farmer ODK ACK ID")], limit=1)
+            odk_ack_id_type = (
+                self.env["g2p.id.type"].sudo().search([("name", "=", "Farmer ODK ACK ID")], limit=1)
+            )
             head = (
                 self.env["res.partner"]
                 .sudo()
@@ -544,7 +547,6 @@ class OdkImportInherit(models.Model):
 
         return individual_data
 
-
     def process_records_handle_addl_data(self, mapped_json):
         # return []
         if mapped_json.get("submission_time"):
@@ -593,7 +595,6 @@ class OdkImportInherit(models.Model):
             mapped_json["kebele"] = individual_data["kebele"]
             mapped_json["primary_commodity"] = individual_data["primary_commodity"]
 
-
             household_found = False
             existing_household = None
             household_head = self.env["res.partner"].sudo().create(individual_data)
@@ -627,7 +628,10 @@ class OdkImportInherit(models.Model):
                                 self.env["g2p.reg.id"]
                                 .sudo()
                                 .search(
-                                    [("id_type", "=", odk_ack_id_type.id), ("value", "=", member_reference_id)]
+                                    [
+                                        ("id_type", "=", odk_ack_id_type.id),
+                                        ("value", "=", member_reference_id),
+                                    ]
                                 )
                                 .ids,
                             )
@@ -674,7 +678,6 @@ class OdkImportInherit(models.Model):
             membership_kind = self.get_membership_kind("Head")
             individual_ids.append((0, 0, {"individual": household_head.id, "kind": [(4, membership_kind)]}))
 
-
             # OTHER HOUSEHOLD MEMBERS WHO ARE FARMERS
             if mapped_json.get("additional_farmers") is not None:
                 for additional_farmer in mapped_json.get("additional_farmers"):
@@ -701,7 +704,9 @@ class OdkImportInherit(models.Model):
                     other_member_data = self.get_member_data(other_household_member, mapped_json, enumerator)
                     other_member = self.env["res.partner"].sudo().create(other_member_data)
 
-                    membership_kind = self.get_membership_kind(other_household_member["household_relationship"])
+                    membership_kind = self.get_membership_kind(
+                        other_household_member["household_relationship"]
+                    )
                     if household_found:
                         existing_household.sudo().write(
                             {
@@ -755,8 +760,6 @@ class OdkImportInherit(models.Model):
             mapped_json["primary_Language"] = individual_data["primary_Language"]
             mapped_json.pop("odk_reference_id")
             return individual_data
-
-
 
     def process_records_handle_media_import(self, member, mapped_json):
         # return

@@ -21,6 +21,7 @@ class G2PLandInformation(models.Model):
     integration_status = fields.Selection([("valid", "Valid"), ("invalid", "Invalid")])
 
 
+
     def fetch_land_records(self):
         try:
             api_parameters = self.env["narlis.integration"].sudo().search([], limit=1)
@@ -126,9 +127,9 @@ class G2PDraftRecord(models.Model):
     _inherit = "draft.record"
 
     gf_name_eng = fields.Char(string="Last Name")
-    zone = fields.Char(string="Zone")
-    woreda = fields.Char(string="Woreda")
-    kebele = fields.Char(string="Kebele")
+    zone = fields.Char()
+    woreda = fields.Char()
+    kebele = fields.Char()
     validation_status = fields.Many2one("g2p.validation.status")
     import_record_id = fields.Many2one("g2p.imported.record", string="Import Record")
 

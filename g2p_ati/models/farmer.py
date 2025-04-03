@@ -173,10 +173,24 @@ class G2PFarmer(models.Model):
     )
     hh_income_type = fields.Many2many(comodel_name="g2p.hh.income", string="House Hold Income")
 
+    size_of_family = fields.Integer(string="Family Size")
+    number_of_children_in_family =  fields.Integer(string="Number Of Children In The family")
+    number_of_males_in_family =  fields.Integer(string="Number Of Males In The family")
+    number_of_females_in_family =  fields.Integer(string="Number Of Females In The family")
+    other_family_member_own_land = fields.Selection(string="Other Family Member Own Land", selection=[("yes", "Yes"), ("no", "No")])
+
+ 
+
     # Land INFORMATIONS
     land_information_ids = fields.One2many("g2p.land.information", "partner_id", string="Land Information")
     crop_information_ids = fields.One2many("g2p.crop.information", "partner_id", string="Crop Information")
+
     total_land_area = fields.Float(default=0.0, readonly=True, compute="_compute_total_land_area", store=True)
+
+    total_land_rent_area = fields.Float(default=0.0, string="Total Rented Land", readonly=True, compute="_compute_total_land_area", store=True)
+    total_land_owned_area = fields.Float(default=0.0, string="Total Owned Land", readonly=True, compute="_compute_total_land_area", store=True)
+    total_land_crop_sharing_area = fields.Float(default=0.0, string="Total Crop Sharing Land", readonly=True, compute="_compute_total_land_area", store=True)
+
     age_int = fields.Integer(compute="_compute_calc_age_int", store=True)
     land_ownership = fields.Selection(
         selection=[("owner", "Owner"), ("tenant", "Tenant"), ("hybrid", "Hybrid")],
@@ -190,6 +204,9 @@ class G2PFarmer(models.Model):
     rejection_reason = fields.Text()
 
     farmer_id = fields.Char(string="Farmer ID", compute="_compute_farmer_id", store=True, index=True)
+
+
+
 
     @api.onchange("is_member_of_primary_cooperative")
     def _onchange_is_member_of_primary_cooperative(self):
@@ -256,6 +273,10 @@ class G2PFarmer(models.Model):
     def _compute_total_land_area(self):
         for record in self:
             record.total_land_area = sum(land.total_land_area for land in record.land_information_ids)
+            record.total_land_owned_area = sum(land.total_land_area for land in record.land_information_ids if land.ownership_type == "owner")
+            record.total_land_rent_area = sum(land.total_land_area for land in record.land_information_ids if land.ownership_type == "tenant")
+            record.total_land_crop_sharing_area = sum(land.total_land_area for land in record.land_information_ids if land.ownership_type == "crop_share")
+
 
     @api.depends("land_information_ids.ownership_type")
     def _compute_land_ownership(self):
@@ -264,6 +285,7 @@ class G2PFarmer(models.Model):
                 land_info_records = record.land_information_ids
                 owner_count = len(land_info_records.filtered(lambda r: r.ownership_type == "owner"))
                 tenant_count = len(land_info_records.filtered(lambda r: r.ownership_type == "tenant"))
+                
                 if owner_count > 0 and tenant_count == 0:
                     record.land_ownership = "owner"
                 elif tenant_count > 0 and owner_count == 0:

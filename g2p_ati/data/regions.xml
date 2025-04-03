@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-<!-- <odoo noupdate="1"> --><record id="region_addis_ababa_14" model="g2p.region">
+<!-- <odoo noupdate="1"> -->
+
+<record id="region_addis_ababa_14" model="g2p.region">
         <field name="code">ET14</field>
         <field name="name">Addis Ababa</field>
         <field name="iso_code">ET-AA</field>
     </record>
-    <record id="region_addis_ababa_14" model="g2p.region">
-        <field name="code">ET14</field>
-        <field name="name">Addis Ababa</field>
-        <field name="iso_code">ET-AA</field>
-    </record>
+
     <record id="region_afar_2" model="g2p.region">
         <field name="code">ET02</field>
         <field name="name">Afar</field>
