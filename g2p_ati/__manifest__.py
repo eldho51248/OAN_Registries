@@ -59,11 +59,10 @@
             "g2p_ati/static/src/components/**/*.scss",
             "g2p_ati/static/src/components/**/*.xml",
             "g2p_ati/static/src/js/preview_document.js",
-             "g2p_ati/static/src/xml/preview_document.xml",
+            "g2p_ati/static/src/xml/preview_document.xml",
         ],
 
     },
-  
     "demo": [],
     "images": [],
     "application": True,

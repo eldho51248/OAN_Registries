@@ -11,18 +11,15 @@ class G2PLandInformation(models.Model):
     total_land_area = fields.Float(string="Area In Hectare", required=True, default=0.0)
     land_certificate = fields.Many2one("storage.file")
     land_id = fields.Char(string="Land ID", index=True)
-    ownership_type = fields.Selection(selection=[("owner", "Owner"), ("tenant", "Tenant")], required=True)
+    ownership_type = fields.Selection(selection=[("owner", "Owner"), ("tenant", "Tenant"),('crop_share','Crop Sharing')], required=True)
     document_slug = fields.Char(related="land_certificate.slug")
     document_mimetype = fields.Char(related="land_certificate.mimetype")
-    document_url = fields.Char(related="land_certificate.url") 
+    document_url = fields.Char(related="land_certificate.url")
     document_name = fields.Char(related="land_certificate.name")
     document_id = fields.Integer(related="land_certificate.id")
-
-    
 
     @api.onchange("total_land_area")
     def _onchange_total_land_area(self):
         if self.total_land_area < 0.0:
             error_msg = "Area should not be negative"
             raise ValidationError(error_msg)
-

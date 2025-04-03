@@ -4,9 +4,8 @@ import {useRef} from "@odoo/owl";
 
 export class CustomLeafletMapRenderer extends G2PLeafletMapRenderer {
     setup() {
-
-        console.log("new controller running")
-        super.setup(); 
+        console.log("new controller running");
+        super.setup();
         this.root = useRef("map");
     }
 

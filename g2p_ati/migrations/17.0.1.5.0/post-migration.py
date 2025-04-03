@@ -6,7 +6,7 @@ _logger = logging.getLogger(__name__)
 
 
 def migrate(cr, version):
-     if version == "17.0.1.3.0":
+    if version == "17.0.1.3.0":
         env = api.Environment(cr, SUPERUSER_ID, {})
         _logger.info("Starting post-migration for version 17.0-1.5.0")
 

@@ -12,7 +12,8 @@ export class DocumentPreview extends Widgetpreview {
                 id: recordData.document_id,
                 displayName: recordData.document_name,
                 downloadUrl: recordData.document_url,
-                isViewable: mimetype.includes("image") || mimetype.includes("pdf"), 
+                isViewable: mimetype.includes("image") || mimetype.includes("pdf"),
+
                 defaultSource: recordData.document_url,
                 isImage: mimetype.includes("image"),
                 isPdf: mimetype.includes("pdf"),

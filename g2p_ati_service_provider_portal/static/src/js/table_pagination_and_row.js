@@ -88,7 +88,7 @@ function applySearchFilter(searchValue) {
     });
 }
 
-function applySelectionFilter(selectionValue, isGroup, modal = false) {
+function applySelectionFilter(selectionValue, isGroup) {
     filteredRows = allRows.filter((row) => {
         // Assuming each row has a data attribute or a cell with the selection value
         var cellValue2 = null;
@@ -237,7 +237,7 @@ function applySelectionFilterAny(selectionValue, isGroup, selectElement, column_
             text_i = selectElement.options[selectElement.selectedIndex].text.trim().replace(/\s/g, "");
         }
 
-        return cellValue2 === text_i || text_i === "column_name";
+        return cellValue2 === text_i || text_i === column_name;
     });
 }
 

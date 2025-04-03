@@ -180,10 +180,21 @@
 						<field name="gender" />
 					</group>
 					<group name="socio_economic_data" string="Social Economic Data">
+						
 						<field name="hh_is_household_head" />
 						<field name="hh_income_type" create="False" widget="many2many_tags" invisible="is_farmer!='yes'" />
 						<field name="education" invisible="is_farmer!='yes'" />
 						<field name="martial_status" invisible="is_farmer!='yes'" />
+
+						<separator string="Household Information" colspan="4" />
+						
+						<field name="size_of_family" invisible="is_farmer!='yes'" />
+						<field name="number_of_children_in_family" invisible="is_farmer!='yes'" />
+						<field name="number_of_males_in_family" invisible="is_farmer!='yes'" />
+						<field name="number_of_females_in_family" invisible="is_farmer!='yes'" /> 
+						<field name="other_family_member_own_land" invisible="is_farmer!='yes'" /> 
+
+
 					</group>
 				</group>
 				<group name="farmer_socio_economic_data" colspan="2">
@@ -238,15 +249,34 @@
 						</group>
 					</group>
 				</page>
+
 				<page string="Land Information" name="lands" invisible="is_farmer!='yes'">
-					<group name="computed_land_info" cols="2" colspan="2">
-						<group name="total_land">
-							<field name="total_land_area" readonly="True" />
+
+					<group name="computed_land_info" col="3" >
+						<group name="total_land_owned_area">
+							<field name="total_land_owned_area" readonly="True" />
 						</group>
-						<group name="land_ownership">
+
+						<group name="total_land_rent_area">
+							<field name="total_land_rent_area" readonly="True" />
+						</group>
+
+						<group name="total_land_crop_sharing_area">
+							<field name="total_land_crop_sharing_area" readonly="True" />
+						</group> 
+
+					 <!-- <group name="land_ownership">
 							<field name="land_ownership" readonly="True" />
-						</group>
+						</group>  -->
+
 					</group>
+
+
+					 <group name="total_land"  cols="1" colspan="1">
+							<field name="total_land_area" readonly="True" class="d-flex fs-bold" />
+						</group>
+
+
 					<field name="land_information_ids">
 						<tree editable="bottom">
 							<field name="ownership_type" />
@@ -254,16 +284,17 @@
 							<field name="land_id" />
 							<field name="land_certificate" />
 							<field name="document_slug" column_invisible="1" />
-							<field name="document_mimetype" column_invisible="1"  />
-							<field name="document_name" column_invisible="1"  />
-							<field name="document_id" column_invisible="1"  />
-							<field name="document_url" column_invisible="1"  />
+							<field name="document_mimetype" column_invisible="1" />
+							<field name="document_name" column_invisible="1" />
+							<field name="document_id" column_invisible="1" />
+							<field name="document_url" column_invisible="1" />
+
 							<widget name="g2p_ati_document_preview" />
 						</tree>
 					</field>
 				</page>
 				<page string="Crop Information" name="crops" invisible="is_farmer!='yes'">
-					
+
 					<group name="crop_water_source">
 						<field name="crop_water_sources" colspan="2" create="False" widget="many2many_tags" />
 					</group>
@@ -285,7 +316,6 @@
 						<tree editable="bottom">
 							<field name="livestock_type" />
 							<field name="number_of_livestock" />
-						
 						</tree>
 					</field>
 				</page>
