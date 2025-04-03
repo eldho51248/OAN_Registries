@@ -27,13 +27,16 @@ def migrate(cr, version):
                 """)
             
             ir_model_data_entry = cr.fetchone()
-            ir_model_data_id, res_id = ir_model_data_entry
+            
+            
+            if ir_model_data_entry:
+                ir_model_data_id, res_id = ir_model_data_entry
 
 
-            if res_id != profile_image_id:
-                cr.execute("""
-                    UPDATE ir_model_data SET res_id = %s WHERE id = %s
-                """, (profile_image_id, ir_model_data_id))
+                if res_id != profile_image_id:
+                    cr.execute("""
+                        UPDATE ir_model_data SET res_id = %s WHERE id = %s
+                    """, (profile_image_id, ir_model_data_id))
 
 
             else:
