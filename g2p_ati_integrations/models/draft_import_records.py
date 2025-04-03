@@ -12,11 +12,14 @@ BATCH_SIZE = 500
 class G2PLandInformation(models.Model):
     _inherit = "g2p.land.information"
 
-    polygon_data = fields.Text()
-    current_land_use = fields.Text()
-    soil_fertility = fields.Text()
-    means_of_acquisition = fields.Text()
-    year_of_acquisition = fields.Date()
+    polygon_data = fields.Text(string="Polygon Data")
+    current_land_use = fields.Text(string="Current Land Use")
+    soil_fertility = fields.Text(string="Soil Fertility")
+    means_of_acquisition = fields.Text(string="Means Of Acquisition")
+    year_of_acquisition = fields.Date(string="Year Of Acquisition")
+    
+    integration_status = fields.Selection([("valid", "Valid"), ("invalid", "Invalid")])
+
 
 
     def fetch_land_records(self):
