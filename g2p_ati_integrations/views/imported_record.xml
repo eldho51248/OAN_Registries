@@ -178,6 +178,7 @@
     <record id="g2p_draft_publish.draft_publish_main_menu" model="ir.ui.menu">
         <field name="name">Imported Records</field>
         <field name="action" ref="action_imported_record" />
+        <field name="web_icon">g2p_ati_integrations,static/description/import.png</field>
     </record>
 
 

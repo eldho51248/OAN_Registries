@@ -17,9 +17,8 @@ class G2PLandInformation(models.Model):
     soil_fertility = fields.Text(string="Soil Fertility")
     means_of_acquisition = fields.Text(string="Means Of Acquisition")
     year_of_acquisition = fields.Date(string="Year Of Acquisition")
-    
-    integration_status = fields.Selection([("valid", "Valid"), ("invalid", "Invalid")])
 
+    integration_status = fields.Selection([("valid", "Valid"), ("invalid", "Invalid")])
 
 
     def fetch_land_records(self):
@@ -127,22 +126,72 @@ class G2PDraftRecord(models.Model):
     _inherit = "draft.record"
 
     gf_name_eng = fields.Char(string="Last Name")
-    zone = fields.Char()
-    woreda = fields.Char()
-    kebele = fields.Char()
+    zone = fields.Char(string="Zone")
+    woreda = fields.Char(string="Woreda")
+    kebele = fields.Char(string="Kebele")
     validation_status = fields.Many2one("g2p.validation.status")
     import_record_id = fields.Many2one("g2p.imported.record", string="Import Record")
 
 
+
     def action_change_state(self):
         return {
-            "name": "Confirm Rejection",
+            "name": "Change State",
             "type": "ir.actions.act_window",
             "res_model": "change.state.wizard",
             "view_mode": "form",
             "view_id": self.env.ref("g2p_ati_integrations.change_state_wizard_view").id,
             "target": "new",
         }
+
+    def write(self, vals):
+        result = super().write(vals)
+
+        partner_data_str = vals.get('partner_data')
+        if partner_data_str:
+            partner_data = json.loads(partner_data_str)
+
+            self.given_name = partner_data.get("given_name")
+            self.family_name = partner_data.get('family_name')
+            self.gf_name_eng = partner_data.get('gf_name_eng')
+            self.gender = partner_data.get('gender')
+            phone_number_ids = partner_data.get("phone_number_ids", [])
+            region_id = partner_data.get("region")
+            zone_id = partner_data.get("zone")
+            woreda_id = partner_data.get("woreda")
+            keble_id = partner_data.get("kebele")
+
+
+            if phone_number_ids:
+                first_phone_entry = phone_number_ids[0]
+                if len(first_phone_entry) > 2 and isinstance(first_phone_entry[2], dict):
+                    phone_no = first_phone_entry[2].get("phone_no")
+                    self.phone = phone_no
+
+
+            if region_id:
+                region = self.env['g2p.region'].browse(region_id)
+                if region.exists():
+                    self.region = region.name
+
+            if zone_id:
+                zone = self.env['g2p.zone'].browse(woreda_id)
+                if zone.exists():
+                    self.zone = zone.name
+
+            if woreda_id:
+                woreda = self.env['g2p.woreda'].browse(woreda_id)
+                if woreda.exists():
+                    self.woreda = woreda.name
+
+            if keble_id:
+                kebele = self.env['g2p.kebele'].browse(keble_id)
+                if kebele.exists():
+                    self.kebele = kebele.name
+
+
+        return result
+
 
 class G2PRespartnerIntegration(models.Model):
     _inherit = 'res.partner'
