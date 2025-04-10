@@ -152,9 +152,13 @@ class G2PDraftRecord(models.Model):
             partner_data = json.loads(partner_data_str)
 
             self.given_name = partner_data.get("given_name")
+            self.import_record_id.given_name = partner_data.get("given_name")
             self.family_name = partner_data.get('family_name')
+            self.import_record_id.family_name = partner_data.get('family_name')
             self.gf_name_eng = partner_data.get('gf_name_eng')
+            self.import_record_id.gf_name_eng = partner_data.get('gf_name_eng')
             self.gender = partner_data.get('gender')
+            self.import_record_id.gender = partner_data.get('gender')
             phone_number_ids = partner_data.get("phone_number_ids", [])
             region_id = partner_data.get("region")
             zone_id = partner_data.get("zone")
@@ -167,12 +171,14 @@ class G2PDraftRecord(models.Model):
                 if len(first_phone_entry) > 2 and isinstance(first_phone_entry[2], dict):
                     phone_no = first_phone_entry[2].get("phone_no")
                     self.phone = phone_no
+                    self.import_record_id.phone = phone_no
 
 
             if region_id:
                 region = self.env['g2p.region'].browse(region_id)
                 if region.exists():
                     self.region = region.name
+                    self.import_record_id.region = region.name
 
             if zone_id:
                 zone = self.env['g2p.zone'].browse(woreda_id)
