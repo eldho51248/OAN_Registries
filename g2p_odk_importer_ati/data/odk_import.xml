@@ -34,6 +34,7 @@
   "gf_name_other": .basic_info.personal_info.grandfather_name_other,
   "gender": .basic_info.personal_info.gender,
   "birthdate": .basic_info.personal_info.date_of_birth,
+  "age": .basic_info.personal_info.age,
   "has_personal_phone": .basic_info.personal_info.phone_number,
   "phone_ids":
   (if .basic_info.personal_info.phone_number == "yes"

@@ -1,6 +1,6 @@
 import base64
 import json
-
+from datetime import date
 from odoo import models
 
 
@@ -223,7 +223,26 @@ class OdkImportInherit(models.Model):
         vals["family_name_other"] = individual.get("family_name_other")
         vals["gf_name_other"] = individual.get("gf_name_other")
         vals["gender"] = individual.get("gender")
-        vals["birthdate"] = individual.get("birthdate")
+
+
+        birthdate = individual.get("birthdate")
+
+
+        if birthdate:
+            vals["birthdate"] = birthdate
+
+        if not birthdate:
+            age = individual.get("age")
+
+            if age:
+                today = date.today()
+                year = today.year - int(age)
+                estimated_birthdate = date(year, 9, 1)
+                vals["birthdate"]  = estimated_birthdate.strftime("%Y-%m-%d")
+
+
+
+
 
         vals["has_personal_phone"] = individual.get("has_personal_phone")
         if "phone_ids" in individual:
@@ -290,7 +309,6 @@ class OdkImportInherit(models.Model):
             vals["land_information_ids"], vals["supporting_documents_ids"] = self.process_land_ids(
                 individual, is_member
             )
-            # print(f"in land here2 {vals['land_information_ids'], vals['supporting_documents_ids']}")
 
         # CROP INFORMATION
         if "crop_information_ids" in individual:
@@ -822,9 +840,6 @@ class OdkImportInherit(models.Model):
 
     def process_records_handle_addl_data(self, mapped_json):
 
-        _logger.info("mapped_json in inherited")
-        _logger.info(mapped_json)
-
         submission_time = mapped_json.get("submission_time") or mapped_json.get("odk_submission_date")
                   
         enumerator = self.create_enumerator(
@@ -851,6 +866,7 @@ class OdkImportInherit(models.Model):
         individual_data = self.get_individual_data(mapped_json, False, enumerator)
 
         mapped_json.pop("uid", None)
+        mapped_json.pop("age", False)
         mapped_json.pop("rid", None)
         mapped_json.pop("other_region", None)
         mapped_json.pop("other_zone", None)
@@ -865,6 +881,8 @@ class OdkImportInherit(models.Model):
         mapped_json.pop("instance_id", None)
 
 
+
+        mapped_json["birthdate"] = individual_data.get("birthdate", False)
         mapped_json["kebele"] = individual_data.get("kebele", False)
         mapped_json["primary_commodity"] = individual_data.get("primary_commodity", False)
         mapped_json["land_information_ids"] = individual_data.get("land_information_ids", False)
@@ -883,7 +901,10 @@ class OdkImportInherit(models.Model):
         mapped_json["enumerator_id"] = individual_data.get("enumerator_id", False)
 
         mapped_json.pop("odk_reference_id", None)
-        _logger.info("here is mapped_json :\n%s", json.dumps(mapped_json, indent=4, ensure_ascii=False))
+
+
+
+        # pp("a")
         # return individual_data
 
 
