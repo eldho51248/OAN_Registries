@@ -13,7 +13,7 @@ class G2PImportedRecord(models.Model):
     given_name = fields.Char(string="First Name")
     family_name = fields.Char(string="Father's Name")
     gf_name_eng = fields.Char(string="Grand Father's Name")
-    phone = fields.Char()
+    phone = fields.Char(required=True)
     gender = fields.Char()
     region = fields.Char()
     state = fields.Selection(selection=[("draft", "Draft"), ("moved", "Created")], default="draft")
