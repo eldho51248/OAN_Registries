@@ -6,7 +6,8 @@
         <field name="arch" type="xml">
             <tree>
                   <header>
-                    <button name="assign_records" type="object" string="Assign" class="btn-primary" />
+                    <button name="assign_records" type="object" string="Assign" class="btn-primary"
+                    groups="g2p_draft_publish.group_int_approver,g2p_draft_publish.group_int_admin"/>
                 </header>
                 <field name="given_name" />
                 <field name="family_name" />
