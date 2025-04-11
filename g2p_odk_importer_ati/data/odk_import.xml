@@ -3,7 +3,7 @@
 
     <record id="fp_odk_import" model="odk.import">
         <field name="odk_config" ref="g2p_odk_importer_ati.fp_odk_config" />
-        <field name="target_registry">group</field>
+        <field name="target_registry">individual</field>
         <field name="json_formatter">{
   "submission_time": .submission_time,
   "hh_is_household_head": .household_questions.household_head,

@@ -161,8 +161,9 @@ class OdkImportInherit(models.Model):
         return json_data
 
     def process_basic_information(self, individual, vals, other_json):
-        if individual.get("hh_is_household_head").strip():
-            vals["hh_is_household_head"] = individual.get("hh_is_household_head")
+        hh_head = individual.get("hh_is_household_head")
+        if hh_head and hh_head.strip():
+            vals["hh_is_household_head"] = hh_head
 
         # NATIONAL ID
         vals["has_national_id"] = individual.get("has_national_id")
@@ -173,12 +174,15 @@ class OdkImportInherit(models.Model):
         vals["reg_ids"] = individual.get("reg_ids")
 
         # BASIC INFORMATION
+
+
         region_id = self.process_many2one_field("g2p.region", individual.get("region"))
         if region_id:
             if region_id == "other":
                 other_json["Region"] = individual.get("other_region")
             else:
                 vals["region"] = region_id
+        
 
         zone_id = self.process_many2one_field("g2p.zone", individual.get("zone"))
         if zone_id:
@@ -249,7 +253,6 @@ class OdkImportInherit(models.Model):
                 source_of_income_ids.remove("other")
             vals["hh_income_type"] = [(6, 0, source_of_income_ids)]
 
-
     def process_membership(self, individual, vals, other_json):
         # MEMBERSHIP
         vals["is_member_of_primary_cooperative"] = individual.get("is_member_of_primary_cooperative")
@@ -287,6 +290,7 @@ class OdkImportInherit(models.Model):
             vals["land_information_ids"], vals["supporting_documents_ids"] = self.process_land_ids(
                 individual, is_member
             )
+            # print(f"in land here2 {vals['land_information_ids'], vals['supporting_documents_ids']}")
 
         # CROP INFORMATION
         if "crop_information_ids" in individual:
@@ -457,14 +461,23 @@ class OdkImportInherit(models.Model):
         if not instance_id:
             return [None, None]
 
-        doc_tag = self.env["g2p.document.tag"].get_tag_by_name("Land Certificate")
+        doc_tag = self.env["g2p.document.tag"].get_or_create_tag_from_name("Land Certificate")
+        
         if not doc_tag:
             doc_tag = self.env["g2p.document.tag"].create({"name": "Land Certificate"})
 
-        get_attachment = self.download_attachment(
-            self.base_url, self.project_id, self.form_id, instance_id, land_certificate, self.session
+
+
+        get_attachment = self.odk_config.download_attachment(
+             instance_id, land_certificate
         )
+
+
         attachment_base64 = base64.b64encode(get_attachment).decode("utf-8")
+
+
+
+
         backend_id = (
             self.env.ref("storage_backend.default_storage_backend").id
             or self.env["storage.backend"].search([], limit=1).id
@@ -481,6 +494,8 @@ class OdkImportInherit(models.Model):
                 }
             )
         )
+
+
 
         return [(4, storage_file.id), storage_file.id]
 
@@ -547,7 +562,7 @@ class OdkImportInherit(models.Model):
 
         return individual_data
 
-    def process_records_handle_addl_data(self, mapped_json):
+    def process_records_handle_addl_data_old(self, mapped_json):
         # return []
         if mapped_json.get("submission_time"):
             submission_time = mapped_json.get("submission_time")
@@ -598,15 +613,19 @@ class OdkImportInherit(models.Model):
             household_found = False
             existing_household = None
             household_head = self.env["res.partner"].sudo().create(individual_data)
-            mapped_json["land_information_ids"] = individual_data["land_information_ids"]
-            mapped_json["crop_information_ids"] = individual_data["crop_information_ids"]
-            mapped_json["crop_water_sources"] = individual_data["crop_water_sources"]
-            mapped_json["zone"] = individual_data["zone"]
-            mapped_json["woreda"] = individual_data["woreda"]
-            mapped_json["primary_Language"] = individual_data["primary_Language"]
-            mapped_json["type_of_machinery"] = individual_data["type_of_machinery"]
-            mapped_json["finance_accesses"] = individual_data["finance_accesses"]
-            mapped_json["cooperative_unions"] = individual_data["cooperative_unions"]
+           
+
+            mapped_json["land_information_ids"] = individual_data.get("land_information_ids", False)
+            mapped_json["crop_information_ids"] = individual_data.get("crop_information_ids", False)
+            mapped_json["crop_water_sources"] = individual_data.get("crop_water_sources", False)
+            mapped_json["zone"] = individual_data.get("zone", False)
+            mapped_json["woreda"] = individual_data.get("woreda", False)
+            mapped_json["primary_Language"] = individual_data.get("primary_Language", False)
+            mapped_json["type_of_machinery"] = individual_data.get("type_of_machinery", False)
+            mapped_json["finance_accesses"] = individual_data.get("finance_accesses", False)
+            mapped_json["cooperative_unions"] = individual_data.get("cooperative_unions", False)
+
+
             mapped_json.pop("odk_reference_id")
 
             # LINK OTHER FARMER USING REFERENCE ID
@@ -748,28 +767,123 @@ class OdkImportInherit(models.Model):
             mapped_json.pop("other_primary_cooperative")
             mapped_json.pop("other_coop_union")
             mapped_json.pop("farmer_location")
+
             individual_data = self.handle_household_head_no(mapped_json, individual_data)
-            mapped_json["hh_income_type"] = individual_data["hh_income_type"]
-            mapped_json["land_information_ids"] = individual_data["land_information_ids"]
-            mapped_json["crop_information_ids"] = individual_data["crop_information_ids"]
-            mapped_json["crop_water_sources"] = individual_data["crop_water_sources"]
-            mapped_json["region"] = individual_data["region"]
-            mapped_json["zone"] = individual_data["zone"]
-            mapped_json["woreda"] = individual_data["woreda"]
-            mapped_json["kebele"] = individual_data["kebele"]
-            mapped_json["primary_Language"] = individual_data["primary_Language"]
+            
+            mapped_json["hh_income_type"] = individual_data.get("hh_income_type", False)
+            mapped_json["land_information_ids"] = individual_data.get("land_information_ids", False)
+            mapped_json["crop_information_ids"] = individual_data.get("crop_information_ids", False)
+            mapped_json["crop_water_sources"] = individual_data.get("crop_water_sources", False)
+            mapped_json["region"] = individual_data.get("region", False)
+            mapped_json["zone"] = individual_data.get("zone", False)
+            mapped_json["woreda"] = individual_data.get("woreda", False)
+            mapped_json["kebele"] = individual_data.get("kebele", False)
+            mapped_json["primary_Language"] = individual_data.get("primary_Language", False)
+
+
+            
+
+
+            # mapped_json["type_of_machinery"] = individual_data["type_of_machinery"]
+            # mapped_json["finance_accesses"] = individual_data["finance_accesses"]
+            # mapped_json["cooperative_unions"] = individual_data["cooperative_unions"]
+            # mapped_json["primary_commodity"] = individual_data["primary_commodity"]
+            # mapped_json["reg_ids"] = individual_data["reg_ids"]
+            # mapped_json["phone_ids"] = individual_data["phone_ids"]
+            # mapped_json["enumerator_id"] = individual_data["enumerator_id"]
+            # mapped_json["additional_g2p_info"] = individual_data["additional_g2p_info"]
+            # mapped_json["partner_longitude"] = individual_data["partner_longitude"]
+            # mapped_json["partner_latitude"] = individual_data["partner_latitude"]
+            # mapped_json["hh_is_household_head"] = individual_data["hh_is_household_head"]
+            # mapped_json["is_farmer"] = individual_data["is_farmer"]
+            # mapped_json["supporting_documents_ids"] = individual_data["supporting_documents_ids"]
+            # mapped_json["is_registrant"] = individual_data["is_registrant"]
+
+
             mapped_json.pop("odk_reference_id")
+
             return individual_data
 
-    def process_records_handle_media_import(self, member, mapped_json):
-        # return
-        meta = member.get("meta")
-        if not meta:
-            return
 
-        instance_id = meta.get("instanceID")
-        if not instance_id:
-            return
 
-        mapped_json["instance_id"] = instance_id
-        return
+    def process_records_handle_media_import(self, mapped_json, member):
+        self.ensure_one()
+        instance_id = mapped_json.get("meta", {}).get("instanceID")
+
+        if instance_id:
+            mapped_json["instance_id"] = instance_id
+        else:
+            instance_id = member.get("meta", {}).get("instanceID")
+            if instance_id:
+                mapped_json["instance_id"] = instance_id
+
+
+            
+
+    def process_records_handle_addl_data(self, mapped_json):
+
+        _logger.info("mapped_json in inherited")
+        _logger.info(mapped_json)
+
+        submission_time = mapped_json.get("submission_time") or mapped_json.get("odk_submission_date")
+                  
+        enumerator = self.create_enumerator(
+            mapped_json.get("data_enumerator_name"),
+            mapped_json.get("data_enumerator_odk_id"),
+            submission_time,
+        )
+
+        mapped_json.pop("submission_time", None)
+        mapped_json.pop("member_registered", None)
+        mapped_json.pop("head_registered", None)
+        mapped_json.pop("member_reference_id", None)
+        mapped_json.pop("relationship_with_head", None)
+        mapped_json.pop("relationship_to_head", None)
+        mapped_json.pop("other_income_type",None)
+        mapped_json.pop("additional_farmers", None)
+        mapped_json.pop("other_household_members", None)
+        mapped_json.pop("data_enumerator_name", None)
+        mapped_json.pop("data_enumerator_odk_id", None)
+        mapped_json.pop("data_enumerator_deviceid", None)
+        mapped_json.pop("odk_submission_date", None)
+     
+     
+        individual_data = self.get_individual_data(mapped_json, False, enumerator)
+
+        mapped_json.pop("uid", None)
+        mapped_json.pop("rid", None)
+        mapped_json.pop("other_region", None)
+        mapped_json.pop("other_zone", None)
+        mapped_json.pop("other_woreda", None)
+        mapped_json.pop("other_kebele", None)
+        mapped_json.pop("phone_ids", None)
+        mapped_json.pop("other_primary_cooperative", None)
+        mapped_json.pop("other_coop_union", None)
+        mapped_json.pop("farmer_location", None)
+        mapped_json.pop("hh_income_type", None)
+        mapped_json.pop("primary_cooperatives", None)
+        mapped_json.pop("instance_id", None)
+
+
+        mapped_json["kebele"] = individual_data.get("kebele", False)
+        mapped_json["primary_commodity"] = individual_data.get("primary_commodity", False)
+        mapped_json["land_information_ids"] = individual_data.get("land_information_ids", False)
+        mapped_json["crop_information_ids"] = individual_data.get("crop_information_ids", False)
+        mapped_json["crop_water_sources"] = individual_data.get("crop_water_sources", False)
+        mapped_json["hh_income_type"] = individual_data.get("hh_income_type", False)
+        mapped_json["region"] = individual_data.get("region", False)
+        mapped_json["zone"] = individual_data.get("zone", False)
+        mapped_json["woreda"] = individual_data.get("woreda", False)
+        mapped_json["kebele"] = individual_data.get("kebele", False)
+        mapped_json["additional_g2p_info"] = individual_data.get("additional_g2p_info", False)
+        mapped_json["primary_Language"] = individual_data.get("primary_Language", False)
+        mapped_json["type_of_machinery"] = individual_data.get("type_of_machinery", False)
+        mapped_json["finance_accesses"] = individual_data.get("finance_accesses", False)
+        mapped_json["cooperative_unions"] = individual_data.get("cooperative_unions", False)
+        mapped_json["enumerator_id"] = individual_data.get("enumerator_id", False)
+
+        mapped_json.pop("odk_reference_id", None)
+        _logger.info("here is mapped_json :\n%s", json.dumps(mapped_json, indent=4, ensure_ascii=False))
+        # return individual_data
+
+
