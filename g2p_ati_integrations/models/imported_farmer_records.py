@@ -1,6 +1,6 @@
 import json
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
 
@@ -13,7 +13,7 @@ class G2PImportedRecord(models.Model):
     given_name = fields.Char(string="First Name")
     family_name = fields.Char(string="Father's Name")
     gf_name_eng = fields.Char(string="Grand Father's Name")
-    phone = fields.Char()
+    phone = fields.Char(required=True)
     gender = fields.Char()
     region = fields.Char()
     state = fields.Selection(selection=[("draft", "Draft"), ("moved", "Created")], default="draft")
@@ -21,9 +21,9 @@ class G2PImportedRecord(models.Model):
     record_from = fields.Char()
     record_type = fields.Selection(selection=[("single", "Single Source"), ("composed", "Composed")])
     db_import = fields.Boolean("Imported", default=False)
-    zone = fields.Char()
-    woreda = fields.Char()
-    kebele = fields.Char()
+    zone = fields.Char(string="Zone")
+    woreda = fields.Char(string="Woreda")
+    kebele = fields.Char(string="Kebele")
 
     @api.onchange("family_name", "given_name", "gf_name_eng")
     def name_change_farmer(self):
@@ -49,7 +49,7 @@ class G2PImportedRecord(models.Model):
 
     def action_to_draft(self):
         for record in self:
-            associated_records = self.env["draf.record"].sudo().search([("import_record_id", "=", record.id)])
+            associated_records = self.env["draft.record"].sudo().search([("import_record_id", "=", record.id)])
 
             if any(rec.state == "published" for rec in associated_records):
                 raise ValidationError(
