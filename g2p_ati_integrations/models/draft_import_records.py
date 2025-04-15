@@ -124,6 +124,8 @@ class G2PLandInformation(models.Model):
 
 class G2PDraftRecord(models.Model):
     _inherit = "draft.record"
+    _order = "create_date desc"
+
 
     gf_name_eng = fields.Char(string="Last Name")
     zone = fields.Char(string="Zone")
