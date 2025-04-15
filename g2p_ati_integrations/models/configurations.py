@@ -9,22 +9,17 @@ class G2PValidationStatus(models.Model):
     fold = fields.Boolean(string="Folded in Kanban", default=False)
     name = fields.Char()
 
-    _sql_constraints = [
-        ('unique_name', 'unique(name)', 'The name must be unique.')
-    ]
-
-
 
     def create(self, vals):
-        if self.search([('name', '=', vals['name'].lower())]):
-            raise ValidationError("The name must be unique (case-insensitive).")
+        if vals.get('name') and self.search([('name', 'ilike', vals['name'])]):
+            raise ValidationError("The name must be unique ")
         return super().create(vals)
 
     def write(self, vals):
         if 'name' in vals:
-            existing_record = self.search([('name', '=', vals['name'].lower())])
+            existing_record = self.search([('name', 'ilike', vals['name'])])
             if existing_record and existing_record.id != self.id:
-                raise ValidationError("The name must be unique (case-insensitive).")
+                raise ValidationError("The name must be unique ")
         return super().write(vals)
 
 class NarlisIntegration(models.Model):
