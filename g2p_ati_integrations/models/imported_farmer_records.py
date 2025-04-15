@@ -8,6 +8,7 @@ class G2PImportedRecord(models.Model):
     _name = "g2p.imported.record"
     _description = "Imported Record"
     _inherit = ["mail.thread", "mail.activity.mixin"]
+    _order = "create_date desc"
 
     name = fields.Char()
     given_name = fields.Char(string="First Name")

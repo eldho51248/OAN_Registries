@@ -1,4 +1,5 @@
 from odoo import fields, models
+from odoo.exceptions import ValidationError
 
 
 class G2PValidationStatus(models.Model):
@@ -8,6 +9,18 @@ class G2PValidationStatus(models.Model):
     fold = fields.Boolean(string="Folded in Kanban", default=False)
     name = fields.Char()
 
+
+    def create(self, vals):
+        if vals.get('name') and self.search([('name', 'ilike', vals['name'])]):
+            raise ValidationError("The name must be unique ")
+        return super().create(vals)
+
+    def write(self, vals):
+        if 'name' in vals:
+            existing_record = self.search([('name', 'ilike', vals['name'])])
+            if existing_record and existing_record.id != self.id:
+                raise ValidationError("The name must be unique ")
+        return super().write(vals)
 
 class NarlisIntegration(models.Model):
     _name = "narlis.integration"
