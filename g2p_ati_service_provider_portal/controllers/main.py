@@ -3026,7 +3026,6 @@ class AtiserviceProviderBeneficiaryManagement(G2PregistrationPortalBase):
                         }
                     )
 
-
             _logger.info("in coming herer tehe rquest")
 
             res["member_list"] = member_list

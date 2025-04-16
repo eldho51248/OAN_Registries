@@ -25,6 +25,10 @@ class G2PImportedRecord(models.Model):
     woreda = fields.Char()
     kebele = fields.Char()
 
+    _sql_constraints = [
+        ("phone_unique", "unique(phone)", "The phone number must be unique."),
+    ]
+
     @api.onchange("family_name", "given_name", "gf_name_eng")
     def name_change_farmer(self):
         name = ""

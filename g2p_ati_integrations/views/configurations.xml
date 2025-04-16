@@ -65,25 +65,25 @@
 
     <record id="action_add_prefix_on_land_id" model="ir.actions.server">
     <field name="name">Add Prefix on Land ID</field>
-    <field name="model_id" ref="g2p_ati_integrations.model_g2p_land_information"/>
+    <field name="model_id" ref="g2p_ati_integrations.model_g2p_land_information" />
     <field name="state">code</field>
     <field name="code">model.update_land_id_prefix()</field>
 </record>
 
   <menuitem
-    id="narlis_integration_config"
-    name="NARLIS Integration"
-    parent="base.menu_custom"
-    action="action_narlis_integration"
-    sequence="1"
-  />
+        id="narlis_integration_config"
+        name="NARLIS Integration"
+        parent="base.menu_custom"
+        action="action_narlis_integration"
+        sequence="1"
+    />
 <menuitem
-    id="add_prefix_on_land_id"
-    name="Add Prefix On The Land Id"
-    parent="base.menu_custom"
-    action="action_add_prefix_on_land_id"
-    sequence="1"
-  />
+        id="add_prefix_on_land_id"
+        name="Add Prefix On The Land Id"
+        parent="base.menu_custom"
+        action="action_add_prefix_on_land_id"
+        sequence="1"
+    />
 
 
 </odoo>

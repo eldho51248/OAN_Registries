@@ -3,7 +3,7 @@
 
     <record id="fp_odk_import" model="odk.import">
         <field name="odk_config" ref="g2p_odk_importer_ati.fp_odk_config" />
-        <field name="target_registry">individual</field>
+        <field name="target_registry">group</field>
         <field name="json_formatter">{
   "submission_time": .submission_time,
   "hh_is_household_head": .household_questions.household_head,
@@ -56,11 +56,12 @@
   "education": .socio_economic_data.education_level,
   "hh_income_type": .socio_economic_data.income_source,
   "other_income_type": .socio_economic_data.other_income_source,
+
   "size_of_family": .socio_economic_data.size_of_family,
   "number_of_children_in_family": .socio_economic_data.number_of_children_in_family,
   "number_of_males_in_family": .socio_economic_data.number_of_males_in_family,
   "number_of_females_in_family": .socio_economic_data.number_of_females_in_family,
-  "other_family_member_own_land": .socio_economic_data.other_family_member_own_land,
+
   "is_member_of_primary_cooperative": .membership.primary_cooperative,
   "primary_cooperatives": .membership.name_of_primary_cooperative,
   "other_primary_cooperative": .membership.other_primary_cooperative,
@@ -111,6 +112,7 @@
     "gf_name_other": .hh_member_basic_info.hh_member_personal_info.hh_member_grandfather_name_other,
     "gender": .hh_member_basic_info.hh_member_personal_info.hh_member_gender,
     "birthdate": .hh_member_basic_info.hh_member_personal_info.hh_member_date_of_birth,
+    "age": .hh_member_basic_info.hh_member_personal_info.hh_member_age,
     "has_personal_phone": .hh_member_basic_info.hh_member_personal_info.hh_member_phone_number,
     "phone_ids":
     (if .hh_member_basic_info.hh_member_personal_info.hh_member_phone_number == "yes"
@@ -133,6 +135,12 @@
     "education": .hh_member_socio_economic_data.hh_member_education_level,
     "hh_income_type": .hh_member_socio_economic_data.hh_member_income_source,
     "other_income_type": .hh_member_socio_economic_data.hh_member_other_income_source,
+
+    "size_of_family": .socio_economic_data.hh_member_size_of_family,
+    "number_of_children_in_family": .socio_economic_data.hh_member_number_of_children_in_family,
+    "number_of_males_in_family": .socio_economic_data.hh_member_number_of_males_in_family,
+    "number_of_females_in_family": .socio_economic_data.hh_member_number_of_females_in_family,
+
     "is_member_of_primary_cooperative": .hh_member_membership.hh_member_primary_cooperative,
     "primary_cooperatives": .hh_member_membership.hh_member_name_of_primary_cooperative,
     "other_primary_cooperative": .hh_member_membership.hh_member_other_primary_cooperative,
