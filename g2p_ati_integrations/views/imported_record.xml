@@ -158,7 +158,6 @@
         </field>
     </record>
 
-
     <!-- Action -->
     <record id="action_imported_record" model="ir.actions.act_window">
         <field name="name">Imported</field>
