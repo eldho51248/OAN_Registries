@@ -2242,7 +2242,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PregistrationPortalBase):
                 except ValueError:
                     continue
 
-        doc_tag = request.env["g2p.document.tag"].sudo().get_tag_by_name("Land Certificate")
+        doc_tag = request.env["g2p.document.tag"].sudo().get_or_create_tag_from_name("Land Certificate")
         if not doc_tag:
             doc_tag = request.env["g2p.document.tag"].sudo().create({"name": "Land Certificate"})
 
@@ -2685,7 +2685,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PregistrationPortalBase):
             or request.env["storage.backend"].sudo().search([], limit=1).id
         )
 
-        doc_tag = request.env["g2p.document.tag"].sudo().get_tag_by_name("Land Certificate")
+        doc_tag = request.env["g2p.document.tag"].sudo().get_or_create_tag_from_name("Land Certificate")
         if not doc_tag:
             doc_tag = request.env["g2p.document.tag"].sudo().create({"name": "Land Certificate"})
 
@@ -3026,6 +3026,8 @@ class AtiserviceProviderBeneficiaryManagement(G2PregistrationPortalBase):
                         }
                     )
 
+            _logger.info("in coming herer tehe rquest")
+
             res["member_list"] = member_list
             return json.dumps(res)
 
@@ -3105,7 +3107,7 @@ class AtiserviceProviderBeneficiaryManagement(G2PregistrationPortalBase):
             or request.env["storage.backend"].sudo().search([], limit=1).id
         )
 
-        doc_tag = request.env["g2p.document.tag"].sudo().get_tag_by_name("Land Certificate")
+        doc_tag = request.env["g2p.document.tag"].sudo().get_or_create_tag_from_name("Land Certificate")
         if not doc_tag:
             doc_tag = request.env["g2p.document.tag"].sudo().create({"name": "Land Certificate"})
         for record in land_records:

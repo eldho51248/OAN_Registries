@@ -3,7 +3,6 @@ import {registry} from "@web/core/registry";
 import {Widgetpreview} from "@g2p_documents/js/preview_document";
 
 export class DocumentPreview extends Widgetpreview {
-
     clickPreview() {
         const recordData = this.props.record.data;
         const mimetype = recordData.document_mimetype;
@@ -27,9 +26,7 @@ export class DocumentPreview extends Widgetpreview {
             window.open(recordData.document_url, "_blank");
         }
     }
-
 }
-
 
 DocumentPreview.template = "g2p_ati.DocumentPreview";
 

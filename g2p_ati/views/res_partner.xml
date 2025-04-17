@@ -180,19 +180,19 @@
 						<field name="gender" />
 					</group>
 					<group name="socio_economic_data" string="Social Economic Data">
-						
+
 						<field name="hh_is_household_head" />
 						<field name="hh_income_type" create="False" widget="many2many_tags" invisible="is_farmer!='yes'" />
 						<field name="education" invisible="is_farmer!='yes'" />
 						<field name="martial_status" invisible="is_farmer!='yes'" />
 
 						<separator string="Household Information" colspan="4" />
-						
+
 						<field name="size_of_family" invisible="is_farmer!='yes'" />
 						<field name="number_of_children_in_family" invisible="is_farmer!='yes'" />
 						<field name="number_of_males_in_family" invisible="is_farmer!='yes'" />
-						<field name="number_of_females_in_family" invisible="is_farmer!='yes'" /> 
-						<field name="other_family_member_own_land" invisible="is_farmer!='yes'" /> 
+						<field name="number_of_females_in_family" invisible="is_farmer!='yes'" />
+						<!-- <field name="other_family_member_own_land" invisible="is_farmer!='yes'" />  -->
 
 
 					</group>
@@ -252,7 +252,7 @@
 
 				<page string="Land Information" name="lands" invisible="is_farmer!='yes'">
 
-					<group name="computed_land_info" col="3" >
+					<group name="computed_land_info" col="3">
 						<group name="total_land_owned_area">
 							<field name="total_land_owned_area" readonly="True" />
 						</group>
@@ -263,7 +263,7 @@
 
 						<group name="total_land_crop_sharing_area">
 							<field name="total_land_crop_sharing_area" readonly="True" />
-						</group> 
+						</group>
 
 					 <!-- <group name="land_ownership">
 							<field name="land_ownership" readonly="True" />
@@ -272,7 +272,7 @@
 					</group>
 
 
-					 <group name="total_land"  cols="1" colspan="1">
+					 <group name="total_land" cols="1" colspan="1">
 							<field name="total_land_area" readonly="True" class="d-flex fs-bold" />
 						</group>
 
