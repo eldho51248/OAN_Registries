@@ -5,6 +5,9 @@ from datetime import date
 from odoo import models
 
 
+
+
+
 class OdkImportInherit(models.Model):
     _inherit = "odk.import"
 
@@ -58,6 +61,7 @@ class OdkImportInherit(models.Model):
         ]
         return json_data
 
+
     def process_land_ids(self, json_data, is_member):
         land_information_ids = []
         supporting_documents_ids = []
@@ -89,6 +93,9 @@ class OdkImportInherit(models.Model):
                         land_info_dict["land_certificate"] = land_certificate_id
                 land_information_ids.append((0, 0, land_info_dict))
         return [land_information_ids, supporting_documents_ids]
+
+
+
 
     def process_crop_ids(self, json_data, is_member):
         unique_crops = {}
@@ -205,6 +212,8 @@ class OdkImportInherit(models.Model):
             else:
                 vals["kebele"] = kebele_id
 
+
+
         language_id = self.process_many2one_field("g2p.lang", individual.get("primary_Language"))
         if language_id:
             vals["primary_Language"] = language_id
@@ -298,6 +307,9 @@ class OdkImportInherit(models.Model):
                 individual, is_member
             )
 
+            print("process_land_ids")
+            print(vals["land_information_ids"])
+
         # CROP INFORMATION
         if "crop_information_ids" in individual:
             vals["crop_information_ids"] = self.process_crop_ids(individual, is_member)
@@ -363,6 +375,32 @@ class OdkImportInherit(models.Model):
         )
         return enumerator
 
+
+
+
+    def remove_non_partner_fields_in_place(self, data_dict):
+        """Remove fields from data_dict that don't exist in res.partner model (in place)"""
+        partner_fields = self.env['res.partner']._fields.keys()
+
+        special_fields = [
+            'is_registrant', 'is_group', 'reg_ids', 'group_membership_ids',
+            'individual_membership_ids', 'supporting_documents_ids', 'phone_number_ids',
+            'kind', 'enumerator_id', 'land_information_ids', 'crop_information_ids',
+            'livestock_information_ids', 'crop_water_sources', 'livestock_water_sources',
+            'finance_accesses', 'type_of_machinery'
+        ]
+
+        # Identify and remove fields that don't exist in res.partner
+        fields_to_remove = []
+        for field in list(data_dict.keys()):
+            if field not in partner_fields and field not in special_fields:
+                fields_to_remove.append(field)
+
+        for field in fields_to_remove:
+            data_dict.pop(field, None)
+
+
+
     def get_individual_data(self, individual, is_member, enumerator):
         vals = {
             "is_registrant": True,
@@ -397,6 +435,9 @@ class OdkImportInherit(models.Model):
 
         if enumerator:
             vals["enumerator_id"] = enumerator.id
+
+        # Remove any fields that don't exist in res.partner model
+        self.remove_non_partner_fields_in_place(vals)
 
         return vals
 
@@ -447,6 +488,10 @@ class OdkImportInherit(models.Model):
 
         if enumerator:
             vals["enumerator_id"] = enumerator.id
+
+        # Remove any fields that don't exist in res.partner model
+        self.remove_non_partner_fields_in_place(vals)
+
         return vals
 
     def get_membership_kind(self, relationship):
@@ -561,8 +606,46 @@ class OdkImportInherit(models.Model):
 
         return individual_data
 
+
+    def process_records_handle_media_import(self, mapped_json, member):
+        self.ensure_one()
+        instance_id = mapped_json.get("meta", {}).get("instanceID")
+
+        if instance_id:
+            mapped_json["instance_id"] = instance_id
+        else:
+            instance_id = member.get("meta", {}).get("instanceID")
+            if instance_id:
+                mapped_json["instance_id"] = instance_id
+
+    def remove_specific_keys_in_place(self, mapped_json):
+        keys_to_remove = [
+            "uid",
+            "rid",
+            "other_woreda",
+            "other_kebele",
+            "phone_ids",
+            "head_registered",
+            "member_registered",  # Added to fix the error
+            "other_primary_cooperative",
+            "other_coop_union",
+            "farmer_location",
+            "hh_income_type",
+            "primary_cooperatives",
+            # "instance_id"
+        ]
+
+        for key in keys_to_remove:
+            mapped_json.pop(key, None)
+
+
+
+   
+
+ 
+
+
     def process_records_handle_addl_data(self, mapped_json):
-        # return []
 
         submission_time = mapped_json.get("submission_time") or mapped_json.get("odk_submission_date")
         enumerator = self.create_enumerator(
@@ -571,48 +654,36 @@ class OdkImportInherit(models.Model):
             submission_time,
         )
 
-        mapped_json.pop("submission_time", None)
-        mapped_json.pop("other_income_type", None)
-        mapped_json.pop("data_enumerator_name", None)
-        mapped_json.pop("data_enumerator_odk_id", None)
-        mapped_json.pop("data_enumerator_deviceid", None)
-        mapped_json.pop("odk_submission_date", None)
 
-        # create enumerator
         if mapped_json["hh_is_household_head"] == "yes":
             group = {
                 "is_registrant": True,
                 "is_group": True,
             }
-
             individual_ids = []
 
             # Create household head
-
             individual_data = self.get_individual_data(mapped_json, False, enumerator)
+
+            # Copy all geographic and land information fields from individual_data to mapped_json
+            mapped_json["land_information_ids"] = individual_data.get("land_information_ids", False)
+            mapped_json["crop_information_ids"] = individual_data.get("crop_information_ids", False)
+            mapped_json["livestock_information_ids"] = individual_data.get("livestock_information_ids", False)
+            mapped_json["hh_income_type"] = individual_data.get("hh_income_type", False)
+
+
+            # Geographic fields
+            mapped_json["region"] = individual_data.get("region", False)
+            mapped_json["zone"] = individual_data.get("zone", False)
+            mapped_json["woreda"] = individual_data.get("woreda", False)
+            mapped_json["kebele"] = individual_data.get("kebele", False)  # Fixed typo: keble -> kebele
+            mapped_json["primary_Language"] = individual_data.get("primary_Language", False) 
+
             self.remove_specific_keys_in_place(mapped_json)
 
             household_found = False
             existing_household = None
-
             household_head = self.env["res.partner"].sudo().create(individual_data)
-
-            mapped_json["land_information_ids"] = individual_data.get("land_information_ids", False)
-            mapped_json["crop_information_ids"] = individual_data.get("crop_information_ids", False)
-            mapped_json["crop_water_sources"] = individual_data.get("crop_water_sources", False)
-            mapped_json["region"] = individual_data.get("zone", False)
-            mapped_json["zone"] = individual_data.get("zone", False)
-            mapped_json["woreda"] = individual_data.get("woreda", False)
-            mapped_json["kebele"] = individual_data.get("kebele", False)
-            mapped_json["primary_commodity"] = individual_data.get("primary_commodity", False)
-            mapped_json["primary_Language"] = individual_data.get("primary_Language", False)
-            mapped_json["type_of_machinery"] = individual_data.get("type_of_machinery", False)
-            mapped_json["finance_accesses"] = individual_data.get("finance_accesses", False)
-            mapped_json["cooperative_unions"] = individual_data.get("cooperative_unions", False)
-
-            mapped_json.pop("odk_reference_id", None)
-            membership_kind = self.get_membership_kind("Head")
-            individual_ids.append((0, 0, {"individual": household_head.id, "kind": [(4, membership_kind)]}))
 
             # LINK OTHER FARMER USING REFERENCE ID
             if mapped_json.get("member_registered") == "yes":
@@ -633,10 +704,7 @@ class OdkImportInherit(models.Model):
                                 self.env["g2p.reg.id"]
                                 .sudo()
                                 .search(
-                                    [
-                                        ("id_type", "=", odk_ack_id_type.id),
-                                        ("value", "=", member_reference_id),
-                                    ]
+                                    [("id_type", "=", odk_ack_id_type.id), ("value", "=", member_reference_id)]
                                 )
                                 .ids,
                             )
@@ -649,7 +717,6 @@ class OdkImportInherit(models.Model):
                     r_ship = "Member"
                     if mapped_json.get("relationship_to_head") is not None:
                         r_ship = mapped_json.get("relationship_to_head")
-
                     if other_farmer.individual_membership_ids.group:
                         household_found = True
                         existing_household = other_farmer.individual_membership_ids.group
@@ -680,26 +747,20 @@ class OdkImportInherit(models.Model):
                     head_reg_id.sudo().write(
                         {"status": "invalid", "description": "Farmer with this ACK ID not found"}
                     )
+            membership_kind = self.get_membership_kind("Head")
 
-            mapped_json.pop("member_registered", None)
-            mapped_json.pop("member_reference_id", None)
-
-            if mapped_json.get("additional_farmers") is None:
-                household_head.update({"other_family_member_own_land": "no"})
+            individual_ids.append((0, 0, {"individual": household_head.id, "kind": [(4, membership_kind)]}))
 
             # OTHER HOUSEHOLD MEMBERS WHO ARE FARMERS
             if mapped_json.get("additional_farmers") is not None:
-                if household_head:
-                    household_head.update({"other_family_member_own_land": "yes"})
-
                 for additional_farmer in mapped_json.get("additional_farmers"):
                     additional_farmer["instance_id"] = mapped_json.get("instance_id")
                     addl_farmer_data = self.get_individual_data(additional_farmer, True, enumerator)
 
+                    self.remove_specific_keys_in_place(mapped_json)
+
                     addl_farmer = self.env["res.partner"].sudo().create(addl_farmer_data)
-
                     membership_kind = self.get_membership_kind(additional_farmer["household_relationship"])
-
                     if household_found:
                         existing_household.sudo().write(
                             {
@@ -713,18 +774,12 @@ class OdkImportInherit(models.Model):
                             (0, 0, {"individual": addl_farmer.id, "kind": [(4, membership_kind)]})
                         )
 
-            mapped_json.pop("additional_farmers", None)
-            mapped_json.pop("instance_id", None)
-
             # OTHER HOUSEHOLD MEMBERS WHO ARE NOT FARMERS
             if mapped_json.get("other_household_members") is not None:
                 for other_household_member in mapped_json.get("other_household_members"):
                     other_member_data = self.get_member_data(other_household_member, mapped_json, enumerator)
                     other_member = self.env["res.partner"].sudo().create(other_member_data)
-
-                    membership_kind = self.get_membership_kind(
-                        other_household_member["household_relationship"]
-                    )
+                    membership_kind = self.get_membership_kind(other_household_member["household_relationship"])
                     if household_found:
                         existing_household.sudo().write(
                             {
@@ -738,8 +793,6 @@ class OdkImportInherit(models.Model):
                             (0, 0, {"individual": other_member.id, "kind": [(4, membership_kind)]})
                         )
 
-                mapped_json.pop("other_household_members", None)
-
             if not household_found:
                 group["name"] = mapped_json.get("name")
                 group["region"] = household_head.region.id
@@ -748,102 +801,46 @@ class OdkImportInherit(models.Model):
                 group["kebele"] = household_head.kebele.id
                 group["enumerator_id"] = enumerator.id
                 group_kind = self.env["g2p.group.kind"].sudo().search([("name", "=", "Household")], limit=1)
-
                 if not group_kind:
                     group_kind = self.env["g2p.group.kind"].sudo().create({"name": "Household"})
+                group["group_membership_ids"] = individual_ids
+                group["kind"] = group_kind.id
 
                 mapped_json["enumerator_id"] = enumerator.id
                 mapped_json["group_membership_ids"] = individual_ids
                 mapped_json["kind"] = group_kind.id
 
-                # group["group_membership_ids"] = individual_ids
-                # group["kind"] = group_kind.id
 
+
+
+            #     return group
+            # else:
+            #     return []
         else:
             individual_data = self.get_individual_data(mapped_json, False, enumerator)
             individual_data = self.handle_household_head_no(mapped_json, individual_data)
-            self.remove_specific_keys_in_place(mapped_json)
 
-            mapped_json.pop("instance_id", None)
-
-            mapped_json["birthdate"] = individual_data.get("birthdate", False)
-            mapped_json["hh_income_type"] = individual_data.get("hh_income_type", False)
             mapped_json["land_information_ids"] = individual_data.get("land_information_ids", False)
             mapped_json["crop_information_ids"] = individual_data.get("crop_information_ids", False)
-            mapped_json["crop_water_sources"] = individual_data.get("crop_water_sources", False)
+            mapped_json["livestock_information_ids"] = individual_data.get("livestock_information_ids", False)
+            mapped_json["hh_income_type"] = individual_data.get("hh_income_type", False)
 
             mapped_json["region"] = individual_data.get("region", False)
             mapped_json["zone"] = individual_data.get("zone", False)
             mapped_json["woreda"] = individual_data.get("woreda", False)
-            mapped_json["kebele"] = individual_data.get("kebele", False)
+            mapped_json["kebele"] = individual_data.get("kebele", False) 
 
             mapped_json["primary_Language"] = individual_data.get("primary_Language", False)
             mapped_json["enumerator_id"] = individual_data.get("enumerator_id", False)
-            mapped_json["additional_g2p_info"] = individual_data.get("additional_g2p_info", False)
             mapped_json["reg_ids"] = individual_data.get("reg_ids", False)
             mapped_json["individual_membership_ids"] = individual_data.get("individual_membership_ids", False)
-
-            mapped_json["size_of_family"] = individual_data.get("size_of_family", False)
-            mapped_json["number_of_children_in_family"] = individual_data.get(
-                "number_of_children_in_family", False
-            )
-            mapped_json["number_of_males_in_family"] = individual_data.get("number_of_males_in_family", False)
-            mapped_json["number_of_females_in_family"] = individual_data.get(
-                "number_of_females_in_family", False
-            )
-
             mapped_json["is_group"] = False
+            mapped_json["primary_Language"] = individual_data.get("primary_Language", False)  
 
-            # mapped_json["type_of_machinery"] = individual_data["type_of_machinery"]
-            # mapped_json["finance_accesses"] = individual_data["finance_accesses"]
-            # mapped_json["cooperative_unions"] = individual_data["cooperative_unions"]
-            # mapped_json["primary_commodity"] = individual_data["primary_commodity"]
-            # mapped_json["reg_ids"] = individual_data["reg_ids"]
-            # mapped_json["phone_ids"] = individual_data["phone_ids"]
-            # mapped_json["enumerator_id"] = individual_data["enumerator_id"]
-            # mapped_json["additional_g2p_info"] = individual_data["additional_g2p_info"]
-            # mapped_json["partner_longitude"] = individual_data["partner_longitude"]
-            # mapped_json["partner_latitude"] = individual_data["partner_latitude"]
-            # mapped_json["hh_is_household_head"] = individual_data["hh_is_household_head"]
-            # mapped_json["is_farmer"] = individual_data["is_farmer"]
-            # mapped_json["supporting_documents_ids"] = individual_data["supporting_documents_ids"]
-            # mapped_json["is_registrant"] = individual_data["is_registrant"]
 
-            mapped_json.pop("odk_reference_id", None)
+        self.remove_non_partner_fields_in_place(mapped_json)
 
-            # return individual_data
+        
 
-        mapped_json.pop("relationship_with_head", None)
-        mapped_json.pop("relationship_to_head", None)
-        mapped_json.pop("additional_farmers", None)
-        mapped_json.pop("other_household_members", None)
 
-    def process_records_handle_media_import(self, mapped_json, member):
-        self.ensure_one()
-        instance_id = mapped_json.get("meta", {}).get("instanceID")
 
-        if instance_id:
-            mapped_json["instance_id"] = instance_id
-        else:
-            instance_id = member.get("meta", {}).get("instanceID")
-            if instance_id:
-                mapped_json["instance_id"] = instance_id
-
-    def remove_specific_keys_in_place(self, mapped_json):
-        keys_to_remove = [
-            "uid",
-            "rid",
-            "other_woreda",
-            "other_kebele",
-            "phone_ids",
-            "head_registered",
-            "other_primary_cooperative",
-            "other_coop_union",
-            "farmer_location",
-            "hh_income_type",
-            "primary_cooperatives",
-            # "instance_id"
-        ]
-
-        for key in keys_to_remove:
-            mapped_json.pop(key, None)
