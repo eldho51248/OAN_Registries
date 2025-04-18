@@ -11,9 +11,17 @@ class G2PValidationStatus(models.Model):
 
 
     def create(self, vals):
-        if vals.get('name') and self.search([('name', 'ilike', vals['name'])]):
-            raise ValidationError("The name must be unique ")
+        # Handle both single and bulk create
+        if isinstance(vals, list):
+            for val in vals:
+                self._check_unique_name(val)
+        else:
+            self._check_unique_name(vals)
         return super().create(vals)
+
+    def _check_unique_name(self, vals):
+        if vals.get('name') and self.search([('name', 'ilike', vals['name'])]):
+            raise ValidationError("The name must be unique")
 
     def write(self, vals):
         if 'name' in vals:
