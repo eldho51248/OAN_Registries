@@ -307,8 +307,6 @@ class OdkImportInherit(models.Model):
                 individual, is_member
             )
 
-            print("process_land_ids")
-            print(vals["land_information_ids"])
 
         # CROP INFORMATION
         if "crop_information_ids" in individual:
@@ -677,7 +675,12 @@ class OdkImportInherit(models.Model):
             mapped_json["zone"] = individual_data.get("zone", False)
             mapped_json["woreda"] = individual_data.get("woreda", False)
             mapped_json["kebele"] = individual_data.get("kebele", False)  # Fixed typo: keble -> kebele
-            mapped_json["primary_Language"] = individual_data.get("primary_Language", False) 
+            mapped_json["primary_Language"] = individual_data.get("primary_Language", False)
+            
+            mapped_json["size_of_family"] = individual_data.get("size_of_family", False) 
+            mapped_json["number_of_children_in_family"] = individual_data.get("number_of_children_in_family", False) 
+            mapped_json["number_of_males_in_family"] = individual_data.get("number_of_males_in_family", False) 
+            mapped_json["number_of_females_in_family"] = individual_data.get("number_of_females_in_family", False)  
 
             self.remove_specific_keys_in_place(mapped_json)
 
@@ -835,7 +838,11 @@ class OdkImportInherit(models.Model):
             mapped_json["reg_ids"] = individual_data.get("reg_ids", False)
             mapped_json["individual_membership_ids"] = individual_data.get("individual_membership_ids", False)
             mapped_json["is_group"] = False
-            mapped_json["primary_Language"] = individual_data.get("primary_Language", False)  
+            mapped_json["primary_Language"] = individual_data.get("primary_Language", False)
+            mapped_json["size_of_family"] = individual_data.get("size_of_family", False) 
+            mapped_json["number_of_children_in_family"] = individual_data.get("number_of_children_in_family", False) 
+            mapped_json["number_of_males_in_family"] = individual_data.get("number_of_males_in_family", False) 
+            mapped_json["number_of_females_in_family"] = individual_data.get("number_of_females_in_family", False)   
 
 
         self.remove_non_partner_fields_in_place(mapped_json)
