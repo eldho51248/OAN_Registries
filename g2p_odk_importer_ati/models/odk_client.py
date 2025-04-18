@@ -668,6 +668,8 @@ class OdkImportInherit(models.Model):
             mapped_json["crop_information_ids"] = individual_data.get("crop_information_ids", False)
             mapped_json["livestock_information_ids"] = individual_data.get("livestock_information_ids", False)
             mapped_json["hh_income_type"] = individual_data.get("hh_income_type", False)
+            mapped_json["birthdate"] = individual_data.get("birthdate", False) 
+
 
 
             # Geographic fields
@@ -832,6 +834,7 @@ class OdkImportInherit(models.Model):
             mapped_json["zone"] = individual_data.get("zone", False)
             mapped_json["woreda"] = individual_data.get("woreda", False)
             mapped_json["kebele"] = individual_data.get("kebele", False) 
+            mapped_json["birthdate"] = individual_data.get("birthdate", False) 
 
             mapped_json["primary_Language"] = individual_data.get("primary_Language", False)
             mapped_json["enumerator_id"] = individual_data.get("enumerator_id", False)
@@ -842,7 +845,7 @@ class OdkImportInherit(models.Model):
             mapped_json["size_of_family"] = individual_data.get("size_of_family", False) 
             mapped_json["number_of_children_in_family"] = individual_data.get("number_of_children_in_family", False) 
             mapped_json["number_of_males_in_family"] = individual_data.get("number_of_males_in_family", False) 
-            mapped_json["number_of_females_in_family"] = individual_data.get("number_of_females_in_family", False)   
+            mapped_json["number_of_females_in_family"] = individual_data.get("number_of_females_in_family", False)
 
 
         self.remove_non_partner_fields_in_place(mapped_json)
