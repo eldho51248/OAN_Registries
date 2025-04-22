@@ -2281,7 +2281,7 @@
         <field name="name">Kachabira</field>
         <field name="zone" ref="g2p_ati.zone_kembata_1010" />
     </record>
-    <record id="woreda_doyogena_101003" model="g2p.woreda">
+    <record id="woreda_doyogena_101009" model="g2p.woreda">
         <field name="code">ET070306</field>
         <field name="name">Doyogena</field>
         <field name="zone" ref="g2p_ati.zone_kembata_1010" />
