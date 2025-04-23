@@ -12,3 +12,17 @@ def migrate(cr, version):
         env["ir.model.data"].search(
             [("model", "in", ("g2p.region", "g2p.zone", "g2p.woreda")), ("module", "=", "g2p_ati")]
         ).write({"noupdate": False})
+
+
+        woredas_to_delete_kebeles_for = env["g2p.woreda"].search([("code", "=", "101009")])
+
+        if woredas_to_delete_kebeles_for:
+            kebeles_to_delete = env["g2p.kebele"].search([("woreda", "in", woredas_to_delete_kebeles_for.ids)])
+
+            if kebeles_to_delete:
+                kebeles_to_delete.unlink()
+
+
+    
+
+        
