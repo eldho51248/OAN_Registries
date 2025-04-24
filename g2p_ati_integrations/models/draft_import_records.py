@@ -1,9 +1,8 @@
 import requests
 from odoo import models, fields, api, _
-
-import json
 from odoo.exceptions import UserError, ValidationError
 from datetime import date, datetime
+import json
 import logging
 from typing import Dict, List
 _logger = logging.getLogger(__name__)
@@ -134,72 +133,6 @@ class G2PDraftRecord(models.Model):
     kebele = fields.Char(string="Kebele")
     validation_status = fields.Many2one("g2p.validation.status")
     import_record_id = fields.Many2one("g2p.imported.record", string="Import Record")
-
-    @api.model
-    def create(self, vals):
-        partner_data = {
-            "given_name": vals["given_name"],
-            "family_name": vals["family_name"],
-            "gf_name_eng": vals["gf_name_eng"],
-            "gender": vals["gender"],
-            "region": vals["region"],
-            "imported_record_state": "draft",
-        }
-
-        if vals["phone"]:
-            partner_data["phone_number_ids"] = [(0, 0, {"phone_no": vals["phone"]})]
-
-        vals["partner_data"] = json.dumps(partner_data)
-
-        self.sudo().write({"message_partner_ids": [(6, 0, self.message_partner_ids.ids)]})
-        record = super().create(vals)
-        return record
-
-    def action_save_to_draft(self, vals):
-        context = self.env.context
-        model_name = context.get("active_model")
-        record_id = context.get("active_id")
-        active_record = self.env[model_name].browse(record_id)
-        partner_data = json.loads(active_record.partner_data) or {}
-
-        m2m_fields = {
-            "tags_ids": "tags_ids",
-        }
-
-        processed_m2m_fields = {}
-        for field in m2m_fields:
-            processed_m2m_fields[field] = [item[1] for item in vals.get(field, [])]
-
-        dynamic_fields = {
-            "is_company": False,
-            "is_group": False,
-            "is_registrant": True,
-            "db_import": "yes",
-            **processed_m2m_fields,
-        }
-
-        static_fields = self.get_fields_in_view()
-
-        draft_record = {}
-
-        draft_record.update(dynamic_fields)
-
-        for field in static_fields:
-            if field in self.env[model_name]._fields:
-                draft_record[field] = vals.get(field) or partner_data.get(field)
-            else:
-                if vals.get(field):
-                    draft_record[field] = vals[field]
-
-        if vals.get("given_name") or vals.get("family_name") or vals.get("gf_name_eng"):
-            name_parts = [
-                val.upper()
-                for val in [vals.get("given_name"), vals.get("family_name"), vals.get("gf_name_eng")]
-                if val
-            ]
-            draft_record["name"] = " ".join(filter(None, name_parts)).strip()
-
-        active_record.write({"partner_data": json.dumps(draft_record)})
 
 
 
