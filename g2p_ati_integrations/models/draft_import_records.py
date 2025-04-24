@@ -176,7 +176,7 @@ class G2PDraftRecord(models.Model):
                     self.import_record_id.phone = phone_no
 
 
-            if region_id:
+            if region_id and isinstance(region_id, int):
                 region = self.env['g2p.region'].browse(region_id)
                 if region.exists():
                     self.region = region.name
