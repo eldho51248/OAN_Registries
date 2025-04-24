@@ -11,7 +11,9 @@ class G2PLandInformation(models.Model):
     total_land_area = fields.Float(string="Area In Hectare", required=True, default=0.0)
     land_certificate = fields.Many2one("storage.file")
     land_id = fields.Char(string="Land ID", index=True)
-    ownership_type = fields.Selection(selection=[("owner", "Owner"), ("tenant", "Tenant"),('crop_share','Crop Sharing')], required=True)
+    ownership_type = fields.Selection(
+        selection=[("owner", "Owner"), ("tenant", "Tenant"), ("crop_share", "Crop Sharing")], required=True
+    )
     document_slug = fields.Char(related="land_certificate.slug")
     document_mimetype = fields.Char(related="land_certificate.mimetype")
     document_url = fields.Char(related="land_certificate.url")

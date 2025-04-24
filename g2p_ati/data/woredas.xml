@@ -2306,6 +2306,8 @@
         <field name="name">Hadaro Ketema Astidadar</field>
         <field name="zone" ref="g2p_ati.zone_kembata_1010" />
     </record>
+
+
     <record id="woreda_angecha_ketema_astedader_101010" model="g2p.woreda">
         <field name="code">101010</field>
         <field name="name">Angecha Ketema Astedader</field>

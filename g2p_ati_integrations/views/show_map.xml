@@ -8,13 +8,17 @@
 
                         <field name="soil_fertility" />
                         <field name="current_land_use" />
-                        <field name="means_of_acquisition"/>
+                        <field name="means_of_acquisition" />
                         <field name="year_of_acquisition" />
                         <field name="integration_status" />
-            <button name="action_open_map_view" type="object" class="oe_stat_button"
+            <button
+                    name="action_open_map_view"
+                    type="object"
+                    class="oe_stat_button"
                     icon="fa-map-marker"
                     title="show on map"
-                    invisible="integration_status!='valid'"/>
+                    invisible="integration_status!='valid'"
+                />
 
         </xpath>
     </field>

@@ -135,8 +135,8 @@
 
     <record id="draft_record_followers_rule" model="ir.rule">
     <field name="name">Draft Record: Only Followers</field>
-    <field name="model_id" ref="model_draft_record"/>
-    <field name="global" eval="False"/>
+    <field name="model_id" ref="model_draft_record" />
+    <field name="global" eval="False" />
     <field name="domain_force">[('create_uid', '=', user.id)]</field>
 </record>
 
