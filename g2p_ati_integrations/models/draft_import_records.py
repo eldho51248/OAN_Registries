@@ -1,15 +1,13 @@
-import logging
-
 import requests
-
-from odoo import _, api, fields, models
-from odoo.exceptions import UserError
-
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError, ValidationError
+from datetime import date, datetime
+import json
+import logging
+from typing import Dict, List
 _logger = logging.getLogger(__name__)
 import ast
-
 BATCH_SIZE = 500
-
 
 class G2PLandInformation(models.Model):
     _inherit = "g2p.land.information"
@@ -20,11 +18,8 @@ class G2PLandInformation(models.Model):
     means_of_acquisition = fields.Text(string="Means Of Acquisition")
     year_of_acquisition = fields.Date(string="Year Of Acquisition")
 
-
     integration_status = fields.Selection([("valid", "Valid"), ("invalid", "Invalid")])
 
-
-    integration_status = fields.Selection([("valid", "Valid"), ("invalid", "Invalid")])
 
     def fetch_land_records(self):
         try:
@@ -37,16 +32,18 @@ class G2PLandInformation(models.Model):
             total_records = self.env["g2p.land.information"].sudo().search_count(domain)
 
             for offset in range(0, total_records, BATCH_SIZE):
-                land_records = (
-                    self.env["g2p.land.information"].sudo().search(domain, limit=BATCH_SIZE, offset=offset)
-                )
+                land_records = self.env["g2p.land.information"].sudo().search(domain, limit=BATCH_SIZE, offset=offset)
 
                 for land in land_records:
                     url = f"{api_parameters.host_url}{api_parameters.end_point_url}"
                     headers = {
                         "api-key": api_parameters.api_key,
                     }
-                    params = {"version": "v1", "upid": land.land_id, "data-depth": "3"}
+                    params = {
+                        "version": "v1",
+                        "upid": land.land_id,
+                        "data-depth": "3"
+                    }
 
                     try:
                         response = requests.get(url, headers=headers, params=params, timeout=10)
@@ -70,12 +67,10 @@ class G2PLandInformation(models.Model):
                         land.total_land_area = parcel_data.get("parcelArea", 0)
                         land.integration_status = "valid"
 
-                    except (
-                        requests.exceptions.Timeout,
-                        requests.exceptions.ConnectionError,
-                        requests.exceptions.RequestException,
-                        ValueError,
-                    ):
+                    except (requests.exceptions.Timeout,
+                            requests.exceptions.ConnectionError,
+                            requests.exceptions.RequestException,
+                            ValueError):
                         land.integration_status = "invalid"
                         continue  # Skip this record and proceed with the next one
 
@@ -86,32 +81,33 @@ class G2PLandInformation(models.Model):
             raise e
 
     def action_open_map_view(self):
+
         if self.polygon_data:
             land_details = []
             polygone_data = ast.literal_eval(self.polygon_data)
 
             land_info = {
-                "total_land_area": self.total_land_area,
-                "polygon_data": polygone_data,
-                "ownership_type": self.ownership_type,
+                'total_land_area': self.total_land_area,
+                'polygon_data': polygone_data,
+                'ownership_type': self.ownership_type
             }
             land_details.append(land_info)
             # List to store details of all lands
 
             action = {
-                "type": "ir.actions.act_window",
-                "name": "Partner Map",
-                "res_model": "g2p.land.information",
-                "view_mode": "lmap",
-                "view_id": self.env.ref("g2p_ati_integrations.action_partner_map_view").id,
-                "target": "new",
-                "context": {
-                    "polygon_coords": land_details,
-                    "partner_latitiude": self.partner_id.partner_latitude,
-                    "partner_longitude": self.partner_id.partner_longitude,
-                },  # Passing polygon data
+                'type': 'ir.actions.act_window',
+                'name': 'Partner Map',
+                'res_model': 'g2p.land.information',
+                'view_mode': 'lmap',
+                'view_id': self.env.ref('g2p_ati_integrations.action_partner_map_view').id,
+                'target': 'new',
+                'context': {'polygon_coords': land_details,
+                            'partner_latitiude': self.partner_id.partner_latitude,
+                            'partner_longitude': self.partner_id.partner_longitude
+                            },  # Passing polygon data
             }
             return action
+
 
     def update_land_id_prefix(self):
         records = self.search([])
@@ -139,6 +135,7 @@ class G2PDraftRecord(models.Model):
     import_record_id = fields.Many2one("g2p.imported.record", string="Import Record")
 
 
+
     def action_change_state(self):
         return {
             "name": "Change State",
@@ -148,7 +145,6 @@ class G2PDraftRecord(models.Model):
             "view_id": self.env.ref("g2p_ati_integrations.change_state_wizard_view").id,
             "target": "new",
         }
-
 
     def write(self, vals):
         result = super().write(vals)
@@ -205,19 +201,20 @@ class G2PDraftRecord(models.Model):
         return result
 
 
-
 class G2PRespartnerIntegration(models.Model):
-    _inherit = "res.partner"
+    _inherit = 'res.partner'
 
     is_orphan = fields.Selection([("yes", "Yes"), ("no", "No")])
     asigned_region = fields.Many2one("g2p.region")
-    language_skills = fields.Many2many("g2p.lang", string="Languages")
+    language_skills = fields.Many2many('g2p.lang', string='Languages')
+
+
 
     def view_all_lands(self):
         land_details = []  # List to store details of all lands
         for land in self.land_information_ids:
             if land.polygon_data:
-                # Parse the string representation of the polygon data into an actual list of coordinates
+            # Parse the string representation of the polygon data into an actual list of coordinates
                 try:
                     polygon = ast.literal_eval(land.polygon_data)
                 except (ValueError, SyntaxError):
@@ -226,24 +223,23 @@ class G2PRespartnerIntegration(models.Model):
 
                 # Collect all the relevant land information in a dictionary
                 land_info = {
-                    "total_land_area": land.total_land_area,
-                    "polygon_data": polygon,
-                    "ownership_type": land.ownership_type,
+                    'total_land_area': land.total_land_area,
+                    'polygon_data': polygon,
+                    'ownership_type': land.ownership_type
                 }
 
                 land_details.append(land_info)
         action = {
-            "type": "ir.actions.act_window",
-            "name": "Partner Map",
-            "res_model": "res.partner",
-            "view_mode": "lmap",
-            "view_id": self.env.ref("g2p_ati_integrations.action_partner_map_view").id,
-            "target": "new",
-            "context": {
-                "polygon_coords": land_details,
-                "partner_latitiude": self.partner_latitude,
-                "partner_longitude": self.partner_longitude,
-            },  # Passing polygon data
+            'type': 'ir.actions.act_window',
+            'name': 'Partner Map',
+            'res_model': 'res.partner',
+            'view_mode': 'lmap',
+            'view_id': self.env.ref('g2p_ati_integrations.action_partner_map_view').id,
+            'target': 'new',
+            'context': {'polygon_coords': land_details,
+                        'partner_latitiude': self.partner_latitude,
+                        'partner_longitude': self.partner_longitude
+                        },  # Passing polygon data
         }
         return action
 
@@ -251,10 +247,12 @@ class G2PRespartnerIntegration(models.Model):
 class G2PRegIdInherit(models.Model):
     _inherit = "g2p.reg.id"
 
-    @api.onchange("value")
+    @api.onchange('value')
     def _onchange_value(self):
         national_ids = self.env["g2p.reg.id"].sudo().search([], limit=1)
 
         for rec in national_ids:
             if self.value != False and self.value == rec.value and self.id_type == rec.id_type:
                 raise UserError(_("Farmer With the same id exists in the system"))
+
+
