@@ -134,6 +134,18 @@ class G2PDraftRecord(models.Model):
     validation_status = fields.Many2one("g2p.validation.status")
     import_record_id = fields.Many2one("g2p.imported.record", string="Import Record")
 
+    @api.model
+    def create(self, vals):
+        record = super().create(vals)
+
+        partner_data = json.loads(record.partner_data or "{}")
+
+        if "addl_name" in partner_data:
+            partner_data["gf_name_eng"] = partner_data.pop("addl_name")
+
+        record.partner_data = json.dumps(partner_data)
+
+        return record
 
 
     def action_change_state(self):
@@ -200,6 +212,31 @@ class G2PDraftRecord(models.Model):
 
         return result
 
+    def action_publish(self):
+        self.ensure_one()
+        partner_data = json.loads(self.partner_data)
+        res_partner_model = self.env["res.partner"]
+        fields_metadata = res_partner_model.fields_get()
+        valid_data = {}
+        given_name = partner_data.get("given_name", "")
+        family_name = partner_data.get("family_name", "")
+        gf_name_en = partner_data.get("gf_name_en", "")
+
+        self._prepare_valid_data(valid_data, fields_metadata, partner_data)
+
+        if valid_data:
+            valid_data["db_import"] = "yes"
+            valid_data["name"] = f"{given_name} {family_name} {gf_name_en}".upper()
+
+            res_partner_model.sudo().create(valid_data)
+            self.write({"state": "published"})
+
+            self._notify_validators()
+
+        else:
+            raise ValueError("No valid data found to create a partner record.")
+
+
 
 class G2PRespartnerIntegration(models.Model):
     _inherit = 'res.partner'
@@ -254,5 +291,3 @@ class G2PRegIdInherit(models.Model):
         for rec in national_ids:
             if self.value != False and self.value == rec.value and self.id_type == rec.id_type:
                 raise UserError(_("Farmer With the same id exists in the system"))
-
-
