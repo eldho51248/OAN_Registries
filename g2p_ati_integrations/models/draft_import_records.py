@@ -220,7 +220,7 @@ class G2PDraftRecord(models.Model):
         valid_data = {}
         given_name = partner_data.get("given_name", "")
         family_name = partner_data.get("family_name", "")
-        gf_name_en = partner_data.get("gf_name_en", "")
+        gf_name_en = partner_data.get("gf_name_eng", "")
 
         self._prepare_valid_data(valid_data, fields_metadata, partner_data)
 
