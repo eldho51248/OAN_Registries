@@ -108,9 +108,12 @@ class G2PLandInformation(models.Model):
             }
             return action
 
-
     def update_land_id_prefix(self):
-        records = self.search([])
+        records = self.search([
+            ('land_id', '!=', False),
+            ('land_id', 'not ilike', 'OR/07/06%')
+        ])
+        print("records are ****", records)
         for record in records:
             if record.land_id.startswith("04/"):
                 new_land_id = record.land_id.replace("04/", "OR/", 1)
