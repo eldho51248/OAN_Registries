@@ -8,6 +8,8 @@ from odoo import models
 
 
 
+
+
 class OdkImportInherit(models.Model):
     _inherit = "odk.import"
 
@@ -798,22 +800,31 @@ class OdkImportInherit(models.Model):
                             (0, 0, {"individual": other_member.id, "kind": [(4, membership_kind)]})
                         )
 
+            
             if not household_found:
-                group["name"] = mapped_json.get("name")
-                group["region"] = household_head.region.id
-                group["zone"] = household_head.zone.id
-                group["woreda"] = household_head.woreda.id
-                group["kebele"] = household_head.kebele.id
-                group["enumerator_id"] = enumerator.id
+                 
                 group_kind = self.env["g2p.group.kind"].sudo().search([("name", "=", "Household")], limit=1)
                 if not group_kind:
                     group_kind = self.env["g2p.group.kind"].sudo().create({"name": "Household"})
-                group["group_membership_ids"] = individual_ids
-                group["kind"] = group_kind.id
 
+        
+
+                mapped_json["is_registrant"] = True
+                mapped_json["is_group"] = True
                 mapped_json["enumerator_id"] = enumerator.id
                 mapped_json["group_membership_ids"] = individual_ids
                 mapped_json["kind"] = group_kind.id
+
+
+                group_fields = {"is_registrant","is_group","name", "region", "zone", "woreda", "kebele","enumerator_id", "group_membership_ids", "kind"}
+
+                for key in list(mapped_json.keys()):
+                    if key not in group_fields:
+                        mapped_json.pop(key, None)
+
+
+
+
 
 
 
