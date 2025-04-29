@@ -302,7 +302,7 @@
     <menuitem
         id="menu_gender_type_main"
         name="Gender Types"
-        action="g2p_registry_individual.action_gender_type"
+        action="g2p_registry_base.action_gender_type"
         parent="g2p_configuration_menu_root_main"
         sequence="10"
     />
