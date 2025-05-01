@@ -1,6 +1,6 @@
 import json
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -54,7 +54,9 @@ class G2PImportedRecord(models.Model):
 
     def action_to_draft(self):
         for record in self:
-            associated_records = self.env["draft.record"].sudo().search([("import_record_id", "=", record.id)])
+            associated_records = (
+                self.env["draft.record"].sudo().search([("import_record_id", "=", record.id)])
+            )
 
             if any(rec.state == "published" for rec in associated_records):
                 raise ValidationError(

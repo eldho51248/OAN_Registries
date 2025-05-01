@@ -15,10 +15,8 @@
             <field name="name" />
             <templates>
                 <t t-name="kanban-box">
-                    <t t-set="kanban_record" t-value="record"/>
-                    <div
-                        t-attf-class="my-2 o_kanban_card shadow-sm border rounded p-3"
-                    >
+                    <t t-set="kanban_record" t-value="record" />
+                    <div t-attf-class="my-2 o_kanban_card shadow-sm border rounded p-3">
                         <!-- Card Header -->
                         <div class="o_kanban_details">
                             <div class="d-flex justify-content-between align-items-center mb-2">
@@ -27,7 +25,7 @@
                                 </strong>
                                 <div>
                                     <t t-if="record.state.raw_value == 'published'">
-                                        <field widget="badge" name="state" class="badge"/>
+                                        <field widget="badge" name="state" class="badge" />
                                     </t>
 
                                 </div>
@@ -40,47 +38,47 @@
                                 <!-- Left Section Buttons -->
                                 <t t-if="record.state.raw_value != 'published'">
                                     <button
-                                        string="Change State"
-                                        type="object"
-                                        name="action_change_state"
-                                        groups="g2p_draft_publish.group_int_validator,g2p_draft_publish.group_int_admin"
-                                        class="btn btn-secondary btn-sm"
-                                    />
+                                            string="Change State"
+                                            type="object"
+                                            name="action_change_state"
+                                            groups="g2p_draft_publish.group_int_validator,g2p_draft_publish.group_int_admin"
+                                            class="btn btn-secondary btn-sm"
+                                        />
                                 </t>
                                 <t t-if="record.state.raw_value == 'draft'">
                                     <button
-                                        string="Edit"
-                                        type="object"
-                                        name="action_open_wizard"
-                                        groups="g2p_draft_publish.group_int_validator,g2p_draft_publish.group_int_admin"
-                                        class="btn btn-primary btn-sm"
-                                    />
+                                            string="Edit"
+                                            type="object"
+                                            name="action_open_wizard"
+                                            groups="g2p_draft_publish.group_int_validator,g2p_draft_publish.group_int_admin"
+                                            class="btn btn-primary btn-sm"
+                                        />
                                     <button
-                                        string="Submit"
-                                        type="object"
-                                        name="action_submit"
-                                        groups="g2p_draft_publish.group_int_validator,g2p_draft_publish.group_int_admin"
-                                        class="btn btn-success btn-sm"
-                                    />
+                                            string="Submit"
+                                            type="object"
+                                            name="action_submit"
+                                            groups="g2p_draft_publish.group_int_validator,g2p_draft_publish.group_int_admin"
+                                            class="btn btn-success btn-sm"
+                                        />
                                 </t>
                                 <!-- Right Section Buttons -->
                                 <t t-if="record.state.raw_value == 'submitted'">
 
                                 <button
-                                    string="Publish"
-                                    type="object"
-                                    name="action_publish"
-                                    groups="g2p_draft_publish.group_int_approver,g2p_draft_publish.group_int_admin"
-                                    class="btn btn-success btn-sm"
-                                />
+                                            string="Publish"
+                                            type="object"
+                                            name="action_publish"
+                                            groups="g2p_draft_publish.group_int_approver,g2p_draft_publish.group_int_admin"
+                                            class="btn btn-success btn-sm"
+                                        />
                                 <button
-                                    string="Reject"
-                                    invisible="state!='submitted'"
-                                    type="object"
-                                    name="action_reject"
-                                    groups="g2p_draft_publish.group_int_approver,g2p_draft_publish.group_int_admin"
-                                    class="btn btn-danger btn-sm"
-                                />
+                                            string="Reject"
+                                            invisible="state!='submitted'"
+                                            type="object"
+                                            name="action_reject"
+                                            groups="g2p_draft_publish.group_int_approver,g2p_draft_publish.group_int_admin"
+                                            class="btn btn-danger btn-sm"
+                                        />
                                 </t>
 
                             </div>

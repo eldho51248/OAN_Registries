@@ -13,16 +13,11 @@ def migrate(cr, version):
             [("model", "in", ("g2p.region", "g2p.zone", "g2p.woreda")), ("module", "=", "g2p_ati")]
         ).write({"noupdate": False})
 
-
-        woredas_to_delete_kebeles_for = env["g2p.woreda"].search([("code", "=", "101009")])
-
-        if woredas_to_delete_kebeles_for:
-            kebeles_to_delete = env["g2p.kebele"].search([("woreda", "in", woredas_to_delete_kebeles_for.ids)])
-
-            if kebeles_to_delete:
-                kebeles_to_delete.unlink()
-
-
-    
-
-        
+        cr.execute(
+            """
+            DELETE FROM g2p_kebele
+            WHERE woreda IN (
+                SELECT id FROM g2p_woreda WHERE code = '101009'
+            )
+        """
+        )
