@@ -78,7 +78,10 @@
         action="action_farmers_view"
         web_icon="g2p_ati,static/description/farmer.png"
         sequence="2"
+    groups="group_data_enumerator,group_data_admin,group_data_validator,group_system_admin,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
+
     />
+
 
     <!-- Households -->
     <record id="g2p_registry_household_form_view_inherit_no_create" model="ir.ui.view">
@@ -126,6 +129,7 @@
         action="action_household_view"
         web_icon="g2p_ati,static/description/home.png"
         sequence="2"
+        groups="group_data_enumerator,group_data_admin,group_data_validator,group_system_admin,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
     />
     <!-- individuals -->
     <record id="g2p_registry_individual_form_view_inherit_no_create" model="ir.ui.view">
@@ -179,6 +183,8 @@
         action="action_individual_view"
         web_icon="g2p_ati,static/description/people.png"
         sequence="2"
+        groups="group_data_enumerator,group_data_admin,group_data_validator,group_system_admin,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
+
     />
     <menuitem
         id="menu_action_crop_info"
@@ -186,6 +192,8 @@
         action="action_g2p_crop_information_act_window"
         web_icon="g2p_ati,static/description/wheat.png"
         sequence="2"
+        groups="group_data_enumerator,group_data_admin,group_system_admin,group_data_validator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
+
     />
     <menuitem
         id="menu_action_livestock"
@@ -193,6 +201,8 @@
         action="action_g2p_livestock_information_act_window"
         web_icon="g2p_ati,static/description/livestock.png"
         sequence="2"
+        groups="group_data_enumerator,group_data_admin,group_system_admin,group_data_validator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
+
     />
 
     <menuitem
@@ -201,6 +211,8 @@
         action="action_g2p_land_information_act_window"
         web_icon="g2p_ati,static/description/land.png"
         sequence="2"
+        groups="group_data_enumerator,group_data_admin,group_data_validator,group_system_admin,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
+
     />
 
     <!-- Configuration -->
