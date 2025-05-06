@@ -100,7 +100,7 @@ class G2PLandInformation(models.Model):
                 "name": "Partner Map",
                 "res_model": "g2p.land.information",
                 "view_mode": "lmap",
-                "view_id": self.env.ref("g2p_ati_integrations.action_partner_map_view").id,
+                "view_id": self.env.ref("g2p_ati_integrations.your_map_view_id").id,
                 "target": "new",
                 "context": {
                     "polygon_coords": land_details,
@@ -264,7 +264,7 @@ class G2PRespartnerIntegration(models.Model):
             "name": "Partner Map",
             "res_model": "res.partner",
             "view_mode": "lmap",
-            "view_id": self.env.ref("g2p_ati_integrations.action_partner_map_view").id,
+            "view_id": self.env.ref("g2p_ati_integrations.your_map_view_id").id,
             "target": "new",
             "context": {
                 "polygon_coords": land_details,

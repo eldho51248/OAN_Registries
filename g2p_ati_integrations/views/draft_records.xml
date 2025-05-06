@@ -237,4 +237,32 @@
     />
 
 
+
+    <record id="g2p_ati.menu_action_crop_info" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('g2p_draft_publish.group_int_admin')),(4, ref('g2p_draft_publish.group_int_approver'))]"/>
+    </record>
+
+    <record id="g2p_ati.menu_action_livestock" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('g2p_draft_publish.group_int_admin')),(4, ref('g2p_draft_publish.group_int_approver'))]"/>
+    </record>
+
+    <record id="g2p_ati.menu_action_land_info" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('g2p_draft_publish.group_int_admin')),(4, ref('g2p_draft_publish.group_int_approver'))]"/>
+    </record>
+
+    <record id="g2p_ati.menu_action_household" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('g2p_draft_publish.group_int_admin')),(4, ref('g2p_draft_publish.group_int_approver'))]"/>
+    </record>
+
+    <record id="g2p_ati.menu_action_individual" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('g2p_draft_publish.group_int_admin')),(4, ref('g2p_draft_publish.group_int_approver'))]"/>
+    </record>
+
+    <record id="g2p_ati.menu_action_farmer" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('g2p_draft_publish.group_int_admin')),(4, ref('g2p_draft_publish.group_int_approver'))]"/>
+    </record>
+
+
+
+
 </odoo>
