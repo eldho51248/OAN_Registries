@@ -1,44 +1,49 @@
 <odoo>
 
-<record model="ir.module.category" id="g2p_draft_publish.integration_module">
-    <field name="name">ATI Integrations</field>
-</record>
+    <record model="ir.module.category" id="g2p_draft_publish.integration_module">
+        <field name="name">ATI Integrations</field>
+    </record>
 
 
-<record id="rule_imported_record_followers" model="ir.rule">
-    <field name="name">Imported Records - Followers Only</field>
-    <field name="model_id" ref="g2p_ati_integrations.model_g2p_imported_record" />
-    <field name="groups" eval="[(4, ref('base.group_user'))]" />
-    <field name="domain_force">[
-        '|', ('create_uid', '=', user.id),
-        ('message_follower_ids.partner_id', '=', user.partner_id.id)
-    ]</field>
-</record>
-
-<record id="rule_imported_record_followers_admin" model="ir.rule">
-    <field name="name">Imported Records - Admin Access</field>
-    <field name="model_id" ref="g2p_ati_integrations.model_g2p_imported_record" />
-    <field name="groups" eval="[(4, ref('g2p_draft_publish.group_int_admin'))]" />
-    <field name="domain_force">[(1, '=', 1)]</field>
-</record>
-
-<record id="g2p_draft_record_following_restriction_rule" model="ir.rule">
-    <field name="name">Draft Records - Creator Only</field>
-    <field name="model_id" ref="g2p_draft_publish.model_draft_record" />
-    <field name="groups" eval="[(4, ref('base.group_user'))]" /> <!-- All users -->
-    <field name="domain_force">[('create_uid', '=', user.id)]</field>
-</record>
 
 
-<!--<record id="g2p_draft_record_following_restriction_rule" model="ir.rule">-->
-<!--    <field name="name">Draft  Records Started User only</field>-->
-<!--    <field name="model_id" ref="g2p_draft_publish.model_draft_record" />-->
-<!--    <field-->
-<!--            name="domain_force"-->
-<!--        >[('state','in', ('draft','published', 'rejected')), '|', ('create_uid', '=', user.id)]</field>-->
-<!--    <field-->
-<!--            name="groups"-->
-<!--            eval="[(6, 0, [ref('g2p_draft_publish.group_int_validator'), ref('g2p_draft_publish.group_int_approver')])]"-->
-<!--        />-->
-<!--</record>-->
+   <record id="rule_imported_record_followers" model="ir.rule">
+        <field name="name">Imported Records - Access Rule</field>
+        <field name="model_id" ref="g2p_ati_integrations.model_g2p_imported_record" />
+        <field name="groups" eval="[(4, ref('base.group_user'))]" />
+        <field name="domain_force">[
+            '|',  
+                '|', 
+                    ('create_uid', '=', user.id),
+                    ('message_follower_ids.partner_id', '=', user.partner_id.id),
+         
+                    ('assigned_region', '=', user.partner_id.asigned_region.id), 
+                    ('assigned_languages', 'in', [x for x in user.partner_id.language_skills.ids])
+        ]</field>
+    </record>  
+
+
+
+
+    <record id="rule_imported_record_followers_admin" model="ir.rule">
+        <field name="name">Imported Records - Admin Access</field>
+        <field name="model_id" ref="g2p_ati_integrations.model_g2p_imported_record" />
+        <field name="groups" eval="[(4, ref('g2p_draft_publish.group_int_admin'))]" />
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="g2p_draft_record_following_restriction_rule" model="ir.rule">
+        <field name="name">Draft Records - Creator Only</field>
+        <field name="model_id" ref="g2p_draft_publish.model_draft_record" />
+        <field name="groups" eval="[(4, ref('base.group_user'))]" />
+        <field name="domain_force">[('create_uid', '=', user.id)]</field>
+    </record>
+
+    <record id="g2p_draft_record_following_admin_restriction_rule" model="ir.rule">
+        <field name="name">Draft Records - Admin  Views All</field>
+        <field name="model_id" ref="g2p_draft_publish.model_draft_record" />
+        <field name="groups" eval="[(4, ref('g2p_draft_publish.group_int_admin'))]" />
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
 </odoo>
