@@ -26,9 +26,28 @@ class G2PImportedRecord(models.Model):
     woreda = fields.Char(string="Woreda")
     kebele = fields.Char(string="Kebele")
 
+
+    assigned_region = fields.Many2one(
+        "g2p.region", string="Regions Assigned"
+    )
+    assigned_languages = fields.Many2many(
+        "g2p.lang", string="Language Assigned"
+    )
+
     _sql_constraints = [
         ("phone_unique", "unique(phone)", "The phone number must be unique."),
     ]
+
+
+    @api.constrains('assigned_region', 'assigned_languages')
+    def _check_region_languages(self):
+        for record in self:
+            if record.assigned_region and not record.assigned_languages:
+                raise ValidationError(_("Please specify at least one language when a region is assigned."))
+            if record.assigned_languages and not record.assigned_region:
+                raise ValidationError(_("Please specify a region when languages are assigned."))
+
+
 
     @api.onchange("family_name", "given_name", "gf_name_eng")
     def name_change_farmer(self):

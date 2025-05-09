@@ -240,6 +240,19 @@ class G2PRespartnerIntegration(models.Model):
     asigned_region = fields.Many2one("g2p.region")
     language_skills = fields.Many2many("g2p.lang", string="Languages")
 
+
+
+    @api.model
+    def write(self, values):
+        result = super().write(values)
+
+        if "asigned_region" or "language_skills" in  values:
+            self.clear_caches()
+
+        return result
+    
+    
+       
     def view_all_lands(self):
         land_details = []  # List to store details of all lands
         for land in self.land_information_ids:

@@ -129,6 +129,35 @@
                         <field name="region" />
 
                     </group>
+
+
+                        <group cols="2" colspan="2">
+
+                            <group>
+
+                                <field name="assigned_region" 
+                                />
+
+                            </group>
+                                
+                       
+
+                            <group>
+                            <field name="assigned_languages" 
+                           
+                            widget="many2many_tags"
+
+                                />
+
+                                
+                            </group>
+                        </group>
+ 
+
+
+
+
+
                     </group>
                 </sheet>
 
