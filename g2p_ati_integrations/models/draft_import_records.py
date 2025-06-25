@@ -192,7 +192,7 @@ class G2PDraftRecord(models.Model):
                     self.import_record_id.region = region.name
 
             if zone_id:
-                zone = self.env["g2p.zone"].browse(woreda_id)
+                zone = self.env["g2p.zone"].browse(zone_id)
                 if zone.exists():
                     self.zone = zone.name
 
