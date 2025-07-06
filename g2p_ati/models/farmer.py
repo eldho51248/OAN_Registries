@@ -236,29 +236,32 @@ class G2PFarmer(models.Model):
 
     @api.onchange("region")
     def _onchange_region(self):
-        if self._is_integration_form():
-            return
-        self.zone = False
-        self.woreda = False
-        self.kebele = False
+        if self.zone.region != self.region:
+            self.zone = False
+            self.woreda = False
+            self.kebele = False
 
     @api.onchange("zone")
     def _onchange_zone(self):
-        if self._is_integration_form():
-            return
-
-        self.woreda = False
-        self.kebele = False
+        if self.woreda.zone != self.zone:
+            self.woreda = False
+            self.kebele = False
 
     @api.onchange("woreda")
     def _onchange_woreda(self):
-        if self._is_integration_form():
-            return
-        self.kebele = False
+        if self.kebele.woreda != self.woreda:
+            self.kebele = False
 
     def _is_integration_form(self):
         active_model = self.env.context.get("active_model", False)
         return active_model and active_model == "draft.record"
+
+
+
+
+            
+
+   
 
     @api.onchange("is_group", "family_name", "given_name", "gf_name_eng")
     def name_change_farmer(self):
