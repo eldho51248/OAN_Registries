@@ -334,8 +334,25 @@ class G2PRespartnerIntegration(models.Model):
 
         direct_fields = ["zone", "woreda", "kebele"]
         for field in direct_fields:
+            field_val = vals.get(field, "")
+            
+            if field_val:
+                if field == "zone":
+                    zone = self.env["g2p.zone"].browse(field_val)
+                    update_vals[field] = zone.name if zone.exists() else ""
 
-            update_vals[field] = vals.get(field, "")
+                elif field == "woreda":
+                    woreda = self.env["g2p.woreda"].browse(field_val)
+                    update_vals[field]= woreda.name if woreda.exists() else ""
+
+                elif field == "kebele":
+                    kebele = self.env["g2p.kebele"].browse(field_val)
+                    update_vals[field] = kebele.name if kebele.exists() else ""
+            else:
+                update_vals[field] = ""
+
+
+            # update_vals[field] = vals.get(field, "")
 
         active_record.write(update_vals)
 
