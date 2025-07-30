@@ -4,7 +4,7 @@ import logging
 import requests
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 _logger = logging.getLogger(__name__)
 import ast
@@ -148,6 +148,7 @@ class G2PDraftRecord(models.Model):
         return record
 
     def action_change_state(self):
+        _logger.info("Action Change State called")
         return {
             "name": "Change State",
             "type": "ir.actions.act_window",
@@ -233,6 +234,8 @@ class G2PDraftRecord(models.Model):
             raise ValueError("No valid data found to create a partner record.")
 
 
+
+
 class G2PRespartnerIntegration(models.Model):
     _inherit = "res.partner"
 
@@ -286,6 +289,75 @@ class G2PRespartnerIntegration(models.Model):
             },  # Passing polygon data
         }
         return action
+
+
+    
+    
+    def action_save_to_draft(self, vals):
+
+
+
+        super().action_save_to_draft(vals)
+        context = self.env.context
+        model_name = context.get("active_model")
+        record_id = context.get("active_id")
+        active_record = self.env[model_name].browse(record_id)
+
+        update_vals = {}
+
+        direct_fields = ["region"]
+
+     
+
+        for field in direct_fields:
+            field_val = vals.get(field)
+            if field_val:
+                if field == "region":
+                    region = self.env["g2p.region"].browse(field_val)
+                    if region.exists():
+                        update_vals[field] = region.name
+                    else:
+                        update_vals[field] = ""
+                        update_vals["zone"] = ""
+                        update_vals["woreda"] = ""
+                        update_vals["kebele"] = ""
+                    update_vals[field] = region.name if region.exists() else ""
+                else:
+                    update_vals[field] = field_val
+            else:
+                update_vals[field] = ""
+                update_vals["zone"] = ""
+                update_vals["woreda"] = ""
+                update_vals["kebele"] = ""
+           
+
+
+        direct_fields = ["zone", "woreda", "kebele"]
+        for field in direct_fields:
+            field_val = vals.get(field, "")
+            
+            if field_val:
+                if field == "zone":
+                    zone = self.env["g2p.zone"].browse(field_val)
+                    update_vals[field] = zone.name if zone.exists() else ""
+
+                elif field == "woreda":
+                    woreda = self.env["g2p.woreda"].browse(field_val)
+                    update_vals[field]= woreda.name if woreda.exists() else ""
+
+                elif field == "kebele":
+                    kebele = self.env["g2p.kebele"].browse(field_val)
+                    update_vals[field] = kebele.name if kebele.exists() else ""
+            else:
+                update_vals[field] = ""
+
+
+            # update_vals[field] = vals.get(field, "")
+
+        active_record.write(update_vals)
+
+
+
 
 
 class G2PRegIdInherit(models.Model):
