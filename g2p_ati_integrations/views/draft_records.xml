@@ -128,8 +128,11 @@
             <xpath expr="//field[@name='addl_name']" position="attributes">
                 <attribute name="column_invisible">1</attribute>
             </xpath>
+            
             <xpath expr="//field[@name='family_name']" position="after">
-                <field name="gf_name_eng" />
+                <field name="gf_name_eng" 
+                readonly="id!=False"
+                 />
             </xpath>
             <xpath expr="//field[@name='region']" position="after">
                 <field name="zone" />

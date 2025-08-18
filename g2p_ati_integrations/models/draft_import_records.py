@@ -2,7 +2,7 @@ import json
 import logging
 
 import requests
-
+from datetime import datetime, date
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
@@ -158,56 +158,7 @@ class G2PDraftRecord(models.Model):
             "target": "new",
         }
 
-    def write(self, vals):
-        result = super().write(vals)
-
-        partner_data_str = vals.get("partner_data")
-        if partner_data_str:
-            partner_data = json.loads(partner_data_str)
-
-            self.given_name = partner_data.get("given_name")
-            self.import_record_id.given_name = partner_data.get("given_name")
-            self.family_name = partner_data.get("family_name")
-            self.import_record_id.family_name = partner_data.get("family_name")
-            self.gf_name_eng = partner_data.get("gf_name_eng")
-            self.import_record_id.gf_name_eng = partner_data.get("gf_name_eng")
-            self.gender = partner_data.get("gender")
-            self.import_record_id.gender = partner_data.get("gender")
-            phone_number_ids = partner_data.get("phone_number_ids", [])
-            region_id = partner_data.get("region")
-            zone_id = partner_data.get("zone")
-            woreda_id = partner_data.get("woreda")
-            keble_id = partner_data.get("kebele")
-
-            if phone_number_ids:
-                first_phone_entry = phone_number_ids[0]
-                if len(first_phone_entry) > 2 and isinstance(first_phone_entry[2], dict):
-                    phone_no = first_phone_entry[2].get("phone_no")
-                    self.phone = phone_no
-                    self.import_record_id.phone = phone_no
-
-            if region_id and isinstance(region_id, int):
-                region = self.env["g2p.region"].browse(region_id)
-                if region.exists():
-                    self.region = region.name
-                    self.import_record_id.region = region.name
-
-            if zone_id:
-                zone = self.env["g2p.zone"].browse(zone_id)
-                if zone.exists():
-                    self.zone = zone.name
-
-            if woreda_id:
-                woreda = self.env["g2p.woreda"].browse(woreda_id)
-                if woreda.exists():
-                    self.woreda = woreda.name
-
-            if keble_id:
-                kebele = self.env["g2p.kebele"].browse(keble_id)
-                if kebele.exists():
-                    self.kebele = kebele.name
-
-        return result
+ 
 
     def action_publish(self):
         self.ensure_one()
@@ -218,6 +169,18 @@ class G2PDraftRecord(models.Model):
         given_name = partner_data.get("given_name", "")
         family_name = partner_data.get("family_name", "")
         gf_name_en = partner_data.get("gf_name_eng", "")
+
+        # Validate phone number types before publishing
+        phone_number_ids = partner_data.get("phone_number_ids", [])
+        if phone_number_ids:
+            for phone_entry in phone_number_ids:
+                if isinstance(phone_entry, list) and len(phone_entry) >= 3 and isinstance(phone_entry[2], dict):
+                    phone_data = phone_entry[2]
+                    phone_type = phone_data.get("phone_type")
+                    
+                    # Check if phone_type is missing or False
+                    if not phone_type:
+                        raise ValidationError(_("Phone number type should be set for all phone numbers before publishing."))
 
         self._prepare_valid_data(valid_data, fields_metadata, partner_data)
 
@@ -233,8 +196,51 @@ class G2PDraftRecord(models.Model):
         else:
             raise ValueError("No valid data found to create a partner record.")
 
+    
+    def _process_json_data(self, json_data):
+        
+     
+        
+        context_data, additional_g2p_info = super()._process_json_data(json_data)
+
+   
+
+        context_data["default_gf_name_eng"] = self.gf_name_eng
+        
+
+        additional_fields = ['zone', 'woreda', 'kebele']
+        for field_name in additional_fields:
+            if field_name in json_data:
+                field_value = json_data[field_name]
+                
+                if isinstance(field_value, int) and field_value > 0:
+                    print(f"  -> {field_name} is valid ID, adding to context")
+                    context_data[f"default_{field_name}"] = field_value
+                    removed_value = additional_g2p_info.pop(field_name, None)
+                    if removed_value:
+                        pass  # print(f"  -> Removed {field_name} from additional_g2p_info: {removed_value}")
+                elif field_value is not None and field_value != "" and field_value is not False:
+                    additional_g2p_info[field_name] = field_value
+                else:
+                    print(f"  -> {field_name} is None/False/empty in JSON, checking if should be removed from additional_info")
+            else:
+                draft_field_value = getattr(self, field_name, None)
+                # print(f"Draft record {field_name}: {draft_field_value}")
+                
+                # Only add from draft record if not already in additional_g2p_info and has value
+                if field_name not in additional_g2p_info and draft_field_value and draft_field_value.strip():
+                    # The draft record has a value for this field, add it to additional_g2p_info
+                    # print(f"  -> Adding draft record {field_name} to additional_g2p_info: {draft_field_value}")
+                    additional_g2p_info[field_name] = draft_field_value
+                else:
+                    print(f"  -> Not modifying additional_g2p_info for {field_name} (already exists or no draft value)")
 
 
+
+        return context_data, additional_g2p_info
+
+
+  
 
 class G2PRespartnerIntegration(models.Model):
     _inherit = "res.partner"
@@ -253,8 +259,195 @@ class G2PRespartnerIntegration(models.Model):
             self.clear_caches()
 
         return result
-    
-    
+
+
+
+
+    def action_save_to_draft(self, vals):
+        """
+        Saves data from the wizard to the draft record.
+
+        --- EXTENDED METHOD v4 ---
+        This version correctly handles both initial setup and subsequent changes
+        for cascading administrative fields.
+        """
+        _logger.info("Executing extended action_save_to_draft v4 with robust dependency handling.")
+
+        print("=== DEBUG: action_save_to_draft START ===")
+        print("Input vals keys:", list(vals.keys()))
+        print("Zone in vals:", vals.get('zone'), "Type:", type(vals.get('zone')))
+        print("Woreda in vals:", vals.get('woreda'), "Type:", type(vals.get('woreda')))
+        print("Kebele in vals:", vals.get('kebele'), "Type:", type(vals.get('kebele')))
+        print("Additional info in vals:", vals.get('additional_g2p_info'))
+
+        # 1. Get the active draft record
+        context = self.env.context
+        model_name = context.get("active_model")
+        record_id = context.get("active_id")
+        if not all([model_name, record_id]):
+            raise UserError(_("Could not find the source draft record. Missing context."))
+
+        active_record = self.env[model_name].browse(record_id)
+        active_record.ensure_one()
+
+        print("=== Before update ===")
+        print("Draft record zone:", active_record.zone)
+        print("Draft record woreda:", active_record.woreda)
+        print("Draft record kebele:", active_record.kebele)
+
+        # 2. Load the original `partner_data`
+        try:
+            original_partner_data = json.loads(active_record.partner_data or "{}")
+        except (json.JSONDecodeError, TypeError):
+            original_partner_data = {}
+
+        print("=== Original partner_data ===")
+        print("Zone in original:", original_partner_data.get('zone'))
+        print("Woreda in original:", original_partner_data.get('woreda'))
+        print("Kebele in original:", original_partner_data.get('kebele'))
+
+        # Create a working copy to modify
+        partner_data = original_partner_data.copy()
+
+        # 3. Reconcile invalid data from `additional_g2p_info` first
+        additional_info_str = vals.get("additional_g2p_info", "{}")
+        try:
+            additional_info = json.loads(additional_info_str)
+        except (json.JSONDecodeError, TypeError):
+            additional_info = {}
+
+        print("=== Additional info processing ===")
+        print("Additional info:", additional_info)
+
+        processed_vals = vals.copy()
+        if additional_info:
+            for field_name, original_invalid_value in additional_info.items():
+                print(f"Processing {field_name}: original_invalid={original_invalid_value}, vals_value={processed_vals.get(field_name)}")
+                if field_name in processed_vals and not processed_vals[field_name]:
+                    print(f"  -> Restoring {field_name} to {original_invalid_value}")
+                    processed_vals[field_name] = original_invalid_value
+                else:
+                    print(f"  -> NOT restoring {field_name} (has valid value or not in vals)")
+
+        # 4. *** REVISED: Handle Cascading Dependency Invalidation ***
+        # This logic now correctly supports both initial setup and changes.
+        
+        # Check if region changed. If so, clear children in our temporary data copy.
+        # The final update from processed_vals will restore them if they were set in the same wizard transaction.
+        if processed_vals.get('region') != partner_data.get('region'):
+            _logger.info("Region changed. Invalidating child fields before final update.")
+            partner_data['zone'] = False
+            partner_data['woreda'] = False
+            partner_data['kebele'] = False
+
+        # Independent check: if zone changed, clear its children.
+        if processed_vals.get('zone') != partner_data.get('zone'):
+            _logger.info("Zone changed. Invalidating child fields before final update.")
+            partner_data['woreda'] = False
+            partner_data['kebele'] = False
+        
+        # Independent check: if woreda changed, clear its child.
+        if processed_vals.get('woreda') != partner_data.get('woreda'):
+            _logger.info("Woreda changed. Invalidating child fields before final update.")
+            partner_data['kebele'] = False
+
+        # 5. Merge ALL values from the wizard. This overwrites our invalidations
+        # if valid children were provided in the same transaction.
+        partner_data.update(processed_vals)
+
+
+        print("the context is....", json.dumps(context, indent=4, default=str))
+
+        # 6. Handle specific data transformations (name, flags)
+        name_parts = [
+            partner_data.get("given_name", context.get("given_name")),
+            partner_data.get("family_name", context.get("family_name")),
+            partner_data.get("gf_name_eng", context.get("gf_name_eng")),
+        ]
+        computed_name = " ".join(filter(None, name_parts)).strip().upper()
+        if computed_name:
+            partner_data["name"] = computed_name
+
+        partner_data.update({
+            "is_company": False,
+            "is_group": False,
+            "is_registrant": True,
+            "db_import": "yes",
+        })
+
+        # 7. Prepare the final dictionary for the `write` call
+        final_update_vals = {"partner_data": json.dumps(partner_data)}
+
+        # 8. Denormalize all relevant fields. This part remains the same.
+        draft_model_fields = active_record._fields
+
+        # Simple fields
+        fields_to_sync = ["name", "given_name", "family_name", "gf_name_eng", "gender"]
+        for field_name in fields_to_sync:
+            if field_name in partner_data and field_name in draft_model_fields:
+                final_update_vals[field_name] = partner_data.get(field_name)
+
+        # Hierarchical and other special fields
+        denormalize_map = {
+            'region': 'g2p.region', 'zone': 'g2p.zone',
+            'woreda': 'g2p.woreda', 'kebele': 'g2p.kebele',
+        }
+        for field_name, model_name in denormalize_map.items():
+            if field_name in draft_model_fields: # Check if field exists on draft model
+                field_val = partner_data.get(field_name)
+                if isinstance(field_val, int) and field_val > 0:
+                    # Valid ID - get the name from the related model
+                    obj = self.env[model_name].browse(field_val).exists()
+                    if obj:
+                        final_update_vals[field_name] = obj.name
+                elif isinstance(field_val, str) and field_val.strip():
+                    # Invalid text value - preserve it in the draft record field
+                    final_update_vals[field_name] = field_val
+                elif field_name in partner_data and (field_val is False or field_val == 0 or field_val == ""):
+                    # Field exists in partner_data but is explicitly cleared (False, 0, empty string)
+                    # Clear it in the draft record too
+                    final_update_vals[field_name] = ''
+
+
+        if "gender" in partner_data and partner_data.get("gender") and "gender" in draft_model_fields:
+            gender_val = partner_data.get("gender")
+            if isinstance(gender_val, int):
+                gender_obj = self.env["g2p.gender"].browse(gender_val).exists()
+                if gender_obj:
+                    final_update_vals["gender"] = gender_obj.name 
+            # else:  # It's likely the original invalid text
+
+        # Phone
+        if "phone_number_ids" in partner_data and "phone" in draft_model_fields:
+            phone_numbers = partner_data.get("phone_number_ids", [])
+            phone_no = False
+            if phone_numbers and isinstance(phone_numbers, list) and phone_numbers[0][2]:
+                phone_no = phone_numbers[0][2].get("phone_no", False)
+                if phone_no:
+                    final_update_vals["phone"] = phone_no
+
+        print("=== DEBUG: Final update vals ===")
+        print("Final update vals keys:", list(final_update_vals.keys()))
+        print("Zone in final:", final_update_vals.get('zone'))
+        print("Woreda in final:", final_update_vals.get('woreda'))
+        print("Kebele in final:", final_update_vals.get('kebele'))
+        print("Partner data in final:", final_update_vals.get('partner_data'))
+
+        active_record.write(final_update_vals)
+
+        print("=== DEBUG: After update ===")
+        print("Draft record zone after:", active_record.zone)
+        print("Draft record woreda after:", active_record.woreda)
+        print("Draft record kebele after:", active_record.kebele)
+        
+        # Check the updated partner_data
+        updated_partner_data = json.loads(active_record.partner_data or "{}")
+        print("Updated partner_data zone:", updated_partner_data.get('zone'))
+        print("Updated partner_data woreda:", updated_partner_data.get('woreda'))
+        print("Updated partner_data kebele:", updated_partner_data.get('kebele'))
+
+        print("=== DEBUG: action_save_to_draft END ===")
+            
        
     def view_all_lands(self):
         land_details = []  # List to store details of all lands
@@ -289,73 +482,6 @@ class G2PRespartnerIntegration(models.Model):
             },  # Passing polygon data
         }
         return action
-
-
-    
-    
-    def action_save_to_draft(self, vals):
-
-
-
-        super().action_save_to_draft(vals)
-        context = self.env.context
-        model_name = context.get("active_model")
-        record_id = context.get("active_id")
-        active_record = self.env[model_name].browse(record_id)
-
-        update_vals = {}
-
-        direct_fields = ["region"]
-
-     
-
-        for field in direct_fields:
-            field_val = vals.get(field)
-            if field_val:
-                if field == "region":
-                    region = self.env["g2p.region"].browse(field_val)
-                    if region.exists():
-                        update_vals[field] = region.name
-                    else:
-                        update_vals[field] = ""
-                        update_vals["zone"] = ""
-                        update_vals["woreda"] = ""
-                        update_vals["kebele"] = ""
-                    update_vals[field] = region.name if region.exists() else ""
-                else:
-                    update_vals[field] = field_val
-            else:
-                update_vals[field] = ""
-                update_vals["zone"] = ""
-                update_vals["woreda"] = ""
-                update_vals["kebele"] = ""
-           
-
-
-        direct_fields = ["zone", "woreda", "kebele"]
-        for field in direct_fields:
-            field_val = vals.get(field, "")
-            
-            if field_val:
-                if field == "zone":
-                    zone = self.env["g2p.zone"].browse(field_val)
-                    update_vals[field] = zone.name if zone.exists() else ""
-
-                elif field == "woreda":
-                    woreda = self.env["g2p.woreda"].browse(field_val)
-                    update_vals[field]= woreda.name if woreda.exists() else ""
-
-                elif field == "kebele":
-                    kebele = self.env["g2p.kebele"].browse(field_val)
-                    update_vals[field] = kebele.name if kebele.exists() else ""
-            else:
-                update_vals[field] = ""
-
-
-            # update_vals[field] = vals.get(field, "")
-
-        active_record.write(update_vals)
-
 
 
 
