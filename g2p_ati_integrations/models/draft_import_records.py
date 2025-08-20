@@ -273,14 +273,6 @@ class G2PRespartnerIntegration(models.Model):
         """
         _logger.info("Executing extended action_save_to_draft v4 with robust dependency handling.")
 
-        print("=== DEBUG: action_save_to_draft START ===")
-        print("Input vals keys:", list(vals.keys()))
-        print("Zone in vals:", vals.get('zone'), "Type:", type(vals.get('zone')))
-        print("Woreda in vals:", vals.get('woreda'), "Type:", type(vals.get('woreda')))
-        print("Kebele in vals:", vals.get('kebele'), "Type:", type(vals.get('kebele')))
-        print("Additional info in vals:", vals.get('additional_g2p_info'))
-
-        # 1. Get the active draft record
         context = self.env.context
         model_name = context.get("active_model")
         record_id = context.get("active_id")
@@ -290,10 +282,7 @@ class G2PRespartnerIntegration(models.Model):
         active_record = self.env[model_name].browse(record_id)
         active_record.ensure_one()
 
-        print("=== Before update ===")
-        print("Draft record zone:", active_record.zone)
-        print("Draft record woreda:", active_record.woreda)
-        print("Draft record kebele:", active_record.kebele)
+
 
         # 2. Load the original `partner_data`
         try:
@@ -301,10 +290,7 @@ class G2PRespartnerIntegration(models.Model):
         except (json.JSONDecodeError, TypeError):
             original_partner_data = {}
 
-        print("=== Original partner_data ===")
-        print("Zone in original:", original_partner_data.get('zone'))
-        print("Woreda in original:", original_partner_data.get('woreda'))
-        print("Kebele in original:", original_partner_data.get('kebele'))
+
 
         # Create a working copy to modify
         partner_data = original_partner_data.copy()
@@ -316,15 +302,14 @@ class G2PRespartnerIntegration(models.Model):
         except (json.JSONDecodeError, TypeError):
             additional_info = {}
 
-        print("=== Additional info processing ===")
-        print("Additional info:", additional_info)
+
 
         processed_vals = vals.copy()
         if additional_info:
             for field_name, original_invalid_value in additional_info.items():
                 print(f"Processing {field_name}: original_invalid={original_invalid_value}, vals_value={processed_vals.get(field_name)}")
                 if field_name in processed_vals and not processed_vals[field_name]:
-                    print(f"  -> Restoring {field_name} to {original_invalid_value}")
+                    # print(f"  -> Restoring {field_name} to {original_invalid_value}")
                     processed_vals[field_name] = original_invalid_value
                 else:
                     print(f"  -> NOT restoring {field_name} (has valid value or not in vals)")
@@ -356,7 +341,6 @@ class G2PRespartnerIntegration(models.Model):
         partner_data.update(processed_vals)
 
 
-        print("the context is....", json.dumps(context, indent=4, default=str))
 
         # 6. Handle specific data transformations (name, flags)
         name_parts = [
@@ -426,27 +410,17 @@ class G2PRespartnerIntegration(models.Model):
                 if phone_no:
                     final_update_vals["phone"] = phone_no
 
-        print("=== DEBUG: Final update vals ===")
-        print("Final update vals keys:", list(final_update_vals.keys()))
-        print("Zone in final:", final_update_vals.get('zone'))
-        print("Woreda in final:", final_update_vals.get('woreda'))
-        print("Kebele in final:", final_update_vals.get('kebele'))
-        print("Partner data in final:", final_update_vals.get('partner_data'))
+     
 
         active_record.write(final_update_vals)
 
-        print("=== DEBUG: After update ===")
-        print("Draft record zone after:", active_record.zone)
-        print("Draft record woreda after:", active_record.woreda)
-        print("Draft record kebele after:", active_record.kebele)
+ 
         
         # Check the updated partner_data
         updated_partner_data = json.loads(active_record.partner_data or "{}")
-        print("Updated partner_data zone:", updated_partner_data.get('zone'))
-        print("Updated partner_data woreda:", updated_partner_data.get('woreda'))
-        print("Updated partner_data kebele:", updated_partner_data.get('kebele'))
 
-        print("=== DEBUG: action_save_to_draft END ===")
+
+  
             
        
     def view_all_lands(self):
