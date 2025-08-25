@@ -96,6 +96,7 @@ class G2PImportedRecord(models.Model):
             "given_name": self.given_name,
             "family_name": self.family_name,
             "addl_name": self.gf_name_eng,
+            "gf_name_eng": self.gf_name_eng,
             "phone": self.phone,
             "gender": self.gender,
             "region": self.region,
@@ -106,6 +107,8 @@ class G2PImportedRecord(models.Model):
             "given_name": self.given_name,
             "family_name": self.family_name,
             "addl_name": self.gf_name_eng,
+            "gf_name_eng": self.gf_name_eng,
+
             "phone": self.phone,
             "gender": self.gender,
             "region": self.region,
