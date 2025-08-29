@@ -71,19 +71,36 @@ class G2PImportedRecord(models.Model):
             "context": dict(self.env.context, default_import_record_id=self.id),
         }
 
-    def action_to_draft(self):
-        for record in self:
-            associated_records = (
-                self.env["draft.record"].sudo().search([("import_record_id", "=", record.id)])
-            )
 
+    def action_to_draft(self):
+        
+        for record in self:
+            associated_records = self.env["draft.record"].sudo().search([
+                ("import_record_id", "=", record.id)
+            ])
+
+            # Check for published records
             if any(rec.state == "published" for rec in associated_records):
                 raise ValidationError(
                     _("Cannot set to draft. There are associated records that are already published.")
                 )
 
+            # Only non-admin users are restricted by create_uid
+            if not self.env.user.has_group("g2p_draft_publish.group_int_admin"):
+                unauthorized_records = associated_records.filtered(
+                    lambda rec: rec.create_uid.id != self.env.uid
+                )
+                if unauthorized_records:
+                    raise ValidationError(
+                        _("You cannot remove associated records that were not created by you.")
+                    )
+
+            # Admins or allowed users can delete the records
             associated_records.unlink()
             record.write({"state": "draft"})
+
+
+
 
     def action_move(self):
         self.write({"state": "moved"})
@@ -96,6 +113,7 @@ class G2PImportedRecord(models.Model):
             "given_name": self.given_name,
             "family_name": self.family_name,
             "addl_name": self.gf_name_eng,
+            "gf_name_eng": self.gf_name_eng,
             "phone": self.phone,
             "gender": self.gender,
             "region": self.region,
@@ -106,6 +124,8 @@ class G2PImportedRecord(models.Model):
             "given_name": self.given_name,
             "family_name": self.family_name,
             "addl_name": self.gf_name_eng,
+            "gf_name_eng": self.gf_name_eng,
+
             "phone": self.phone,
             "gender": self.gender,
             "region": self.region,
