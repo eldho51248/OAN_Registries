@@ -1,5 +1,5 @@
 # Part of OpenG2P. See LICENSE file for full copyright and licensing details.
-from odoo import api, fields, models
+from odoo import api, models
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -166,9 +166,7 @@ class G2PDatashareConfigWebsubATI(models.Model):
                 if partner.farmer_id:
                     ati_data['farmer_id'] = partner.farmer_id
 
-                # Add active field to the published data
-                if hasattr(partner, 'active'):
-                    ati_data['active'] = partner.active
+   
 
         return ati_data
 
