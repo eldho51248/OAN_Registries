@@ -1,0 +1,191 @@
+# Part of OpenG2P. See LICENSE file for full copyright and licensing details.
+from odoo import api, models
+import logging
+
+_logger = logging.getLogger(__name__)
+
+
+class G2PDatashareConfigWebsubATI(models.Model):
+    _inherit = "g2p.datashare.config.websub"
+
+    def _get_ati_farmer_data(self, record_data):
+        """
+        Extract ATI farmer fields from the record data and add them to the payload
+        """
+        ati_data = {}
+        
+        # Get the partner record if we have an ID
+        if record_data.get('id'):
+            partner = self.env['res.partner'].browse(record_data['id'])
+            if partner.exists():
+                # Geographic Fields
+                if partner.zone:
+                    ati_data['zone'] = {
+                        'id': partner.zone.id,
+                        'name': partner.zone.name,
+                        'code': partner.zone.code
+                    }
+                if partner.woreda:
+                    ati_data['woreda'] = {
+                        'id': partner.woreda.id,
+                        'name': partner.woreda.name,
+                        'code': partner.woreda.code
+                    }
+                if partner.kebele:
+                    ati_data['kebele'] = {
+                        'id': partner.kebele.id,
+                        'name': partner.kebele.name,
+                        'code': partner.kebele.code
+                    }
+
+                # Name Fields (English)
+                if partner.given_name:
+                    ati_data['given_name'] = partner.given_name
+                if partner.family_name:
+                    ati_data['family_name'] = partner.family_name
+                if partner.gf_name_eng:
+                    ati_data['gf_name_eng'] = partner.gf_name_eng
+
+                # Name Fields (Amharic)
+                if partner.first_name_amh:
+                    ati_data['first_name_amh'] = partner.first_name_amh
+                if partner.family_name_amh:
+                    ati_data['family_name_amh'] = partner.family_name_amh
+                if partner.gf_name_amh:
+                    ati_data['gf_name_amh'] = partner.gf_name_amh
+
+                # Name Fields (Other Languages)
+                if partner.first_name_other:
+                    ati_data['first_name_other'] = partner.first_name_other
+                if partner.family_name_other:
+                    ati_data['family_name_other'] = partner.family_name_other
+                if partner.gf_name_other:
+                    ati_data['gf_name_other'] = partner.gf_name_other
+
+                # Personal Information
+                if partner.has_personal_phone:
+                    ati_data['has_personal_phone'] = partner.has_personal_phone
+                if partner.has_national_id:
+                    ati_data['has_national_id'] = partner.has_national_id
+                if partner.birthdate_ec:
+                    ati_data['birthdate_ec'] = partner.birthdate_ec
+                if partner.primary_Language:
+                    ati_data['primary_language'] = {
+                        'id': partner.primary_Language.id,
+                        'name': partner.primary_Language.name,
+                        'code': partner.primary_Language.code
+                    }
+                if partner.is_farmer:
+                    ati_data['is_farmer'] = partner.is_farmer
+                if partner.farming_type:
+                    ati_data['farming_type'] = partner.farming_type
+
+              
+                # Access to Resources
+                if partner.crop_water_sources:
+                    ati_data['crop_water_sources'] = [
+                        {'id': ws.id, 'name': ws.name, 'code': ws.code}
+                        for ws in partner.crop_water_sources
+                    ]
+                if partner.livestock_water_sources:
+                    ati_data['livestock_water_sources'] = [
+                        {'id': ws.id, 'name': ws.name, 'code': ws.code}
+                        for ws in partner.livestock_water_sources
+                    ]
+                if partner.access_to_machinery:
+                    ati_data['access_to_machinery'] = partner.access_to_machinery
+                if partner.type_of_machinery:
+                    ati_data['type_of_machinery'] = [
+                        {'id': m.id, 'name': m.name, 'code': m.code}
+                        for m in partner.type_of_machinery
+                    ]
+                if partner.irrigation_types:
+                    ati_data['irrigation_types'] = partner.irrigation_types
+                if partner.has_finance_access:
+                    ati_data['has_finance_access'] = partner.has_finance_access
+                if partner.finance_accesses:
+                    ati_data['finance_accesses'] = [
+                        {'id': fa.id, 'name': fa.name, 'code': fa.code}
+                        for fa in partner.finance_accesses
+                    ]
+                if partner.other_farmer_in_hh:
+                    ati_data['other_farmer_in_hh'] = partner.other_farmer_in_hh
+
+                # Socio-economic Data
+                if partner.martial_status:
+                    ati_data['martial_status'] = partner.martial_status
+                if partner.education:
+                    ati_data['education'] = partner.education
+                if partner.hh_is_household_head:
+                    ati_data['hh_is_household_head'] = partner.hh_is_household_head
+                if partner.hh_income_type:
+                    ati_data['hh_income_type'] = [
+                        {'id': it.id, 'name': it.name, 'code': it.code}
+                        for it in partner.hh_income_type
+                    ]
+                if partner.size_of_family:
+                    ati_data['size_of_family'] = partner.size_of_family
+                if partner.number_of_children_in_family:
+                    ati_data['number_of_children_in_family'] = partner.number_of_children_in_family
+                if partner.number_of_males_in_family:
+                    ati_data['number_of_males_in_family'] = partner.number_of_males_in_family
+                if partner.number_of_females_in_family:
+                    ati_data['number_of_females_in_family'] = partner.number_of_females_in_family
+                if partner.other_family_member_own_land:
+                    ati_data['other_family_member_own_land'] = partner.other_family_member_own_land
+
+                # Land Information
+                if partner.land_information_ids:
+                    ati_data['land_information'] = []
+                    for land in partner.land_information_ids:
+                        land_data = {
+                            'id': land.id,
+                            'total_land_area': land.total_land_area,
+                            'land_id': land.land_id,
+                            'ownership_type': land.ownership_type,
+                
+                        }
+
+                      
+                        ati_data['land_information'].append(land_data)
+
+               
+                # Computed Fields
+                if partner.total_land_area:
+                    ati_data['total_land_area'] = partner.total_land_area
+                if partner.total_land_rent_area:
+                    ati_data['total_land_rent_area'] = partner.total_land_rent_area
+                if partner.total_land_owned_area:
+                    ati_data['total_land_owned_area'] = partner.total_land_owned_area
+                if partner.total_land_crop_sharing_area:
+                    ati_data['total_land_crop_sharing_area'] = partner.total_land_crop_sharing_area
+                if partner.land_ownership:
+                    ati_data['land_ownership'] = partner.land_ownership
+                if partner.age_int:
+                    ati_data['age_int'] = partner.age_int
+                if partner.farmer_id:
+                    ati_data['farmer_id'] = partner.farmer_id
+
+   
+
+        return ati_data
+
+    def publish_event_websub(self, data):
+        """
+        Override the publish_event_websub method to include ATI farmer data
+        """
+        # Get the original data
+        original_data = data.copy()
+        
+        # Add ATI farmer data to the payload
+        ati_data = self._get_ati_farmer_data(original_data)
+        if ati_data:
+            # Merge ATI data into the original data
+            if 'ati_farmer_data' not in original_data:
+                original_data['ati_farmer_data'] = {}
+            original_data['ati_farmer_data'].update(ati_data)
+            
+            _logger.info("Added ATI farmer data to WebSub payload: %s", ati_data.keys())
+        
+        # Call the parent method with enhanced data
+        return super().publish_event_websub(original_data)
