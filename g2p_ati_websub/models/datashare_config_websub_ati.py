@@ -1,6 +1,7 @@
 # Part of OpenG2P. See LICENSE file for full copyright and licensing details.
 from odoo import api, models
 import logging
+import base64
 
 _logger = logging.getLogger(__name__)
 
@@ -8,19 +9,28 @@ _logger = logging.getLogger(__name__)
 class G2PDatashareConfigWebsubATI(models.Model):
     _inherit = "g2p.datashare.config.websub"
 
+    
     def _get_ati_farmer_data(self, record_data):
         """
         Extract ATI farmer fields from the record data and add them to the payload
         """
         ati_data = {}
         
+        # Handle different data structures - check if data is wrapped in groupData
+        partner_data = record_data
+        if 'groupData' in record_data:
+            partner_data = record_data['groupData']
+            _logger.debug("ATI WebSub - Data wrapped in groupData, extracting partner data")
+        
         # Get the partner record if we have an ID
-        if record_data.get('id'):
-            partner = self.env['res.partner'].browse(record_data['id'])
+        partner_id = partner_data.get('id') if partner_data else None
+        if partner_id:
+            _logger.debug("ATI WebSub - Extracting ATI data for partner ID: %s", partner_id)
+            partner = self.env['res.partner'].browse(partner_id)
             if partner.exists():
                 # Geographic Fields
                 if partner.zone:
-                    ati_data['zone'] = {
+                    ati_data['zone'] = {    
                         'id': partner.zone.id,
                         'name': partner.zone.name,
                         'code': partner.zone.code
@@ -79,6 +89,18 @@ class G2PDatashareConfigWebsubATI(models.Model):
                     ati_data['is_farmer'] = partner.is_farmer
                 if partner.farming_type:
                     ati_data['farming_type'] = partner.farming_type
+
+                # Phone Numbers
+                if partner.phone_number_ids:
+                    ati_data['phone_numbers'] = []
+                    for phone in partner.phone_number_ids:
+                        phone_data = {
+                            'id': phone.id,
+                            'phone_no': phone.phone_no,
+                            'phone_sanitized': phone.phone_sanitized,
+                            'phone_type': phone.phone_type
+                        }
+                        ati_data['phone_numbers'].append(phone_data)
 
               
                 # Access to Resources
@@ -143,8 +165,23 @@ class G2PDatashareConfigWebsubATI(models.Model):
                             'total_land_area': land.total_land_area,
                             'land_id': land.land_id,
                             'ownership_type': land.ownership_type,
-                
+                            'polygon_data': land.polygon_data if hasattr(land, 'polygon_data') else None,
+                            'current_land_use': land.current_land_use if hasattr(land, 'current_land_use') else None,
+                            'soil_fertility': land.soil_fertility if hasattr(land, 'soil_fertility') else None,
+                            'means_of_acquisition': land.means_of_acquisition if hasattr(land, 'means_of_acquisition') else None,
+                            'year_of_acquisition': land.year_of_acquisition.isoformat() if hasattr(land, 'year_of_acquisition') and land.year_of_acquisition else None,
                         }
+
+                        # Add land certificate binary data if available
+                        if land.land_certificate:
+                            try:
+                                if land.land_certificate.data:
+                                    land_data['land_certificate'] = base64.b64encode(land.land_certificate.data).decode('utf-8') if isinstance(land.land_certificate.data, bytes) else land.land_certificate.data
+                                else:
+                                    land_data['land_certificate'] = None
+                            except Exception as e:
+                                _logger.warning("Could not retrieve binary data for land certificate %s: %s", land.land_certificate.id, str(e))
+                                land_data['land_certificate'] = None
 
                       
                         ati_data['land_information'].append(land_data)
@@ -166,16 +203,59 @@ class G2PDatashareConfigWebsubATI(models.Model):
                 if partner.farmer_id:
                     ati_data['farmer_id'] = partner.farmer_id
 
-   
+                # Add active field to the published data
+                if hasattr(partner, 'active'):
+                    ati_data['active'] = partner.active
 
         return ati_data
+
+    
+
+
 
     def publish_event_websub(self, data):
         """
         Override the publish_event_websub method to include ATI farmer data
+        Only publish records with state = 'approved'
         """
         # Get the original data
         original_data = data.copy()
+        
+        _logger.info(
+            "ATI WebSub - Processing data structure. Keys: %s, Has groupData: %s",
+            list(original_data.keys()) if isinstance(original_data, dict) else "Not a dict",
+            'groupData' in original_data if isinstance(original_data, dict) else False
+        )
+        
+        # Check if partner is in approved state
+        partner_data = original_data
+        if 'groupData' in original_data:
+            partner_data = original_data['groupData']
+        
+        partner_id = partner_data.get('id') if partner_data else None
+        if partner_id:
+            partner = self.env['res.partner'].browse(partner_id)
+            if partner.exists():
+                partner_state = getattr(partner, 'state', None)
+                _logger.info(
+                    "ATI WebSub - Partner state check: ID=%s, State=%s, Required=approved",
+                    partner_id, partner_state
+                )
+                
+                if partner_state != 'approved':
+                    _logger.info(
+                        "ATI WebSub - SKIPPING PUBLISH: Partner ID %s state is '%s', not 'approved'",
+                        partner_id, partner_state
+                    )
+                    return  # Skip publishing if not approved
+                else:
+                    _logger.info(
+                        "ATI WebSub - PROCEEDING WITH PUBLISH: Partner ID %s is approved",
+                        partner_id
+                    )
+            else:
+                _logger.warning("ATI WebSub - Partner ID %s does not exist, skipping publish", partner_id)
+                return
         
         # Add ATI farmer data to the payload
         ati_data = self._get_ati_farmer_data(original_data)
@@ -185,7 +265,9 @@ class G2PDatashareConfigWebsubATI(models.Model):
                 original_data['ati_farmer_data'] = {}
             original_data['ati_farmer_data'].update(ati_data)
             
-            _logger.info("Added ATI farmer data to WebSub payload: %s", ati_data.keys())
+            _logger.info("ATI WebSub - Added ATI farmer data to WebSub payload: %s", list(ati_data.keys()))
+        else:
+            _logger.warning("ATI WebSub - No ATI farmer data extracted from payload")
         
         # Call the parent method with enhanced data
         return super().publish_event_websub(original_data)
