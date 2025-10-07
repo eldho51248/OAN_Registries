@@ -29,6 +29,12 @@ class G2PDatashareConfigWebsubATI(models.Model):
             partner = self.env['res.partner'].browse(partner_id)
             if partner.exists():
                 # Geographic Fields
+                if partner.region:
+                    ati_data['region'] = {    
+                        'id': partner.region.id,
+                        'name': partner.region.name,
+                        'code': partner.region.code
+                    }
                 if partner.zone:
                     ati_data['zone'] = {    
                         'id': partner.zone.id,
