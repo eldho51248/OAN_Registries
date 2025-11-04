@@ -19,6 +19,8 @@ class G2PLandInformation(models.Model):
     document_url = fields.Char(related="land_certificate.url")
     document_name = fields.Char(related="land_certificate.name")
     document_id = fields.Integer(related="land_certificate.id")
+    land_kebele = fields.Many2one('g2p.kebele', string="Land Kebele is in")
+
 
     @api.onchange("total_land_area")
     def _onchange_total_land_area(self):
