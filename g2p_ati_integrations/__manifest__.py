@@ -19,7 +19,7 @@
         "wizards/add_followers.xml",
         "wizards/assign_records.xml",
         "wizards/change_kanban_state.xml",
-        "wizards/rejection.xml",
+        "views/land.xml"
     ],
     "assets": {
         "web.assets_backend": [
@@ -29,7 +29,7 @@
             # "g2p_ati_integrations/static/src/my_map_template.xml",
         ],
     },
-    "author": "",
+    "author": "OpenG2P",
     "website": "https://openg2p.org",
     "installable": True,
     "application": True,

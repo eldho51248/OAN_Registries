@@ -3,6 +3,8 @@ import json
 from datetime import date
 
 from odoo import models
+import logging
+from odoo.exceptions import ValidationError
 
 
 class OdkImportInherit(models.Model):
@@ -58,7 +60,7 @@ class OdkImportInherit(models.Model):
         ]
         return json_data
 
-    def process_land_ids(self, json_data, is_member):
+    def process_land_ids(self, json_data, is_member, other_json):
         land_information_ids = []
         supporting_documents_ids = []
         if json_data["land_information_ids"] is not None:
@@ -76,6 +78,21 @@ class OdkImportInherit(models.Model):
                     ),
                     "land_id": land_info.get("hh_member_land_id" if is_member else "land_id", 0),
                 }
+
+                # Add land_kebele from within land_info data
+                land_kebele = land_info.get("hh_member_land_kebele" if is_member else "land_kebele")
+                if land_kebele:
+                    kebele_id = self.process_many2one_field("g2p.kebele", land_kebele)
+                    if kebele_id:
+                        if kebele_id == "other":
+                            # Store other land kebele value
+                            other_field = "hh_member_other_land_kebele" if is_member else "other_land_kebele"
+                            other_land_kebele = land_info.get(other_field)
+                            if other_land_kebele:
+                                other_json["Land Kebele"] = other_land_kebele
+                        else:
+                            land_info_dict["land_kebele"] = kebele_id
+
                 land_certificate = land_info.get(
                     "hh_member_land_certificate" if is_member else "land_certificate", None
                 )
@@ -246,6 +263,9 @@ class OdkImportInherit(models.Model):
         vals["farming_type"] = individual.get("farming_type")
 
         vals["martial_status"] = individual.get("martial_status")
+        vals["is_psnp_user"] = individual.get("is_psnp_user")
+      
+
         vals["education"] = individual.get("education")
 
         vals["size_of_family"] = individual.get("size_of_family")
@@ -259,6 +279,8 @@ class OdkImportInherit(models.Model):
                 other_json["House Hold Income"] = individual.get("other_income_type")
                 source_of_income_ids.remove("other")
             vals["hh_income_type"] = [(6, 0, source_of_income_ids)]
+
+
 
     def process_membership(self, individual, vals, other_json):
         # MEMBERSHIP
@@ -291,11 +313,11 @@ class OdkImportInherit(models.Model):
 
         vals["role_in_farmer_cluster"] = individual.get("role_in_farmer_cluster")
 
-    def process_land_crop_livestock_information(self, individual, vals, is_member):
+    def process_land_crop_livestock_information(self, individual, vals, is_member, other_json):
         # LAND INFORMATION
         if "land_information_ids" in individual:
             vals["land_information_ids"], vals["supporting_documents_ids"] = self.process_land_ids(
-                individual, is_member
+                individual, is_member, other_json
             )
 
         # CROP INFORMATION
@@ -406,7 +428,7 @@ class OdkImportInherit(models.Model):
         self.process_basic_information(individual, vals, other_json)
 
         self.process_membership(individual, vals, other_json)
-        self.process_land_crop_livestock_information(individual, vals, is_member)
+        self.process_land_crop_livestock_information(individual, vals, is_member,other_json )
         self.process_agriculture_resource_finance(individual, vals)
 
         individual = self.process_reg_ids(individual, "Farmer ODK ACK ID", "odk_reference_id")
@@ -443,16 +465,19 @@ class OdkImportInherit(models.Model):
         vals["family_name"] = family_name
         vals["gf_name_eng"] = gf_name_eng
         vals["name"] = member.get("name")
+        
         if member.get("name_amharic") and member.get("name_amharic").strip():
             fn, mn, ln = member.get("name_amharic").split()
             vals["first_name_amh"] = fn
             vals["family_name_amh"] = mn
             vals["gf_name_amh"] = ln
+        
         if member.get("name_other") and member.get("name_other").strip():
             fn, mn, ln = member.get("name_other").split()
             vals["first_name_other"] = fn
             vals["family_name_other"] = mn
             vals["gf_name_other"] = ln
+        
         vals["gender"] = member.get("gender")
         vals["birthdate"] = member.get("birthdate")
 
@@ -617,6 +642,7 @@ class OdkImportInherit(models.Model):
             "rid",
             "other_woreda",
             "other_kebele",
+            "other_land_kebele",
             "phone_ids",
             "head_registered",
             "member_registered",  # Added to fix the error
@@ -824,9 +850,11 @@ class OdkImportInherit(models.Model):
             #     return []
         else:
             individual_data = self.get_individual_data(mapped_json, False, enumerator)
+         
             individual_data = self.handle_household_head_no(mapped_json, individual_data)
 
             mapped_json["land_information_ids"] = individual_data.get("land_information_ids", False)
+            mapped_json["is_psnp_user"] = individual_data.get("is_psnp_user", False)
             mapped_json["crop_information_ids"] = individual_data.get("crop_information_ids", False)
             mapped_json["livestock_information_ids"] = individual_data.get("livestock_information_ids", False)
             mapped_json["hh_income_type"] = individual_data.get("hh_income_type", False)

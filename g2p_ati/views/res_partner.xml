@@ -7,16 +7,25 @@
 			<xpath expr="//form" position="attributes">
 				<attribute name="js_class">res_partner_other_group_string</attribute>
 			</xpath>
+
+			
+
+
 			<xpath expr="//form/sheet" position="before">
 				<header>
+					
+					<field name="state" widget="statusbar" readonly="1" statusbar_visible="draft,update_requested,approved" />
+
+
 					<button
                         name="state_approve"
-                        invisible="state!='draft'"
                         string="Approve"
                         type="object"
                         class="btn-success"
                         groups="g2p_ati.group_data_validator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
+						invisible="state!='draft'"
                     />
+
 					<button
                         name="state_reject"
                         invisible="state!='draft'"
@@ -28,15 +37,16 @@
 
 					<button
                         name="set_to_draft"
-                        invisible="state!='rejected'"
+                        invisible="state=='draft'"
                         string="Set To Draft"
                         type="object"
                         class="btn-info"
                         groups="g2p_ati.group_data_validator,g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
                     />
-					<field name="state" widget="statusbar" readonly="1" statusbar_visible="draft,update_requested,approved" />
 				</header>
 			</xpath>
+
+
 			<xpath expr="//field[@name='given_name']" position="attributes">
 				<attribute name="invisible">1</attribute>
 			</xpath>
@@ -185,6 +195,7 @@
 						<field name="hh_income_type" create="False" widget="many2many_tags" invisible="is_farmer!='yes'" />
 						<field name="education" invisible="is_farmer!='yes'" />
 						<field name="martial_status" invisible="is_farmer!='yes'" />
+						<field name="is_psnp_user"/>
 
 						<separator string="Household Information" colspan="4" />
 
@@ -282,6 +293,7 @@
 							<field name="ownership_type" />
 							<field name="total_land_area" />
 							<field name="land_id" />
+							<field name="land_kebele"/>
 							<field name="land_certificate" />
 							<field name="document_slug" column_invisible="1" />
 							<field name="document_mimetype" column_invisible="1" />

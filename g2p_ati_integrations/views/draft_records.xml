@@ -163,24 +163,22 @@
         </field>
     </record>
 
-    <record id="res_partner_hide_publish_reject_buttons" model="ir.ui.view">
+    <!-- <record id="res_partner_hide_publish_reject_buttons" model="ir.ui.view">
         <field name="name">res.partner.form.hide.buttons</field>
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="g2p_registry_individual.view_individuals_form" />
         <field name="arch" type="xml">
 
-            <!-- Hide Approve Button -->
             <xpath expr="//header/button[@name='state_approve']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
 
-            <!-- Hide Reject Button -->
             <xpath expr="//header/button[@name='state_reject']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
 
         </field>
-    </record>
+    </record> -->
 
 
     <record id="action_draft_imported_farmer_record" model="ir.actions.act_window">
