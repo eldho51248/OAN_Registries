@@ -80,11 +80,9 @@
                         <field name="zone" />
                         <field name="woreda" />
                         <field name="kebele" />
-
                     </group>
                     <group>
                         <field name="region" />
-
                     </group>
                     </group>
                 </sheet>

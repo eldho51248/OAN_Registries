@@ -4,6 +4,21 @@ from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
+class ImportedRecordSource(models.Model):
+    _name = 'g2p.imported.record.source'
+    _description = 'Imported Record Source'
+    _order = 'name'
+
+    name = fields.Char(required=True, translate=True)
+    color = fields.Integer('Color Index', default=10)
+    active = fields.Boolean(default=True)
+
+    _sql_constraints = [
+        ('name_uniq', 'unique (name)', "Source name already exists!"),
+    ]
+
+
+
 class G2PImportedRecord(models.Model):
     _name = "g2p.imported.record"
     _description = "Imported Record"
@@ -25,7 +40,7 @@ class G2PImportedRecord(models.Model):
     zone = fields.Char(string="Zone")
     woreda = fields.Char(string="Woreda")
     kebele = fields.Char(string="Kebele")
-
+    source = fields.Json(string="Source Information", help="Stores the source information in JSON format")
 
     assigned_region = fields.Many2one(
         "g2p.region", string="Regions Assigned"
