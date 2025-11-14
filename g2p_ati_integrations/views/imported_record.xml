@@ -125,9 +125,9 @@
                         <field name="phone" />
                         <field name="gender" />
                     </group>
+
                     <group>
                         <field name="region" />
-
                     </group>
 
 
