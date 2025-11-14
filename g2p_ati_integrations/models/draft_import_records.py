@@ -133,15 +133,6 @@ class G2PDraftRecord(models.Model):
     kebele = fields.Char(string="Kebele")
     validation_status = fields.Many2one("g2p.validation.status")
     import_record_id = fields.Many2one("g2p.imported.record", string="Import Record")
-    source = fields.Json(string="Source Information", help="Stores the source information in JSON format", compute="_compute_source", store=True)
-    
-    @api.depends('import_record_id.source')
-    def _compute_source(self):
-        for record in self:
-            if record.import_record_id and record.import_record_id.source:
-                record.source = record.import_record_id.source
-            else:
-                record.source = {'source': 'manual', 'id': False}
 
     @api.model
     def create(self, vals):
@@ -197,9 +188,9 @@ class G2PDraftRecord(models.Model):
             valid_data["db_import"] = "yes"
             valid_data["name"] = f"{given_name} {family_name} {gf_name_en}".upper()
             
-            # Add source information if available
-            if self.source:
-                valid_data["source"] = self.source
+            # Add source information from import record if available
+            if self.import_record_id and self.import_record_id.source:
+                valid_data["source"] = self.import_record_id.source
             
             # Create the partner
             partner = res_partner_model.sudo().create(valid_data)
