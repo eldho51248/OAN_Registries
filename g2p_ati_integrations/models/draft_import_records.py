@@ -133,6 +133,15 @@ class G2PDraftRecord(models.Model):
     kebele = fields.Char(string="Kebele")
     validation_status = fields.Many2one("g2p.validation.status")
     import_record_id = fields.Many2one("g2p.imported.record", string="Import Record")
+    source = fields.Json(string="Source Information", help="Stores the source information in JSON format", compute="_compute_source", store=True)
+    
+    @api.depends('import_record_id.source')
+    def _compute_source(self):
+        for record in self:
+            if record.import_record_id and record.import_record_id.source:
+                record.source = record.import_record_id.source
+            else:
+                record.source = {'source': 'manual', 'id': False}
 
     @api.model
     def create(self, vals):
@@ -187,8 +196,21 @@ class G2PDraftRecord(models.Model):
         if valid_data:
             valid_data["db_import"] = "yes"
             valid_data["name"] = f"{given_name} {family_name} {gf_name_en}".upper()
-
-            res_partner_model.sudo().create(valid_data)
+            
+            # Add source information if available
+            if self.source:
+                valid_data["source"] = self.source
+            
+            # Create the partner
+            partner = res_partner_model.sudo().create(valid_data)
+            
+            # If there's an import record, link it to the new partner
+            if self.import_record_id:
+                self.import_record_id.write({
+                    'state': 'moved',
+                    'partner_id': partner.id
+                })
+                
             self.write({"state": "published"})
 
             self._notify_validators()
@@ -248,6 +270,7 @@ class G2PRespartnerIntegration(models.Model):
     is_orphan = fields.Selection([("yes", "Yes"), ("no", "No")])
     asigned_region = fields.Many2one("g2p.region")
     language_skills = fields.Many2many("g2p.lang", string="Languages")
+    source = fields.Json(string="Source Information", help="Stores the source information in JSON format")
 
 
 
