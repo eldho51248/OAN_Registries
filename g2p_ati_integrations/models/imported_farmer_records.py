@@ -41,31 +41,6 @@ class G2PImportedRecord(models.Model):
     woreda = fields.Char(string="Woreda")
     kebele = fields.Char(string="Kebele")
     source = fields.Json(string="Source Information", help="Stores the source information in JSON format")
-    source_ids = fields.Many2many('g2p.imported.record.source', compute='_compute_source_ids', string='Sources', store=False)
-    
-    @api.depends('source')
-    def _compute_source_ids(self):
-        source_model = self.env['g2p.imported.record.source']
-        for record in self:
-            source_ids = []
-            if record.source:
-                # Handle both single source and list of sources
-                sources = [record.source] if isinstance(record.source, dict) else record.source
-                if not isinstance(sources, list):
-                    sources = [sources]
-                    
-                for src in sources:
-                    if not src:
-                        continue
-                    source_name = src.get('source', 'Unknown')
-                    # Find or create source record
-                    source = source_model.search([('name', '=', source_name)], limit=1)
-                    if not source:
-                        source = source_model.create({'name': source_name})
-                    source_ids.append(source.id)
-            
-            record.source_ids = [(6, 0, source_ids)] if source_ids else False
-
 
     assigned_region = fields.Many2one(
         "g2p.region", string="Regions Assigned"

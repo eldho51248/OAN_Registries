@@ -76,7 +76,6 @@ class G2PLandInformation(models.Model):
                         land.integration_status = "invalid"
                         continue  # Skip this record and proceed with the next one
 
-                # Commit changes to the database after processing a batch
                 self.env.cr.commit()
 
         except UserError as e:
@@ -133,6 +132,7 @@ class G2PDraftRecord(models.Model):
     kebele = fields.Char(string="Kebele")
     validation_status = fields.Many2one("g2p.validation.status")
     import_record_id = fields.Many2one("g2p.imported.record", string="Import Record")
+    source = fields.Json(related="import_record_id.source")
 
     @api.model
     def create(self, vals):
@@ -157,8 +157,6 @@ class G2PDraftRecord(models.Model):
             "view_id": self.env.ref("g2p_ati_integrations.change_state_wizard_view").id,
             "target": "new",
         }
-
- 
 
     def action_publish(self):
         self.ensure_one()
@@ -188,39 +186,18 @@ class G2PDraftRecord(models.Model):
             valid_data["db_import"] = "yes"
             valid_data["name"] = f"{given_name} {family_name} {gf_name_en}".upper()
             
-            # Add source information from import record if available
             if self.import_record_id and self.import_record_id.source:
                 valid_data["source"] = self.import_record_id.source
-            
-            # Create the partner
-            partner = res_partner_model.sudo().create(valid_data)
-            
-            # If there's an import record, link it to the new partner
-            if self.import_record_id:
-                self.import_record_id.write({
-                    'state': 'moved',
-                    'partner_id': partner.id
-                })
-                
+            res_partner_model.sudo().create(valid_data)
             self.write({"state": "published"})
 
             self._notify_validators()
 
         else:
             raise ValueError("No valid data found to create a partner record.")
-
-    
     def _process_json_data(self, json_data):
-        
-     
-        
         context_data, additional_g2p_info = super()._process_json_data(json_data)
-
-   
-
         context_data["default_gf_name_eng"] = self.gf_name_eng
-        
-
         additional_fields = ['zone', 'woreda', 'kebele']
         for field_name in additional_fields:
             if field_name in json_data:
@@ -321,16 +298,14 @@ class G2PRespartnerIntegration(models.Model):
         processed_vals = vals.copy()
         if additional_info:
             for field_name, original_invalid_value in additional_info.items():
-                print(f"Processing {field_name}: original_invalid={original_invalid_value}, vals_value={processed_vals.get(field_name)}")
+                # print(f"Processing {field_name}: original_invalid={original_invalid_value}, vals_value={processed_vals.get(field_name)}")
                 if field_name in processed_vals and not processed_vals[field_name]:
                     # print(f"  -> Restoring {field_name} to {original_invalid_value}")
                     processed_vals[field_name] = original_invalid_value
                 else:
                     print(f"  -> NOT restoring {field_name} (has valid value or not in vals)")
 
-        # 4. *** REVISED: Handle Cascading Dependency Invalidation ***
-        # This logic now correctly supports both initial setup and changes.
-        
+   
         # Check if region changed. If so, clear children in our temporary data copy.
         # The final update from processed_vals will restore them if they were set in the same wizard transaction.
         if processed_vals.get('region') != partner_data.get('region'):

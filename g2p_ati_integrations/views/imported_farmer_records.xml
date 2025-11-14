@@ -18,7 +18,6 @@
                 <field name="zone" />
                 <field name="woreda" />
                 <field name="kebele" />
-                <field name="source_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
             </tree>
         </field>
     </record>
@@ -81,7 +80,6 @@
                         <field name="zone" />
                         <field name="woreda" />
                         <field name="kebele" />
-                        <field name="source_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                     </group>
                     <group>
                         <field name="region" />
