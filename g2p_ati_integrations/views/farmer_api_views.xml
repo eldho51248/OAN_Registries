@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="view_g2p_farmer_api_request_tree" model="ir.ui.view">
+        <field name="name">g2p.farmer.api.request.tree</field>
+        <field name="model">g2p.farmer.api.request</field>
+        <field name="priority" eval="16"/>
+        <field name="arch" type="xml">
+            <tree create="false" delete="false" edit="false">
+                <field name="name"/>
+                <field name="correlation_id"/>
+                <field name="bg_request_id"/>
+                <field name="process_status"/>
+                <field name="response_status_code"/>
+                <field name="attempt_count"/>
+                <field name="completed_at"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_g2p_farmer_api_request_form" model="ir.ui.view">
+        <field name="name">g2p.farmer.api.request.form</field>
+        <field name="model">g2p.farmer.api.request</field>
+        <field name="priority" eval="16"/>
+        <field name="arch" type="xml">
+            <form string="Farmer API Request">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="correlation_id" readonly="1"/>
+                            <field name="bg_request_id" readonly="1"/>
+                            <field name="process_status" readonly="1"/>
+                            <field name="response_status_code" readonly="1"/>
+                            <field name="attempt_count" readonly="1"/>
+                            <field name="processed_by" readonly="1"/>
+                            <field name="error_message" readonly="1"/>
+                            <field name="completed_at" readonly="1"/>
+                        </group>
+
+                        <group string="Batches">
+                            <field name="batch_ids">
+                                <tree editable="false" create="false" delete="false">
+                                    <field name="batch_number"/>
+                                    <field name="status"/>
+                                    <field name="offset"/>
+                                    <field name="limit"/>
+                                    <field name="total_records"/>
+                                    <field name="retry_count"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Request Payload">
+                            <field name="request_data" nolabel="1"/>
+                        </page>
+                        <page string="Response Payload">
+                            <field name="response_data" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_g2p_farmer_api_batch_tree" model="ir.ui.view">
+        <field name="name">g2p.farmer.api.batch.tree</field>
+        <field name="model">g2p.farmer.api.batch</field>
+        <field name="priority" eval="16"/>
+        <field name="arch" type="xml">
+            <tree create="false" delete="false" edit="false">
+                <field name="name"/>
+                <field name="request_id"/>
+                <field name="batch_number"/>
+                <field name="status"/>
+                <field name="offset"/>
+                <field name="limit"/>
+                <field name="total_records"/>
+                <field name="retry_count"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_g2p_farmer_api_batch_form" model="ir.ui.view">
+        <field name="name">g2p.farmer.api.batch.form</field>
+        <field name="model">g2p.farmer.api.batch</field>
+        <field name="priority" eval="16"/>
+        <field name="arch" type="xml">
+            <form string="Farmer API Batch">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="request_id" readonly="1"/>
+                            <field name="batch_number" readonly="1"/>
+                            <field name="status"/>
+                            <field name="retry_count"/>
+                        </group>
+
+                        <group string="Slice">
+                            <field name="offset" readonly="1"/>
+                            <field name="limit" readonly="1"/>
+                            <field name="total_records" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <group string="Error Details">
+                        <field name="error_response" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_g2p_farmer_api_request" model="ir.actions.act_window">
+        <field name="name">Farmer API Requests</field>
+        <field name="res_model">g2p.farmer.api.request</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="menu_g2p_farmer_api_request"
+        name="Farmer API Requests"
+        parent="g2p_registry_base.g2p_configuration_menu_root"
+        sequence="500"
+        action="action_g2p_farmer_api_request"
+    />
+
+
+    <record id="action_g2p_farmer_api_batch" model="ir.actions.act_window">
+        <field name="name">Farmer API Batches</field>
+        <field name="res_model">g2p.farmer.api.batch</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem
+        id="menu_g2p_farmer_api_batch"
+        name="Farmer API Batches"
+        parent="menu_g2p_farmer_api_request"
+        sequence="910"
+        action="action_g2p_farmer_api_batch"
+    />
+
+
+</odoo>
