@@ -5,7 +5,7 @@
     "category": "tools",
     "description": """
 """,
-    "depends": ["g2p_draft_publish", "g2p_ati", "g2p_leaflet_map", "g2p_social_registry", "g2p_registry_documents", "g2p_registry_base"],
+    "depends": ["g2p_draft_publish", "g2p_ati", "g2p_leaflet_map"],
     "data": [
         "security/rules.xml",
         "security/ir.model.access.csv",
