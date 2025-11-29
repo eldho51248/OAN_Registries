@@ -185,16 +185,17 @@ class G2PFarmer(models.Model):
     land_information_ids = fields.One2many("g2p.land.information", "partner_id", string="Land Information")
     crop_information_ids = fields.One2many("g2p.crop.information", "partner_id", string="Crop Information")
 
-    total_land_area = fields.Float(default=0.0, readonly=True, compute="_compute_total_land_area", store=True)
+    total_land_area = fields.Float(default=0.0, digits=(16, 6), readonly=True, compute="_compute_total_land_area", store=True)
 
     total_land_rent_area = fields.Float(
-        default=0.0, string="Total Rented Land", readonly=True, compute="_compute_total_land_area", store=True
+        default=0.0, string="Total Rented Land", digits=(16, 6), readonly=True, compute="_compute_total_land_area", store=True
     )
     total_land_owned_area = fields.Float(
-        default=0.0, string="Total Owned Land", readonly=True, compute="_compute_total_land_area", store=True
+        default=0.0, string="Total Owned Land", digits=(16, 6), readonly=True, compute="_compute_total_land_area", store=True
     )
     total_land_crop_sharing_area = fields.Float(
         default=0.0,
+        digits=(16, 6),
         string="Total Crop Sharing Land",
         readonly=True,
         compute="_compute_total_land_area",
