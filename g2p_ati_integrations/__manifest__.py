@@ -5,7 +5,7 @@
     "category": "tools",
     "description": """
 """,
-    "depends": ["g2p_draft_publish", "g2p_ati", "g2p_leaflet_map"],
+    "depends": ["g2p_draft_publish", "g2p_ati", "g2p_leaflet_map", "base"],
     "data": [
         "security/rules.xml",
         "security/ir.model.access.csv",
@@ -16,10 +16,12 @@
         "views/imported_farmer_records.xml",
         "views/imported_record.xml",
         "views/show_map.xml",
+        "views/farmer_api_views.xml",
         "wizards/add_followers.xml",
         "wizards/assign_records.xml",
         "wizards/change_kanban_state.xml",
         "views/land.xml"
+
     ],
     "assets": {
         "web.assets_backend": [
