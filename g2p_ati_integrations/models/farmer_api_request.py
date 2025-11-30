@@ -8,9 +8,9 @@ class G2PFarmerAPIRequest(models.Model):
 
     name = fields.Char(
         string="Name",
-        compute="_compute_name",
-        store=True,
+        readonly=True,
     )
+
     bg_request_id = fields.Char(
         string="Background Request ID",
         index=True,
@@ -40,20 +40,16 @@ class G2PFarmerAPIRequest(models.Model):
         string="Request Payload",
         required=True,
     )
-    response_data = fields.Json(
-        string="Response Payload",
-    )
+    # response_data = fields.Json(
+    #     string="Response Payload",
+    # )
 
-    @api.depends("correlation_id", "bg_request_id")
-    def _compute_name(self):
-        for rec in self:
-            if rec.correlation_id:
-                rec.name = _("Req %(corr)s", corr=rec.correlation_id)
-            elif rec.bg_request_id:
-                rec.name = _("Req %(bg)s", bg=rec.bg_request_id)
-            else:
-                rec.name = _("Farmer API Request #%s") % rec.id
-
+    @api.model
+    def create(self, vals):
+        rec = super().create(vals)
+        # now we have rec.id, so we can safely set name
+        rec.name = _("Request - %s") % rec.id
+        return rec
 
 class G2PFarmerAPIBatch(models.Model):
     _name = "g2p.farmer.api.batch"
@@ -92,7 +88,10 @@ class G2PFarmerAPIBatch(models.Model):
         index=True,
     )
     retry_count = fields.Integer(string="Retry Count", default=0)
-    error_response = fields.Text(string="Error Response")
+
+    response = fields.Json(
+        string="Response",
+    )
 
     @api.depends("batch_number", "request_id.correlation_id", "request_id.bg_request_id")
     def _compute_name(self):
