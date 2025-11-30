@@ -265,33 +265,36 @@
 
 					<group name="computed_land_info" col="3">
 						<group name="total_land_owned_area">
-							<field name="total_land_owned_area" readonly="True" />
+							<field name="total_land_owned_area" readonly="True" widget="float" digits="[12, 2]" />
 						</group>
 
 						<group name="total_land_rent_area">
-							<field name="total_land_rent_area" readonly="True" />
+							<field name="total_land_rent_area" readonly="True" widget="float" digits="[12, 2]" />
 						</group>
 
-						<group name="total_land_crop_sharing_area">
-							<field name="total_land_crop_sharing_area" readonly="True" />
+						<group name="total_land_crop_sharing_area" >
+							<field name="total_land_crop_sharing_area" readonly="True" widget="float" digits="[12, 2]"  />
 						</group>
-
-					 <!-- <group name="land_ownership">
-							<field name="land_ownership" readonly="True" />
-						</group>  -->
 
 					</group>
 
+                    <group>
 
 					 <group name="total_land" cols="1" colspan="1">
-							<field name="total_land_area" readonly="True" class="d-flex fs-bold" />
+							<field name="total_land_area" readonly="True" widget="float" digits="[12, 2]"  class="d-flex fs-bold" />
 						</group>
+
+					  <group name="land_ownership">
+							<field name="land_ownership" readonly="True" />
+						</group> 
+
+					</group>
 
 
 					<field name="land_information_ids">
 						<tree editable="bottom">
 							<field name="ownership_type" />
-							<field name="total_land_area" />
+							<field name="total_land_area" widget="float" digits="[12, 2]"  />
 							<field name="land_id" />
 							<field name="land_kebele"/>
 							<field name="land_certificate" />

@@ -27,7 +27,7 @@ class G2PFarmerAPIRequest(models.Model):
     )
 
     process_status = fields.Char(
-        string="Process Status",
+        string="Status",
         default="PENDING",
     )
     response_status_code = fields.Integer(string="Response HTTP Status")
@@ -77,13 +77,12 @@ class G2PFarmerAPIBatch(models.Model):
 
     status = fields.Selection(
         [
-            ("pending", "Pending"),
-            ("processing", "Processing"),
-            ("processed", "Processed"),
-            ("failed", "Failed"),
+            ("PENDING", "PENDING"),
+            ("PROCESSING", "PROCESSING"),
+            ("PROCESSED", "PROCESSED"),
+            ("FAILED", "FAILED"),
         ],
-        string="Status",
-        default="pending",
+        default="PENDING",
         required=True,
         index=True,
     )
