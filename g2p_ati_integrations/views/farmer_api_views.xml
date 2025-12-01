@@ -7,8 +7,6 @@
         <field name="priority" eval="16"/>
         <field name="arch" type="xml">
             <tree create="false" delete="false" edit="false">
-                <field name="name"/>
-                <field name="correlation_id"/>
                 <field name="bg_request_id"/>
                 <field name="process_status"/>
                 <field name="response_status_code"/>
@@ -27,12 +25,11 @@
             <form string="Farmer API Request">
                 <sheet>
                     <div class="oe_title">
-                        <h1><field name="name" readonly="1"/></h1>
+<!--                        <h1><field name="name" readonly="1"/></h1>-->
                     </div>
 
                     <!-- Header / meta fields -->
                     <group>
-                        <field name="correlation_id" readonly="1"/>
                         <field name="bg_request_id" readonly="1"/>
                         <field name="process_status" readonly="1"/>
                         <field name="response_status_code" readonly="1"/>
@@ -61,6 +58,10 @@
                             <field name="request_data" nolabel="1"/>
                         </page>
 
+                        <page string="Response">
+                            <field name="response_data" nolabel="1"/>
+                        </page>
+
                     </notebook>
                 </sheet>
             </form>
@@ -72,7 +73,6 @@
         <field name="model">g2p.farmer.api.request</field>
         <field name="arch" type="xml">
             <search string="Farmer API Requests">
-                <field name="correlation_id"/>
                 <field name="bg_request_id"/>
                 <field name="process_status"/>
 
@@ -90,13 +90,13 @@
     </record>
 
     <record id="view_g2p_farmer_api_batch_tree" model="ir.ui.view">
-        <field name="name">g2p.farmer.api.batch.tree</field>
+<!--        <field name="name">g2p.farmer.api.batch.tree</field>-->
         <field name="model">g2p.farmer.api.batch</field>
         <field name="priority" eval="16"/>
         <field name="arch" type="xml">
             <tree create="false" delete="false" edit="false">
 <!--                <field name="name"/>-->
-                <field name="id" string="Batch ID" readonly="1"/>
+                <field name="request_id" string="API Request" readonly="1"/>
 <!--                <field name="request_id"/>-->
                 <field name="batch_number"/>
                 <field name="status"/>
@@ -116,12 +116,12 @@
             <form string="Farmer API Batch">
                 <sheet>
                     <div class="oe_title">
-                        <h1><field name="name" readonly="1"/></h1>
+<!--                        <h1><field name="name" readonly="1"/></h1>-->
                     </div>
 
                     <group>
                         <group>
-<!--                            <field name="request_id" readonly="1"/>-->
+                            <field name="request_id" readonly="1"/>
                             <field name="batch_number" readonly="1"/>
                             <field name="status"/>
                             <field name="retry_count"/>

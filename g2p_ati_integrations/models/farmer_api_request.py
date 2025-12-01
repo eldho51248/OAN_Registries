@@ -5,18 +5,11 @@ class G2PFarmerAPIRequest(models.Model):
     _name = "g2p.farmer.api.request"
     _description = "Farmer Search API Request"
     _order = "create_date desc"  # uses built-in create_date
+    _rec_name = "bg_request_id"
 
-    name = fields.Char(
-        string="Name",
-        readonly=True,
-    )
 
     bg_request_id = fields.Char(
         string="Background Request ID",
-        index=True,
-    )
-    correlation_id = fields.Char(
-        string="Correlation ID",
         index=True,
     )
 
@@ -40,16 +33,11 @@ class G2PFarmerAPIRequest(models.Model):
         string="Request Payload",
         required=True,
     )
-    # response_data = fields.Json(
-    #     string="Response Payload",
-    # )
+    response_data = fields.Json(
+        string="Response",
+    )
 
-    @api.model
-    def create(self, vals):
-        rec = super().create(vals)
-        # now we have rec.id, so we can safely set name
-        rec.name = _("Request - %s") % rec.id
-        return rec
+
 
 class G2PFarmerAPIBatch(models.Model):
     _name = "g2p.farmer.api.batch"
