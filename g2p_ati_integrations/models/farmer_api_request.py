@@ -5,21 +5,17 @@ class G2PFarmerAPIRequest(models.Model):
     _name = "g2p.farmer.api.request"
     _description = "Farmer Search API Request"
     _order = "create_date desc"  # uses built-in create_date
+    _rec_name = "bg_request_id"
 
-    name = fields.Char(
-        string="Name",
-        readonly=True,
-    )
 
     bg_request_id = fields.Char(
-        string="Background Request ID",
-        index=True,
-    )
-    correlation_id = fields.Char(
         string="Correlation ID",
         index=True,
     )
-
+    reference_id = fields.Char(
+        string="Reference ID",
+        index=True,
+    )
     batch_ids = fields.One2many(
         "g2p.farmer.api.batch",
         "request_id",
@@ -32,35 +28,25 @@ class G2PFarmerAPIRequest(models.Model):
     )
     response_status_code = fields.Integer(string="Response HTTP Status")
     attempt_count = fields.Integer(string="Attempt Count", default=0)
-    processed_by = fields.Char(string="Processed By")
-    error_message = fields.Text(string="Error Message")
+    requested_by = fields.Char(string="Requested By")
+    # error_message = fields.Text(string="Error Message")
     completed_at = fields.Datetime(string="Completed At")
 
-    request_data = fields.Json(
+    request_data = fields.Text(
         string="Request Payload",
         required=True,
     )
-    # response_data = fields.Json(
-    #     string="Response Payload",
-    # )
+    response_data = fields.Text(
+        string="Response",
+    )
 
-    @api.model
-    def create(self, vals):
-        rec = super().create(vals)
-        # now we have rec.id, so we can safely set name
-        rec.name = _("Request - %s") % rec.id
-        return rec
+
 
 class G2PFarmerAPIBatch(models.Model):
     _name = "g2p.farmer.api.batch"
     _description = "Farmer Search API Batch"
     _order = "create_date desc, batch_number asc"  # use create_date, not created_at
 
-    name = fields.Char(
-        string="Name",
-        compute="_compute_name",
-        store=True,
-    )
 
     request_id = fields.Many2one(
         "g2p.farmer.api.request",
@@ -88,17 +74,21 @@ class G2PFarmerAPIBatch(models.Model):
     )
     retry_count = fields.Integer(string="Retry Count", default=0)
 
-    response = fields.Json(
+    response = fields.Text(
         string="Response",
     )
 
-    @api.depends("batch_number", "request_id.correlation_id", "request_id.bg_request_id")
-    def _compute_name(self):
-        for rec in self:
-            base = _("Batch %(num)s", num=rec.batch_number or 0)
-            if rec.request_id and rec.request_id.correlation_id:
-                rec.name = _("%(base)s / Req %(corr)s", base=base, corr=rec.request_id.correlation_id)
-            elif rec.request_id and rec.request_id.bg_request_id:
-                rec.name = _("%(base)s / Req %(bg)s", base=base, bg=rec.request_id.bg_request_id)
-            else:
-                rec.name = base
+    def action_open_request(self):
+        """Open the related Farmer API Request record."""
+        self.ensure_one()
+        if not self.request_id:
+            return False
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "g2p.farmer.api.request",
+            "view_mode": "form",
+            "res_id": self.request_id.id,
+            "target": "current",
+        }
+
+
