@@ -135,10 +135,11 @@
                             <field name="total_records" readonly="1"/>
                         </group>
                     </group>
-
-                    <group string="Response">
-                        <field name="response" nolabel="1"/>
-                    </group>
+                    <notebook>
+                        <page string="Response">
+                            <field name="response" nolabel="1"/>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
