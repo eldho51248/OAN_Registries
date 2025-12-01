@@ -8,6 +8,7 @@
         <field name="arch" type="xml">
             <tree create="false" delete="false" edit="false">
                 <field name="bg_request_id"/>
+                <field name="reference_id"/>
                 <field name="process_status"/>
                 <field name="response_status_code"/>
                 <field name="attempt_count"/>
@@ -31,11 +32,11 @@
                     <!-- Header / meta fields -->
                     <group>
                         <field name="bg_request_id" readonly="1"/>
+                        <field name="reference_id" readonly="1"/>
                         <field name="process_status" readonly="1"/>
                         <field name="response_status_code" readonly="1"/>
                         <field name="attempt_count" readonly="1"/>
-                        <field name="processed_by" readonly="1"/>
-                        <field name="error_message" readonly="1"/>
+                        <field name="requested_by" readonly="1"/>
                         <field name="completed_at" readonly="1"/>
                         <field name="create_date" string="Requested At" readonly="1"/>
                     </group>
@@ -74,6 +75,7 @@
         <field name="arch" type="xml">
             <search string="Farmer API Requests">
                 <field name="bg_request_id"/>
+                <field name="reference_id"/>
                 <field name="process_status"/>
 
                 <filter name="status_pending" string="Pending"
