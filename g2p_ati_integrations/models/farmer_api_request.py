@@ -9,7 +9,7 @@ class G2PFarmerAPIRequest(models.Model):
 
 
     bg_request_id = fields.Char(
-        string="Background Request ID",
+        string="Correlation ID",
         index=True,
     )
     reference_id = fields.Char(

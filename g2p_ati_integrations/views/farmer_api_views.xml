@@ -7,12 +7,12 @@
         <field name="priority" eval="16"/>
         <field name="arch" type="xml">
             <tree create="false" delete="false" edit="false">
-                <field name="bg_request_id"/>
-                <field name="reference_id"/>
-                <field name="process_status"/>
-                <field name="response_status_code"/>
-                <field name="attempt_count"/>
-                <field name="completed_at"/>
+                <field name="bg_request_id" readonly="1"/>
+                <field name="reference_id" readonly="1"/>
+                <field name="process_status" readonly="1"/>
+                <field name="response_status_code" readonly="1"/>
+                <field name="attempt_count" readonly="1"/>
+                <field name="completed_at" readonly="1"/>
                 <field name="create_date" string="Requested At" readonly="1"/>
             </tree>
         </field>
@@ -43,24 +43,24 @@
 
                     <notebook>
                         <page string="Batches">
-                            <field name="batch_ids">
+                            <field name="batch_ids" options="{'no_create': True, 'no_create_edit': True, 'no_open': True}" readonly="1">
                                 <tree editable="false" create="false" delete="false">
-                                    <field name="batch_number"/>
-                                    <field name="status"/>
+                                    <field name="batch_number" readonly="1"/>
+                                    <field name="status" readonly="1"/>
 <!--                                    <field name="offset"/>-->
-                                    <field name="limit"/>
-                                    <field name="total_records"/>
-                                    <field name="retry_count"/>
+                                    <field name="limit" readonly="1"/>
+                                    <field name="total_records" readonly="1"/>
+                                    <field name="retry_count" readonly="1"/>
                                 </tree>
                             </field>
                         </page>
 
                         <page string="Request Payload">
-                            <field name="request_data" nolabel="1"/>
+                            <field name="request_data" nolabel="1" readonly="1"/>
                         </page>
 
                         <page string="Response">
-                            <field name="response_data" nolabel="1"/>
+                            <field name="response_data" nolabel="1" readonly="1"/>
                         </page>
 
                     </notebook>
@@ -74,7 +74,7 @@
         <field name="model">g2p.farmer.api.request</field>
         <field name="arch" type="xml">
             <search string="Farmer API Requests">
-                <field name="bg_request_id"/>
+                <field name="bg_request_id" />
                 <field name="reference_id"/>
                 <field name="process_status"/>
 
@@ -98,7 +98,7 @@
         <field name="arch" type="xml">
             <tree create="false" delete="false" edit="false">
 <!--                <field name="name"/>-->
-                <field name="request_id" string="API Request" readonly="1"/>
+                <field name="request_id" string="Correlation ID" readonly="1"/>
 <!--                <field name="request_id"/>-->
                 <field name="batch_number"/>
                 <field name="status"/>
@@ -125,11 +125,11 @@
                         <group>
                             <field name="request_id" readonly="1"/>
                             <field name="batch_number" readonly="1"/>
-                            <field name="status"/>
-                            <field name="retry_count"/>
+                            <field name="status" readonly="1"/>
+                            <field name="retry_count" readonly="1"/>
                         </group>
 
-                        <group string="Slice">
+                        <group>
 <!--                            <field name="offset" readonly="1"/>-->
                             <field name="limit" readonly="1"/>
                             <field name="total_records" readonly="1"/>
@@ -137,7 +137,7 @@
                     </group>
                     <notebook>
                         <page string="Response">
-                            <field name="response" nolabel="1"/>
+                            <field name="response" nolabel="1" readonly="1"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -151,8 +151,8 @@
         <field name="arch" type="xml">
             <search string="Farmer API Batches">
 <!--                <field name="request_id"/>-->
-                <field name="status"/>
-                <field name="batch_number"/>
+                <field name="status" readonly="1"/>
+                <field name="batch_number" readonly="1"/>
 
                 <filter name="status_pending" string="Pending"
                         domain="[('status', '=', 'pending')]"/>
