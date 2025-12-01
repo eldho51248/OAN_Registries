@@ -44,11 +44,6 @@ class G2PFarmerAPIBatch(models.Model):
     _description = "Farmer Search API Batch"
     _order = "create_date desc, batch_number asc"  # use create_date, not created_at
 
-    name = fields.Char(
-        string="Name",
-        compute="_compute_name",
-        store=True,
-    )
 
     request_id = fields.Many2one(
         "g2p.farmer.api.request",
@@ -80,13 +75,4 @@ class G2PFarmerAPIBatch(models.Model):
         string="Response",
     )
 
-    @api.depends("batch_number", "request_id.correlation_id", "request_id.bg_request_id")
-    def _compute_name(self):
-        for rec in self:
-            base = _("Batch %(num)s", num=rec.batch_number or 0)
-            if rec.request_id and rec.request_id.correlation_id:
-                rec.name = _("%(base)s / Req %(corr)s", base=base, corr=rec.request_id.correlation_id)
-            elif rec.request_id and rec.request_id.bg_request_id:
-                rec.name = _("%(base)s / Req %(bg)s", base=base, bg=rec.request_id.bg_request_id)
-            else:
-                rec.name = base
+
