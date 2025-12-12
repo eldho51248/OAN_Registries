@@ -3,7 +3,7 @@
     "version": "17.0.1.1.0",
     "author": "OpenG2P",
     "license": "",
-    "website": "https://github.com/OpenG2P/openg2p-odoo-commons/g2p_change_log",
+    "website": "https://github.com/OpenG2P",
     "category": "Tools",
     "depends": ["base"],
     "data": [
