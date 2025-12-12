@@ -1,0 +1,23 @@
+<odoo>
+    <record model="ir.module.category" id="security_g2p_change_log_groups">
+        <field name="name">G2P Change Log</field>
+    </record>
+
+    <record model="res.groups" id="group_g2p_change_log_user">
+        <field name="name">Change Log User</field>
+        <field name="category_id" ref="g2p_change_log.security_g2p_change_log_groups" />
+    </record>
+
+    <record model="res.groups" id="group_g2p_change_log_manager">
+        <field name="name">Change Log Manager</field>
+        <field name="category_id" ref="g2p_change_log.security_g2p_change_log_groups" />
+        <field name="implied_ids" eval="[(4, ref('g2p_change_log.group_g2p_change_log_user'))]" />
+    </record>
+
+    <record id="base.group_system" model="res.groups">
+        <field
+            name="implied_ids"
+            eval="[(4, ref('g2p_change_log.group_g2p_change_log_manager'))]"
+        />
+    </record>
+</odoo>
