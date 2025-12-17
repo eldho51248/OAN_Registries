@@ -19,12 +19,12 @@
 
         <record id="audit_db_user" model="ir.config_parameter">
             <field name="key">log_db.db.user</field>
-            <field name="value">odoo17</field>
+            <field name="value">socialregistrydb</field>
         </record>
 
         <record id="audit_db_password" model="ir.config_parameter">
             <field name="key">log_db.db.password</field>
-            <field name="value">2121</field>
+            <field name="value"></field>
         </record>
     </data>
 </odoo>

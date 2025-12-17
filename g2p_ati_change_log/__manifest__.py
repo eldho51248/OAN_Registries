@@ -1,5 +1,5 @@
 {
-    "name": "G2P Change Log",
+    "name": "G2P ATI Change LogA",
     "version": "17.0.1.1.0",
     "author": "OpenG2P",
     "license": "",
@@ -10,8 +10,8 @@
         "security/res_groups.xml",
         "security/ir.model.access.csv",
         "data/audit_db_config.xml",
-        "views/g2p_change_rule_view.xml",
         "views/g2p_change_log_view.xml",
+        "views/g2p_change_rule_view.xml",
         "views/g2p_change_log_line_view.xml",
     ],
     "external_dependencies": {

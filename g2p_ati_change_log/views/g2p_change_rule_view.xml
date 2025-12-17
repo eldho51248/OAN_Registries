@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_g2p_change_log_rule_tree" model="ir.ui.view">
+    <record id="view_g2p_ati_change_log_rule_tree" model="ir.ui.view">
         <field name="name">g2p.change.log.rule.tree</field>
         <field name="model">g2p.change.log.rule</field>
         <field name="arch" type="xml">
@@ -16,7 +16,7 @@
         </field>
     </record>
 
-    <record id="view_g2p_change_log_rule_form" model="ir.ui.view">
+    <record id="view_g2p_ati_change_log_rule_form" model="ir.ui.view">
         <field name="name">g2p.change.log.rule.form</field>
         <field name="model">g2p.change.log.rule</field>
         <field name="arch" type="xml">
@@ -45,7 +45,7 @@
         </field>
     </record>
 
-    <record id="view_g2p_change_log_rule_search" model="ir.ui.view">
+    <record id="view_g2p_ati_change_log_rule_search" model="ir.ui.view">
         <field name="name">g2p.change.log.rule.search</field>
         <field name="model">g2p.change.log.rule</field>
         <field name="arch" type="xml">
@@ -57,18 +57,18 @@
     </record>
 
     <!-- Action -->
-    <record id="action_g2p_change_log_rule" model="ir.actions.act_window">
+    <record id="action_g2p_ati_change_log_rule" model="ir.actions.act_window">
         <field name="name">Change Log Rules</field>
         <field name="res_model">g2p.change.log.rule</field>
         <field name="view_mode">tree,form</field>
-        <field name="search_view_id" ref="view_g2p_change_log_rule_search"/>
+        <field name="search_view_id" ref="view_g2p_ati_change_log_rule_search"/>
     </record>
 
     <!-- Menu -->
-    <menuitem id="menu_g2p_change_log_rule"
+    <menuitem id="menu_g2p_ati_change_log_rule"
               name="Configuration"
-              parent="g2p_change_log.menu_g2p_change_log_root"
-              action="action_g2p_change_log_rule"
+              parent="g2p_ati_change_log.menu_g2p_ati_change_log_root"
+              action="action_g2p_ati_change_log_rule"
               sequence="50"
-              groups="g2p_change_log.group_g2p_change_log_manager"/>
+              groups="g2p_ati_change_log.group_g2p_ati_change_log_manager"/>
 </odoo>
