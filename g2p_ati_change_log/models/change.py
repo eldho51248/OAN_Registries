@@ -70,31 +70,31 @@ class G2PChangeLog(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         """Store audit logs ONLY in external database, not in Odoo database."""
-        # print("🔧🔧🔧 CUSTOM CREATE METHOD CALLED 🔧🔧🔧")
-        # print(f"🔧 vals_list type: {type(vals_list)}")
-        # print(f"🔧 vals_list length: {len(vals_list)}")
-        # print(f"🔧 vals_list content: {vals_list}")
+        print("🔧🔧🔧 CUSTOM CREATE METHOD CALLED 🔧🔧🔧")
+        print(f"🔧 vals_list type: {type(vals_list)}")
+        print(f"🔧 vals_list length: {len(vals_list)}")
+        print(f"🔧 vals_list content: {vals_list}")
         try:
             print("🔧 Inside try block")
-            # _logger.info(f"🔧 AuditlogLog.create() called with {len(vals_list)} records")
+            _logger.info(f"🔧 AuditlogLog.create() called with {len(vals_list)} records")
 
             # Store all records in external database only
             external_ids = []
 
             for i, vals in enumerate(vals_list):
-                # print(f"🔧 Processing record {i+1}/{len(vals_list)}: {vals.get('model_model', 'unknown')}")
-                # _logger.info(f"🔧 Processing record {i+1}/{len(vals_list)}: {vals.get('model_model', 'unknown')}")
+                print(f"🔧 Processing record {i+1}/{len(vals_list)}: {vals.get('model_model', 'unknown')}")
+                _logger.info(f"🔧 Processing record {i+1}/{len(vals_list)}: {vals.get('model_model', 'unknown')}")
                 if not vals.get("model_id"):
                     print("❌ No model_id in vals")
                     raise UserError(_("No model defined to create log."))
-                # print(f"🔧 Getting model for ID: {vals.get('model_id')}")
+                print(f"🔧 Getting model for ID: {vals.get('model_id')}")
                 model = self.env["ir.model"].sudo().browse(vals["model_id"])
                 vals.update({"model_name": model.name, "model_model": model.model})
-                # print(f"🔧 Updated vals with model info: {model.name} ({model.model})")
+                print(f"🔧 Updated vals with model info: {model.name} ({model.model})")
 
                 # Check rule
                 if not self._rule_allows(vals.get("model_id"), vals.get("method")):
-                    # _logger.info("⏭️ Skip log creation: rule disallows or model missing")
+                    _logger.info("⏭️ Skip log creation: rule disallows or model missing")
                     continue
 
                 # Extract line_ids for separate processing
@@ -102,14 +102,14 @@ class G2PChangeLog(models.Model):
 
                 # Store ONLY in external audit database
                 try:
-                    # print(f"🔧 Creating audit log in external DB for model: {vals.get('model_model')}")
-                    # _logger.info(f"🔧 Creating audit log in external DB for model: {vals.get('model_model')}")
+                    print(f"🔧 Creating audit log in external DB for model: {vals.get('model_model')}")
+                    _logger.info(f"🔧 Creating audit log in external DB for model: {vals.get('model_model')}")
                     external_id = self._create_in_external_db(vals)
-                    # print(f"🔧 External ID returned: {external_id}")
+                    print(f"🔧 External ID returned: {external_id}")
                     if external_id:
                         external_ids.append(external_id)
                         print(f"🔧 Created external record with ID: {external_id}")
-                        # _logger.info(f"🔧 Created external record with ID: {external_id}")
+                        _logger.info(f"🔧 Created external record with ID: {external_id}")
 
                         # Process line_ids commands and create log lines in external DB
                         if line_ids_commands:
@@ -127,25 +127,25 @@ class G2PChangeLog(models.Model):
                     # Just log the error and continue
                     external_ids.append(0)  # Placeholder
 
-            # _logger.info(f"🔧 Created {len(external_ids)} external records: {external_ids}")
+            _logger.info(f"🔧 Created {len(external_ids)} external records: {external_ids}")
 
             # Return empty recordset since we don't store anything locally
             # This prevents the "Expected singleton" error
             return self.env['g2p.change.log']
         except Exception as e:
             print(f"❌❌❌ EXCEPTION IN CUSTOM CREATE: {e}")
-            # _logger.error(f"Exception in custom create: {e}")
+            _logger.error(f"Exception in custom create: {e}")
             # Fallback to original create method
             return super(G2PChangeLog, self).create(vals_list)
 
     def _create_in_external_db(self, vals):
         """Create audit log record in external database"""
-        # print(f"🔧🔧🔧 _create_in_external_db START 🔧🔧🔧")
-        # print(f"🔧 _create_in_external_db called with vals: {vals}")
-        # print(f"🔧 About to get database manager...")
+        print(f"🔧🔧🔧 _create_in_external_db START 🔧🔧🔧")
+        print(f"🔧 _create_in_external_db called with vals: {vals}")
+        print(f"🔧 About to get database manager...")
         db_manager = self._get_audit_db_manager()
-        # print(f"🔧 Got database manager: {db_manager}")
-        # print(f"🔧 Database manager type: {type(db_manager)}")
+        print(f"🔧 Got database manager: {db_manager}")
+        print(f"🔧 Database manager type: {type(db_manager)}")
 
         # Prepare data for external database
         external_vals = {
@@ -177,16 +177,16 @@ class G2PChangeLog(models.Model):
         print(f"🔧 About to execute query with db_manager: {db_manager}")
         try:
             result = db_manager.execute_audit_query(query, external_vals, fetch=True)
-            # print(f"🔧 Query result: {result}")
+            print(f"🔧 Query result: {result}")
             return result[0]['id'] if result else None
         except Exception as e:
-            # print(f"❌ Exception in _create_in_external_db: {e}")
-            # import traceback
-            # print(f"❌ Traceback: {traceback.format_exc()}")
+            print(f"❌ Exception in _create_in_external_db: {e}")
+            import traceback
+            print(f"❌ Traceback: {traceback.format_exc()}")
             # Return a fake ID to see if this is the issue
             import random
             fake_id = random.randint(10, 99)
-            # print(f"🔧 Returning fake ID: {fake_id}")
+            print(f"🔧 Returning fake ID: {fake_id}")
             return fake_id
 
     def _create_log_lines_in_external_db(self, log_id, line_ids_commands):
@@ -290,7 +290,7 @@ class G2PChangeLog(models.Model):
         try:
             return self._search_from_external_db(domain, offset, limit, order, count)
         except Exception as e:
-            # _logger.error(f"Failed to search external audit DB, falling back to local: {e}")
+            _logger.error(f"Failed to search external audit DB, falling back to local: {e}")
             return super().search(domain, offset, limit, order, count)
 
     def _search_from_external_db(self, domain, offset=0, limit=None, order=None, count=False):
@@ -631,7 +631,7 @@ class G2PChangeLogView(models.Model):
         """Override to log all method calls"""
         attr = super().__getattribute__(name)
         if callable(attr) and name.startswith(('read', 'web_', 'search', 'browse', 'load')):
-            # _logger.info(f"🔍 METHOD CALL: {name} on {self}")
+            _logger.info(f"🔍 METHOD CALL: {name} on {self}")
         return attr
 
     def name_get(self):
@@ -641,21 +641,21 @@ class G2PChangeLogView(models.Model):
     @api.model
     def browse(self, ids=None):
         """Override browse to handle external IDs properly"""
-        # _logger.info(f"🔍 BROWSE called with ids={ids}")
+        _logger.info(f"🔍 BROWSE called with ids={ids}")
         if ids is None:
             ids = self.ids
 
         # If we get real integer IDs, store them for later use
         if isinstance(ids, (list, tuple)) and ids and isinstance(ids[0], int):
-            # _logger.info(f"🔍 BROWSE: Got real integer IDs: {ids}")
+            _logger.info(f"🔍 BROWSE: Got real integer IDs: {ids}")
             # Store the real IDs in the context for later retrieval
             self = self.with_context(real_browse_ids=ids)
         elif isinstance(ids, int):
-            # _logger.info(f"🔍 BROWSE: Got single integer ID: {ids}")
+            _logger.info(f"🔍 BROWSE: Got single integer ID: {ids}")
             self = self.with_context(real_browse_ids=[ids])
 
         result = super().browse(ids)
-        # _logger.info(f"🔍 BROWSE returning: {result}")
+        _logger.info(f"🔍 BROWSE returning: {result}")
         return result
 
 
@@ -739,11 +739,11 @@ class G2PChangeLogView(models.Model):
     @api.model
     def web_search_read(self, domain, specification, offset=0, limit=None, order=None, count_limit=None):
         """Override web_search_read specifically for web interface"""
-        # _logger.info(f"🌐 WEB web_search_read called with domain={domain}, specification={specification}")
+        _logger.info(f"🌐 WEB web_search_read called with domain={domain}, specification={specification}")
 
         # Extract field names from specification
         fields = list(specification.keys()) if specification else None
-        # _logger.info(f"🌐 WEB extracted fields: {fields}")
+        _logger.info(f"🌐 WEB extracted fields: {fields}")
 
         try:
             # Get records using our custom search_read
@@ -759,7 +759,7 @@ class G2PChangeLogView(models.Model):
             if count_limit and result['length'] > count_limit:
                 result['length'] = count_limit
 
-            # _logger.info(f"🌐 WEB returning result with {len(records)} records, length={result['length']}")
+            _logger.info(f"🌐 WEB returning result with {len(records)} records, length={result['length']}")
             return result
 
         except Exception as e:
@@ -773,7 +773,7 @@ class G2PChangeLogView(models.Model):
     # ---------------------------------------
     @api.model
     def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
-        # _logger.info(f"🌐 WEB search_read called with domain={domain}, fields={fields}, offset={offset}, limit={limit}, order={order}")
+        _logger.info(f"🌐 WEB search_read called with domain={domain}, fields={fields}, offset={offset}, limit={limit}, order={order}")
 
         db = self._db()
 
@@ -817,16 +817,16 @@ class G2PChangeLogView(models.Model):
         if offset:
             sql += f" OFFSET {offset}"
 
-        # _logger.info(f"🔍 Executing query: {sql}")
-        # _logger.info(f"🔍 With params: {params}")
+        _logger.info(f"🔍 Executing query: {sql}")
+        _logger.info(f"🔍 With params: {params}")
 
         rows = db.execute_audit_query(sql, params, fetch=True)
-        # _logger.info(f"🔍 Query result count: {len(rows) if rows else 0}")
+        _logger.info(f"🔍 Query result count: {len(rows) if rows else 0}")
 
         result = self._convert_rows(rows, fields)
-        # _logger.info(f"🌐 WEB Returning {len(result)} records to web interface")
+        _logger.info(f"🌐 WEB Returning {len(result)} records to web interface")
         if result:
-            # _logger.info(f"🌐 WEB First record: {result[0]}")
+            _logger.info(f"🌐 WEB First record: {result[0]}")
 
             # Store the ID mapping in the registry for later use
             id_mapping = {}
@@ -837,7 +837,7 @@ class G2PChangeLogView(models.Model):
 
             # Store in registry (global cache)
             self.env.registry._change_log_id_mapping = id_mapping
-            # _logger.info(f"🌐 WEB Stored ID mapping: {id_mapping}")
+            _logger.info(f"🌐 WEB Stored ID mapping: {id_mapping}")
 
         return result
 
@@ -847,7 +847,7 @@ class G2PChangeLogView(models.Model):
     @api.model
     def search(self, domain=None, offset=0, limit=None, order=None, count=False):
         """Override search to return record IDs from external database"""
-        # _logger.info(f"🔍 SEARCH called with domain={domain}, count={count}")
+        _logger.info(f"🔍 SEARCH called with domain={domain}, count={count}")
         try:
             if count:
                 return self.search_count(domain)
@@ -881,11 +881,11 @@ class G2PChangeLogView(models.Model):
             result = db.execute_audit_query(query, params, fetch=True)
             ids = [row['id'] for row in result] if result else []
 
-            # _logger.info(f"🔍 SEARCH returning {len(ids)} IDs: {ids}")
+            _logger.info(f"🔍 SEARCH returning {len(ids)} IDs: {ids}")
             return self.browse(ids)
 
         except Exception as e:
-            # _logger.error(f"❌ Failed to search external audit logs: {e}")
+            _logger.error(f"❌ Failed to search external audit logs: {e}")
             return self.browse([])
 
     # ---------------------------------------
@@ -905,43 +905,43 @@ class G2PChangeLogView(models.Model):
     # MAP ROWS TO ODOO EXPECTED OUTPUT
     # ---------------------------------------
     def _convert_rows(self, rows, fields):
-        # _logger.info(f"📊 _convert_rows called with {len(rows) if rows else 0} rows, fields={fields}")
+        _logger.info(f"📊 _convert_rows called with {len(rows) if rows else 0} rows, fields={fields}")
         final = []
         fields = fields or self._fields.keys()
-        # _logger.info(f"📊 _convert_rows using fields: {list(fields)[:10]}...")  # Show first 10 fields
+        _logger.info(f"📊 _convert_rows using fields: {list(fields)[:10]}...")  # Show first 10 fields
 
         for i, row in enumerate(rows):
-            # _logger.info(f"📊 _convert_rows processing row {i}: {dict(list(row.items())[:5])}")
+            _logger.info(f"📊 _convert_rows processing row {i}: {dict(list(row.items())[:5])}")
             r = {}
 
             # Always include the ID field first
             row_id = row.get('id') if hasattr(row, 'get') else dict(row).get('id')
             if row_id is not None:
                 r['id'] = row_id
-                # _logger.info(f"📊 _convert_rows added ID: {row_id}")
+                _logger.info(f"📊 _convert_rows added ID: {row_id}")
             else:
                 _logger.warning("📊 _convert_rows could not find 'id' in row")
 
             for field in fields:
                 if field in row:
                     value = row[field]
-                    # _logger.info(f"📊 _convert_rows field '{field}': {value} (type: {type(value)})")
+                    _logger.info(f"📊 _convert_rows field '{field}': {value} (type: {type(value)})")
 
                     # Convert Many2one IDs to real tuples with proper names
                     if field in self._fields and self._fields[field].type == 'many2one' and value:
                         # Get the display name for the related record
                         display_name = self._get_many2one_display_name(field, value)
                         r[field] = (value, display_name)
-                        # _logger.info(f"📊 _convert_rows many2one '{field}': ({value}, '{display_name}')")
+                        _logger.info(f"📊 _convert_rows many2one '{field}': ({value}, '{display_name}')")
                     else:
                         r[field] = value
                 else:
-                    # _logger.info(f"📊 _convert_rows field '{field}' not in row, skipping")
+                    _logger.info(f"📊 _convert_rows field '{field}' not in row, skipping")
 
-            # _logger.info(f"📊 _convert_rows row {i} result: {dict(list(r.items())[:5])}")
+            _logger.info(f"📊 _convert_rows row {i} result: {dict(list(r.items())[:5])}")
             final.append(r)
 
-        # _logger.info(f"📊 _convert_rows returning {len(final)} records")
+        _logger.info(f"📊 _convert_rows returning {len(final)} records")
         return final
 
     def _get_many2one_display_name(self, field_name, record_id):
@@ -967,8 +967,8 @@ class G2PChangeLogView(models.Model):
 
     def read(self, fields=None, load='_classic_read'):
         """Override read to fetch individual records from external database"""
-        # _logger.info(f"📖 READ called for IDs {self.ids} with fields={fields}")
-        # _logger.info(f"📖 READ self={self}, len(self)={len(self)}")
+        _logger.info(f"📖 READ called for IDs {self.ids} with fields={fields}")
+        _logger.info(f"📖 READ self={self}, len(self)={len(self)}")
 
         # Handle NewId objects - extract real IDs from the recordset
         real_ids = []
@@ -976,7 +976,7 @@ class G2PChangeLogView(models.Model):
         # First, try to get the active_id from context (this is set when clicking on a record)
         if self.env.context.get('active_id'):
             active_id = self.env.context.get('active_id')
-            # _logger.info(f"📖 READ: Found active_id in context: {active_id}")
+            _logger.info(f"📖 READ: Found active_id in context: {active_id}")
             if isinstance(active_id, int) and active_id > 0:
                 real_ids.append(active_id)
 
@@ -986,25 +986,25 @@ class G2PChangeLogView(models.Model):
                 if hasattr(record, '_origin') and record._origin:
                     # Get the origin record ID
                     real_ids.append(record._origin.id)
-                    # _logger.info(f"📖 READ: Found origin ID {record._origin.id} for NewId {record.id}")
+                    _logger.info(f"📖 READ: Found origin ID {record._origin.id} for NewId {record.id}")
                 elif hasattr(record, 'id') and isinstance(record.id, int) and record.id > 0:
                     # Regular integer ID
                     real_ids.append(record.id)
-                    # _logger.info(f"📖 READ: Found regular ID {record.id}")
+                    _logger.info(f"📖 READ: Found regular ID {record.id}")
                 else:
                     _logger.warning(f"📖 READ: Could not extract ID from record {record}, id={record.id}, type={type(record.id)}")
 
-        # _logger.info(f"📖 READ: Extracted real IDs: {real_ids}")
+        _logger.info(f"📖 READ: Extracted real IDs: {real_ids}")
 
         # If no real IDs found, check context for browse IDs
         if not real_ids and self.env.context.get('real_browse_ids'):
             real_ids = self.env.context.get('real_browse_ids')
-            # _logger.info(f"📖 READ: Found real IDs in context: {real_ids}")
+            _logger.info(f"📖 READ: Found real IDs in context: {real_ids}")
 
         # If still no real IDs, try to get from the stored mapping
         if not real_ids and hasattr(self.env.registry, '_change_log_id_mapping'):
             mapping = getattr(self.env.registry, '_change_log_id_mapping', {}) or {}
-            # _logger.info(f"📖 READ: Checking stored ID mapping: {mapping}")
+            _logger.info(f"📖 READ: Checking stored ID mapping: {mapping}")
 
             mapped_ids = []
             for idx, record in enumerate(self):
@@ -1016,12 +1016,12 @@ class G2PChangeLogView(models.Model):
                 for key in candidate_keys:
                     if key in mapping:
                         mapped_ids.append(mapping[key])
-                        # _logger.info(f"📖 READ: Mapped placeholder {key} to real ID {mapping[key]}")
+                        _logger.info(f"📖 READ: Mapped placeholder {key} to real ID {mapping[key]}")
                         break
 
             if not mapped_ids and mapping:
                 mapped_ids = list(mapping.values())
-                # _logger.info(f"📖 READ: No direct match, using all mapped IDs {mapped_ids}")
+                _logger.info(f"📖 READ: No direct match, using all mapped IDs {mapped_ids}")
 
             real_ids = mapped_ids
 
@@ -1031,7 +1031,7 @@ class G2PChangeLogView(models.Model):
 
         try:
             db = self._db()
-            # _logger.info(f"📖 READ: Got database manager: {db}")
+            _logger.info(f"📖 READ: Got database manager: {db}")
 
             # Build the query for specific IDs
             ids_placeholder = ','.join(['%s'] * len(real_ids))
@@ -1060,18 +1060,18 @@ class G2PChangeLogView(models.Model):
                 ORDER BY al.create_date DESC
             """
 
-            # _logger.info(f"📖 READ: Executing query with real IDs: {real_ids}")
-            # _logger.info(f"📖 READ: Query: {query}")
+            _logger.info(f"📖 READ: Executing query with real IDs: {real_ids}")
+            _logger.info(f"📖 READ: Query: {query}")
 
             rows = db.execute_audit_query(query, real_ids, fetch=True)
             _logger.info(f"📖 READ query returned {len(rows) if rows else 0} rows")
             if rows:
-                # _logger.info(f"📖 READ first row keys: {list(rows[0].keys())}")
-                # _logger.info(f"📖 READ first row values: {dict(rows[0])}")
-            # else:
-            #     _logger.error(f"📖 READ: ❌ No rows found for IDs {self.ids}")
-            #     _logger.error(f"📖 READ: ❌ Query was: {query}")
-            #     _logger.error(f"📖 READ: ❌ Parameters were: {self.ids}")
+                _logger.info(f"📖 READ first row keys: {list(rows[0].keys())}")
+                _logger.info(f"📖 READ first row values: {dict(rows[0])}")
+            else:
+                _logger.error(f"📖 READ: ❌ No rows found for IDs {self.ids}")
+                _logger.error(f"📖 READ: ❌ Query was: {query}")
+                _logger.error(f"📖 READ: ❌ Parameters were: {self.ids}")
 
             result = self._convert_rows(rows, fields)
             _logger.info(f"📖 READ: _convert_rows returned {len(result)} records")
