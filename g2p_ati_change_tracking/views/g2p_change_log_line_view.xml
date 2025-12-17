@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_g2p_ati_change_log_line_view_tree" model="ir.ui.view">
+    <record id="view_g2p_ati_change_tracking_line_view_tree" model="ir.ui.view">
         <field name="name">g2p.change.log.line.view.tree</field>
         <field name="model">g2p.change.log.line.view</field>
         <field name="arch" type="xml">
@@ -17,7 +17,7 @@
         </field>
     </record>
 
-    <record id="view_g2p_ati_change_log_line_view_search" model="ir.ui.view">
+    <record id="view_g2p_ati_change_tracking_line_view_search" model="ir.ui.view">
         <field name="name">g2p.change.log.line.view.search</field>
         <field name="model">g2p.change.log.line.view</field>
         <field name="arch" type="xml">
@@ -36,20 +36,20 @@
         </field>
     </record>
 
-    <record id="action_g2p_ati_change_log_line_view" model="ir.actions.act_window">
+    <record id="action_g2p_ati_change_tracking_line_view" model="ir.actions.act_window">
         <field name="name">Change Entries</field>
         <field name="res_model">g2p.change.log.line.view</field>
         <field name="view_mode">tree</field>
-        <field name="search_view_id" ref="view_g2p_ati_change_log_line_view_search"/>
+        <field name="search_view_id" ref="view_g2p_ati_change_tracking_line_view_search"/>
         <field name="context">{}</field>
     </record>
 
     <!-- Menu Item -->
-    <menuitem id="menu_g2p_ati_change_log_line_view"
+    <menuitem id="menu_g2p_ati_change_tracking_line_view"
               name="Change Entries"
-              parent="g2p_ati_change_log.menu_g2p_ati_change_log_root"
-              action="action_g2p_ati_change_log_line_view"
+              parent="g2p_ati_change_tracking.menu_g2p_ati_change_tracking_root"
+              action="action_g2p_ati_change_tracking_line_view"
               sequence="101"
-              groups="g2p_ati_change_log.group_g2p_ati_change_log_user"/>
+              groups="g2p_ati_change_tracking.group_g2p_ati_change_tracking_user"/>
 
 </odoo>

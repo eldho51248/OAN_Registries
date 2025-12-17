@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_g2p_ati_change_log_view_tree" model="ir.ui.view">
+    <record id="view_g2p_ati_change_tracking_view_tree" model="ir.ui.view">
         <field name="name">g2p.change.log.view.tree</field>
         <field name="model">g2p.change.log.view</field>
         <field name="arch" type="xml">
@@ -15,7 +15,7 @@
         </field>
     </record>
 
-    <record id="view_g2p_ati_change_log_view_form" model="ir.ui.view">
+    <record id="view_g2p_ati_change_tracking_view_form" model="ir.ui.view">
         <field name="name">g2p.change.log.view.form</field>
         <field name="model">g2p.change.log.view</field>
         <field name="arch" type="xml">
@@ -59,7 +59,7 @@
         </field>
     </record>
 
-    <record id="view_g2p_ati_change_log_view_search" model="ir.ui.view">
+    <record id="view_g2p_ati_change_tracking_view_search" model="ir.ui.view">
         <field name="name">g2p.change.log.view.search</field>
         <field name="model">g2p.change.log.view</field>
         <field name="arch" type="xml">
@@ -80,24 +80,24 @@
         </field>
     </record>
 
-    <record id="action_g2p_ati_change_log_view" model="ir.actions.act_window">
+    <record id="action_g2p_ati_change_tracking_view" model="ir.actions.act_window">
         <field name="name">Change Logs</field>
         <field name="res_model">g2p.change.log.view</field>
-        <field name="search_view_id" ref="view_g2p_ati_change_log_view_search"/>
+        <field name="search_view_id" ref="view_g2p_ati_change_tracking_view_search"/>
     </record>
 
     <!-- Menu Item -->
-    <menuitem id="menu_g2p_ati_change_log_root"
-              name="Change Logs"
+    <menuitem id="menu_g2p_ati_change_tracking_root"
+              name="Change Tracking"
               parent="base.menu_administration"
               sequence="10"
-              groups="g2p_ati_change_log.group_g2p_ati_change_log_user"/>
+              groups="g2p_ati_change_tracking.group_g2p_ati_change_tracking_user"/>
 
-    <menuitem id="menu_g2p_ati_change_log_view"
-              name="Changes Logs"
-              parent="g2p_ati_change_log.menu_g2p_ati_change_log_root"
-              action="action_g2p_ati_change_log_view"
+    <menuitem id="menu_g2p_ati_change_tracking_view"
+              name="Changes"
+              parent="g2p_ati_change_tracking.menu_g2p_ati_change_tracking_root"
+              action="action_g2p_ati_change_tracking_view"
               sequence="100"
-              groups="g2p_ati_change_log.group_g2p_ati_change_log_user"/>
+              groups="g2p_ati_change_tracking.group_g2p_ati_change_tracking_user"/>
 
 </odoo>
