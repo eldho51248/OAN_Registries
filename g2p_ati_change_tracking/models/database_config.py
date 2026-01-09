@@ -30,7 +30,7 @@ class AuditDatabaseManager(models.AbstractModel):
         """Get connection to external audit database"""
         try:
             config = self._get_audit_db_config()
-            print(f"🔧 Database config from Odoo: {config}")
+            # print(f"🔧 Database config from Odoo: {config}")
             conn = psycopg2.connect(
                 host=config['host'],
                 port=config['port'],
@@ -39,10 +39,10 @@ class AuditDatabaseManager(models.AbstractModel):
                 password=config['password']
             )
             conn.autocommit = False
-            print(f"🔧 Connected to database: {config['database']}")
+            # print(f"🔧 Connected to database: {config['database']}")
             return conn
         except Exception as e:
-            print(f"❌ Failed to connect to audit database: {e}")
+            # print(f"❌ Failed to connect to audit database: {e}")
             _logger.error(f"Failed to connect to audit database: {e}")
             raise UserError(f"Cannot connect to audit database: {e}")
 
@@ -112,37 +112,37 @@ class AuditDatabaseManager(models.AbstractModel):
 
     @api.model
     def execute_audit_query(self, query, params=None, fetch=False):
-        """Execute query on audit database"""
-        print(f"🔧 Executing audit query: {query[:100]}...")
-        print(f"🔧 Query params: {params}")
+        # """Execute query on audit database"""
+        # print(f"🔧 Executing audit query: {query[:100]}...")
+        # print(f"🔧 Query params: {params}")
         conn = self._get_audit_db_connection()
         self._ensure_audit_tables()
         try:
             cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
             cursor.execute(query, params or ())
-            print(f"🔧 Query executed successfully")
+            # print(f"🔧 Query executed successfully")
 
             if fetch:
                 result = cursor.fetchall()
-                print(f"🔧 Fetched {len(result)} rows: {result}")
+                # print(f"🔧 Fetched {len(result)} rows: {result}")
                 conn.commit()  # Commit the transaction even when fetching
-                print(f"🔧 Transaction committed")
+                # print(f"🔧 Transaction committed")
                 return [dict(row) for row in result]
             else:
                 rowcount = cursor.rowcount
                 conn.commit()
-                print(f"🔧 Query affected {rowcount} rows, transaction committed")
+                # print(f"🔧 Query affected {rowcount} rows, transaction committed")
                 return rowcount
 
         except psycopg2.errors.UndefinedTable as e:
-            print(f"🔧 Table doesn't exist, creating audit tables...")
+            # print(f"🔧 Table doesn't exist, creating audit tables...")
             conn.rollback()
             # Create tables and retry
             self._ensure_audit_tables()
             # Retry the query
             return self.execute_audit_query(query, params, fetch)
         except Exception as e:
-            print(f"❌ Audit database query failed: {e}")
+            # print(f"❌ Audit database query failed: {e}")
             conn.rollback()
             _logger.error(f"Audit database query failed: {e}")
             raise UserError(f"Audit database query failed: {e}")
