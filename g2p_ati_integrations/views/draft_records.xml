@@ -177,6 +177,17 @@
         </field>
     </record> 
 
+    <record id="g2p_validation_base_tree_view_db_import_label" model="ir.ui.view">
+        <field name="name">g2p.validation.base.tree.db.import.label</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="g2p_draft_publish.g2p_validation_base_tree_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='db_import']" position="attributes">
+                <attribute name="string">DB import</attribute>
+            </xpath>
+        </field>
+    </record>
+
 
     <record id="action_draft_imported_farmer_record" model="ir.actions.act_window">
         <field name="name">Draft</field>
