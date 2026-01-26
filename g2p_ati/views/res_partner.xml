@@ -107,15 +107,16 @@
 					<field name="family_name" placecholder="Last Name(ENG)" />
 					<field name="gf_name_eng" placecholder="G.Father Name(ENG)" />
 				</group>
-				<group name="amharic" string="Amharic">
+						<group name="amharic" string="Amharic">
 					<field name="first_name_amh" placecholder="ስም" />
 					<field name="family_name_amh" placecholder="የአባት ስም" />
 					<field name="gf_name_amh" placecholder="የአያት ስም" />
 				</group>
 				<group
                     name="other_lang"
-                    string="other"
-                    invisible="primary_Language == 1 or (not first_name_other and not family_name_other and not gf_name_other)"
+                    string="Other"
+                    data-g2p-lang="other"
+					invisible="primary_Language == 1 or primary_Language == False"
                 >
 					<field name="first_name_other" />
 					<field name="family_name_other" />
@@ -201,8 +202,19 @@
 
 						<field name="size_of_family" invisible="is_farmer!='yes'" />
 						<field name="number_of_children_in_family" invisible="is_farmer!='yes'" />
+
+
 						<field name="number_of_males_in_family" invisible="is_farmer!='yes'" />
+						<field name="father_included" />
+
+
+
 						<field name="number_of_females_in_family" invisible="is_farmer!='yes'" />
+						<field name="mother_included" />
+
+		
+		
+
 						<!-- <field name="other_family_member_own_land" invisible="is_farmer!='yes'" />  -->
 
 
@@ -297,6 +309,7 @@
 							<field name="total_land_area" widget="float" digits="[12, 2]"  />
 							<field name="land_id" />
 							<field name="land_kebele"/>
+							<field name="certficate_provided"/>
 							<field name="land_certificate" />
 							<field name="document_slug" column_invisible="1" />
 							<field name="document_mimetype" column_invisible="1" />

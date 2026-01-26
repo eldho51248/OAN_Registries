@@ -10,6 +10,7 @@ class G2PLandInformation(models.Model):
     farmer_id = fields.Char(related="partner_id.farmer_id", string="Farmer ID", readonly=True)
     total_land_area = fields.Float(string="Area In Hectare",digits=(16, 6), required=True, default=0.0)
     land_certificate = fields.Many2one("storage.file")
+    certficate_provided = fields.Boolean()
     land_id = fields.Char(string="Land ID", index=True)
     ownership_type = fields.Selection(
         selection=[("owner", "Owner"), ("tenant", "Tenant"), ("crop_share", "Crop Sharing")], required=True

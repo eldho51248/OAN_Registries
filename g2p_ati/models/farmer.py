@@ -54,6 +54,12 @@ class G2PFarmer(models.Model):
         string="Do you have a national id? ", selection=[("yes", "Yes"), ("no", "No")]
     )
     birthdate_ec = fields.Char(string="Date Of Birth (EC)", help="YYYY-MM-DD")
+    age = fields.Char(
+        compute="_compute_calc_age",
+        inverse="_inverse_age",
+        size=50,
+        readonly=False,
+    )
     primary_Language = fields.Many2one("g2p.lang")
     is_farmer = fields.Selection(
         string="Are you a farmer? ", index=True, selection=[("yes", "Yes"), ("no", "No")]
@@ -181,6 +187,9 @@ class G2PFarmer(models.Model):
         string="Other Family Member Own Land", selection=[("yes", "Yes"), ("no", "No")]
     )
 
+    mother_included = fields.Boolean()
+    father_included = fields.Boolean()
+
     # Land INFORMATIONS
     land_information_ids = fields.One2many("g2p.land.information", "partner_id", string="Land Information")
     crop_information_ids = fields.One2many("g2p.crop.information", "partner_id", string="Crop Information")
@@ -254,6 +263,45 @@ class G2PFarmer(models.Model):
         if self.kebele.woreda != self.woreda:
             self.kebele = False
 
+    @api.onchange("number_of_males_in_family", "number_of_females_in_family")
+    def _onchange_family_size(self):
+        if not self._is_integration_form():
+            return
+        males = self.number_of_males_in_family or 0
+        females = self.number_of_females_in_family or 0
+        if males < 0 or females < 0:
+            return
+        self.size_of_family = males + females
+        if (
+            self.number_of_children_in_family
+            and self.size_of_family
+            and self.number_of_children_in_family > self.size_of_family
+        ):
+            raise ValidationError(_("Number of children must not exceed family size."))
+
+    @api.onchange("number_of_children_in_family", "size_of_family")
+    def _onchange_children_count(self):
+        if not self._is_integration_form():
+            return
+        if (
+            self.number_of_children_in_family
+            and self.size_of_family
+            and self.number_of_children_in_family > self.size_of_family
+        ):
+            raise ValidationError(_("Number of children must not exceed family size."))
+
+    @api.constrains("number_of_children_in_family", "size_of_family")
+    def _check_children_count(self):
+        for record in self:
+            if not record._is_integration_form():
+                continue
+            if (
+                record.number_of_children_in_family
+                and record.size_of_family
+                and record.number_of_children_in_family > record.size_of_family
+            ):
+                raise ValidationError(_("Number of children must not exceed family size."))
+
     def _is_integration_form(self):
         active_model = self.env.context.get("active_model", False)
         return active_model and active_model == "draft.record"
@@ -324,6 +372,35 @@ class G2PFarmer(models.Model):
             bday = date(self.birthdate.year, self.birthdate.month, self.birthdate.day)
             ethiopian_date_str = eth_date.to_ethiopian(bday.year, bday.month, bday.day)
             self.birthdate_ec = eth_date.convert_tuple_to_string_with_separator(ethiopian_date_str)
+
+    @api.onchange("age")
+    def _onchange_age(self):
+        if self.age and self.age.isdigit() and not self.birthdate:
+            age_int = int(self.age)
+            if age_int < 0:
+                return
+            gc_date = fields.Date.today() - relativedelta(years=age_int)
+            self.birthdate = gc_date
+            self.birthdate_not_exact = True
+            bday = date(gc_date.year, gc_date.month, gc_date.day)
+            ethiopian_date_str = eth_date.to_ethiopian(bday.year, bday.month, bday.day)
+            self.birthdate_ec = eth_date.convert_tuple_to_string_with_separator(ethiopian_date_str)
+
+    def _inverse_age(self):
+        for record in self:
+            if not record.age or not record.age.isdigit():
+                continue
+            if record.birthdate:
+                continue
+            age_int = int(record.age)
+            if age_int < 0:
+                continue
+            gc_date = fields.Date.today() - relativedelta(years=age_int)
+            record.birthdate = gc_date
+            record.birthdate_not_exact = True
+            bday = date(gc_date.year, gc_date.month, gc_date.day)
+            ethiopian_date_str = eth_date.to_ethiopian(bday.year, bday.month, bday.day)
+            record.birthdate_ec = eth_date.convert_tuple_to_string_with_separator(ethiopian_date_str)
 
     @api.constrains("birthdate")
     def _add_birthdate_ec(self):
