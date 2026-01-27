@@ -133,6 +133,11 @@ class G2PDraftRecord(models.Model):
     validation_status = fields.Many2one("g2p.validation.status")
     import_record_id = fields.Many2one("g2p.imported.record", string="Import Record")
     source = fields.Json(related="import_record_id.source")
+    source_db_ids = fields.Many2many(
+        related="import_record_id.source_db_ids",
+        string="Source DBs",
+        readonly=True,
+    )
 
     @api.model
     def create(self, vals):
@@ -239,6 +244,16 @@ class G2PRespartnerIntegration(models.Model):
     asigned_region = fields.Many2one("g2p.region")
     language_skills = fields.Many2many("g2p.lang", string="Languages")
     source = fields.Json(string="Source Information", help="Stores the source information in JSON format")
+    source_db_ids = fields.Many2many(
+        "g2p.imported.record.source",
+        "g2p_res_partner_source_rel",
+        "partner_id",
+        "source_id",
+        string="Source DBs",
+        compute="_compute_source_db_ids",
+        store=True,
+        readonly=True,
+    )
 
 
 
@@ -250,6 +265,52 @@ class G2PRespartnerIntegration(models.Model):
             self.clear_caches()
 
         return result
+
+    @api.depends("source")
+    def _compute_source_db_ids(self):
+        Source = self.env["g2p.imported.record.source"].sudo()
+        extractor = self.env["g2p.imported.record"]
+        all_names = []
+        per_record_names = {}
+
+        for record in self:
+            names = extractor._extract_source_names(record.source)
+            per_record_names[record.id] = names
+            all_names.extend(names)
+
+        unique_names = []
+        seen = set()
+        for name in all_names:
+            key = name.lower()
+            if key in seen:
+                continue
+            seen.add(key)
+            unique_names.append(name)
+
+        existing_map = {}
+        if unique_names:
+            existing = Source.search([("name", "in", unique_names)])
+            existing_map = {rec.name.lower(): rec for rec in existing}
+
+            to_create = []
+            for name in unique_names:
+                key = name.lower()
+                if key in existing_map:
+                    continue
+                matched = Source.search([("name", "=ilike", name)], limit=1)
+                if matched:
+                    existing_map[matched.name.lower()] = matched
+                else:
+                    to_create.append(name)
+            if to_create:
+                created = Source.create([{"name": name} for name in to_create])
+                for rec in created:
+                    existing_map[rec.name.lower()] = rec
+
+        for record in self:
+            names = per_record_names.get(record.id, [])
+            source_ids = [existing_map[name.lower()].id for name in names if name.lower() in existing_map]
+            record.source_db_ids = [(6, 0, source_ids)] if source_ids else [(5, 0, 0)]
 
 
 

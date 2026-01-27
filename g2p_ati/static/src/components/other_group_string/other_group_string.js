@@ -5,46 +5,104 @@ import {registry} from "@web/core/registry";
 const {useEffect} = owl;
 
 class ResPartnerFormOtherGroupController extends FormController {
+    get modelParams() {
+        const params = super.modelParams;
+        return {
+            ...params,
+            hooks: {
+                ...params.hooks,
+                onRecordChanged: this.onRecordChanged.bind(this),
+            },
+        };
+    }
+
     setup() {
         super.setup();
 
-        useEffect(() => {
-            if (!this.model.root.data.is_group && this.model.root.data.primary_Language) {
-                const containers = document.querySelectorAll(".o_horizontal_separator");
+        useEffect(
+            () => {
+                this._applyLanguageToggle();
+            },
+            () => [this.model.root.data.primary_Language, this.model.root.data.is_group]
+        );
+    }
 
-                for (const container of containers) {
-                    if (
-                        container.innerText.trim().toLowerCase() === "other".toLowerCase() &&
-                        this.model.root.data.primary_Language["1"] !== "Amharic"
-                    ) {
-                        container.innerText = this.model.root.data.primary_Language["1"];
-                        break;
-                    }
-                }
+    onRecordChanged(record, changes) {
+        if (!changes || !("primary_Language" in changes)) {
+            return;
+        }
+        this._applyLanguageToggle();
+    }
 
+    _applyLanguageToggle() {
+        if (this.model.root.data.is_group) {
+            return;
+        }
+
+        const primaryLanguage = this.model.root.data.primary_Language;
+        const primaryLanguageText = this._getLanguageName(primaryLanguage);
+        const normalizedLang = primaryLanguageText.trim().toLowerCase();
+        const isAmharic = !normalizedLang || normalizedLang === "amharic";
+        const showOther = !isAmharic;
+
+        const root = this.rootRef?.el || document;
+        const otherGroup = this._getOtherGroup(root);
+        if (otherGroup) {
+            const separators = otherGroup.querySelectorAll(".o_horizontal_separator");
+            for (const sep of separators) {
+                sep.innerText = showOther && primaryLanguageText ? primaryLanguageText : "Other";
+            }
+        }
+
+        if (otherGroup) {
+            const labels = otherGroup.querySelectorAll(".o_form_label");
+            for (const label of labels) {
+                const rawText = label.innerText || "";
+                const baseText = rawText.replace(/\s*\([^)]*\)\s*$/, "");
+                const labelText = baseText.trim().toLowerCase();
                 if (
-                    this.model.root.data.first_name_other ||
-                    this.model.root.data.family_name_other ||
-                    this.model.root.data.gf_name_other
+                    labelText === "first name" ||
+                    labelText === "father's name" ||
+                    labelText === "grand father's name"
                 ) {
-                    const label_elements = document.querySelectorAll(".o_form_label");
-
-                    for (const label of label_elements) {
-                        const labelText = label.innerText.trim().toLowerCase();
-                        const primaryLanguageText = this.model.root.data.primary_Language["1"];
-
-                        if (
-                            (labelText === "first name" ||
-                                labelText === "father's name" ||
-                                labelText === "grand father's name") &&
-                            this.model.root.data.primary_Language["1"] !== "Amharic"
-                        ) {
-                            label.innerText = `${label.innerText}(${primaryLanguageText})`;
-                        }
+                    if (showOther && primaryLanguageText) {
+                        label.innerText = `${baseText} (${primaryLanguageText})`;
+                    } else {
+                        label.innerText = baseText;
                     }
                 }
             }
-        });
+        }
+    }
+
+    _getLanguageName(value) {
+        if (!value) {
+            return "";
+        }
+        if (Array.isArray(value)) {
+            return value[1] || "";
+        }
+        if (typeof value === "object") {
+            return (
+                value.display_name ||
+                value.displayName ||
+                value.name ||
+                value.resName ||
+                value.data?.display_name ||
+                ""
+            );
+        }
+        return String(value);
+    }
+
+    _getOtherGroup(root) {
+        const selector =
+            ".o_field_widget[name='first_name_other'], .o_field_widget[name='family_name_other'], .o_field_widget[name='gf_name_other']";
+        const fieldEl = root.querySelector(selector);
+        if (!fieldEl) {
+            return null;
+        }
+        return fieldEl.closest(".o_inner_group, .o_group");
     }
 }
 

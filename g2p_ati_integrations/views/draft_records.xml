@@ -14,6 +14,7 @@
                 records_draggable="0"
             >
             <field name="name" />
+            <field name="source_db_ids" />
             <templates>
                 <t t-name="kanban-box">
                     <t t-set="kanban_record" t-value="record" />
@@ -32,6 +33,13 @@
 
 
                                
+                            </div>
+                            <div class="mt-2">
+                                <field name="source_db_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                            </div>
+                            <div class="mt-2">
+                                <span class="text-success fw-semibold">Created by: </span>
+                                <field name="create_uid" class="text-success fw-bold" />
                             </div>
                         </div>
 
@@ -121,6 +129,30 @@
         </field>
     </record>
 
+    <record id="res_partner_source_db_tags" model="ir.ui.view">
+        <field name="name">res.partner.source.db.tags</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="g2p_registry_individual.view_individuals_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='age']" position="after">
+                <field name="source_db_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_draft_imported_record_form_source_tags" model="ir.ui.view">
+        <field name="name">draft.record.form.source.tags</field>
+        <field name="model">draft.record</field>
+        <field name="inherit_id" ref="g2p_draft_publish.view_draft_imported_record_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='oe_title mb24']" position="after">
+                <group>
+                    <field name="source_db_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+
 
 
     <record id="view_draft_imported_farmer_record_tree" model="ir.ui.view">
@@ -136,6 +168,12 @@
                 <field name="gf_name_eng" 
                 readonly="id!=False"
                  />
+            </xpath>
+            <xpath expr="//field[@name='gf_name_eng']" position="after">
+                <field name="source_db_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+            </xpath>
+            <xpath expr="//field[@name='source_db_ids']" position="after">
+                <field name="create_uid" class="text-success fw-semibold" />
             </xpath>
             <xpath expr="//field[@name='region']" position="after">
                 <field name="zone" />
@@ -176,6 +214,34 @@
 
         </field>
     </record> 
+
+    <record id="res_partner_draft_farmer_data_top" model="ir.ui.view">
+        <field name="name">res.partner.draft.farmer.data.top</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="g2p_draft_publish.g2p_validation_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/div[@class='oe_title mb24']" position="before">
+                <xpath
+                    expr="//sheet/notebook[@name='individual_detail']/page[@name='basic_info']/group[@name='farmer_socio_economic_data']"
+                    position="move"
+                />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="res_partner_draft_farmer_data_top_view_only" model="ir.ui.view">
+        <field name="name">res.partner.draft.farmer.data.top.view.only</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="g2p_draft_publish.g2p_validation_form_view_only" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/div[@class='oe_title mb24']" position="before">
+                <xpath
+                    expr="//sheet/notebook[@name='individual_detail']/page[@name='basic_info']/group[@name='farmer_socio_economic_data']"
+                    position="move"
+                />
+            </xpath>
+        </field>
+    </record>
 
     <record id="g2p_validation_base_tree_view_db_import_label" model="ir.ui.view">
         <field name="name">g2p.validation.base.tree.db.import.label</field>
@@ -243,12 +309,59 @@
         name="Configurations"
         parent="g2p_draft_publish.draft_publish_main_menu"
         sequence="100"
+        groups="g2p_draft_publish.group_int_admin"
     />
     <menuitem
         id="menu_g2p_validation_status"
         name="Enrichment Status"
         parent="menu_g2p_integration_configurations"
         action="g2p_ati_integrations.action_g2p_validation_status"
+        groups="g2p_draft_publish.group_int_admin"
+    />
+
+    <record id="view_g2p_ati_integration_users_tree" model="ir.ui.view">
+        <field name="name">g2p.ati.integration.users.tree</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <tree string="Integration Users">
+                <field name="name" />
+                <field name="phone" />
+                <field name="mobile" />
+                <field name= "language_skills"/>
+                <field name= "asigned_region"/>
+                <field name="user_ids" widget="many2many_tags" optional="show" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_g2p_ati_integration_users" model="ir.actions.act_window">
+        <field name="name">Data Integration Users</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">tree,form</field>
+        <field
+            name="view_ids"
+            eval="[(5, 0, 0),
+                (0,0,{'view_mode': 'tree', 'view_id': ref('g2p_ati_integrations.view_g2p_ati_integration_users_tree')}),
+                (0,0,{'view_mode': 'form', 'view_id': ref('base.view_partner_form')})]"
+        />
+        <field
+            name="domain"
+            eval="[('user_ids.groups_id', 'in', [
+                ref('g2p_draft_publish.group_int_validator'),
+                ref('g2p_draft_publish.group_int_approver'),
+                ref('g2p_draft_publish.group_int_admin')
+            ])]"
+        />
+        <field name="context">{'create': False}</field>
+    </record>
+
+    <menuitem
+        id="menu_g2p_ati_integration_users"
+        name="Data Integration Users"
+        parent="menu_g2p_integration_configurations"
+        action="action_g2p_ati_integration_users"
+        sequence="20"
+        groups="g2p_draft_publish.group_int_admin"
     />
 
     <menuitem

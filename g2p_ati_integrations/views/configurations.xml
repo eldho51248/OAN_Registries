@@ -27,6 +27,7 @@
     <field name="res_model">g2p.validation.status</field>
     <field name="view_mode">tree,form</field>
     <field name="context">{}</field>
+    <field name="groups_id" eval="[(6, 0, [ref('g2p_draft_publish.group_int_admin')])]"/>
 </record>
 
 
@@ -35,6 +36,7 @@
     <field name="res_model">narlis.integration</field>
     <field name="view_mode">tree,form</field>
     <field name="context">{}</field>
+    <field name="groups_id" eval="[(6, 0, [ref('g2p_draft_publish.group_int_admin')])]"/>
 </record>
 
 <record id="view_narlis_integration_form" model="ir.ui.view">
@@ -68,6 +70,7 @@
     <field name="model_id" ref="g2p_ati_integrations.model_g2p_land_information" />
     <field name="state">code</field>
     <field name="code">model.update_land_id_prefix()</field>
+    <field name="groups_id" eval="[(6, 0, [ref('g2p_draft_publish.group_int_admin')])]"/>
 </record>
 
   <menuitem
@@ -76,6 +79,7 @@
         parent="base.menu_custom"
         action="action_narlis_integration"
         sequence="1"
+        groups="g2p_draft_publish.group_int_admin"
     />
 <menuitem
         id="add_prefix_on_land_id"
@@ -83,6 +87,7 @@
         parent="base.menu_custom"
         action="action_add_prefix_on_land_id"
         sequence="1"
+        groups="g2p_draft_publish.group_int_admin"
     />
 
 
