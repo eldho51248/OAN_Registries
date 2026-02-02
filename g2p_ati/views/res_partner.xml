@@ -200,7 +200,7 @@
 
 						<separator string="Household Information" colspan="4" />
 
-						<field name="size_of_family" invisible="is_farmer!='yes'" />
+						<field name="size_of_family" readonly=1 invisible="is_farmer!='yes'" />
 						<field name="number_of_children_in_family" invisible="is_farmer!='yes'" />
 
 
@@ -497,12 +497,12 @@
 				<attribute name="invisible">1</attribute>
 			</xpath>
 
-			<!-- <xpath expr="//page[@name='other']" position="inside">
-				<group>
-					<field name="enumerator_id" readonly="True" />
-					<field name="data_collection_date" readonly="True" />
+			<xpath expr="//page[@name='other']" position="inside">
+				<group string="Import Information">
+					<field name="db_import" />
+					<field name="source_db_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
 				</group>
-			</xpath> -->
+			</xpath>
 
 			<xpath expr="//field[@name='phone_number_ids']/tree" position="attributes">
 				<attribute name="editable">bottom</attribute>
