@@ -375,7 +375,7 @@ class G2PFarmer(models.Model):
 
     @api.onchange("age")
     def _onchange_age(self):
-        if self.age and self.age.isdigit() and not self.birthdate:
+        if self.age and self.age.isdigit():
             age_int = int(self.age)
             if age_int < 0:
                 return
@@ -390,8 +390,6 @@ class G2PFarmer(models.Model):
         for record in self:
             if not record.age or not record.age.isdigit():
                 continue
-            if record.birthdate:
-                continue
             age_int = int(record.age)
             if age_int < 0:
                 continue
@@ -401,6 +399,52 @@ class G2PFarmer(models.Model):
             bday = date(gc_date.year, gc_date.month, gc_date.day)
             ethiopian_date_str = eth_date.to_ethiopian(bday.year, bday.month, bday.day)
             record.birthdate_ec = eth_date.convert_tuple_to_string_with_separator(ethiopian_date_str)
+
+    @api.onchange(
+        "father_included",
+        "mother_included",
+        "number_of_males_in_family",
+        "number_of_females_in_family",
+    )
+    def _onchange_parent_included(self):
+        if not self._is_integration_form():
+            return
+        self._validate_parent_included()
+
+    @api.constrains(
+        "father_included",
+        "mother_included",
+        "number_of_males_in_family",
+        "number_of_females_in_family",
+    )
+    def _check_parent_included(self):
+        for record in self:
+            if not record._is_integration_form():
+                continue
+            record._validate_parent_included()
+
+    def _validate_parent_included(self):
+        males = self.number_of_males_in_family or 0
+        females = self.number_of_females_in_family or 0
+        children = self.number_of_children_in_family or 0
+        if self.father_included:
+            if males < 1:
+                raise ValidationError(_("Father included requires at least 1 male in the family."))
+            if males <= children:
+                raise ValidationError(
+                    _("Father included requires at least one additional male beyond the children count.")
+                )
+        if self.mother_included:
+            if females < 1:
+                raise ValidationError(_("Mother included requires at least 1 female in the family."))
+            if females <= children:
+                raise ValidationError(
+                    _("Mother included requires at least one additional female beyond the children count.")
+                )
+        if self.father_included and self.mother_included and children < 2:
+            raise ValidationError(
+                _("Both parents included requires at least 2 children in the family.")
+            )
 
     @api.constrains("birthdate")
     def _add_birthdate_ec(self):
@@ -462,6 +506,18 @@ class G2PFarmer(models.Model):
                 record.farmer_id = f"FR-{record.unique_id}"
             else:
                 record.farmer_id = False
+
+    def _ensure_farmer_id(self):
+        if not self:
+            return
+        self.with_context(skip_farmer_id_ensure=True)._compute_farmer_id()
+        self.flush_recordset(["farmer_id"])
+
+    def read(self, fields=None, load="_classic_read"):
+        if not self.env.context.get("skip_farmer_id_ensure"):
+            if not fields or "farmer_id" in fields or "unique_id" in fields:
+                self._ensure_farmer_id()
+        return super().read(fields=fields, load=load)
 
     def unlink(self):
         if any(record.state == "approved" for record in self):

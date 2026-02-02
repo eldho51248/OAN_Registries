@@ -200,6 +200,7 @@ class G2PDraftRecord(models.Model):
 
         else:
             raise ValueError("No valid data found to create a partner record.")
+    
     def _process_json_data(self, json_data):
         context_data, additional_g2p_info = super()._process_json_data(json_data)
         context_data["default_gf_name_eng"] = self.gf_name_eng
@@ -312,6 +313,17 @@ class G2PRespartnerIntegration(models.Model):
             source_ids = [existing_map[name.lower()].id for name in names if name.lower() in existing_map]
             record.source_db_ids = [(6, 0, source_ids)] if source_ids else [(5, 0, 0)]
 
+    def _ensure_source_db_ids(self):
+        if not self:
+            return
+        self.with_context(skip_source_db_ensure=True)._compute_source_db_ids()
+        self.flush_recordset(["source_db_ids"])
+
+    def read(self, fields=None, load="_classic_read"):
+        if not self.env.context.get("skip_source_db_ensure"):
+            if not fields or "source_db_ids" in fields or "source" in fields:
+                self._ensure_source_db_ids()
+        return super().read(fields=fields, load=load)
 
 
 
