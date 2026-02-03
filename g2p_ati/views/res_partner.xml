@@ -200,7 +200,7 @@
 
 						<separator string="Household Information" colspan="4" />
 
-						<field name="size_of_family" readonly=1 invisible="is_farmer!='yes'" />
+						<field name="size_of_family" readonly="1" invisible="is_farmer!='yes'" />
 						<field name="number_of_children_in_family" invisible="is_farmer!='yes'" />
 
 
