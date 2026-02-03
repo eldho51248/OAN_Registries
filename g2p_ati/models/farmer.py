@@ -405,6 +405,7 @@ class G2PFarmer(models.Model):
         "mother_included",
         "number_of_males_in_family",
         "number_of_females_in_family",
+        "number_of_children_in_family",
     )
     def _onchange_parent_included(self):
         if not self._is_integration_form():
@@ -427,23 +428,24 @@ class G2PFarmer(models.Model):
         males = self.number_of_males_in_family or 0
         females = self.number_of_females_in_family or 0
         children = self.number_of_children_in_family or 0
+        adults = max(males + females - children, 0)
         if self.father_included:
             if males < 1:
                 raise ValidationError(_("Father included requires at least 1 male in the family."))
-            if males <= children:
+            if adults < 1:
                 raise ValidationError(
-                    _("Father included requires at least one additional male beyond the children count.")
+                    _("Father included requires at least 1 adult in the family.")
                 )
         if self.mother_included:
             if females < 1:
                 raise ValidationError(_("Mother included requires at least 1 female in the family."))
-            if females <= children:
+            if adults < 1:
                 raise ValidationError(
-                    _("Mother included requires at least one additional female beyond the children count.")
+                    _("Mother included requires at least 1 adult in the family.")
                 )
-        if self.father_included and self.mother_included and children < 2:
+        if self.father_included and self.mother_included and adults < 2:
             raise ValidationError(
-                _("Both parents included requires at least 2 children in the family.")
+                _("Both parents included requires at least 2 adults in the family.")
             )
 
     @api.constrains("birthdate")
