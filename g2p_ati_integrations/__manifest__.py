@@ -17,6 +17,7 @@
         "views/imported_record.xml",
         "views/show_map.xml",
         "views/farmer_api_views.xml",
+        "views/res_partner_import_info.xml",
         "wizards/add_followers.xml",
         "wizards/assign_records.xml",
         "wizards/change_kanban_state.xml",
