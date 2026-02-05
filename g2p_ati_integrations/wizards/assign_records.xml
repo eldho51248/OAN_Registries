@@ -24,7 +24,7 @@
         <field name="arch" type="xml">
         <form>
             <group>
-                <field name="assigned_region" required="1" />
+                <field name="assigned_region" required="1" widget="many2many_tags" />
                 <field name="language_skills"  required="1" widget="many2many_tags" />
             </group>
              <footer>

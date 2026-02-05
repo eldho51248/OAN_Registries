@@ -6,43 +6,33 @@ _logger = logging.getLogger(__name__)
 
 
 class RejectWizard(models.TransientModel):
-    _name = "reject.wizard"
-    _description = "Reject Wizard"
-
-    rejection_reason = fields.Text(string="Reason for Rejection", required=True)
+    _inherit = "reject.wizard"
 
     def confirm_rejection(self):
+        result = super().confirm_rejection()
+
         active_ids = self._context.get("active_ids")
-        self.ensure_one()
+        if not active_ids:
+            return result
+
         record = self.env["draft.record"].browse(active_ids[0])
+        if not record:
+            return result
 
-        record.write(
-            {
-                "state": "draft",
-                "rejection_reason": self.rejection_reason,
-            }
+        activities = self.sudo().env["mail.activity"].search(
+            [("res_model", "=", "draft.record"), ("res_id", "=", record.id)]
         )
+        if activities:
+            activities.action_done()
 
-        record.message_post(body=f"Record rejected: {self.rejection_reason}")
+        if record.create_uid and record.create_uid.partner_id:
+            owner_partner = record.create_uid.partner_id
+            record.sudo().message_subscribe(partner_ids=[owner_partner.id])
+            record.sudo().message_post(
+                body=f"Your draft record was rejected: {self.rejection_reason}",
+                subject="Record Rejected",
+                message_type="notification",
+                partner_ids=[owner_partner.id],
+            )
 
-        validator_group = self.env.ref("g2p_ati.group_data_validator")
-        validator_users = validator_group.users
-
-        matching_users = validator_users.filtered(
-            lambda user: user.partner_id.id in record.message_partner_ids.ids
-        )
-        if matching_users:
-            for user in matching_users:
-                self.env["mail.activity"].create(
-                    {
-                        "activity_type_id": self.env.ref("mail.mail_activity_data_todo").id,
-                        "res_model_id": self.env["ir.model"].search([("model", "=", "draft.record")]).id,
-                        "res_id": record.id,
-                        "user_id": user.id,
-                        # "date_deadline": fields.Date.context_today(self),
-                        "summary": "Record Rejected",
-                        "note": f"Reason: {self.rejection_reason}. Please review and sumbit again.",
-                    }
-                )
-
-        return {"type": "ir.actions.act_window_close"}
+        return result

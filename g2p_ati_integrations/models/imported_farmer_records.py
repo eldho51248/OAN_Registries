@@ -127,7 +127,7 @@ class G2PImportedRecord(models.Model):
         readonly=True,
     )
 
-    assigned_region = fields.Many2one(
+    assigned_region = fields.Many2many(
         "g2p.region", string="Regions Assigned"
     )
     assigned_languages = fields.Many2many(
@@ -161,7 +161,7 @@ class G2PImportedRecord(models.Model):
         )
 
 
-    @api.constrains('assigned_region', 'assigned_languages')
+    @api.constrains("assigned_region", "assigned_languages")
     def _check_region_languages(self):
         for record in self:
             if record.assigned_region and not record.assigned_languages:

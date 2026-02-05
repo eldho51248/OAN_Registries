@@ -19,7 +19,7 @@
 
             '|', '&amp;',
             
-            ('assigned_region', '=', user.partner_id.asigned_region.id),
+            ('assigned_region', 'in', user.partner_id.asigned_region.ids),
             ('assigned_languages', 'in', [x.id for x in user.partner_id.language_skills]),
             
             ('message_follower_ids.partner_id', '=', user.partner_id.id)

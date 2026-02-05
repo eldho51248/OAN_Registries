@@ -152,14 +152,41 @@ class G2PDraftRecord(models.Model):
 
         return record
 
+    def write(self, vals):
+        was_rejected = {}
+        if "state" in vals:
+            for record in self:
+                was_rejected[record.id] = record.state
+        result = super().write(vals)
+        if vals.get("state") == "rejected":
+            for record in self:
+                if was_rejected.get(record.id) != "rejected":
+                    record._notify_draft_owner_rejected(record.rejection_reason)
+        return result
+
+    def _notify_draft_owner_rejected(self, reason):
+        self.ensure_one()
+        owner = self.create_uid.partner_id
+        if owner:
+            body = "Your draft record was rejected."
+            if reason:
+                body = f"{body} Reason: {reason}"
+            self.sudo().message_subscribe(partner_ids=[owner.id])
+            self.sudo().message_post(
+                body=body,
+                subject="Record Rejected",
+                message_type="notification",
+                partner_ids=[owner.id],
+            )
+
     def action_change_state(self):
         _logger.info("Action Change State called")
         return {
-            "name": "Change State",
+            "name": "Reject",
             "type": "ir.actions.act_window",
-            "res_model": "change.state.wizard",
+            "res_model": "reject.wizard",
             "view_mode": "form",
-            "view_id": self.env.ref("g2p_ati_integrations.change_state_wizard_view").id,
+            "view_id": self.env.ref("g2p_draft_publish.reject_wizard_view").id,
             "target": "new",
         }
 
@@ -197,9 +224,89 @@ class G2PDraftRecord(models.Model):
             self.write({"state": "published"})
 
             self._notify_validators()
+            self._notify_draft_owner_published()
 
         else:
             raise ValueError("No valid data found to create a partner record.")
+
+    def action_open_wizard(self):
+        self.ensure_one()
+        if (
+            self.state == "submitted"
+            and not self.env.user.has_group("g2p_draft_publish.group_int_admin")
+            and not self.env.user.has_group("g2p_draft_publish.group_int_approver")
+        ):
+            raise UserError(_("Edit is not allowed for submitted records."))
+        return super().action_open_wizard()
+
+    def action_submit(self):
+        result = super().action_submit()
+        approver_group = self.env.ref("g2p_draft_publish.group_int_approver")
+        approver_users = approver_group.users
+        if approver_users:
+            self._notify_approvers(approver_users)
+        return result
+
+    def _notify_approvers(self, approver_users):
+        self.ensure_one()
+        target_users = approver_users
+
+        import_record = self.import_record_id
+        if import_record and import_record.assigned_region and import_record.assigned_languages:
+            region_ids = set(import_record.assigned_region.ids)
+            lang_ids = set(import_record.assigned_languages.ids)
+
+            def _matches(user):
+                user_regions = set(user.partner_id.asigned_region.ids)
+                user_langs = set(user.partner_id.language_skills.ids)
+                return bool(user_regions & region_ids) and bool(user_langs & lang_ids)
+
+            target_users = approver_users.filtered(_matches)
+
+        partner_ids = target_users.mapped("partner_id").ids
+        if partner_ids:
+            self.sudo().message_post(
+                body=_("Record submitted for approval."),
+                subject=_("Record Submitted"),
+                message_type="notification",
+                partner_ids=partner_ids,
+            )
+
+    def _notify_draft_owner_published(self):
+        owner_partner = self.create_uid.partner_id
+        if owner_partner:
+            self.sudo().message_subscribe(partner_ids=[owner_partner.id])
+            self.sudo().message_post(
+                body=_("Your draft record has been published."),
+                subject=_("Record Published"),
+                message_type="notification",
+                partner_ids=[owner_partner.id],
+            )
+
+    def _notify_approvers(self, approver_users):
+        self.ensure_one()
+        target_users = approver_users
+
+        import_record = self.import_record_id
+        if import_record and import_record.assigned_region and import_record.assigned_languages:
+            region_ids = set(import_record.assigned_region.ids)
+            lang_ids = set(import_record.assigned_languages.ids)
+
+            def _matches(user):
+                user_regions = set(user.partner_id.asigned_region.ids)
+                user_langs = set(user.partner_id.language_skills.ids)
+                return bool(user_regions & region_ids) and bool(user_langs & lang_ids)
+
+            target_users = approver_users.filtered(_matches)
+
+        partner_ids = target_users.mapped("partner_id").ids
+        if partner_ids:
+            self.sudo().message_post(
+                body=_("Record submitted for approval."),
+                subject=_("Record Submitted"),
+                message_type="notification",
+                partner_ids=partner_ids,
+            )
     
     def _process_json_data(self, json_data):
         context_data, additional_g2p_info = super()._process_json_data(json_data)
@@ -242,7 +349,7 @@ class G2PRespartnerIntegration(models.Model):
     _inherit = "res.partner"
 
     is_orphan = fields.Selection([("yes", "Yes"), ("no", "No")])
-    asigned_region = fields.Many2one("g2p.region")
+    asigned_region = fields.Many2many("g2p.region", string="Regions")
     language_skills = fields.Many2many("g2p.lang", string="Languages")
     source = fields.Json(string="Source Information", help="Stores the source information in JSON format")
     source_db_ids = fields.Many2many(
