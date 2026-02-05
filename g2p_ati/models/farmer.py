@@ -372,6 +372,20 @@ class G2PFarmer(models.Model):
             bday = date(self.birthdate.year, self.birthdate.month, self.birthdate.day)
             ethiopian_date_str = eth_date.to_ethiopian(bday.year, bday.month, bday.day)
             self.birthdate_ec = eth_date.convert_tuple_to_string_with_separator(ethiopian_date_str)
+            age_int = self.compute_age_int_from_dates(self.birthdate)
+            self.age = str(age_int) if age_int is not None else False
+        else:
+            if self.age and self.age.isdigit():
+                age_int = int(self.age)
+                if age_int >= 0:
+                    gc_date = fields.Date.today() - relativedelta(years=age_int)
+                    self.birthdate = gc_date
+                    self.birthdate_not_exact = True
+                    bday = date(gc_date.year, gc_date.month, gc_date.day)
+                    ethiopian_date_str = eth_date.to_ethiopian(bday.year, bday.month, bday.day)
+                    self.birthdate_ec = eth_date.convert_tuple_to_string_with_separator(ethiopian_date_str)
+            else:
+                self.age = False
 
     @api.onchange("age")
     def _onchange_age(self):
@@ -385,6 +399,12 @@ class G2PFarmer(models.Model):
             bday = date(gc_date.year, gc_date.month, gc_date.day)
             ethiopian_date_str = eth_date.to_ethiopian(bday.year, bday.month, bday.day)
             self.birthdate_ec = eth_date.convert_tuple_to_string_with_separator(ethiopian_date_str)
+        else:
+            if self.birthdate:
+                age_int = self.compute_age_int_from_dates(self.birthdate)
+                self.age = str(age_int) if age_int is not None else False
+            else:
+                self.birthdate_ec = False
 
     def _inverse_age(self):
         for record in self:
@@ -464,6 +484,27 @@ class G2PFarmer(models.Model):
             if gc_date > fields.date.today():
                 raise ValidationError(_("You can't select a date of birth greater than today"))
             self.birthdate = gc_date
+            age_int = self.compute_age_int_from_dates(self.birthdate)
+            self.age = str(age_int) if age_int is not None else False
+        else:
+            if self.age and self.age.isdigit():
+                age_int = int(self.age)
+                if age_int >= 0:
+                    gc_date = fields.Date.today() - relativedelta(years=age_int)
+                    self.birthdate = gc_date
+                    self.birthdate_not_exact = True
+                    bday = date(gc_date.year, gc_date.month, gc_date.day)
+                    ethiopian_date_str = eth_date.to_ethiopian(bday.year, bday.month, bday.day)
+                    self.birthdate_ec = eth_date.convert_tuple_to_string_with_separator(ethiopian_date_str)
+            elif self.birthdate:
+                bday = date(self.birthdate.year, self.birthdate.month, self.birthdate.day)
+                ethiopian_date_str = eth_date.to_ethiopian(bday.year, bday.month, bday.day)
+                self.birthdate_ec = eth_date.convert_tuple_to_string_with_separator(ethiopian_date_str)
+                age_int = self.compute_age_int_from_dates(self.birthdate)
+                self.age = str(age_int) if age_int is not None else False
+            else:
+                self.birthdate = False
+                self.age = False
 
     @api.onchange("has_finance_access")
     def _onchange_has_finance_access(self):

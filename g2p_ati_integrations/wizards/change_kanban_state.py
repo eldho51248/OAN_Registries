@@ -17,3 +17,4 @@ class G2PChangeStateWizard(models.TransientModel):
                 "rejection_reason": self.remark,
             }
         )
+   

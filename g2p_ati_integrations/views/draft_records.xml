@@ -60,7 +60,7 @@
                                 </t>
 
 
-                                <t t-if="record.state.raw_value == 'draft'">
+                                <t t-if="record.state.raw_value == 'draft' or record.state.raw_value == 'rejected'">
                                     <button
                                             string="Edit"
                                             type="object"
@@ -79,7 +79,9 @@
 
                                 <t t-if="record.state.raw_value == 'submitted'">
 
+                               
                                 <button
+
                                             string="Publish"
                                             type="object"
                                             name="action_publish"
@@ -123,7 +125,7 @@
         <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
              <xpath expr="//field[@name='lang']" position="after">
-                <field name="asigned_region" />
+                <field name="asigned_region" widget="many2many_tags" />
                 <field name="language_skills" widget="many2many_tags" />
              </xpath>
         </field>
@@ -159,7 +161,7 @@
         <field name="name">draft.record.tree</field>
         <field name="model">draft.record</field>
         <field name="inherit_id" ref="g2p_draft_publish.view_draft_imported_record_tree" />
-        <field name="arch" type="xml">
+        <field name="arch" type="xml">     
             <xpath expr="//field[@name='addl_name']" position="attributes">
                 <attribute name="column_invisible">1</attribute>
             </xpath>
@@ -179,6 +181,31 @@
                 <field name="zone" />
                 <field name="woreda" />
                 <field name="kebele" />
+            </xpath>
+            <xpath expr="//button[@name='action_open_wizard']" position="replace">
+                <button
+                    string="Edit"
+                    invisible="state == 'published'"
+                    type="object"
+                    name="action_open_wizard"
+                    groups="g2p_draft_publish.group_int_validator,g2p_draft_publish.group_int_admin,g2p_draft_publish.group_int_approver"
+                />
+                <button
+                    string="Edit"
+                    invisible="state != 'submitted'"
+                    type="object"
+                    name="action_open_wizard"
+                    groups="g2p_draft_publish.group_int_approver,g2p_draft_publish.group_int_admin"
+                />
+            </xpath>
+            <xpath expr="//button[@name='action_submit']" position="replace">
+                <button
+                    string="Submit"
+                    invisible="state not in ('draft','rejected')"
+                    type="object"
+                    name="action_submit"
+                    groups="g2p_draft_publish.group_int_validator,g2p_draft_publish.group_int_admin"
+                />
             </xpath>
         </field>
     </record>
@@ -239,6 +266,30 @@
                     expr="//sheet/notebook[@name='individual_detail']/page[@name='basic_info']/group[@name='farmer_socio_economic_data']"
                     position="move"
                 />
+            </xpath>
+        </field>
+    </record>
+
+   <record id="res_partner_draft_children_requires_male_female" model="ir.ui.view">
+    <field name="name">res.partner.draft.children.readonly.until.male.female</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="g2p_draft_publish.g2p_validation_form_view" />
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='number_of_children_in_family']" position="attributes">
+            <attribute name="readonly">not number_of_males_in_family or not number_of_females_in_family</attribute>
+        </xpath>
+    </field>
+</record>
+
+    <record id="res_partner_draft_source_db_tags" model="ir.ui.view">
+        <field name="name">res.partner.draft.source.db.tags</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="g2p_draft_publish.g2p_validation_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='other']" position="inside">
+                <group string="Import Information">
+                    <field name="source_db_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                </group>
             </xpath>
         </field>
     </record>
@@ -328,7 +379,7 @@
                 <field name="phone" />
                 <field name="mobile" />
                 <field name= "language_skills"/>
-                <field name= "asigned_region"/>
+                <field name= "asigned_region" widget="many2many_tags"/>
                 <field name="user_ids" widget="many2many_tags" optional="show" />
             </tree>
         </field>

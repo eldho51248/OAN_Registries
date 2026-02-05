@@ -155,7 +155,7 @@
 
                             <group>
 
-                                <field name="assigned_region" 
+                                <field name="assigned_region" widget="many2many_tags"
                                 />
 
                             </group>
@@ -220,7 +220,7 @@
             <search string="Imported Records">
                 <field name="name" />
                 <field name="phone" />
-                <field name="assigned_region" />
+                <field name="assigned_region" widget="many2many_tags" />
                 <field name="assigned_languages" />
                 <filter
                     name="draft_created"
