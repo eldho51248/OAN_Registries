@@ -185,7 +185,7 @@
             <xpath expr="//button[@name='action_open_wizard']" position="replace">
                 <button
                     string="Edit"
-                    invisible="state == 'published'"
+                    invisible="state in ('published','submitted')"
                     type="object"
                     name="action_open_wizard"
                     groups="g2p_draft_publish.group_int_validator,g2p_draft_publish.group_int_admin,g2p_draft_publish.group_int_approver"
