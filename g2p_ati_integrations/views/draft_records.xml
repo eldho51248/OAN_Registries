@@ -135,6 +135,7 @@
         <field name="name">res.partner.source.db.tags</field>
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="g2p_registry_individual.view_individuals_form" />
+        <field name="active" eval="False" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='age']" position="after">
                 <field name="source_db_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
@@ -146,6 +147,7 @@
         <field name="name">draft.record.form.source.tags</field>
         <field name="model">draft.record</field>
         <field name="inherit_id" ref="g2p_draft_publish.view_draft_imported_record_form" />
+        <field name="active" eval="False" />
         <field name="arch" type="xml">
             <xpath expr="//div[@class='oe_title mb24']" position="after">
                 <group>
@@ -213,12 +215,6 @@
 
 
 
-    <record id="draft_record_followers_rule" model="ir.rule">
-    <field name="name">Draft Record: Only Followers</field>
-    <field name="model_id" ref="model_draft_record" />
-    <field name="global" eval="False" />
-    <field name="domain_force">[('create_uid', '=', user.id)]</field>
-</record>
 
     <record id="view_draft_imported_farmer_record_lmap" model="ir.ui.view">
         <field name="name">draft.record.map</field>
@@ -270,7 +266,7 @@
         </field>
     </record>
 
-   <record id="res_partner_draft_children_requires_male_female" model="ir.ui.view">
+    <record id="res_partner_draft_children_requires_male_female" model="ir.ui.view">
     <field name="name">res.partner.draft.children.readonly.until.male.female</field>
     <field name="model">res.partner</field>
     <field name="inherit_id" ref="g2p_draft_publish.g2p_validation_form_view" />
@@ -281,10 +277,22 @@
     </field>
 </record>
 
+    <record id="res_partner_draft_family_size_force_save" model="ir.ui.view">
+        <field name="name">res.partner.draft.family.size.force.save</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="g2p_draft_publish.g2p_validation_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='size_of_family']" position="attributes">
+                <attribute name="force_save">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
     <record id="res_partner_draft_source_db_tags" model="ir.ui.view">
         <field name="name">res.partner.draft.source.db.tags</field>
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="g2p_draft_publish.g2p_validation_form_view" />
+        <field name="active" eval="False" />
         <field name="arch" type="xml">
             <xpath expr="//page[@name='other']" position="inside">
                 <group string="Import Information">
@@ -385,6 +393,24 @@
         </field>
     </record>
 
+    <record id="view_g2p_ati_integration_users_form" model="ir.ui.view">
+        <field name="name">g2p.ati.integration.users.form</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <form string="Integration User">
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="phone" />
+                        <field name="mobile" />
+                        <field name="language_skills" widget="many2many_tags" />
+                        <field name="asigned_region" widget="many2many_tags" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
     <record id="action_g2p_ati_integration_users" model="ir.actions.act_window">
         <field name="name">Data Integration Users</field>
         <field name="res_model">res.partner</field>
@@ -393,7 +419,7 @@
             name="view_ids"
             eval="[(5, 0, 0),
                 (0,0,{'view_mode': 'tree', 'view_id': ref('g2p_ati_integrations.view_g2p_ati_integration_users_tree')}),
-                (0,0,{'view_mode': 'form', 'view_id': ref('base.view_partner_form')})]"
+                (0,0,{'view_mode': 'form', 'view_id': ref('g2p_ati_integrations.view_g2p_ati_integration_users_form')})]"
         />
         <field
             name="domain"
