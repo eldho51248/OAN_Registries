@@ -302,6 +302,41 @@ class G2PFarmer(models.Model):
             ):
                 raise ValidationError(_("Number of children must not exceed family size."))
 
+    @api.onchange(
+        "number_of_males_in_family",
+        "number_of_females_in_family",
+        "number_of_children_in_family",
+    )
+    def _onchange_household_positive_numbers(self):
+        if not self._is_integration_form():
+            return
+        self._validate_household_positive_numbers()
+
+    @api.constrains(
+        "number_of_males_in_family",
+        "number_of_females_in_family",
+        "number_of_children_in_family",
+    )
+    def _check_household_positive_numbers(self):
+        for record in self:
+            if not record._is_integration_form():
+                continue
+            record._validate_household_positive_numbers()
+
+    def _validate_household_positive_numbers(self):
+        field_labels = {
+            "number_of_males_in_family": _("Number of males in the family"),
+            "number_of_females_in_family": _("Number of females in the family"),
+            "number_of_children_in_family": _("Number of children in the family"),
+        }
+        for field_name, label in field_labels.items():
+            value = getattr(self, field_name)
+            # In draft wizard context, an unset Integer can appear as boolean False.
+            if value is None or isinstance(value, bool):
+                continue
+            if value < 0:
+                raise ValidationError(_("%s must be zero or greater.") % label)
+
     def _is_integration_form(self):
         active_model = self.env.context.get("active_model", False)
         return active_model and active_model == "draft.record"

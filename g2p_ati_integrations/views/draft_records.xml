@@ -272,7 +272,7 @@
     <field name="inherit_id" ref="g2p_draft_publish.g2p_validation_form_view" />
     <field name="arch" type="xml">
         <xpath expr="//field[@name='number_of_children_in_family']" position="attributes">
-            <attribute name="readonly">not number_of_males_in_family or not number_of_females_in_family</attribute>
+            <attribute name="readonly">not number_of_males_in_family and not number_of_females_in_family</attribute>
         </xpath>
     </field>
 </record>
