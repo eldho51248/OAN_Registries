@@ -1,5 +1,5 @@
 <odoo>
-    <!-- Tree View -->
+
 
         <record id="view_imported_record_tree" model="ir.ui.view">
         <field name="name">g2p.imported.record.tree</field>

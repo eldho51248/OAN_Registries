@@ -153,31 +153,26 @@ class G2PDraftRecord(models.Model):
         return record
 
     def write(self, vals):
-        was_rejected = {}
-        if "state" in vals:
-            for record in self:
-                was_rejected[record.id] = record.state
         result = super().write(vals)
-        if vals.get("state") == "rejected":
-            for record in self:
-                if was_rejected.get(record.id) != "rejected":
-                    record._notify_draft_owner_rejected(record.rejection_reason)
+        if vals.get("state") in ("rejected", "published"):
+            self._close_record_activities()
         return result
+
+    def _close_record_activities(self):
+        activities = self.sudo().env["mail.activity"].search(
+            [("res_model", "=", "draft.record"), ("res_id", "in", self.ids)]
+        )
+        if activities:
+            activities.action_done()
 
     def _notify_draft_owner_rejected(self, reason):
         self.ensure_one()
-        owner = self.create_uid.partner_id
-        if owner:
-            body = "Your draft record was rejected."
+        owner_user = self.create_uid
+        if owner_user:
+            note = "Your draft record was rejected."
             if reason:
-                body = f"{body} Reason: {reason}"
-            self.sudo().message_subscribe(partner_ids=[owner.id])
-            self.sudo().message_post(
-                body=body,
-                subject="Record Rejected",
-                message_type="notification",
-                partner_ids=[owner.id],
-            )
+                note = f"{note} Reason: {reason}"
+            self._create_owner_activity(summary="Record Rejected", note=note)
 
     def action_change_state(self):
         _logger.info("Action Change State called")
@@ -218,8 +213,9 @@ class G2PDraftRecord(models.Model):
             valid_data["db_import"] = "yes"
             valid_data["name"] = f"{given_name} {family_name} {gf_name_en}".upper()
             
-            if self.import_record_id and self.import_record_id.source:
-                valid_data["source"] = self.import_record_id.source
+            import_record = self.sudo().import_record_id
+            if import_record and import_record.source:
+                valid_data["source"] = import_record.source
             res_partner_model.sudo().create(valid_data)
             self.write({"state": "published"})
 
@@ -241,29 +237,79 @@ class G2PDraftRecord(models.Model):
 
     def action_submit(self):
         result = super().action_submit()
-        approver_group = self.env.ref("g2p_draft_publish.group_int_approver")
-        approver_users = approver_group.users
-        if approver_users:
-            self._notify_approvers(approver_users)
+        for record in self:
+            # Owner has acted on rejection by resubmitting; close prior rejection activity.
+            record._close_owner_status_activities(["Record Rejected"])
+            target_users = record._get_target_approver_users()
+            record._sync_submit_activities(target_users)
+            if target_users:
+                record._notify_approvers(target_users)
         return result
 
-    def _notify_approvers(self, approver_users):
+    def _get_target_approver_users(self):
         self.ensure_one()
-        target_users = approver_users
-
+        approver_group = self.env.ref("g2p_draft_publish.group_int_approver")
+        approver_users = approver_group.users
         import_record = self.import_record_id
-        if import_record and import_record.assigned_region and import_record.assigned_languages:
+
+        if import_record and import_record.assigned_region:
             region_ids = set(import_record.assigned_region.ids)
-            lang_ids = set(import_record.assigned_languages.ids)
 
             def _matches(user):
                 user_regions = set(user.partner_id.asigned_region.ids)
-                user_langs = set(user.partner_id.language_skills.ids)
-                return bool(user_regions & region_ids) and bool(user_langs & lang_ids)
+                return bool(user_regions & region_ids)
 
-            target_users = approver_users.filtered(_matches)
+            approver_users = approver_users.filtered(_matches)
 
-        partner_ids = target_users.mapped("partner_id").ids
+        return approver_users
+
+    def _sync_submit_activities(self, target_users):
+        self.ensure_one()
+        activity_model = self.sudo().env["mail.activity"]
+        todo_type = self.env.ref("mail.mail_activity_data_todo").id
+        model_id = self.sudo().env["ir.model"].search([("model", "=", "draft.record")], limit=1).id
+
+        activities = activity_model.search(
+            [
+                ("res_model", "=", "draft.record"),
+                ("res_id", "=", self.id),
+                ("activity_type_id", "=", todo_type),
+                ("summary", "=", "Record Submitted For Approval"),
+            ]
+        )
+
+        target_user_ids = set(target_users.ids)
+        for activity in activities:
+            if activity.user_id.id not in target_user_ids:
+                activity.unlink()
+
+        existing_user_ids = set(
+            activity_model.search(
+                [
+                    ("res_model", "=", "draft.record"),
+                    ("res_id", "=", self.id),
+                    ("activity_type_id", "=", todo_type),
+                    ("summary", "=", "Record Submitted For Approval"),
+                ]
+            ).mapped("user_id").ids
+        )
+
+        missing_users = target_users.filtered(lambda user: user.id not in existing_user_ids)
+        for user in missing_users:
+            activity_model.create(
+                {
+                    "activity_type_id": todo_type,
+                    "res_model_id": model_id,
+                    "res_id": self.id,
+                    "user_id": user.id,
+                    "summary": "Record Submitted For Approval",
+                    "note": "Record has been submitted for approval.",
+                }
+            )
+
+    def _notify_approvers(self, approver_users):
+        self.ensure_one()
+        partner_ids = approver_users.mapped("partner_id").ids
         if partner_ids:
             self.sudo().message_post(
                 body=_("Record submitted for approval."),
@@ -273,44 +319,75 @@ class G2PDraftRecord(models.Model):
             )
 
     def _notify_draft_owner_published(self):
-        owner_partner = self.create_uid.partner_id
-        if owner_partner:
-            self.sudo().message_subscribe(partner_ids=[owner_partner.id])
-            self.sudo().message_post(
-                body=_("Your draft record has been published."),
-                subject=_("Record Published"),
-                message_type="notification",
-                partner_ids=[owner_partner.id],
+        owner_user = self.create_uid
+        if owner_user:
+            self._create_owner_activity(
+                summary="Record Published",
+                note="Your draft record has been published.",
+                auto_done=True,
             )
 
-    def _notify_approvers(self, approver_users):
+    def _close_owner_status_activities(self, summaries):
         self.ensure_one()
-        target_users = approver_users
+        owner_user = self.create_uid
+        if not owner_user:
+            return
 
-        import_record = self.import_record_id
-        if import_record and import_record.assigned_region and import_record.assigned_languages:
-            region_ids = set(import_record.assigned_region.ids)
-            lang_ids = set(import_record.assigned_languages.ids)
+        activities = self.sudo().env["mail.activity"].search(
+            [
+                ("res_model", "=", "draft.record"),
+                ("res_id", "=", self.id),
+                ("user_id", "=", owner_user.id),
+                ("summary", "in", summaries),
+            ]
+        )
+        if activities:
+            activities.action_done()
 
-            def _matches(user):
-                user_regions = set(user.partner_id.asigned_region.ids)
-                user_langs = set(user.partner_id.language_skills.ids)
-                return bool(user_regions & region_ids) and bool(user_langs & lang_ids)
+    def _create_owner_activity(self, summary, note, auto_done=False):
+        self.ensure_one()
+        owner_user = self.create_uid
+        if not owner_user:
+            return
 
-            target_users = approver_users.filtered(_matches)
+        activity_model = self.sudo().env["mail.activity"]
+        todo_type = self.env.ref("mail.mail_activity_data_todo").id
+        model_id = self.sudo().env["ir.model"].search([("model", "=", "draft.record")], limit=1).id
 
-        partner_ids = target_users.mapped("partner_id").ids
-        if partner_ids:
-            self.sudo().message_post(
-                body=_("Record submitted for approval."),
-                subject=_("Record Submitted"),
-                message_type="notification",
-                partner_ids=partner_ids,
-            )
-    
+        existing = activity_model.search(
+            [
+                ("res_model", "=", "draft.record"),
+                ("res_id", "=", self.id),
+                ("activity_type_id", "=", todo_type),
+                ("summary", "=", summary),
+                ("user_id", "=", owner_user.id),
+            ]
+        )
+        if existing:
+            existing.unlink()
+
+        activity = activity_model.create(
+            {
+                "activity_type_id": todo_type,
+                "res_model_id": model_id,
+                "res_id": self.id,
+                "user_id": owner_user.id,
+                "summary": summary,
+                "note": note,
+            }
+        )
+        if auto_done:
+            activity.action_done()
+
     def _process_json_data(self, json_data):
         context_data, additional_g2p_info = super()._process_json_data(json_data)
         context_data["default_gf_name_eng"] = self.gf_name_eng
+        import_record = self.sudo().import_record_id if self.import_record_id else self.env["g2p.imported.record"]
+        import_source = import_record.source if import_record else False
+        if "default_source" not in context_data and import_source:
+            context_data["default_source"] = import_source
+        if import_record and import_record.source_db_ids:
+            context_data["default_source_db_ids"] = [(6, 0, import_record.source_db_ids.ids)]
         additional_fields = ['zone', 'woreda', 'kebele']
         for field_name in additional_fields:
             if field_name in json_data:

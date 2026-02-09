@@ -19,20 +19,8 @@ class RejectWizard(models.TransientModel):
         if not record:
             return result
 
-        activities = self.sudo().env["mail.activity"].search(
-            [("res_model", "=", "draft.record"), ("res_id", "=", record.id)]
-        )
-        if activities:
-            activities.action_done()
-
-        if record.create_uid and record.create_uid.partner_id:
-            owner_partner = record.create_uid.partner_id
-            record.sudo().message_subscribe(partner_ids=[owner_partner.id])
-            record.sudo().message_post(
-                body=f"Your draft record was rejected: {self.rejection_reason}",
-                subject="Record Rejected",
-                message_type="notification",
-                partner_ids=[owner_partner.id],
-            )
+        # Close all remaining activities after rejection is finalized.
+        record._close_record_activities()
+        record._notify_draft_owner_rejected(self.rejection_reason)
 
         return result

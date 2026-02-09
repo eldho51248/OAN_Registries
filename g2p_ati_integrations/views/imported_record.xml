@@ -227,11 +227,12 @@
                     string="Draft Created"
                     domain="[('draft_status', '=', 'draft_created')]"
                 />
-                <filter
-                    name="no_draft"
-                    string="No Draft"
-                    domain="[('draft_status', '=', 'no_draft')]"
-                />
+              
+     <filter 
+    name="no_draft" 
+    string="No Draft" 
+    domain="['|', ('draft_status', '=', 'no_draft'), ('draft_status', '=', '')]" 
+/>
                 <group expand="0" string="Group By">
                     <filter
                         name="group_by_draft_status"
