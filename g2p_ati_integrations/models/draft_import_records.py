@@ -176,14 +176,15 @@ class G2PDraftRecord(models.Model):
 
     def action_change_state(self):
         _logger.info("Action Change State called")
-        return {
-            "name": "Reject",
-            "type": "ir.actions.act_window",
-            "res_model": "reject.wizard",
-            "view_mode": "form",
-            "view_id": self.env.ref("g2p_draft_publish.reject_wizard_view").id,
-            "target": "new",
+        self.ensure_one()
+        action = self.env.ref("g2p_ati_integrations.change_state_wizard_action").read()[0]
+        action["context"] = {
+            **self.env.context,
+            "active_id": self.id,
+            "active_ids": self.ids,
+            "active_model": self._name,
         }
+        return action
 
     def action_publish(self):
         self.ensure_one()
