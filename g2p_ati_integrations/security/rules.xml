@@ -7,7 +7,7 @@
 
 
 
-   <record id="rule_imported_record_followers" model="ir.rule">
+    <record id="rule_imported_record_followers" model="ir.rule">
         <field name="name">Imported Records - Access Rule</field>
         <field name="model_id" ref="g2p_ati_integrations.model_g2p_imported_record" />
         <field name="groups" eval="[(4, ref('base.group_user'))]" />
@@ -25,8 +25,12 @@
             ('message_follower_ids.partner_id', '=', user.partner_id.id)
         ]</field>
 
-     
-    </record>  
+    </record> 
+
+
+
+
+
 
 
     
@@ -53,9 +57,11 @@
         <field name="groups" eval="[(4, ref('g2p_draft_publish.group_int_approver'))]" />
         <field name="domain_force">[
             '|', ('create_uid', '=', user.id),
-            ('import_record_id.assigned_region', 'in', [x.id for x in user.partner_id.asigned_region])
+             ('import_record_id.assigned_region', 'in', user.partner_id.asigned_region.ids)
         ]</field>
     </record>
+
+
 
     <record id="g2p_draft_record_following_admin_restriction_rule" model="ir.rule">
         <field name="name">Draft Records - Admin  Views All</field>

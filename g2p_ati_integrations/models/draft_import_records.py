@@ -131,6 +131,7 @@ class G2PDraftRecord(models.Model):
     woreda = fields.Char(string="Woreda")
     kebele = fields.Char(string="Kebele")
     validation_status = fields.Many2one("g2p.validation.status")
+    status_remark = fields.Text(string="Status Remark")
     import_record_id = fields.Many2one("g2p.imported.record", string="Import Record")
     source = fields.Json(related="import_record_id.source")
     source_db_ids = fields.Many2many(
@@ -177,14 +178,20 @@ class G2PDraftRecord(models.Model):
     def action_change_state(self):
         _logger.info("Action Change State called")
         self.ensure_one()
-        action = self.env.ref("g2p_ati_integrations.change_state_wizard_action").read()[0]
-        action["context"] = {
-            **self.env.context,
-            "active_id": self.id,
-            "active_ids": self.ids,
-            "active_model": self._name,
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Change State",
+            "res_model": "change.state.wizard",
+            "view_mode": "form",
+            "view_id": self.env.ref("g2p_ati_integrations.change_state_wizard_view").id,
+            "target": "new",
+            "context": {
+                **self.env.context,
+                "active_id": self.id,
+                "active_ids": self.ids,
+                "active_model": self._name,
+            },
         }
-        return action
 
     def action_publish(self):
         self.ensure_one()
@@ -237,6 +244,13 @@ class G2PDraftRecord(models.Model):
         return super().action_open_wizard()
 
     def action_submit(self):
+        for record in self:
+            if not record._has_region_in_partner_data():
+                raise UserError(
+                    _(
+                        "Before submitting, Add Region and Location Data in The Draft Farmer Form"
+                    )
+                )
         result = super().action_submit()
         for record in self:
             # Owner has acted on rejection by resubmitting; close prior rejection activity.
@@ -251,19 +265,48 @@ class G2PDraftRecord(models.Model):
         self.ensure_one()
         approver_group = self.env.ref("g2p_draft_publish.group_int_approver")
         approver_users = approver_group.users
-        import_record = self.import_record_id
+        import_record = self.sudo().import_record_id
+        if not import_record:
+            return approver_users.browse()
 
-        if import_record and import_record.assigned_region:
-            region_ids = set(import_record.assigned_region.ids)
+        import_region_ids = set(import_record.assigned_region.ids)
+        import_language_ids = set(import_record.assigned_languages.ids)
 
-            def _matches(user):
-                user_regions = set(user.partner_id.asigned_region.ids)
-                return bool(user_regions & region_ids)
+        if not import_region_ids and not import_language_ids:
+            return approver_users.browse()
 
-            approver_users = approver_users.filtered(_matches)
+        def _matches(user):
+            partner = user.partner_id.sudo()
+            if import_region_ids:
+                user_region_ids = set(partner.asigned_region.ids)
+                if not (user_region_ids & import_region_ids):
+                    return False
+            if import_language_ids:
+                user_language_ids = set(partner.language_skills.ids)
+                if not (user_language_ids & import_language_ids):
+                    return False
+            return True
 
-        return approver_users
+        return approver_users.filtered(_matches)
 
+    def _has_region_in_partner_data(self):
+        self.ensure_one()
+        partner_data = self.partner_data or {}
+        if isinstance(partner_data, str):
+            try:
+                partner_data = json.loads(partner_data)
+            except (TypeError, ValueError):
+                partner_data = {}
+        if not isinstance(partner_data, dict):
+            return False
+
+        region_value = partner_data.get("region")
+        if isinstance(region_value, int):
+            return region_value > 0
+        if isinstance(region_value, str):
+            return bool(region_value.strip())
+        return bool(region_value)
+    
     def _sync_submit_activities(self, target_users):
         self.ensure_one()
         activity_model = self.sudo().env["mail.activity"]
@@ -498,17 +541,17 @@ class G2PRespartnerIntegration(models.Model):
             source_ids = [existing_map[name.lower()].id for name in names if name.lower() in existing_map]
             record.source_db_ids = [(6, 0, source_ids)] if source_ids else [(5, 0, 0)]
 
-    def _ensure_source_db_ids(self):
-        if not self:
-            return
-        self.with_context(skip_source_db_ensure=True)._compute_source_db_ids()
-        self.flush_recordset(["source_db_ids"])
+    # def _ensure_source_db_ids(self):
+    #     if not self:
+    #         return
+    #     self.with_context(skip_source_db_ensure=True)._compute_source_db_ids()
+    #     self.flush_recordset(["source_db_ids"])
 
-    def read(self, fields=None, load="_classic_read"):
-        if not self.env.context.get("skip_source_db_ensure"):
-            if not fields or "source_db_ids" in fields or "source" in fields:
-                self._ensure_source_db_ids()
-        return super().read(fields=fields, load=load)
+    # def read(self, fields=None, load="_classic_read"):
+    #     if not self.env.context.get("skip_source_db_ensure"):
+    #         if not fields or "source_db_ids" in fields or "source" in fields:
+    #             self._ensure_source_db_ids()
+    #     return super().read(fields=fields, load=load)
 
 
 
