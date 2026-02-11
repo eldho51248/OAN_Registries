@@ -5,7 +5,7 @@ class G2PChangeStateWizard(models.TransientModel):
     _name = "change.state.wizard"
 
     validation_status = fields.Many2one("g2p.validation.status")
-    remark = fields.Char()
+    remark = fields.Char(string="Status Remark")
 
     def change_kanban_state(self):
         active_ids = self._context.get("active_ids")
@@ -14,7 +14,7 @@ class G2PChangeStateWizard(models.TransientModel):
         record.write(
             {
                 "validation_status": self.validation_status,
-                "rejection_reason": self.remark,
+                "status_remark": self.remark,
             }
         )
    

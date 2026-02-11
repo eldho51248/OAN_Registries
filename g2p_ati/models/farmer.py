@@ -585,17 +585,17 @@ class G2PFarmer(models.Model):
             else:
                 record.farmer_id = False
 
-    def _ensure_farmer_id(self):
-        if not self:
-            return
-        self.with_context(skip_farmer_id_ensure=True)._compute_farmer_id()
-        self.flush_recordset(["farmer_id"])
+    # def _ensure_farmer_id(self):
+    #     if not self:
+    #         return
+    #     self.with_context(skip_farmer_id_ensure=True)._compute_farmer_id()
+    #     self.flush_recordset(["farmer_id"])
 
-    def read(self, fields=None, load="_classic_read"):
-        if not self.env.context.get("skip_farmer_id_ensure"):
-            if not fields or "farmer_id" in fields or "unique_id" in fields:
-                self._ensure_farmer_id()
-        return super().read(fields=fields, load=load)
+    # def read(self, fields=None, load="_classic_read"):
+    #     if not self.env.context.get("skip_farmer_id_ensure"):
+    #         if not fields or "farmer_id" in fields or "unique_id" in fields:
+    #             self._ensure_farmer_id()
+    #     return super().read(fields=fields, load=load)
 
     def unlink(self):
         if any(record.state == "approved" for record in self):
