@@ -12,8 +12,9 @@
                 <field name="farmer_id"/>
                 <field name="partner_id"  context="{'form_view_ref': 'g2p_ati.g2p_registry_individual_form_view_inherit'}" options="{'no_open': False}"/>
                 <field name="land_id"/>
-                <field name="total_land_area"  widget="float" digits="[12, 2]" />
+                <field name="total_land_area" widget="float" options="{'enable_formatting': False}" />
                 <field name="ownership_type" />
+              
                 <field name="land_kebele"/>
                 <field name="land_certificate" />
                 <field name="document_slug" column_invisible="1" />
@@ -22,6 +23,9 @@
                 <field name="document_id" column_invisible="1" />
                 <field name="document_url" column_invisible="1" />
                 <widget name="g2p_ati_document_preview" />
+                
+                  <field name="remark" />
+
             </tree>
         </field>
     </record>

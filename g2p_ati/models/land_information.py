@@ -12,8 +12,9 @@ class G2PLandInformation(models.Model):
     land_certificate = fields.Many2one("storage.file")
     certficate_provided = fields.Boolean()
     land_id = fields.Char(string="Land ID", index=True)
+    remark = fields.Char(string="Remark")
     ownership_type = fields.Selection(
-        selection=[("owner", "Owner"), ("tenant", "Tenant"), ("crop_share", "Crop Sharing")], required=True
+        selection=[("owner", "Owner"), ("tenant", "Tenant"), ("crop_share", "Crop Sharing"), ("family_gift", "Family Gift")], required=True
     )
     document_slug = fields.Char(related="land_certificate.slug")
     document_mimetype = fields.Char(related="land_certificate.mimetype")

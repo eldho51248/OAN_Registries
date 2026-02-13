@@ -409,11 +409,13 @@ class G2PFarmer(models.Model):
             self.birthdate_ec = eth_date.convert_tuple_to_string_with_separator(ethiopian_date_str)
             age_int = self.compute_age_int_from_dates(self.birthdate)
             self.age = str(age_int) if age_int is not None else False
+            # GC DOB explicitly entered by user should be treated as exact.
+            self.birthdate_not_exact = False
         else:
             if self.age and self.age.isdigit():
                 age_int = int(self.age)
                 if age_int >= 0:
-                    gc_date = fields.Date.today() - relativedelta(years=age_int)
+                    gc_date = self._get_sep12_gc_birthdate_from_age(age_int)
                     self.birthdate = gc_date
                     self.birthdate_not_exact = True
                     bday = date(gc_date.year, gc_date.month, gc_date.day)
@@ -428,7 +430,17 @@ class G2PFarmer(models.Model):
             age_int = int(self.age)
             if age_int < 0:
                 return
-            gc_date = fields.Date.today() - relativedelta(years=age_int)
+            # If an exact DOB exists and age matches that DOB, this onchange was
+            # triggered by date -> age synchronization. Keep the explicit date.
+            if self.birthdate and not self.birthdate_not_exact:
+                age_from_birthdate = self.compute_age_int_from_dates(self.birthdate)
+                if age_from_birthdate is not None and self.age == str(age_from_birthdate):
+                    bday = date(self.birthdate.year, self.birthdate.month, self.birthdate.day)
+                    ethiopian_date_str = eth_date.to_ethiopian(bday.year, bday.month, bday.day)
+                    self.birthdate_ec = eth_date.convert_tuple_to_string_with_separator(ethiopian_date_str)
+                    return
+            # Explicit age input means unknown exact DOB; age drives derived DOB.
+            gc_date = self._get_sep12_gc_birthdate_from_age(age_int)
             self.birthdate = gc_date
             self.birthdate_not_exact = True
             bday = date(gc_date.year, gc_date.month, gc_date.day)
@@ -448,7 +460,11 @@ class G2PFarmer(models.Model):
             age_int = int(record.age)
             if age_int < 0:
                 continue
-            gc_date = fields.Date.today() - relativedelta(years=age_int)
+            # Preserve explicit GC/EC DOB unless age onchange switched to approximate mode.
+            if record.birthdate and not record.birthdate_not_exact:
+                continue
+            # Keep save behavior consistent with onchange: age drives derived DOB.
+            gc_date = record._get_sep12_gc_birthdate_from_age(age_int)
             record.birthdate = gc_date
             record.birthdate_not_exact = True
             bday = date(gc_date.year, gc_date.month, gc_date.day)
@@ -519,13 +535,14 @@ class G2PFarmer(models.Model):
             if gc_date > fields.date.today():
                 raise ValidationError(_("You can't select a date of birth greater than today"))
             self.birthdate = gc_date
+            self.birthdate_not_exact = False
             age_int = self.compute_age_int_from_dates(self.birthdate)
             self.age = str(age_int) if age_int is not None else False
         else:
             if self.age and self.age.isdigit():
                 age_int = int(self.age)
                 if age_int >= 0:
-                    gc_date = fields.Date.today() - relativedelta(years=age_int)
+                    gc_date = self._get_sep12_gc_birthdate_from_age(age_int)
                     self.birthdate = gc_date
                     self.birthdate_not_exact = True
                     bday = date(gc_date.year, gc_date.month, gc_date.day)
@@ -537,9 +554,18 @@ class G2PFarmer(models.Model):
                 self.birthdate_ec = eth_date.convert_tuple_to_string_with_separator(ethiopian_date_str)
                 age_int = self.compute_age_int_from_dates(self.birthdate)
                 self.age = str(age_int) if age_int is not None else False
+                self.birthdate_not_exact = False
             else:
                 self.birthdate = False
                 self.age = False
+
+    def _get_sep12_gc_birthdate_from_age(self, age_int):
+        """Age-only mode: use a fixed GC day/month (Sep 12) and adjust year to match age."""
+        today = fields.Date.today()
+        year = today.year - age_int
+        if (today.month, today.day) < (9, 12):
+            year -= 1
+        return date(year, 9, 12)
 
     @api.onchange("has_finance_access")
     def _onchange_has_finance_access(self):
