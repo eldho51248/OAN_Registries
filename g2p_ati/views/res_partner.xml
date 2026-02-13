@@ -277,15 +277,15 @@
 
 					<group name="computed_land_info" col="3">
 						<group name="total_land_owned_area">
-							<field name="total_land_owned_area" readonly="True" widget="float" options="{'enable_formatting': False}" />
+							<field name="total_land_owned_area" readonly="True" widget="g2p_trim_float" />
 						</group>
 
 						<group name="total_land_rent_area">
-							<field name="total_land_rent_area" readonly="True" widget="float" options="{'enable_formatting': False}" />
+							<field name="total_land_rent_area" readonly="True" widget="g2p_trim_float" />
 						</group>
 
 						<group name="total_land_crop_sharing_area" >
-							<field name="total_land_crop_sharing_area" readonly="True" widget="float" options="{'enable_formatting': False}"  />
+							<field name="total_land_crop_sharing_area" readonly="True" widget="g2p_trim_float" />
 						</group>
 
 					</group>
@@ -293,7 +293,7 @@
                     <group>
 
 					 <group name="total_land" cols="1" colspan="1">
-							<field name="total_land_area" readonly="True" widget="float" options="{'enable_formatting': False}" class="d-flex fs-bold" />
+							<field name="total_land_area" readonly="True" widget="g2p_trim_float" class="d-flex fs-bold" />
 						</group>
 
 					  <group name="land_ownership">
@@ -307,7 +307,7 @@
 						<tree editable="bottom">
 							<field name="ownership_type" />
 							<field name="remark" />
-							<field name="total_land_area" widget="float" options="{'enable_formatting': False}"  />
+							<field name="total_land_area" widget="g2p_trim_float" />
 							<field name="land_id" />
 							<field name="land_kebele"/>
 							<field name="certficate_provided"/>
