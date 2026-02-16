@@ -105,21 +105,6 @@ class G2PConsentRequest(models.Model):
             if rec.validity_from and rec.validity_to and rec.validity_from > rec.validity_to:
                 raise ValidationError(_("Valid From must be earlier than or equal to Valid Until."))
 
-    @api.constrains("allowed_data_field_ids", "partner_record_id")
-    def _check_allowed_fields_subset(self):
-        for rec in self:
-            if not rec.partner_record_id or not rec.allowed_data_field_ids:
-                continue
-            disallowed_fields = rec.allowed_data_field_ids - rec.partner_record_id.allowed_data_field_ids
-            if disallowed_fields:
-                raise ValidationError(
-                    _(
-                        "Requested data points must come from the selected partner's allowed field set. "
-                        "Disallowed fields: %(fields)s"
-                    )
-                    % {"fields": ", ".join(disallowed_fields.mapped("name"))}
-                )
-
     def _set_status(self, status, timestamp_field=None):
         vals = {"status": status}
         if timestamp_field:
@@ -128,10 +113,15 @@ class G2PConsentRequest(models.Model):
 
     def _build_attribute_lists_payload(self) -> str:
         self.ensure_one()
-        codes = [code for code in self.allowed_data_field_ids.mapped("code") if code]
-        if not codes:
+        tokens = []
+        for data_field in self.allowed_data_field_ids:
+            token = (data_field.code or data_field.name or "").strip()
+            if token:
+                tokens.append(token)
+        tokens = list(dict.fromkeys(tokens))
+        if not tokens:
             return "[]"
-        return json.dumps([{"register": codes}], ensure_ascii=False)
+        return json.dumps([{"register": tokens}], ensure_ascii=False)
 
     def _extract_attribute_tokens(self) -> list[str]:
         self.ensure_one()
@@ -157,19 +147,25 @@ class G2PConsentRequest(models.Model):
 
     def _sync_attribute_lists_from_allowed_fields(self):
         for rec in self:
-            rec.attribute_lists = rec._build_attribute_lists_payload()
+            payload = rec._build_attribute_lists_payload()
+            if rec.attribute_lists != payload:
+                rec.with_context(_skip_attribute_lists_sync=True).write({"attribute_lists": payload})
 
     def _sync_allowed_fields_from_attribute_lists(self):
         data_field_model = self.env["g2p.consent.data.field"]
         for rec in self:
             tokens = rec._extract_attribute_tokens()
+            current_ids = set(rec.allowed_data_field_ids.ids)
             if not tokens:
-                rec.allowed_data_field_ids = [(5, 0, 0)]
+                if current_ids:
+                    rec.with_context(_skip_attribute_lists_sync=True).write({"allowed_data_field_ids": [(5, 0, 0)]})
                 continue
             by_code = data_field_model.search([("code", "in", tokens)])
             remaining = [t for t in tokens if t not in set(by_code.mapped("code"))]
             by_name = data_field_model.search([("name", "in", remaining)]) if remaining else data_field_model.browse()
-            rec.allowed_data_field_ids = [(6, 0, (by_code | by_name).ids)]
+            target_ids = set((by_code | by_name).ids)
+            if current_ids != target_ids:
+                rec.with_context(_skip_attribute_lists_sync=True).write({"allowed_data_field_ids": [(6, 0, list(target_ids))]})
 
     @api.onchange("allowed_data_field_ids")
     def _onchange_allowed_data_field_ids_sync_attribute_lists(self):
@@ -177,25 +173,32 @@ class G2PConsentRequest(models.Model):
 
     @api.onchange("attribute_lists")
     def _onchange_attribute_lists_sync_allowed_fields(self):
-        if self.attribute_lists:
-            self._sync_allowed_fields_from_attribute_lists()
+        self._sync_allowed_fields_from_attribute_lists()
 
     @api.model_create_multi
     def create(self, vals_list):
+        if self.env.context.get("_skip_attribute_lists_sync"):
+            return super().create(vals_list)
         records = super().create(vals_list)
         for rec, vals in zip(records, vals_list):
-            if "allowed_data_field_ids" in vals:
+            if "allowed_data_field_ids" in vals and "attribute_lists" not in vals:
                 rec._sync_attribute_lists_from_allowed_fields()
-            elif "attribute_lists" in vals:
+            elif "attribute_lists" in vals and "allowed_data_field_ids" not in vals:
                 rec._sync_allowed_fields_from_attribute_lists()
+            elif "allowed_data_field_ids" in vals and "attribute_lists" in vals:
+                rec._sync_attribute_lists_from_allowed_fields()
         return records
 
     def write(self, vals):
+        if self.env.context.get("_skip_attribute_lists_sync"):
+            return super().write(vals)
         result = super().write(vals)
-        if "allowed_data_field_ids" in vals:
+        if "allowed_data_field_ids" in vals and "attribute_lists" not in vals:
             self._sync_attribute_lists_from_allowed_fields()
-        elif "attribute_lists" in vals:
+        elif "attribute_lists" in vals and "allowed_data_field_ids" not in vals:
             self._sync_allowed_fields_from_attribute_lists()
+        elif "allowed_data_field_ids" in vals and "attribute_lists" in vals:
+            self._sync_attribute_lists_from_allowed_fields()
         return result
 
     def action_approve(self):
