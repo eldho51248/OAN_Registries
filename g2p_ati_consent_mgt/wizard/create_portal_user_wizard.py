@@ -64,4 +64,3 @@ class G2PATICreatePortalUserWizard(models.TransientModel):
             user.action_reset_password()
 
         return {"type": "ir.actions.act_window_close"}
-

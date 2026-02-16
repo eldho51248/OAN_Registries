@@ -4,7 +4,18 @@ from odoo import _, api, fields, models
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
+    consent_request_ids = fields.One2many("g2p.consent.request", "farmer_id", string="Consent Requests")
+    consent_request_count = fields.Integer(compute="_compute_consent_request_count", string="Consent Count")
+
     is_consent_parent = fields.Boolean(string="Consent Parent", default=False, index=True)
+    allowed_data_field_ids = fields.Many2many(
+        "g2p.consent.data.field",
+        "g2p_consent_parent_data_field_rel",
+        "partner_id",
+        "field_id",
+        string="Allowed Data Fields",
+        help="Fields this consent partner can request in consent requests.",
+    )
     consent_portal_user_ids = fields.One2many(
         "res.users",
         "consent_parent_partner_id",
@@ -14,6 +25,11 @@ class ResPartner(models.Model):
         string="Portal Users",
         compute="_compute_consent_portal_user_count",
     )
+
+    def _compute_consent_request_count(self):
+        consent_obj = self.env["g2p.consent.request"]
+        for rec in self:
+            rec.consent_request_count = consent_obj.search_count([("farmer_id", "=", rec.id)])
 
     @api.depends("consent_portal_user_ids")
     def _compute_consent_portal_user_count(self):
@@ -28,6 +44,17 @@ class ResPartner(models.Model):
         }
         for partner in self:
             partner.consent_portal_user_count = counts.get(partner.id, 0)
+
+    def action_view_consent_requests(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Consent Requests"),
+            "res_model": "g2p.consent.request",
+            "view_mode": "tree,form",
+            "domain": [("farmer_id", "=", self.id)],
+            "context": {"default_farmer_id": self.id, "search_default_group_by_status": 1},
+        }
 
     def action_open_consent_portal_users(self):
         self.ensure_one()
@@ -53,4 +80,3 @@ class ResPartner(models.Model):
             "target": "new",
             "context": {"default_parent_partner_id": self.id},
         }
-
