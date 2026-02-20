@@ -29,7 +29,7 @@ class G2PConsentRequest(models.Model):
         "res.partner",
         string="Farmer",
         required=True,
-        domain="[('is_registrant', '=', True), ('is_group', '=', False), ('is_farmer', '=', 'yes')]",
+        domain="[('is_group', '=', False)]",
     )
     allowed_data_field_ids = fields.Many2many(
         "g2p.consent.data.field",
@@ -37,13 +37,14 @@ class G2PConsentRequest(models.Model):
         "consent_id",
         "field_id",
         string="Allowed Data Points",
+        required=True,
         help="Requested fields for this consent.",
     )
     consent_provider_register = fields.Char()
     consent_provider_person_id = fields.Char()
     consent_target_object_ids = fields.Text(help='JSON list[dict], e.g. [{"register": ["<ids>"]}]')
     attribute_lists = fields.Text(help='JSON list[dict], e.g. [{"register": ["<fields>"]}]')
-    purpose = fields.Text()
+    purpose = fields.Text(required=True)
     validity_from = fields.Datetime(string="Valid From")
     validity_to = fields.Datetime(string="Valid Until")
     originated_from = fields.Selection(
@@ -78,6 +79,14 @@ class G2PConsentRequest(models.Model):
         "attachment_id",
         string="Consent Attachments",
     )
+    portal_capture_image = fields.Binary(string="Portal Capture Photo", attachment=True)
+    portal_capture_image_filename = fields.Char(string="Portal Capture Filename")
+    portal_capture_taken_at = fields.Datetime(string="Portal Capture Taken At")
+    portal_capture_image_preview_html = fields.Html(
+        string="Portal Capture Photo",
+        compute="_compute_portal_capture_image_preview_html",
+        sanitize=False,
+    )
 
     _sql_constraints = [
         (
@@ -99,11 +108,40 @@ class G2PConsentRequest(models.Model):
         for rec in self:
             rec.partner_id = str(rec.partner_record_id.id) if rec.partner_record_id else False
 
+    @api.depends("portal_capture_image")
+    def _compute_portal_capture_image_preview_html(self):
+        for rec in self:
+            if rec.id and rec.portal_capture_image:
+                image_url = f"/web/image/g2p.consent.request/{rec.id}/portal_capture_image"
+                captured_at = fields.Datetime.to_string(rec.portal_capture_taken_at) if rec.portal_capture_taken_at else "-"
+                rec.portal_capture_image_preview_html = (
+                    f'<a href="{image_url}" target="_blank" rel="noopener" title="Open full image">'
+                    f'<img src="{image_url}" '
+                    f'style="max-width:120px;max-height:120px;border:1px solid #d9d9d9;'
+                    f'border-radius:4px;cursor:zoom-in;"/>'
+                    f"</a>"
+                    f'<div style="margin-top:8px;white-space:nowrap;min-width:260px;">'
+                    f"<strong>Captured At:</strong> {captured_at}"
+                    f"</div>"
+                )
+            else:
+                rec.portal_capture_image_preview_html = False
+
     @api.constrains("validity_from", "validity_to")
     def _check_validity_range(self):
         for rec in self:
             if rec.validity_from and rec.validity_to and rec.validity_from > rec.validity_to:
                 raise ValidationError(_("Valid From must be earlier than or equal to Valid Until."))
+
+    @api.constrains("purpose", "allowed_data_field_ids", "attachment_ids")
+    def _check_required_request_details(self):
+        for rec in self:
+            if not (rec.purpose or "").strip():
+                raise ValidationError(_("Purpose is required for consent requests."))
+            if not rec.allowed_data_field_ids:
+                raise ValidationError(_("At least one data field is required for consent requests."))
+            if not rec.attachment_ids:
+                raise ValidationError(_("An attachment is required for consent requests."))
 
     def _set_status(self, status, timestamp_field=None):
         vals = {"status": status}
