@@ -6,8 +6,16 @@ class ResPartner(models.Model):
 
     consent_request_ids = fields.One2many("g2p.consent.request", "farmer_id", string="Consent Requests")
     consent_request_count = fields.Integer(compute="_compute_consent_request_count", string="Consent Count")
+    consent_receipt_ids = fields.One2many("g2p.consent.receipt", "partner_id", string="Consent Receipts")
+    consent_receipt_count = fields.Integer(compute="_compute_consent_receipt_count", string="Receipt Count")
 
     is_consent_parent = fields.Boolean(string="Consent Parent", default=False, index=True)
+    consent_websub_config_id = fields.Many2one(
+        "g2p.datashare.config.websub",
+        string="WebSub Configuration",
+        domain="[('event_type', '=', 'WEBSUB_INDIVIDUAL_UPDATED'), ('active', '=', True)]",
+        help="Selected WebSub configuration used when this partner's consent requests are approved.",
+    )
     allowed_data_field_ids = fields.Many2many(
         "g2p.consent.data.field",
         "g2p_consent_parent_data_field_rel",
@@ -30,6 +38,11 @@ class ResPartner(models.Model):
         consent_obj = self.env["g2p.consent.request"]
         for rec in self:
             rec.consent_request_count = consent_obj.search_count([("farmer_id", "=", rec.id)])
+
+    def _compute_consent_receipt_count(self):
+        receipt_obj = self.env["g2p.consent.receipt"]
+        for rec in self:
+            rec.consent_receipt_count = receipt_obj.search_count([("partner_id", "=", rec.id)])
 
     @api.depends("consent_portal_user_ids")
     def _compute_consent_portal_user_count(self):
@@ -79,4 +92,15 @@ class ResPartner(models.Model):
             ).id,
             "target": "new",
             "context": {"default_parent_partner_id": self.id},
+        }
+
+    def action_view_consent_receipts(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Consent Receipts"),
+            "res_model": "g2p.consent.receipt",
+            "view_mode": "tree,form",
+            "domain": [("partner_id", "=", self.id)],
+            "context": {"default_partner_id": self.id},
         }

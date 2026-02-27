@@ -108,7 +108,7 @@
 </xpath>
 
  <xpath expr="//body" position="attributes">
-    <attribute name="class">fade-in-ati</attribute>
+    <attribute name="class">fade-in-ati ati-sp-portal</attribute>
     <attribute name="id">content</attribute>
     <attribute name="style">opacity:0;</attribute>
  </xpath>

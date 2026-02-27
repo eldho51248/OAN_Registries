@@ -72,16 +72,37 @@
                         class="btn-secondary"
                         invisible="status in ('expired', 'revoked')"
                     />
+                    <button
+                        name="action_set_pending"
+                        type="object"
+                        string="Set to Pending"
+                        class="btn-secondary"
+                        invisible="status == 'pending'"
+                    />
                     <field name="status" widget="statusbar" statusbar_visible="pending,approved,rejected,revoked,denied,expired" />
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            class="oe_stat_button"
+                            type="object"
+                            name="action_view_receipts"
+                            icon="fa-file-text-o"
+                        >
+                            <field name="receipt_count" widget="statinfo" string="Receipts" />
+                        </button>
+                    </div>
                     <group col="2">
                         <group string="Request Details">
                             <field name="consent_creation_request_id" />
                             <field name="consent_type" />
                             <field name="originated_from" />
                             <field name="purpose" />
-                            <field name="allowed_data_field_ids" widget="many2many_tags" />
+                            <field
+                                name="allowed_data_field_ids"
+                                widget="many2many_tags"
+                                domain="[('id', 'in', partner_record_id.allowed_data_field_ids)]"
+                            />
                         </group>
                         <group string="Portal Capture">
                             <group col="2">
@@ -91,6 +112,10 @@
                                 <group/>
                             </group>
                             <field name="portal_capture_image_filename" invisible="1"/>
+                            <field name="portal_capture_taken_at" readonly="1" />
+                            <field name="portal_capture_latitude" readonly="1" />
+                            <field name="portal_capture_longitude" readonly="1" />
+                            <field name="portal_capture_accuracy_m" readonly="1" />
                         </group>
                     </group>
 
@@ -101,6 +126,7 @@
                             <field name="partner_code" readonly="1" />
                         </group>
                         <group string="Timeline">
+                            <field name="requester_user_id" readonly="1" />
                             <field name="validity_from" />
                             <field name="validity_to" />
                             <field name="created_at" readonly="1" />
@@ -126,6 +152,17 @@
                         </page>
                         <page string="Attachments">
                             <field name="attachment_ids" widget="many2many_binary" />
+                        </page>
+                        <page string="Receipts">
+                            <field name="receipt_ids" readonly="1">
+                                <tree>
+                                    <field name="partner_id" />
+                                    <field name="consent_partner_id" />
+                                    <field name="status" />
+                                    <field name="signature_algorithm" />
+                                    <field name="signed_at" />
+                                </tree>
+                            </field>
                         </page>
                     </notebook>
                 </sheet>

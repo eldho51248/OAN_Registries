@@ -14,6 +14,7 @@
     "external_dependencies": {},
     "data": [
         "security/ir.model.access.csv",
+        "views/datashare_config_websub_ati.xml",
     ],
     "assets": {
         "web.assets_backend": [],

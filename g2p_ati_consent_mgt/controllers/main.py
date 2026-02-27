@@ -4,25 +4,40 @@ from datetime import datetime, timedelta
 
 from odoo import fields, http
 from odoo.http import request
+from odoo.addons.portal.controllers.portal import pager as portal_pager
 
 _logger = logging.getLogger(__name__)
 
 
 class G2PATIConsentController(http.Controller):
     _MAX_ATTACHMENT_SIZE = 10 * 1024 * 1024  # 10MB
+    _REQUESTS_PAGE_SIZE = 12
+    _TABLE_FETCH_SIZE = 10
 
     def _error(self, message, code=400):
         return {"success": False, "code": code, "message": message}
-
     def _success(self, data=None, message="OK"):
         return {"success": True, "message": message, "data": data or {}}
-
     def _get_consent_partner(self):
         """Return the consent parent partner for the current portal user, or None."""
         user = request.env.user
         if not user.consent_parent_partner_id:
             return None
         return user.consent_parent_partner_id
+
+    def _serialize_consent_request(self, req):
+        created_at = req.created_at
+        if created_at:
+            created_at = fields.Datetime.to_string(created_at)
+        return {
+            "id": req.id,
+            "request_id": req.consent_creation_request_id or "",
+            "farmer_name": req.farmer_id.display_name or "",
+            "consent_type": req.consent_type or "",
+            "status": req.status or "",
+            "created_at": created_at or "",
+            "review_url": "/consent/management/review/%s?view=table#review_request" % req.id,
+        }
 
     def _find_farmer(self, payload):
         """Find farmer by farmer_db_id, farmer_id, or national_id/UID.
@@ -72,20 +87,52 @@ class G2PATIConsentController(http.Controller):
                     return farmers[0]
 
         return partner_obj.browse()
-
     # -------------------------------------------------------------------------
     # Portal: consent management page and farmer search
     # -------------------------------------------------------------------------
 
-    @http.route("/consent/management", type="http", auth="user", website=True)
-    def consent_management_page(self, **kw):
+    @http.route(
+        ["/consent/management", "/consent/management/page/<int:page>"],
+        type="http",
+        auth="user",
+        website=True,
+    )
+    def consent_management_page(self, page=1, **kw):
         partner = self._get_consent_partner()
         if not partner:
-            return request.redirect("/my")
+            return request.redirect("/portal/home")
+        try:
+            page = int(page or 1)
+        except (TypeError, ValueError):
+            page = 1
+        page = max(page, 1)
+
+        view_mode = (kw.get("view") or request.params.get("view") or "card").strip().lower()
+        if view_mode not in {"card", "table"}:
+            view_mode = "card"
+
         ConsentRequest = request.env["g2p.consent.request"].sudo()
         requests_domain = [("partner_record_id", "=", partner.id)]
-        consent_requests = ConsentRequest.search(requests_domain, order="create_date desc", limit=200)
-        data_fields = partner.allowed_data_field_ids or request.env["g2p.consent.data.field"].sudo().search([("active", "=", True)])
+        total_requests = ConsentRequest.search_count(requests_domain)
+        pager = None
+        request_limit = self._TABLE_FETCH_SIZE if view_mode == "table" else self._REQUESTS_PAGE_SIZE
+        request_offset = 0
+        if view_mode != "table":
+            pager = portal_pager(
+                url="/consent/management",
+                total=total_requests,
+                page=page,
+                step=self._REQUESTS_PAGE_SIZE,
+                url_args={"view": view_mode},
+            )
+            request_offset = pager.get("offset", 0)
+        consent_requests = ConsentRequest.search(
+            requests_domain,
+            order="create_date desc",
+            limit=request_limit,
+            offset=request_offset,
+        )
+        data_fields = partner.allowed_data_field_ids
         review_request = request.env["g2p.consent.request"].browse()
         review_id = kw.get("review_id") or request.params.get("review_id")
         if review_id:
@@ -98,6 +145,7 @@ class G2PATIConsentController(http.Controller):
                     [("id", "=", review_id), ("partner_record_id", "=", partner.id)],
                     limit=1,
                 )
+        view_base_url = "/consent/management/page/%s" % page if page > 1 else "/consent/management"
         return request.render(
             "g2p_ati_consent_mgt.portal_consent_management",
             {
@@ -105,12 +153,53 @@ class G2PATIConsentController(http.Controller):
                 "consent_requests": consent_requests,
                 "data_fields": data_fields,
                 "review_request": review_request,
+                "pager": pager,
+                "view_mode": view_mode,
+                "view_base_url": view_base_url,
+                "requests_page_size": self._REQUESTS_PAGE_SIZE,
+                "table_fetch_size": self._TABLE_FETCH_SIZE,
+                "total_requests": total_requests,
+                "current_page": page,
             },
+        )
+
+    @http.route("/consent/management/table_fetch", type="json", auth="user")
+    def consent_management_table_fetch(self, offset=0, limit=10, **kw):
+        partner = self._get_consent_partner()
+        if not partner:
+            return self._error("Access denied", code=403)
+
+        try:
+            offset = int(offset or 0)
+        except (TypeError, ValueError):
+            offset = 0
+        try:
+            limit = int(limit or self._TABLE_FETCH_SIZE)
+        except (TypeError, ValueError):
+            limit = self._TABLE_FETCH_SIZE
+
+        offset = max(offset, 0)
+        if limit <= 0:
+            limit = self._TABLE_FETCH_SIZE
+        limit = min(limit, 50)
+
+        ConsentRequest = request.env["g2p.consent.request"].sudo()
+        domain = [("partner_record_id", "=", partner.id)]
+        total = ConsentRequest.search_count(domain)
+        rows = ConsentRequest.search(domain, order="create_date desc", offset=offset, limit=limit)
+        return self._success(
+            data={
+                "total": total,
+                "offset": offset,
+                "limit": limit,
+                "rows": [self._serialize_consent_request(rec) for rec in rows],
+            }
         )
 
     @http.route("/consent/management/review/<int:review_id>", type="http", auth="user", website=True)
     def consent_management_page_review(self, review_id, **kw):
         kw["review_id"] = review_id
+        kw["page"] = kw.get("page") or request.params.get("page") or 1
         return self.consent_management_page(**kw)
 
     @http.route("/consent/request/<int:consent_id>/capture_image", type="http", auth="user")
@@ -193,26 +282,45 @@ class G2PATIConsentController(http.Controller):
         """Create a consent request from portal form (with optional attachment)."""
         try:
             partner = self._get_consent_partner()
+            user_id = request.env.user.id
+            posted_farmer = post.get("farmer_id")
+
+            def _reject(error_code):
+                _logger.warning(
+                    "Consent portal submit rejected: %s user_id=%s partner_id=%s farmer_input=%s",
+                    error_code,
+                    user_id,
+                    partner.id if partner else None,
+                    posted_farmer,
+                )
+                return request.redirect(f"/consent/management?error={error_code}")
+
+            _logger.info(
+                "Consent portal submit attempt user_id=%s partner_id=%s farmer_input=%s",
+                user_id,
+                partner.id if partner else None,
+                posted_farmer,
+            )
             if not partner:
-                return request.redirect("/consent/management?error=access_denied")
+                return _reject("access_denied")
             
             farmer_id = post.get("farmer_id")
             if not farmer_id:
-                return request.redirect("/consent/management?error=missing_farmer")
+                return _reject("missing_farmer")
             
             try:
                 farmer_id = int(farmer_id)
             except (TypeError, ValueError):
-                return request.redirect("/consent/management?error=invalid_farmer")
+                return _reject("invalid_farmer")
             
             farmer = request.env["res.partner"].sudo().browse(farmer_id)
             if not farmer.exists() or farmer.is_group:
-                return request.redirect("/consent/management?error=farmer_not_found")
+                return _reject("farmer_not_found")
             
             consent_type = post.get("consent_type", "specific") or "specific"
             purpose = (post.get("purpose") or "").strip()
             if not purpose:
-                return request.redirect("/consent/management?error=missing_purpose")
+                return _reject("missing_purpose")
             validity_months = post.get("validity_months")
             try:
                 validity_months = int(validity_months) if validity_months else 12
@@ -231,10 +339,16 @@ class G2PATIConsentController(http.Controller):
                 except (TypeError, ValueError):
                     pass
             
-            if partner.allowed_data_field_ids:
-                allowed_ids = [i for i in allowed_ids if i in partner.allowed_data_field_ids.ids]
+            allowed_ids = [i for i in allowed_ids if i in partner.allowed_data_field_ids.ids]
             if not allowed_ids:
-                return request.redirect("/consent/management?error=missing_data_fields")
+                _logger.warning(
+                    "Consent portal submit blocked by allowed_data_field_ids user_id=%s partner_id=%s partner_allowed_count=%s posted_field_count=%s",
+                    user_id,
+                    partner.id,
+                    len(partner.allowed_data_field_ids.ids),
+                    len(allowed_data_field_ids),
+                )
+                return _reject("missing_data_fields")
             
             now = fields.Datetime.now()
             validity_from = now
@@ -249,6 +363,7 @@ class G2PATIConsentController(http.Controller):
                 "validity_to": validity_to,
                 "originated_from": "partner",
                 "status": "pending",
+                "requester_user_id": request.env.user.id,
             }
             
             if allowed_ids:
@@ -259,13 +374,13 @@ class G2PATIConsentController(http.Controller):
                 files = request.httprequest.files or {}
                 upload = files.get("attachment")
                 if not upload or not getattr(upload, "filename", None):
-                    return request.redirect("/consent/management?error=missing_attachment")
+                    return _reject("missing_attachment")
 
                 upload_data = upload.read()
                 if not upload_data:
-                    return request.redirect("/consent/management?error=missing_attachment")
+                    return _reject("missing_attachment")
                 if len(upload_data) > self._MAX_ATTACHMENT_SIZE:
-                    return request.redirect("/consent/management?error=attachment_too_large")
+                    return _reject("attachment_too_large")
 
                 Attachment = request.env["ir.attachment"].sudo()
                 att = Attachment.create(
@@ -286,20 +401,44 @@ class G2PATIConsentController(http.Controller):
                     try:
                         camera_data = base64.b64decode(camera_data_b64, validate=True)
                     except Exception:
-                        return request.redirect("/consent/management?error=invalid_camera_data")
+                        return _reject("invalid_camera_data")
                     if len(camera_data) > self._MAX_ATTACHMENT_SIZE:
-                        return request.redirect("/consent/management?error=camera_too_large")
+                        return _reject("camera_too_large")
                     vals["portal_capture_image"] = base64.b64encode(camera_data)
                     vals["portal_capture_image_filename"] = "camera_capture.jpg"
                     capture_ts_raw = (post.get("camera_capture_taken_at") or "").strip()
                     if capture_ts_raw:
                         capture_dt = fields.Datetime.to_datetime(capture_ts_raw)
                         if not capture_dt:
-                            return request.redirect("/consent/management?error=invalid_camera_timestamp")
+                            return _reject("invalid_camera_timestamp")
                         vals["portal_capture_taken_at"] = fields.Datetime.to_string(capture_dt)
+
+                lat_raw = (post.get("camera_capture_latitude") or "").strip()
+                lon_raw = (post.get("camera_capture_longitude") or "").strip()
+                acc_raw = (post.get("camera_capture_accuracy") or "").strip()
+                if lat_raw or lon_raw:
+                    if not lat_raw or not lon_raw:
+                        return _reject("invalid_camera_location")
+                    try:
+                        latitude = float(lat_raw)
+                        longitude = float(lon_raw)
+                    except (TypeError, ValueError):
+                        return _reject("invalid_camera_location")
+                    if latitude < -90 or latitude > 90 or longitude < -180 or longitude > 180:
+                        return _reject("invalid_camera_location")
+                    vals["portal_capture_latitude"] = latitude
+                    vals["portal_capture_longitude"] = longitude
+                if acc_raw:
+                    try:
+                        accuracy = float(acc_raw)
+                    except (TypeError, ValueError):
+                        return _reject("invalid_camera_location")
+                    if accuracy < 0:
+                        return _reject("invalid_camera_location")
+                    vals["portal_capture_accuracy_m"] = accuracy
             except Exception as e:
                 _logger.error("Error processing attachments/camera capture: %s", e, exc_info=True)
-                return request.redirect("/consent/management?error=server_error")
+                return _reject("server_error")
             
             ConsentRequest = request.env["g2p.consent.request"].sudo()
             consent = ConsentRequest.create(vals)
@@ -308,10 +447,12 @@ class G2PATIConsentController(http.Controller):
                 request.env["ir.attachment"].sudo().browse(att_id).write({"res_id": consent.id})
             
             _logger.info(
-                "Consent request created via portal: id=%s farmer_id=%s partner_id=%s",
+                "Consent request created via portal: id=%s farmer_id=%s partner_id=%s user_id=%s allowed_field_count=%s",
                 consent.id,
                 consent.farmer_id.id,
                 consent.partner_record_id.id,
+                user_id,
+                len(allowed_ids),
             )
             return request.redirect("/consent/management?success=1")
         except Exception as e:
@@ -349,14 +490,26 @@ class G2PATIConsentController(http.Controller):
             "validity_from": payload.get("validity_from"),
             "validity_to": payload.get("validity_to"),
             "rejection_reason": payload.get("rejection_reason"),
+            "requester_user_id": request.env.user.id,
         }
 
         if payload.get("consent_creation_request_id"):
             vals["consent_creation_request_id"] = payload.get("consent_creation_request_id")
 
         allowed_data_field_ids = payload.get("allowed_data_field_ids") or []
-        if allowed_data_field_ids:
-            vals["allowed_data_field_ids"] = [(6, 0, allowed_data_field_ids)]
+        allowed_by_partner = set(partner_record.allowed_data_field_ids.ids)
+        normalized_allowed_ids = []
+        for field_id in allowed_data_field_ids:
+            try:
+                normalized_allowed_ids.append(int(field_id))
+            except (TypeError, ValueError):
+                continue
+        filtered_allowed_ids = [field_id for field_id in normalized_allowed_ids if field_id in allowed_by_partner]
+        if not filtered_allowed_ids:
+            return self._error(
+                "No valid allowed_data_field_ids for this partner. Configure partner allowed data fields first."
+            )
+        vals["allowed_data_field_ids"] = [(6, 0, filtered_allowed_ids)]
 
         consent = request.env["g2p.consent.request"].sudo().create(vals)
 

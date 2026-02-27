@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <!-- This module extends the WebSub functionality to include ATI farmer data in the payload -->
-    <!-- No additional view modifications are needed as we're extending the backend functionality -->
+    <record id="view_datashare_config_websub_tree_ati" model="ir.ui.view">
+        <field name="name">view.datashare.config.websub.tree.ati</field>
+        <field name="model">g2p.datashare.config.websub</field>
+        <field name="inherit_id" ref="g2p_registry_datashare_websub.view_datashare_config_websub_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='event_type']" position="after">
+                <field name="publisher_type" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_datashare_config_websub_form_ati" model="ir.ui.view">
+        <field name="name">view.datashare.config.websub.form.ati</field>
+        <field name="model">g2p.datashare.config.websub</field>
+        <field name="inherit_id" ref="g2p_registry_datashare_websub.view_datashare_config_websub_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='basic_details']/field[@name='event_type']" position="after">
+                <field name="publisher_type" />
+            </xpath>
+        </field>
+    </record>
 </odoo>

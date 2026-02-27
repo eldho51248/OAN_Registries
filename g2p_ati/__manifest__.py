@@ -48,6 +48,7 @@
         "views/crop_category.xml",
         "views/crop.xml",
         "views/land_info.xml",
+        "views/web_login.xml",
         "views/main_menu.xml",
         "wizard/rejection_reason_wizard.xml",
     ],

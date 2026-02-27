@@ -7,6 +7,8 @@
             <tree>
                 <field name="name" />
                 <field name="code" />
+                <field name="payload_key" />
+                <field name="source_path" />
                 <field name="active" />
             </tree>
         </field>
@@ -18,13 +20,39 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <group>
-                        <field name="name" />
-                        <field name="code" />
-                        <field name="active" />
+                    <group col="2">
+                        <group>
+                            <field name="name" />
+                            <field name="code" />
+                        </group>
+                        <group>
+                            <field name="payload_key" />
+                            <field name="active" />
+                        </group>
                     </group>
                     <group>
-                        <field name="description" />
+                        <field
+                            name="source_path"
+                            placeholder="e.g. name or region.name or land_information_ids.total_land_area"
+                        />
+                    </group>
+                    <separator string="Advanced Mapping" />
+                    <field name="mapping_line_ids" nolabel="1" colspan="4">
+                        <tree editable="bottom">
+                            <field name="sequence" />
+                            <field name="payload_key" />
+                            <field name="source_path" />
+                        </tree>
+                        <form string="Advanced Mapping Line">
+                            <group>
+                                <field name="sequence" />
+                                <field name="payload_key" />
+                                <field name="source_path" />
+                            </group>
+                        </form>
+                    </field>
+                    <group>
+                        <field name="description" colspan="4" />
                     </group>
                 </sheet>
             </form>

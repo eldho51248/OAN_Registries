@@ -2,9 +2,8 @@
 <odoo>
     <!-- Consent Portal: styled like Consent Portal samples (green theme, cards, search bar) -->
     <template id="portal_consent_management" name="Consent Management">
-        <t t-call="portal.portal_layout">
-            <t t-set="my_details" t-value="False" />
-            <t t-set="no_breadcrumbs" t-value="True" />
+        <t t-call="g2p_agent_portal_base.base">
+            <t t-set="body_classname" t-value="'consent-portal-page'" />
             <div class="o_consent_portal container-fluid py-4">
                 <style>
                     .o_consent_portal {
@@ -17,19 +16,26 @@
                     --consent-light-bg: #f8f9fa;
                     --consent-card-shadow: 0 1px 3px rgba(0,0,0,.08);
                     --consent-card-radius: 12px;
+                    max-width: 1400px;
+                    width: 100%;
+                    opacity: 0;
+                    animation: consentFadeIn .4s ease-out forwards;
                     }
                     .o_consent_portal .consent_portal_header {
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
-                    padding: 0.75rem 0 1.25rem;
-                    margin-bottom: 1.5rem;
-                    border-bottom: 1px solid #dee2e6;
+                    padding: 0.15rem 0 0.75rem;
+                    margin-bottom: 1rem;
+                    border-bottom: 1px solid #dfe5e2;
+                    border-radius: 0;
+                    background: transparent;
+                    box-shadow: none;
                     }
                     .o_consent_portal .consent_portal_logo {
                     display: flex;
                     align-items: center;
-                    gap: 0.6rem;
+                    gap: 0.55rem;
                     }
                     .o_consent_portal .consent_portal_logo_icon {
                     width: 40px;
@@ -44,7 +50,7 @@
                     font-size: 1.25rem;
                     }
                     .o_consent_portal .consent_portal_logo_text {
-                    font-size: 1.35rem;
+                    font-size: 1.2rem;
                     font-weight: 600;
                     color: #212529;
                     }
@@ -98,7 +104,13 @@
                     box-shadow: var(--consent-card-shadow);
                     padding: 1.25rem;
                     margin-bottom: 1.25rem;
+                    opacity: 0;
+                    transform: translateY(10px);
+                    animation: consentSlideUp .45s ease-out forwards;
                     }
+                    .o_consent_portal .consent_card:nth-of-type(2) { animation-delay: .06s; }
+                    .o_consent_portal .consent_card:nth-of-type(3) { animation-delay: .12s; }
+                    .o_consent_portal .consent_card:nth-of-type(4) { animation-delay: .18s; }
                     .o_consent_portal .consent_card_title {
                     font-size: 1.1rem;
                     font-weight: 600;
@@ -113,6 +125,10 @@
                     border-radius: 999px;
                     font-size: 0.8rem;
                     font-weight: 500;
+                    white-space: nowrap;
+                    line-height: 1.2;
+                    text-transform: capitalize;
+                    flex-shrink: 0;
                     }
                     .o_consent_portal .consent_status_approved { background: rgba(25,135,84,.15);
                     color: var(--consent-success); }
@@ -130,30 +146,140 @@
                     border-radius: var(--consent-card-radius);
                     box-shadow: var(--consent-card-shadow);
                     padding: 1.25rem;
-                    transition: box-shadow .2s;
+                    transition: box-shadow .25s ease, transform .25s ease;
+                    opacity: 0;
+                    transform: translateY(10px);
+                    animation: consentSlideUp .45s ease-out forwards;
                     }
                     .o_consent_portal .consent_request_card:hover {
-                    box-shadow: 0 4px 12px rgba(0,0,0,.1);
+                    box-shadow: 0 8px 20px rgba(0,0,0,.09);
+                    transform: translateY(-2px);
                     }
                     .o_consent_portal .consent_request_grid {
                     display: grid;
                     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
                     gap: 1.25rem;
                     }
+                    .o_consent_portal .consent_requests_header {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    flex-wrap: wrap;
+                    gap: 0.75rem;
+                    margin-top: 1.5rem;
+                    margin-bottom: 0.85rem;
+                    }
+                    .o_consent_portal .consent_view_toggle {
+                    display: inline-flex;
+                    border: 1px solid #d9e0dc;
+                    border-radius: 999px;
+                    overflow: hidden;
+                    }
+                    .o_consent_portal .consent_view_toggle .btn {
+                    border: 0;
+                    border-radius: 0;
+                    padding: 0.3rem 0.75rem;
+                    font-size: 0.85rem;
+                    min-height: 34px;
+                    min-width: 44px;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 0;
+                    }
+                    .o_consent_portal .consent_view_toggle .btn i {
+                    font-size: .95rem;
+                    line-height: 1;
+                    }
+                    .o_consent_portal .consent_view_toggle .btn + .btn {
+                    border-left: 1px solid #d9e0dc;
+                    }
+                    .o_consent_portal .consent_view_toggle .btn.consent_active {
+                    background: #009147;
+                    color: #fff;
+                    }
+                    .o_consent_portal .consent_view_toggle .btn:not(.consent_active) {
+                    background: #fff;
+                    color: #556260;
+                    }
+                    .o_consent_portal .consent_table_wrap {
+                    overflow-x: auto;
+                    background: #fff;
+                    border: 1px solid #e9ecef;
+                    border-radius: 12px;
+                    box-shadow: var(--consent-card-shadow);
+                    }
+                    .o_consent_portal .consent_request_table {
+                    width: 100%;
+                    min-width: 860px;
+                    margin: 0;
+                    border-collapse: separate;
+                    border-spacing: 0;
+                    }
+                    .o_consent_portal .consent_request_table thead th {
+                    font-size: 0.82rem;
+                    color: #60706e;
+                    text-transform: uppercase;
+                    letter-spacing: .03em;
+                    background: #f6f8f7;
+                    border-bottom: 1px solid #e6ece9;
+                    padding: 0.8rem 0.9rem;
+                    white-space: nowrap;
+                    }
+                    .o_consent_portal .consent_request_table tbody td {
+                    padding: 0.8rem 0.9rem;
+                    border-bottom: 1px solid #edf1ef;
+                    vertical-align: middle;
+                    }
+                    .o_consent_portal .consent_request_table tbody tr:last-child td {
+                    border-bottom: 0;
+                    }
+                    .o_consent_portal .consent_request_table .consent_table_id {
+                    color: #6a7a78;
+                    max-width: 220px;
+                    word-break: break-word;
+                    }
+                    .o_consent_portal .consent_pager_wrap {
+                    margin-top: 1rem;
+                    display: flex;
+                    justify-content: center;
+                    }
+                    .o_consent_portal .consent_pager_wrap .pagination .page-link {
+                    color: #206046;
+                    }
+                    .o_consent_portal .consent_pager_wrap .pagination .page-item.active .page-link {
+                    background-color: #009147;
+                    border-color: #009147;
+                    color: #fff;
+                    }
+                    .o_consent_portal .consent_table_state {
+                    text-align: center;
+                    padding: 0.7rem 0.9rem;
+                    color: #6f7e7b;
+                    font-size: 0.88rem;
+                    border-top: 1px solid #edf1ef;
+                    background: #fff;
+                    }
                     .o_consent_portal .consent_request_card_header {
                     display: flex;
                     justify-content: space-between;
-                    align-items: flex-start;
+                    align-items: center;
+                    gap: 0.6rem;
                     margin-bottom: 0.75rem;
                     }
                     .o_consent_portal .consent_request_id {
                     font-size: 0.9rem;
                     color: var(--consent-muted);
+                    overflow-wrap: anywhere;
                     }
                     .o_consent_portal .consent_request_card_meta {
                     font-size: 0.85rem;
                     color: var(--consent-muted);
                     margin-bottom: 0.75rem;
+                    }
+                    .o_consent_portal .consent_farmer_name {
+                    overflow-wrap: anywhere;
+                    word-break: break-word;
                     }
                     .o_consent_portal .consent_request_card_meta span { margin-right: 1rem; }
                     .o_consent_portal .consent_data_tags {
@@ -198,6 +324,10 @@
                     border-radius: 8px;
                     border: 1px solid #dee2e6;
                     }
+                    /* Service provider portal css hides file inputs globally; restore it here. */
+                    .o_consent_portal .consent_create_request_card input[type="file"] {
+                    display: block !important;
+                    }
                     .o_consent_portal .consent_data_field_chips {
                     display: flex;
                     flex-wrap: wrap;
@@ -219,6 +349,133 @@
                     border-color: var(--consent-primary);
                     color: var(--consent-primary);
                     }
+                    .o_consent_portal .consent_btn_primary,
+                    .o_consent_portal .btn-outline-secondary {
+                    transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease;
+                    }
+                    .o_consent_portal .consent_btn_primary:hover,
+                    .o_consent_portal .btn-outline-secondary:hover {
+                    transform: translateY(-1px);
+                    box-shadow: 0 10px 18px rgba(0,0,0,.08);
+                    }
+                    .o_consent_portal .consent_btn_primary:active,
+                    .o_consent_portal .btn-outline-secondary:active {
+                    transform: translateY(0);
+                    box-shadow: none;
+                    }
+                    .o_consent_portal .consent_farmer_result_item,
+                    .o_consent_portal .consent_data_tag,
+                    .o_consent_portal .consent_status_badge {
+                    transition: all .2s ease;
+                    }
+                    .o_consent_portal .consent_farmer_result_item:hover {
+                    border-color: #cde2d5;
+                    transform: translateX(2px);
+                    }
+                    @keyframes consentFadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                    }
+                    @keyframes consentSlideUp {
+                    from { opacity: 0; transform: translateY(10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                    }
+                    body.consent-portal-page .header-container .nav {
+                    margin: 0 auto;
+                    padding-left: .5rem;
+                    padding-right: .5rem;
+                    border-radius: 0 0 14px 14px;
+                    }
+                    
+                    body.consent-portal-page .header-container {
+                        padding-bottom: 0;
+                    }
+                    
+                    @media (max-width: 992px) {
+                    .o_consent_portal { padding-left: .5rem; padding-right: .5rem; }
+                    .o_consent_portal .consent_request_grid { grid-template-columns: 1fr; }
+                    .o_consent_portal .consent_page_title { font-size: 2rem; line-height: 1.15; }
+                    .o_consent_portal .consent_portal_header { margin-bottom: 1rem; }
+                    .o_consent_portal .consent_search_wrapper { max-width: 100%; }
+                    .o_consent_portal .consent_card { padding: 1rem; }
+                    .o_consent_portal .consent_request_card_actions .btn { width: 100%; }
+                    .o_consent_portal .consent_requests_header { align-items: flex-start; }
+                    .o_consent_portal .consent_view_toggle { width: 100%; max-width: 240px; }
+                    .o_consent_portal .consent_view_toggle .btn { flex: 1 1 50%; }
+                    .o_consent_portal .consent_request_table { min-width: 680px; }
+                    .o_consent_portal .consent_farmer_result_item {
+                        display: grid;
+                        grid-template-columns: 1fr;
+                        gap: .6rem;
+                        align-items: start;
+                    }
+                    .o_consent_portal .consent_farmer_result_item .btn { width: 100%; }
+                    }
+                    @media (max-width: 576px) {
+                    body.consent-portal-page .header-container .nav {
+                        width: calc(100% - 10px) !important;
+                        border-radius: 0 0 10px 10px;
+                        padding-left: .35rem;
+                        padding-right: .35rem;
+                    }
+                    body.consent-portal-page .header-container .nav .main-logo {
+                        width: 135px;
+                        height: auto;
+                    }
+                    body.consent-portal-page #hamburger-icon {
+                        padding-right: .4rem;
+                        font-size: 1.4rem;
+                    }
+                    body.consent-portal-page .header-container .nav .nav-user {
+                        top: 4.6rem;
+                    }
+                    .o_consent_portal { padding-left: .35rem; padding-right: .35rem; }
+                    .o_consent_portal .consent_portal_header {
+                        padding: .1rem 0 .6rem;
+                    }
+                    .o_consent_portal .consent_portal_logo_text { font-size: 1rem; }
+                    .o_consent_portal .consent_portal_logo_icon {
+                        width: 36px;
+                        height: 36px;
+                        font-size: 1.1rem;
+                    }
+                    .o_consent_portal .consent_page_title {
+                        font-size: 1.9rem;
+                        margin-bottom: .35rem;
+                    }
+                    .o_consent_portal .consent_page_subtitle {
+                        font-size: .95rem;
+                        margin-bottom: 1rem;
+                    }
+                    .o_consent_portal .consent_card_title { font-size: 1.2rem; }
+                    .o_consent_portal .consent_search_wrapper .form-control { height: 46px; }
+                    .o_consent_portal .consent_btn_primary { min-height: 44px; }
+                    .o_consent_portal .consent_data_field_chips { gap: .4rem; }
+                    .o_consent_portal .consent_data_field_chips .form-check-label {
+                        font-size: .82rem;
+                        padding: .3rem .6rem;
+                    }
+                    }
+                    @media (max-width: 767.98px) {
+                    .o_consent_portal .consent_search_row {
+                        row-gap: .7rem;
+                    }
+                    .o_consent_portal .consent_search_row > div + div {
+                        margin-top: .35rem;
+                    }
+                    }
+                    @media (prefers-reduced-motion: reduce) {
+                    .o_consent_portal,
+                    .o_consent_portal .consent_card,
+                    .o_consent_portal .consent_request_card {
+                        animation: none !important;
+                        opacity: 1 !important;
+                        transform: none !important;
+                    }
+                    .o_consent_portal * {
+                        transition: none !important;
+                    }
+                    }
                 </style>
 
                 <!-- Portal header: logo + title -->
@@ -229,14 +486,14 @@
                     </div>
                 </div>
 
-                <h1 class="consent_page_title">Consent Management</h1>
+                <!-- <h1 class="consent_page_title">Consent Management</h1> -->
                 <p class="consent_page_subtitle">Search farmers and submit consent requests.</p>
 
                 <!-- Search: single bar with icon (like sample) -->
                 <div class="consent_card">
                     <h5 class="consent_card_title">Search Farmer</h5>
-                    <p class="text-muted small mb-3">Search by Farmer ID, National ID, or UID</p>
-                    <div class="row align-items-center">
+                    <p class="text-muted small mb-3">Search by Farmer ID, National ID</p>
+                    <div class="row align-items-center consent_search_row">
                         <div class="col-md-8 col-lg-6">
                             <div class="consent_search_wrapper">
                                 <span class="consent_search_icon">&#128269;</span>
@@ -274,7 +531,7 @@
                             <div class="col-md-6">
                                 <label class="form-label" for="consent_type">Consent Type</label>
                                 <select name="consent_type" id="consent_type" class="form-select">
-                                    <option value="specific">Specific (Single Partner)</option>
+                                    <option value="specific">Specific (Single Farmer)</option>
                                     <option value="baseline">Baseline</option>
                                 </select>
                             </div>
@@ -315,6 +572,13 @@
                                         class="text-danger small mt-1 d-none"></div>
                                 </div>
                             </t>
+                            <t t-else="">
+                                <div class="col-12">
+                                    <div class="alert alert-warning py-2 mb-0">
+                                        No data fields are configured for your consent partner. Please contact admin.
+                                    </div>
+                                </div>
+                            </t>
                             <div class="col-12">
                                 <label class="form-label">Upload consent form (attachment)</label>
                                 <input type="file" name="attachment" class="form-control"
@@ -328,6 +592,12 @@
                                     id="camera_capture_data" value="" />
                                 <input type="hidden" name="camera_capture_taken_at"
                                     id="camera_capture_taken_at" value="" />
+                                <input type="hidden" name="camera_capture_latitude"
+                                    id="camera_capture_latitude" value="" />
+                                <input type="hidden" name="camera_capture_longitude"
+                                    id="camera_capture_longitude" value="" />
+                                <input type="hidden" name="camera_capture_accuracy"
+                                    id="camera_capture_accuracy" value="" />
                                 <div class="d-flex align-items-center gap-2 flex-wrap">
                                     <button type="button" class="btn btn-outline-secondary btn-sm"
                                         id="btn_open_camera" title="Open Camera"
@@ -354,7 +624,17 @@
                                     style="max-width: 220px;" alt="Camera capture preview" />
                             </div>
                             <div class="col-12">
-                                <button type="submit" class="btn consent_btn_primary">Submit Request</button>
+                                <t t-if="data_fields">
+                                    <button type="submit" class="btn consent_btn_primary">Submit Request</button>
+                                </t>
+                                <t t-else="">
+                                    <button
+                                        type="button"
+                                        class="btn consent_btn_primary"
+                                        id="btn_submit_disabled_reason"
+                                        title="No data fields configured for your consent partner."
+                                    >Submit Request</button>
+                                </t>
                                 <button type="button" class="btn btn-outline-secondary ms-2"
                                     id="btn_clear_farmer">Clear selection</button>
                             </div>
@@ -394,6 +674,8 @@
                         <t
                             t-if="request.httprequest.args.get('error') == 'invalid_camera_timestamp'">Invalid
                             camera timestamp.</t>
+                        <t t-if="request.httprequest.args.get('error') == 'invalid_camera_location'">Invalid
+                            camera capture location.</t>
                         <t t-if="request.httprequest.args.get('error') == 'server_error'">An error
                             occurred while creating the consent request. Please try again or contact
                             support.</t>
@@ -407,9 +689,11 @@
                             class="d-flex justify-content-between align-items-start flex-wrap gap-2">
                             <h5 class="mb-0">Request Review: <t
                                     t-esc="review_request.consent_creation_request_id" /></h5>
-                            <a href="/consent/management"
+                            <a
+                                t-att-href="'/consent/management/page/%s?view=%s' % (current_page, view_mode) if current_page > 1 else '/consent/management?view=%s' % view_mode"
                                 class="btn btn-sm btn-outline-secondary px-2" title="Close"
-                                aria-label="Close">&#10005;</a>
+                                aria-label="Close"
+                            >&#10005;</a>
                         </div>
                         <hr class="my-3" />
                         <div class="row g-3">
@@ -481,6 +765,23 @@
                                                     t-esc="review_request.portal_capture_taken_at or '-'" />
                                             </span>
                                         </div>
+                                        <t
+                                            t-if="review_request.portal_capture_latitude is not False and review_request.portal_capture_longitude is not False">
+                                            <div
+                                                class="text-muted small d-flex align-items-center gap-1 flex-wrap">
+                                                <span>Capture Location:</span>
+                                                <span class="text-body" style="opacity: 1;">
+                                                    <t
+                                                        t-esc="('%.6f' % review_request.portal_capture_latitude) + ', ' + ('%.6f' % review_request.portal_capture_longitude)" />
+                                                </span>
+                                                <t t-if="review_request.portal_capture_accuracy_m">
+                                                    <span class="text-body" style="opacity: 1;">
+                                                        <t
+                                                            t-esc="'(± %.1f m)' % review_request.portal_capture_accuracy_m" />
+                                                    </span>
+                                                </t>
+                                            </div>
+                                        </t>
                                     </div>
                                 </t>
                                 <t t-else="">
@@ -520,43 +821,129 @@
                     </div>
                 </t>
 
-                <!-- Your consent requests: card grid -->
-                <h5 class="consent_card_title mt-4 mb-3">Your consent requests</h5>
+                <!-- Consent requests: cards/table + pager -->
+                <div class="consent_requests_header">
+                    <h5 class="consent_card_title mb-0">
+                        Your consent requests
+                        <span class="text-muted small" t-if="total_requests is not None">
+                            (<t t-esc="total_requests" />)
+                        </span>
+                    </h5>
+                    <div class="consent_view_toggle" role="group" aria-label="View mode">
+                        <a
+                            t-att-href="(view_base_url or '/consent/management') + '?view=card'"
+                            t-attf-class="btn btn-sm #{'consent_active' if view_mode != 'table' else ''}"
+                            title="Card view"
+                            aria-label="Card view"
+                        ><i class="fa fa-th-large" aria-hidden="true"></i></a>
+                        <a
+                            t-att-href="(view_base_url or '/consent/management') + '?view=table'"
+                            t-attf-class="btn btn-sm #{'consent_active' if view_mode == 'table' else ''}"
+                            title="Table view"
+                            aria-label="Table view"
+                        ><i class="fa fa-table" aria-hidden="true"></i></a>
+                    </div>
+                </div>
                 <t t-if="consent_requests">
-                    <div class="consent_request_grid">
-                        <t t-foreach="consent_requests" t-as="req">
-                            <div class="consent_request_card">
-                                <div class="consent_request_card_header">
-                                    <span class="consent_request_id">
-                                        <t t-esc="req.consent_creation_request_id" />
-                                    </span>
-                                    <span
-                                        t-attf-class="consent_status_badge consent_status_#{req.status}">
-                                        <t t-if="req.status == 'approved'">&#10003;</t>
-                                        <t t-if="req.status == 'pending'">&#128336;</t>
-                                        <t t-if="req.status in ('rejected', 'denied')">&#10005;</t>
-                                        <t t-if="req.status in ('expired', 'revoked')">&#128336;</t>
-                                        <t t-esc="req.status" />
-                                    </span>
+                    <t t-if="view_mode == 'table'">
+                        <div
+                            class="consent_table_wrap"
+                            id="consent_table_wrap"
+                            t-att-data-total="total_requests"
+                            t-att-data-limit="table_fetch_size"
+                            t-att-data-offset="len(consent_requests)"
+                        >
+                            <table class="consent_request_table table table-sm mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Request ID</th>
+                                        <th>Farmer</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th>Created</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="consent_request_table_body">
+                                    <t t-foreach="consent_requests" t-as="req">
+                                        <tr>
+                                            <td class="consent_table_id">
+                                                <t t-esc="req.consent_creation_request_id" />
+                                            </td>
+                                            <td>
+                                                <span class="fw-semibold consent_farmer_name"><t
+                                                        t-esc="req.farmer_id.display_name" /></span>
+                                            </td>
+                                            <td>
+                                                <t t-esc="req.consent_type" />
+                                            </td>
+                                            <td>
+                                                <span
+                                                    t-attf-class="consent_status_badge consent_status_#{req.status}">
+                                                    <t t-if="req.status == 'approved'">&#10003;</t>
+                                                    <t t-if="req.status == 'pending'">&#128336;</t>
+                                                    <t t-if="req.status in ('rejected', 'denied')">&#10005;</t>
+                                                    <t t-if="req.status in ('expired', 'revoked')">&#128336;</t>
+                                                    <t t-esc="req.status" />
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <t t-esc="req.created_at" />
+                                            </td>
+                                            <td>
+                                                <a
+                                                    t-att-href="'/consent/management/review/%s?view=%s&amp;page=%s#review_request' % (req.id, view_mode, current_page)"
+                                                    class="btn btn-sm btn-outline-secondary"
+                                                >Review</a>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                            <div class="consent_table_state d-none" id="consent_table_loader">Loading more...</div>
+                            <div class="consent_table_state d-none" id="consent_table_end">End of requests</div>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <div class="consent_request_grid">
+                            <t t-foreach="consent_requests" t-as="req">
+                                <div class="consent_request_card">
+                                    <div class="consent_request_card_header">
+                                        <span class="consent_request_id">
+                                            <t t-esc="req.consent_creation_request_id" />
+                                        </span>
+                                        <span
+                                            t-attf-class="consent_status_badge consent_status_#{req.status}">
+                                            <t t-if="req.status == 'approved'">&#10003;</t>
+                                            <t t-if="req.status == 'pending'">&#128336;</t>
+                                            <t t-if="req.status in ('rejected', 'denied')">&#10005;</t>
+                                            <t t-if="req.status in ('expired', 'revoked')">&#128336;</t>
+                                            <t t-esc="req.status" />
+                                        </span>
+                                    </div>
+                                    <p class="mb-1 fw-bold consent_farmer_name">
+                                        <t t-esc="req.farmer_id.display_name" />
+                                    </p>
+                                    <div class="consent_request_card_meta">
+                                        <span>
+                                            <t t-esc="req.consent_type" />
+                                        </span>
+                                        <span>
+                                            <t t-esc="req.created_at" />
+                                        </span>
+                                    </div>
+                                    <div class="consent_request_card_actions">
+                                        <a
+                                            t-att-href="'/consent/management/review/%s?view=%s&amp;page=%s#review_request' % (req.id, view_mode, current_page)"
+                                            class="btn btn-sm btn-outline-secondary"
+                                        >Review</a>
+                                    </div>
                                 </div>
-                                <p class="mb-1 fw-bold">
-                                    <t t-esc="req.farmer_id.display_name" />
-                                </p>
-                                <div class="consent_request_card_meta">
-                                    <span>
-                                        <t t-esc="req.consent_type" />
-                                    </span>
-                                    <span>
-                                        <t t-esc="req.created_at" />
-                                    </span>
-                                </div>
-                                <div class="consent_request_card_actions">
-                                    <a
-                                        t-att-href="'/consent/management/review/%s#review_request' % req.id"
-                                        class="btn btn-sm btn-outline-secondary">Review</a>
-                                </div>
-                            </div>
-                        </t>
+                            </t>
+                        </div>
+                    </t>
+                    <div class="consent_pager_wrap" t-if="view_mode != 'table' and pager and pager.get('page_count', 0) > 1">
+                        <t t-call="portal.pager" />
                     </div>
                 </t>
                 <t t-else="">
@@ -578,6 +965,7 @@
                     var formFarmerId = document.getElementById('form_farmer_id');
                     var selectedFarmerName = document.getElementById('selected_farmer_name');
                     var btnClear = document.getElementById('btn_clear_farmer');
+                    var btnSubmitDisabledReason = document.getElementById('btn_submit_disabled_reason');
                     var consentForm = document.getElementById('consent_request_form');
                     var purposeInput = document.getElementById('purpose');
                     var purposeError = document.getElementById('purpose_error');
@@ -587,6 +975,9 @@
                     var attachmentError = document.getElementById('attachment_error');
                     var cameraDataInput = document.getElementById('camera_capture_data');
                     var cameraTakenAtInput = document.getElementById('camera_capture_taken_at');
+                    var cameraLatitudeInput = document.getElementById('camera_capture_latitude');
+                    var cameraLongitudeInput = document.getElementById('camera_capture_longitude');
+                    var cameraAccuracyInput = document.getElementById('camera_capture_accuracy');
                     var cameraInfo = document.getElementById('camera_capture_info');
                     var cameraError = document.getElementById('camera_error');
                     var cameraPreview = document.getElementById('camera_capture_preview');
@@ -596,8 +987,41 @@
                     var btnTakeCameraPhoto = document.getElementById('btn_take_camera_photo');
                     var btnCloseCamera = document.getElementById('btn_close_camera');
                     var btnRetakeCameraPhoto = document.getElementById('btn_retake_camera_photo');
+                    var tableWrap = document.getElementById('consent_table_wrap');
+                    var tableBody = document.getElementById('consent_request_table_body');
+                    var tableLoader = document.getElementById('consent_table_loader');
+                    var tableEnd = document.getElementById('consent_table_end');
                     var maxAttachmentSize = 10 * 1024 * 1024;
                     var cameraStream = null;
+                    var tableScrollTicking = false;
+                    var errorMessagesByCode = {
+                        access_denied: 'Access denied. Please contact your administrator.',
+                        missing_farmer: 'Please search and select a farmer first.',
+                        invalid_farmer: 'Invalid farmer selected.',
+                        farmer_not_found: 'Farmer not found.',
+                        missing_purpose: 'Purpose is required.',
+                        missing_data_fields: 'No valid data fields selected. Configure partner data fields first.',
+                        missing_attachment: 'Attachment is required.',
+                        attachment_too_large: 'Attachment must be 10MB or smaller.',
+                        camera_too_large: 'Camera photo must be 10MB or smaller.',
+                        invalid_camera_data: 'Invalid camera image data.',
+                        invalid_camera_timestamp: 'Invalid camera timestamp.',
+                        invalid_camera_location: 'Invalid camera capture location.',
+                        server_error: 'An error occurred while creating the consent request.'
+                    };
+
+                    function toInt(value, fallbackValue) {
+                        var parsed = parseInt(value, 10);
+                        return Number.isFinite(parsed) ? parsed : fallbackValue;
+                    }
+
+                    var tableState = {
+                        total: toInt(tableWrap && tableWrap.getAttribute('data-total'), 0),
+                        limit: toInt(tableWrap && tableWrap.getAttribute('data-limit'), 10),
+                        offset: toInt(tableWrap && tableWrap.getAttribute('data-offset'), 0),
+                        loading: false,
+                        done: false
+                    };
 
                     function formatDateForOdoo(dateObj) {
                         function pad(v) { return String(v).padStart(2, '0'); }
@@ -649,6 +1073,30 @@
                         }
                     }
 
+                    function showServiceProviderModal(message, isError) {
+                        var modalEl = document.getElementById('successModal');
+                        if (!modalEl || !message) return;
+                        var imgEl = modalEl.querySelector('.popup_img');
+                        var titleEl = modalEl.querySelector('h4');
+                        var msgEl = modalEl.querySelector('.popup_msg');
+                        if (imgEl) {
+                            imgEl.src = isError
+                                ? '/g2p_ati_service_provider_portal/static/src/img/no.png'
+                                : '/g2p_ati_service_provider_portal/static/src/img/ok.png';
+                        }
+                        if (titleEl) {
+                            titleEl.textContent = isError ? 'Error' : 'Success!';
+                        }
+                        if (msgEl) {
+                            msgEl.textContent = message;
+                        }
+                        if (window.jQuery && window.jQuery.fn && window.jQuery.fn.modal) {
+                            window.jQuery('#successModal').modal('show');
+                        } else if (window.bootstrap && window.bootstrap.Modal) {
+                            window.bootstrap.Modal.getOrCreateInstance(modalEl).show();
+                        }
+                    }
+
                     function hasSelectedDataField() {
                         if (!dataFieldInputs || !dataFieldInputs.length) return false;
                         for (var i = 0; i < dataFieldInputs.length; i++) {
@@ -674,6 +1122,192 @@
                         if (btnTakeCameraPhoto) btnTakeCameraPhoto.classList.toggle('d-none', !isLive);
                         if (btnCloseCamera) btnCloseCamera.classList.toggle('d-none', !isLive);
                         if (btnRetakeCameraPhoto) btnRetakeCameraPhoto.classList.toggle('d-none', isLive || !hasCapture);
+                    }
+
+                    function clearCameraLocation() {
+                        if (cameraLatitudeInput) cameraLatitudeInput.value = '';
+                        if (cameraLongitudeInput) cameraLongitudeInput.value = '';
+                        if (cameraAccuracyInput) cameraAccuracyInput.value = '';
+                    }
+
+                    function getCameraLocation(callback) {
+                        if (!navigator.geolocation) {
+                            clearCameraLocation();
+                            callback(false);
+                            return;
+                        }
+                        navigator.geolocation.getCurrentPosition(
+                            function(position) {
+                                if (cameraLatitudeInput) cameraLatitudeInput.value = String(position.coords.latitude);
+                                if (cameraLongitudeInput) cameraLongitudeInput.value = String(position.coords.longitude);
+                                if (cameraAccuracyInput) cameraAccuracyInput.value = String(position.coords.accuracy || '');
+                                callback(true);
+                            },
+                            function() {
+                                clearCameraLocation();
+                                callback(false);
+                            },
+                            {
+                                enableHighAccuracy: true,
+                                timeout: 8000,
+                                maximumAge: 0
+                            }
+                        );
+                    }
+
+                    function htmlEscape(value) {
+                        return String(value == null ? '' : value)
+                            .replace(/&/g, '&amp;')
+                            .replace(/</g, '&lt;')
+                            .replace(/>/g, '&gt;')
+                            .replace(/"/g, '&quot;')
+                            .replace(/'/g, '&#39;');
+                    }
+
+                    function normalizeStatus(status) {
+                        return String(status || '').toLowerCase().replace(/[^a-z0-9_-]/g, '');
+                    }
+
+                    function statusIcon(status) {
+                        var normalized = normalizeStatus(status);
+                        if (normalized === 'approved') return '&#10003;';
+                        if (normalized === 'pending') return '&#128336;';
+                        if (normalized === 'rejected' || normalized === 'denied') return '&#10005;';
+                        if (normalized === 'expired' || normalized === 'revoked') return '&#128336;';
+                        return '';
+                    }
+
+                    function buildTableRowHtml(row) {
+                        var reqId = htmlEscape(row.request_id || '');
+                        var farmerName = htmlEscape(row.farmer_name || '');
+                        var consentType = htmlEscape(row.consent_type || '');
+                        var createdAt = htmlEscape(row.created_at || '');
+                        var statusValue = row.status || '';
+                        var normalizedStatus = normalizeStatus(statusValue);
+                        var statusText = htmlEscape(statusValue || '');
+                        var statusHtml = '<span class="consent_status_badge consent_status_' + normalizedStatus + '">' + statusIcon(statusValue) + statusText + '</span>';
+                        var reviewUrl = row.review_url || ('/consent/management/review/' + String(row.id || '') + '?view=table#review_request');
+                        var reviewHref = htmlEscape(reviewUrl);
+                        return '<tr>' +
+                            '<td class="consent_table_id">' + reqId + '</td>' +
+                            '<td><span class="fw-semibold consent_farmer_name">' + farmerName + '</span></td>' +
+                            '<td>' + consentType + '</td>' +
+                            '<td>' + statusHtml + '</td>' +
+                            '<td>' + createdAt + '</td>' +
+                            '<td><a href="' + reviewHref + '" class="btn btn-sm btn-outline-secondary">Review</a></td>' +
+                            '</tr>';
+                    }
+
+                    function setTableLoaderVisible(isVisible) {
+                        if (!tableLoader) return;
+                        tableLoader.classList.toggle('d-none', !isVisible);
+                    }
+
+                    function setTableEndVisible(isVisible) {
+                        if (!tableEnd) return;
+                        tableEnd.classList.toggle('d-none', !isVisible);
+                    }
+
+                    function shouldFetchTableRows() {
+                        if (!tableWrap || !tableBody || tableState.loading || tableState.done) return false;
+                        var viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+                        var rect = tableWrap.getBoundingClientRect();
+                        return rect.bottom <= viewportHeight + 180;
+                    }
+
+                    function fetchTableRows(offset, limit, done) {
+                        var req = new XMLHttpRequest();
+                        req.open('POST', '/consent/management/table_fetch');
+                        req.setRequestHeader('Content-Type', 'application/json');
+                        req.setRequestHeader('Accept', 'application/json');
+                        req.onload = function() {
+                            var raw = {};
+                            try { raw = JSON.parse(req.responseText || '{}'); } catch (e) {}
+                            var res = raw.result != null ? raw.result : raw;
+                            if (req.status >= 200 && req.status < 300 && res && res.success && res.data) {
+                                done(null, res.data);
+                                return;
+                            }
+                            done(new Error('Unable to fetch more consent requests.'));
+                        };
+                        req.onerror = function() {
+                            done(new Error('Network error while fetching consent requests.'));
+                        };
+                        req.send(JSON.stringify({
+                            jsonrpc: '2.0',
+                            method: 'call',
+                            params: { offset: offset, limit: limit },
+                            id: Date.now()
+                        }));
+                    }
+
+                    function markTableDone() {
+                        tableState.done = true;
+                        setTableLoaderVisible(false);
+                        setTableEndVisible(true);
+                    }
+
+                    function loadMoreTableRows() {
+                        if (!tableWrap || !tableBody || tableState.loading || tableState.done) return;
+                        if (tableState.total > 0 && tableState.offset >= tableState.total) {
+                            markTableDone();
+                            return;
+                        }
+
+                        tableState.loading = true;
+                        setTableLoaderVisible(true);
+                        setTableEndVisible(false);
+
+                        fetchTableRows(tableState.offset, tableState.limit, function(error, data) {
+                            tableState.loading = false;
+                            setTableLoaderVisible(false);
+
+                            if (error || !data) {
+                                return;
+                            }
+
+                            tableState.total = toInt(data.total, tableState.total);
+                            var rows = Array.isArray(data.rows) ? data.rows : [];
+                            for (var i = 0; i < rows.length; i++) {
+                                tableBody.insertAdjacentHTML('beforeend', buildTableRowHtml(rows[i]));
+                            }
+                            tableState.offset += rows.length;
+                            if (tableWrap) {
+                                tableWrap.setAttribute('data-offset', String(tableState.offset));
+                            }
+
+                            if (!rows.length || (tableState.total > 0 && tableState.offset >= tableState.total)) {
+                                markTableDone();
+                                return;
+                            }
+
+                            if (shouldFetchTableRows()) {
+                                loadMoreTableRows();
+                            }
+                        });
+                    }
+
+                    function onTableScroll() {
+                        if (tableScrollTicking) return;
+                        tableScrollTicking = true;
+                        window.requestAnimationFrame(function() {
+                            tableScrollTicking = false;
+                            if (shouldFetchTableRows()) {
+                                loadMoreTableRows();
+                            }
+                        });
+                    }
+
+                    function initInfiniteTable() {
+                        if (!tableWrap || !tableBody) return;
+                        tableState.limit = Math.max(1, tableState.limit);
+                        if (tableState.total > 0 && tableState.offset >= tableState.total) {
+                            markTableDone();
+                            return;
+                        }
+                        window.addEventListener('scroll', onTableScroll, { passive: true });
+                        window.addEventListener('resize', onTableScroll);
+                        onTableScroll();
                     }
 
                     function searchFarmers() {
@@ -737,6 +1371,7 @@
                             stopCameraStream();
                             if (cameraDataInput) cameraDataInput.value = '';
                             if (cameraTakenAtInput) cameraTakenAtInput.value = '';
+                            clearCameraLocation();
                             if (cameraPreview) {
                                 cameraPreview.src = '';
                                 cameraPreview.classList.add('d-none');
@@ -747,6 +1382,14 @@
                                 cameraInfo.classList.add('d-none');
                             }
                             showCameraButtons(false, false);
+                        });
+                    }
+                    if (btnSubmitDisabledReason) {
+                        btnSubmitDisabledReason.addEventListener('click', function() {
+                            var msg = 'No data fields are configured for your consent partner. Contact admin.';
+                            setDataFieldsError(msg);
+                            showServiceProviderModal(msg, true);
+                            console.warn('Consent portal submit blocked on client: no partner data fields configured.');
                         });
                     }
                     if (attachmentInput) {
@@ -831,10 +1474,28 @@
                             if (cameraDataInput) cameraDataInput.value = dataUrl;
                             var capturedAt = new Date();
                             if (cameraTakenAtInput) cameraTakenAtInput.value = formatDateForOdoo(capturedAt);
+                            clearCameraLocation();
                             if (cameraInfo) {
-                                cameraInfo.textContent = 'Captured at: ' + capturedAt.toLocaleString();
+                                cameraInfo.textContent = 'Captured at: ' + capturedAt.toLocaleString() + ' (getting location...)';
                                 cameraInfo.classList.remove('d-none');
                             }
+                            getCameraLocation(function(hasLocation) {
+                                if (!cameraInfo) return;
+                                var message = 'Captured at: ' + capturedAt.toLocaleString();
+                                if (hasLocation && cameraLatitudeInput && cameraLongitudeInput) {
+                                    var lat = Number(cameraLatitudeInput.value || 0).toFixed(6);
+                                    var lon = Number(cameraLongitudeInput.value || 0).toFixed(6);
+                                    message += ' | Location: ' + lat + ', ' + lon;
+                                    if (cameraAccuracyInput && cameraAccuracyInput.value) {
+                                        var accuracy = Number(cameraAccuracyInput.value || 0).toFixed(1);
+                                        message += ' (± ' + accuracy + ' m)';
+                                    }
+                                } else {
+                                    message += ' | Location unavailable';
+                                }
+                                cameraInfo.textContent = message;
+                                cameraInfo.classList.remove('d-none');
+                            });
                             if (cameraPreview) {
                                 cameraPreview.src = dataUrl;
                                 cameraPreview.classList.remove('d-none');
@@ -849,6 +1510,7 @@
                         btnRetakeCameraPhoto.addEventListener('click', function() {
                             if (cameraDataInput) cameraDataInput.value = '';
                             if (cameraTakenAtInput) cameraTakenAtInput.value = '';
+                            clearCameraLocation();
                             if (cameraPreview) {
                                 cameraPreview.src = '';
                                 cameraPreview.classList.add('d-none');
@@ -864,6 +1526,7 @@
                     if (consentForm) {
                         consentForm.addEventListener('submit', function(e) {
                             var hasError = false;
+                            var firstErrorMessage = '';
                             setPurposeError('');
                             setDataFieldsError('');
                             setAttachmentError('');
@@ -872,22 +1535,27 @@
                             if (!purposeInput || !(purposeInput.value || '').trim()) {
                                 setPurposeError('Purpose is required.');
                                 hasError = true;
+                                if (!firstErrorMessage) firstErrorMessage = 'Purpose is required.';
                             }
-                            if (!hasSelectedDataField()) {
+                            if (dataFieldInputs && dataFieldInputs.length && !hasSelectedDataField()) {
                                 setDataFieldsError('Select at least one data field.');
                                 hasError = true;
+                                if (!firstErrorMessage) firstErrorMessage = 'Select at least one data field.';
                             }
                             if (!attachmentInput) {
                                 setAttachmentError('Attachment is required.');
                                 hasError = true;
+                                if (!firstErrorMessage) firstErrorMessage = 'Attachment is required.';
                             }
                             var file = attachmentInput && attachmentInput.files && attachmentInput.files.length ? attachmentInput.files[0] : null;
                             if (!file) {
                                 setAttachmentError('Attachment is required.');
                                 hasError = true;
+                                if (!firstErrorMessage) firstErrorMessage = 'Attachment is required.';
                             } else if (file.size > maxAttachmentSize) {
                                 setAttachmentError('Attachment must be 10MB or smaller.');
                                 hasError = true;
+                                if (!firstErrorMessage) firstErrorMessage = 'Attachment must be 10MB or smaller.';
                             }
 
                             if (cameraDataInput && cameraDataInput.value) {
@@ -896,14 +1564,37 @@
                                 if (approxBytes > maxAttachmentSize) {
                                     setCameraError('Camera photo must be 10MB or smaller.');
                                     hasError = true;
+                                    if (!firstErrorMessage) firstErrorMessage = 'Camera photo must be 10MB or smaller.';
                                 }
                             }
 
                             if (hasError) {
+                                console.warn('Consent portal submit blocked on client validation.', {
+                                    hasPurpose: !!(purposeInput && (purposeInput.value || '').trim()),
+                                    hasSelectedDataField: hasSelectedDataField(),
+                                    hasAttachment: !!(attachmentInput && attachmentInput.files && attachmentInput.files.length),
+                                    dataFieldInputsCount: dataFieldInputs ? dataFieldInputs.length : 0
+                                });
+                                showServiceProviderModal(firstErrorMessage || 'Please fix form validation errors.', true);
                                 e.preventDefault();
+                            } else {
+                                console.info('Consent portal submit passed client validation. Submitting form.');
                             }
                         });
                     }
+
+                    (function showServerErrorPopup() {
+                        var errorCode = '';
+                        try {
+                            errorCode = new URLSearchParams(window.location.search).get('error') || '';
+                        } catch (e) {
+                            errorCode = '';
+                        }
+                        if (!errorCode) return;
+                        var message = errorMessagesByCode[errorCode];
+                        if (!message) return;
+                        showServiceProviderModal(message, true);
+                    })();
                     window.addEventListener('beforeunload', function() {
                         stopCameraStream();
                     });

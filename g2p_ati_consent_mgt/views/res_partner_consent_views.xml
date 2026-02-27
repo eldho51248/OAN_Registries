@@ -15,6 +15,15 @@
                 >
                     <field name="consent_request_count" widget="statinfo" string="Consents" />
                 </button>
+                <button
+                    class="oe_stat_button"
+                    type="object"
+                    name="action_view_consent_receipts"
+                    icon="fa-file-text-o"
+                    invisible="is_farmer!='yes'"
+                >
+                    <field name="consent_receipt_count" widget="statinfo" string="Receipts" />
+                </button>
             </xpath>
 
             <xpath expr="//sheet/notebook[@name='individual_detail']" position="inside">
@@ -28,6 +37,17 @@
                             <field name="validity_from" />
                             <field name="validity_to" />
                             <field name="created_at" />
+                        </tree>
+                    </field>
+                </page>
+                <page string="Consent Receipts" name="consent_receipts" invisible="is_farmer!='yes'">
+                    <field name="consent_receipt_ids" readonly="1">
+                        <tree>
+                            <field name="consent_request_id" />
+                            <field name="consent_partner_id" />
+                            <field name="status" />
+                            <field name="signature_algorithm" />
+                            <field name="signed_at" />
                         </tree>
                     </field>
                 </page>

@@ -9,6 +9,9 @@ document.addEventListener("DOMContentLoaded", function () {
             .then((response) => response.json())
             .then((data) => {
                 const countElement = document.querySelector(".notification_number");
+                if (!countElement || !Array.isArray(data) || !data.length) {
+                    return;
+                }
                 if (data[0].count > 0) {
                     countElement.textContent = data[0].count;
                     countElement.style.display = "block";
@@ -28,7 +31,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (data.status === "success") {
                     updateNotificationCount();
                     const notificationDropdown = document.querySelector("#notification_dd");
-                    notificationDropdown.innerHTML = "";
+                    if (notificationDropdown) {
+                        notificationDropdown.innerHTML = "";
+                    }
                 } else {
                     console.error("Error marking all notifications as seen:", data.message);
                 }
@@ -76,7 +81,13 @@ document.addEventListener("DOMContentLoaded", function () {
             .then((response) => response.json())
             .then((notifications) => {
                 const notificationDropdown = document.querySelector("#notification_dd");
+                if (!notificationDropdown) {
+                    return;
+                }
                 const notificationList = notificationDropdown.querySelector(".notification_ul");
+                if (!notificationList) {
+                    return;
+                }
 
                 notificationList.innerHTML = "";
 
@@ -126,6 +137,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (toggleButton) {
         toggleButton.addEventListener("click", function () {
+            if (!field) {
+                return;
+            }
             if (field.style.display === "none" || field.style.display === "") {
                 field.style.display = "block";
                 fetchNotifications();
@@ -136,6 +150,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     document.addEventListener("click", function (event) {
+        if (!toggleButton || !field) {
+            return;
+        }
         if (!toggleButton.contains(event.target) && !field.contains(event.target)) {
             field.style.display = "none";
         }

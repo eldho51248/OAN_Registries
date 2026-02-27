@@ -1,12 +1,16 @@
 import json
+import logging
 from uuid import uuid4
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
+_logger = logging.getLogger(__name__)
+
 
 class G2PConsentRequest(models.Model):
     _name = "g2p.consent.request"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Consent Request"
     _order = "create_date desc"
 
@@ -79,9 +83,26 @@ class G2PConsentRequest(models.Model):
         "attachment_id",
         string="Consent Attachments",
     )
+    receipt_ids = fields.One2many(
+        "g2p.consent.receipt",
+        "consent_request_id",
+        string="Receipts",
+        readonly=True,
+    )
+    receipt_count = fields.Integer(compute="_compute_receipt_count", string="Receipt Count")
+    requester_user_id = fields.Many2one(
+        "res.users",
+        string="Requested By",
+        default=lambda self: self.env.user,
+        readonly=True,
+        index=True,
+    )
     portal_capture_image = fields.Binary(string="Portal Capture Photo", attachment=True)
     portal_capture_image_filename = fields.Char(string="Portal Capture Filename")
     portal_capture_taken_at = fields.Datetime(string="Portal Capture Taken At")
+    portal_capture_latitude = fields.Float(string="Portal Capture Latitude", digits=(10, 7))
+    portal_capture_longitude = fields.Float(string="Portal Capture Longitude", digits=(10, 7))
+    portal_capture_accuracy_m = fields.Float(string="Portal Capture Accuracy (m)")
     portal_capture_image_preview_html = fields.Html(
         string="Portal Capture Photo",
         compute="_compute_portal_capture_image_preview_html",
@@ -107,6 +128,21 @@ class G2PConsentRequest(models.Model):
     def _compute_partner_id(self):
         for rec in self:
             rec.partner_id = str(rec.partner_record_id.id) if rec.partner_record_id else False
+
+    @api.depends("receipt_ids")
+    def _compute_receipt_count(self):
+        grouped_data = self.env["g2p.consent.receipt"].sudo().read_group(
+            [("consent_request_id", "in", self.ids)],
+            ["consent_request_id"],
+            ["consent_request_id"],
+        )
+        counts = {
+            item["consent_request_id"][0]: item["consent_request_id_count"]
+            for item in grouped_data
+            if item.get("consent_request_id")
+        }
+        for rec in self:
+            rec.receipt_count = counts.get(rec.id, 0)
 
     @api.depends("portal_capture_image")
     def _compute_portal_capture_image_preview_html(self):
@@ -142,6 +178,24 @@ class G2PConsentRequest(models.Model):
                 raise ValidationError(_("At least one data field is required for consent requests."))
             if not rec.attachment_ids:
                 raise ValidationError(_("An attachment is required for consent requests."))
+
+    @api.constrains("partner_record_id", "allowed_data_field_ids")
+    def _check_partner_allowed_data_fields(self):
+        for rec in self:
+            partner_allowed_fields = rec.partner_record_id.allowed_data_field_ids
+            if not partner_allowed_fields:
+                continue
+            blocked_fields = rec.allowed_data_field_ids - partner_allowed_fields
+            if blocked_fields:
+                raise ValidationError(
+                    _(
+                        "These data fields are not allowed for partner '%(partner)s': %(fields)s"
+                    )
+                    % {
+                        "partner": rec.partner_record_id.display_name,
+                        "fields": ", ".join(blocked_fields.mapped("name")),
+                    }
+                )
 
     def _set_status(self, status, timestamp_field=None):
         vals = {"status": status}
@@ -213,6 +267,73 @@ class G2PConsentRequest(models.Model):
     def _onchange_attribute_lists_sync_allowed_fields(self):
         self._sync_allowed_fields_from_attribute_lists()
 
+    def _build_receipt_attribute_payload(self):
+        self.ensure_one()
+        if hasattr(self, "_build_consent_websub_payload"):
+            payload = self._build_consent_websub_payload() or {}
+            selected_data = payload.get("selected_data") or {}
+            return json.dumps(selected_data, ensure_ascii=False, sort_keys=True, default=str)
+        return "{}"
+
+    def _prepare_consent_receipt_values(self):
+        self.ensure_one()
+        attribute_list = (self.attribute_lists or "").strip() or self._build_attribute_lists_payload()
+        attribute_payload = self._build_receipt_attribute_payload()
+        signature_algorithm = "hmac_sha256"
+        signed_at = (
+            self.approved_at
+            or self.rejected_at
+            or self.expired_at
+            or self.created_at
+            or fields.Datetime.now()
+        )
+        signature_source = json.dumps(
+            {
+                "consent_request_id": self.id,
+                "consent_creation_request_id": self.consent_creation_request_id,
+                "partner_id": self.farmer_id.id,
+                "consent_partner_id": self.partner_record_id.id,
+                "status": self.status,
+                "attribute_list": attribute_list,
+                "attribute_payload": attribute_payload,
+                "signed_at": fields.Datetime.to_string(signed_at),
+            },
+            ensure_ascii=False,
+            sort_keys=True,
+            default=str,
+        )
+        signature = self.env["g2p.consent.receipt"].sudo().sign_payload(
+            signature_source, signature_algorithm
+        )
+        return {
+            "partner_id": self.farmer_id.id,
+            "consent_partner_id": self.partner_record_id.id,
+            "consent_request_id": self.id,
+            "status": self.status,
+            "attribute_list": attribute_list,
+            "attribute_payload": attribute_payload,
+            "signature_algorithm": signature_algorithm,
+            "signature": signature,
+            "signed_at": signed_at,
+        }
+
+    def _sync_consent_receipts(self):
+        receipt_obj = self.env["g2p.consent.receipt"].sudo()
+        for rec in self:
+            existing = receipt_obj.search([("consent_request_id", "=", rec.id)], limit=1)
+            if rec.status == "pending":
+                if existing:
+                    existing.unlink()
+                continue
+
+            if not rec.farmer_id or not rec.partner_record_id:
+                continue
+            vals = rec._prepare_consent_receipt_values()
+            if existing:
+                existing.write(vals)
+            else:
+                receipt_obj.create(vals)
+
     @api.model_create_multi
     def create(self, vals_list):
         if self.env.context.get("_skip_attribute_lists_sync"):
@@ -225,6 +346,7 @@ class G2PConsentRequest(models.Model):
                 rec._sync_allowed_fields_from_attribute_lists()
             elif "allowed_data_field_ids" in vals and "attribute_lists" in vals:
                 rec._sync_attribute_lists_from_allowed_fields()
+        records._sync_consent_receipts()
         return records
 
     def write(self, vals):
@@ -237,10 +359,62 @@ class G2PConsentRequest(models.Model):
             self._sync_allowed_fields_from_attribute_lists()
         elif "allowed_data_field_ids" in vals and "attribute_lists" in vals:
             self._sync_attribute_lists_from_allowed_fields()
+        receipt_trigger_fields = {
+            "status",
+            "allowed_data_field_ids",
+            "attribute_lists",
+            "farmer_id",
+            "partner_record_id",
+            "approved_at",
+            "rejected_at",
+            "expired_at",
+            "portal_capture_image",
+            "portal_capture_taken_at",
+            "portal_capture_latitude",
+            "portal_capture_longitude",
+            "portal_capture_accuracy_m",
+        }
+        if receipt_trigger_fields.intersection(vals) and not self.env.context.get("_skip_receipt_sync"):
+            self._sync_consent_receipts()
         return result
 
     def action_approve(self):
+        notify_records = self.filtered(lambda rec: rec.status != "approved")
         self._set_status("approved", "approved_at")
+        notify_records._notify_requester_approved()
+
+    def _notify_requester_approved(self):
+        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url", "").rstrip("/")
+        for rec in self:
+            requester_user = rec.requester_user_id
+            requester_partner = requester_user.partner_id if requester_user else False
+            if not requester_partner:
+                continue
+
+            review_path = f"/consent/management/review/{rec.id}?view=table#review_request"
+            review_url = f"{base_url}{review_path}" if base_url else review_path
+            subject = _("Consent Request Approved")
+            body = _(
+                "Your consent request %(request)s for farmer %(farmer)s has been approved. "
+                "<a href=\"%(url)s\">View request</a>."
+            ) % {
+                "request": rec.consent_creation_request_id or rec.display_name,
+                "farmer": rec.farmer_id.display_name or "",
+                "url": review_url,
+            }
+            try:
+                rec.sudo().message_notify(
+                    partner_ids=[requester_partner.id],
+                    subject=subject,
+                    body=body,
+                    email_layout_xmlid="mail.mail_notification_light",
+                )
+            except Exception:
+                _logger.exception(
+                    "Failed to notify requester for approved consent request id=%s user_id=%s",
+                    rec.id,
+                    requester_user.id if requester_user else None,
+                )
 
     def action_reject(self):
         self._set_status("rejected", "rejected_at")
@@ -250,3 +424,26 @@ class G2PConsentRequest(models.Model):
 
     def action_expire(self):
         self._set_status("expired", "expired_at")
+
+    def action_set_pending(self):
+        self.with_context(_skip_receipt_sync=True).write(
+            {
+                "status": "pending",
+                "approved_at": False,
+                "rejected_at": False,
+                "expired_at": False,
+                "rejection_reason": False,
+            }
+        )
+        self.mapped("receipt_ids").sudo().unlink()
+
+    def action_view_receipts(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Consent Receipts"),
+            "res_model": "g2p.consent.receipt",
+            "view_mode": "tree,form",
+            "domain": [("consent_request_id", "=", self.id)],
+            "context": {"default_consent_request_id": self.id},
+        }

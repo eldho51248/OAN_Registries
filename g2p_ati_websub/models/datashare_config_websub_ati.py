@@ -1,5 +1,5 @@
 # Part of OpenG2P. See LICENSE file for full copyright and licensing details.
-from odoo import api, models
+from odoo import api, fields, models
 import logging
 import base64
 
@@ -8,6 +8,40 @@ _logger = logging.getLogger(__name__)
 
 class G2PDatashareConfigWebsubATI(models.Model):
     _inherit = "g2p.datashare.config.websub"
+
+    publisher_type = fields.Selection(
+        selection=[("internal", "Internal"), ("external", "External")],
+        string="Publisher Type",
+        required=True,
+        default="internal",
+        index=True,
+        help=(
+            "Internal: used for automatic real-time sharing from approved res.partner records. "
+            "External: used for partner-specific/consent-driven sharing."
+        ),
+    )
+
+    def with_delay(
+        self,
+        priority=None,
+        eta=None,
+        max_retries=None,
+        description=None,
+        channel=None,
+        identity_key=None,
+    ):
+        # Prevent base WebSub hook from creating queue jobs; ATI module controls enqueueing.
+        if self.env.context.get("ati_skip_base_websub_publish"):
+            _logger.info("ATI WebSub Debug - with_delay bypassed for base hook context")
+            return self
+        return super().with_delay(
+            priority=priority,
+            eta=eta,
+            max_retries=max_retries,
+            description=description,
+            channel=channel,
+            identity_key=identity_key,
+        )
 
     
     def _get_ati_farmer_data(self, record_data):
@@ -215,8 +249,79 @@ class G2PDatashareConfigWebsubATI(models.Model):
 
         return ati_data
 
-    
+    def _extract_partner_id_from_payload(self, data):
+        if not isinstance(data, dict):
+            return None
+        partner_data = data.get("groupData", data)
+        if not isinstance(partner_data, dict):
+            return None
+        return partner_data.get("id")
 
+    @api.model
+    def publish_event(self, event_type, data: dict, condition_override=None):
+        if self.env.context.get("ati_skip_base_websub_publish"):
+            _logger.info(
+                "ATI WebSub Debug - Skipping base hook publish_event event=%s partner_id=%s",
+                event_type,
+                self._extract_partner_id_from_payload(data),
+            )
+            return
+
+        partner_id = self._extract_partner_id_from_payload(data)
+        publishers = self.get_publishers(event_type)
+        _logger.info(
+            "ATI WebSub Debug - Executing publish_event event=%s partner_id=%s publisher_count=%s "
+            "data_keys=%s condition_override=%s",
+            event_type,
+            partner_id,
+            len(publishers),
+            sorted(data.keys()) if isinstance(data, dict) else None,
+            bool(condition_override),
+        )
+        if not publishers:
+            _logger.warning(
+                "ATI WebSub Debug - No active WebSub publishers found for event=%s partner_id=%s",
+                event_type,
+                partner_id,
+            )
+        result = super().publish_event(event_type, data, condition_override=condition_override)
+        _logger.info(
+            "ATI WebSub Debug - Finished publish_event event=%s partner_id=%s",
+            event_type,
+            partner_id,
+        )
+        return result
+
+    @api.model
+    def publish_event_internal(self, event_type, data: dict, condition_override=None):
+        partner_id = self._extract_partner_id_from_payload(data)
+        publishers = self.search(
+            [
+                ("event_type", "=", event_type),
+                ("active", "=", True),
+                ("publisher_type", "=", "internal"),
+            ]
+        )
+        _logger.info(
+            "ATI WebSub Debug - Executing publish_event_internal event=%s partner_id=%s publisher_count=%s",
+            event_type,
+            partner_id,
+            len(publishers),
+        )
+        if not publishers:
+            _logger.warning(
+                "ATI WebSub Debug - No INTERNAL WebSub publishers found for event=%s partner_id=%s",
+                event_type,
+                partner_id,
+            )
+            return
+        for publisher in publishers:
+            publisher.publish_by_publisher(data, condition_override=condition_override)
+        _logger.info(
+            "ATI WebSub Debug - Finished publish_event_internal event=%s partner_id=%s",
+            event_type,
+            partner_id,
+        )
 
 
     def publish_event_websub(self, data):
@@ -224,6 +329,23 @@ class G2PDatashareConfigWebsubATI(models.Model):
         Override the publish_event_websub method to include ATI farmer data
         Only publish records with state = 'approved'
         """
+        self.ensure_one()
+        _logger.info(
+            "ATI WebSub Debug - publish_event_websub start config_id=%s config_name=%s event_type=%s partner_id=%s source=%s",
+            self.id,
+            self.name,
+            self.event_type,
+            self._extract_partner_id_from_payload(data),
+            data.get("source") if isinstance(data, dict) else None,
+        )
+        # Consent module can publish through WEBSUB_INDIVIDUAL_UPDATED. Keep that payload as-is.
+        if isinstance(data, dict) and data.get("source") == "g2p_ati_consent_mgt":
+            _logger.info(
+                "ATI WebSub Debug - Consent payload bypassed ATI enrichment for config_id=%s",
+                self.id,
+            )
+            return super().publish_event_websub(data)
+
         # Get the original data
         original_data = data.copy()
         
@@ -276,4 +398,20 @@ class G2PDatashareConfigWebsubATI(models.Model):
             _logger.warning("ATI WebSub - No ATI farmer data extracted from payload")
         
         # Call the parent method with enhanced data
-        return super().publish_event_websub(original_data)
+        try:
+            result = super().publish_event_websub(original_data)
+            _logger.info(
+                "ATI WebSub Debug - publish_event_websub success config_id=%s event_type=%s partner_id=%s",
+                self.id,
+                self.event_type,
+                self._extract_partner_id_from_payload(original_data),
+            )
+            return result
+        except Exception:
+            _logger.exception(
+                "ATI WebSub Debug - publish_event_websub failure config_id=%s event_type=%s partner_id=%s",
+                self.id,
+                self.event_type,
+                self._extract_partner_id_from_payload(original_data),
+            )
+            raise

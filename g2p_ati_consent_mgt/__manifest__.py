@@ -11,6 +11,9 @@
         "contacts",
         "portal",
         "g2p_ati",
+        "g2p_ati_websub",
+        "g2p_registration_portal_base",
+        "g2p_ati_service_provider_portal",
     ],
     "data": [
         "security/ir.model.access.csv",
@@ -18,6 +21,7 @@
         "views/res_partner_views.xml",
         "views/create_portal_user_wizard_views.xml",
         "views/consent_request_views.xml",
+        "views/consent_receipt_views.xml",
         "views/consent_data_field_views.xml",
         "views/res_partner_consent_views.xml",
         "views/portal_consent_management_templates.xml",
