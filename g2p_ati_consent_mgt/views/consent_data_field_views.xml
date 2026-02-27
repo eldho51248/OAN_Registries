@@ -39,13 +39,11 @@
                     <separator string="Advanced Mapping" />
                     <field name="mapping_line_ids" nolabel="1" colspan="4">
                         <tree editable="bottom">
-                            <field name="sequence" />
                             <field name="payload_key" />
                             <field name="source_path" />
                         </tree>
                         <form string="Advanced Mapping Line">
                             <group>
-                                <field name="sequence" />
                                 <field name="payload_key" />
                                 <field name="source_path" />
                             </group>

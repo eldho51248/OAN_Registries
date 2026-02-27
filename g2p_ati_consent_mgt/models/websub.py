@@ -10,9 +10,7 @@ CONSENT_WEBSUB_EVENT = "WEBSUB_INDIVIDUAL_UPDATED"
 class G2PConsentDataFieldMapLine(models.Model):
     _name = "g2p.consent.data.field.map.line"
     _description = "Consent Data Field Mapping Line"
-    _order = "sequence, id"
-
-    sequence = fields.Integer(default=10)
+    _order = "id"
     data_field_id = fields.Many2one(
         "g2p.consent.data.field",
         required=True,
@@ -187,7 +185,7 @@ class G2PConsentRequestWebsub(models.Model):
         }
 
     def _extract_data_field_value(self, data_field, farmer):
-        mapping_lines = data_field.mapping_line_ids.sorted(key=lambda line: (line.sequence, line.id))
+        mapping_lines = data_field.mapping_line_ids.sorted(key=lambda line: line.id)
         if mapping_lines:
             collection_payload = self._extract_collection_mapping_payload(mapping_lines, farmer)
             if collection_payload is not None:
