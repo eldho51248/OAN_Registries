@@ -16,8 +16,14 @@ class G2PATIConsentController(http.Controller):
 
     def _error(self, message, code=400):
         return {"success": False, "code": code, "message": message}
+
     def _success(self, data=None, message="OK"):
         return {"success": True, "message": message, "data": data or {}}
+
+    def _approved_farmer_domain(self):
+        """Eligible farmers for consent flows."""
+        return [("is_registrant", "=", True), ("is_group", "=", False), ("state", "=", "approved")]
+
     def _get_consent_partner(self):
         """Return the consent parent partner for the current portal user, or None."""
         user = request.env.user
@@ -41,18 +47,20 @@ class G2PATIConsentController(http.Controller):
 
     def _find_farmer(self, payload):
         """Find farmer by farmer_db_id, farmer_id, or national_id/UID.
-        
+
         Uses multiple search strategies similar to SQL approach:
         - Partner ID (farmer_db_id)
         - farmer_id field
         - unique_id field
         - reg_ids.value (any ID type for national_id, UID type for UID)
+
+        Returns only approved farmers.
         """
         partner_obj = request.env["res.partner"].sudo()
         reg_id_obj = request.env["g2p.reg.id"].sudo()
 
-        base_domain = [("is_registrant", "=", True), ("is_group", "=", False)]
-        
+        base_domain = self._approved_farmer_domain()
+
         farmer_db_id = payload.get("farmer_db_id")
         farmer_id = payload.get("farmer_id")
         national_id = payload.get("national_id")
@@ -228,10 +236,10 @@ class G2PATIConsentController(http.Controller):
 
     @http.route("/consent/search_farmer", type="json", auth="user")
     def consent_search_farmer(self, farmer_id=None, national_id=None, uid=None, query=None, **kw):
-        """Search by Farmer ID or UID only. No is_registrant/is_group filter so portal always finds matches."""
+        """Search farmers by Farmer ID/UID and return only approved farmer records."""
         if not self._get_consent_partner():
             return self._error("Access denied", code=403)
-        
+
         search_value = None
         if query and str(query).strip():
             search_value = str(query).strip()
@@ -243,26 +251,27 @@ class G2PATIConsentController(http.Controller):
             search_value = str(uid).strip()
         if not search_value:
             return self._error("Provide farmer_id, national_id, uid, or query")
-        
+
         partner_obj = request.env["res.partner"].sudo()
         reg_id_obj = request.env["g2p.reg.id"].sudo()
+        base_domain = self._approved_farmer_domain()
         partner_ids = set()
-        
+
         # 1) By farmer_id
-        for p in partner_obj.search([("farmer_id", "=", search_value)], limit=10):
+        for p in partner_obj.search(base_domain + [("farmer_id", "=", search_value)], limit=10):
             partner_ids.add(p.id)
         # 2) By unique_id
-        for p in partner_obj.search([("unique_id", "=", search_value)], limit=10):
+        for p in partner_obj.search(base_domain + [("unique_id", "=", search_value)], limit=10):
             partner_ids.add(p.id)
-        # 3) By reg_ids.value (IDs tab – UID / ID Number) – direct from g2p.reg.id, no partner domain
+        # 3) By reg_ids.value (IDs tab – UID / ID Number)
         for reg in reg_id_obj.search([("value", "=", search_value)], limit=100):
             if reg.partner_id:
                 partner_ids.add(reg.partner_id.id)
-        
+
         if not partner_ids:
             return self._success(data={"farmers": []})
-        
-        farmers = partner_obj.browse(sorted(partner_ids)[:10])
+
+        farmers = partner_obj.search(base_domain + [("id", "in", list(partner_ids))], limit=10)
         return self._success(
             data={
                 "farmers": [
@@ -303,20 +312,24 @@ class G2PATIConsentController(http.Controller):
             )
             if not partner:
                 return _reject("access_denied")
-            
+
             farmer_id = post.get("farmer_id")
             if not farmer_id:
                 return _reject("missing_farmer")
-            
+
             try:
                 farmer_id = int(farmer_id)
             except (TypeError, ValueError):
                 return _reject("invalid_farmer")
-            
-            farmer = request.env["res.partner"].sudo().browse(farmer_id)
-            if not farmer.exists() or farmer.is_group:
+
+            farmer = (
+                request.env["res.partner"]
+                .sudo()
+                .search(self._approved_farmer_domain() + [("id", "=", farmer_id)], limit=1)
+            )
+            if not farmer:
                 return _reject("farmer_not_found")
-            
+
             consent_type = post.get("consent_type", "specific") or "specific"
             purpose = (post.get("purpose") or "").strip()
             if not purpose:

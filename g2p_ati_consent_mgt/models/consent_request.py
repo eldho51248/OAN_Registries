@@ -33,7 +33,7 @@ class G2PConsentRequest(models.Model):
         "res.partner",
         string="Farmer",
         required=True,
-        domain="[('is_group', '=', False)]",
+        domain="[('is_registrant', '=', True), ('is_group', '=', False), ('state', '=', 'approved')]",
     )
     allowed_data_field_ids = fields.Many2many(
         "g2p.consent.data.field",
