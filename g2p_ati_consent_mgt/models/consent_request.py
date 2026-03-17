@@ -7,6 +7,15 @@ from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
+FACE_MATCH_STATUS_SELECTION = [
+    ("not_attempted", "Not Attempted"),
+    ("matched", "Matched"),
+    ("not_matched", "Not Matched"),
+    ("no_reference", "No Reference Image"),
+    ("no_face_detected", "No Face Detected"),
+    ("error", "Error"),
+]
+
 
 class G2PConsentRequest(models.Model):
     _name = "g2p.consent.request"
@@ -103,6 +112,22 @@ class G2PConsentRequest(models.Model):
     portal_capture_latitude = fields.Float(string="Portal Capture Latitude", digits=(10, 7))
     portal_capture_longitude = fields.Float(string="Portal Capture Longitude", digits=(10, 7))
     portal_capture_accuracy_m = fields.Float(string="Portal Capture Accuracy (m)")
+    face_match_status = fields.Selection(
+        FACE_MATCH_STATUS_SELECTION,
+        string="Face Match Status",
+        default="not_attempted",
+        readonly=True,
+        copy=False,
+    )
+    face_match_distance = fields.Float(string="Face Match Distance", digits=(16, 4), readonly=True, copy=False)
+    face_match_threshold = fields.Float(string="Face Match Threshold", digits=(16, 4), readonly=True, copy=False)
+    face_match_checked_at = fields.Datetime(string="Face Match Checked At", readonly=True, copy=False)
+    face_match_message = fields.Text(string="Face Match Message", readonly=True, copy=False)
+    auto_approved_via_face_match = fields.Boolean(
+        string="Auto Approved via Face Match",
+        readonly=True,
+        copy=False,
+    )
     portal_capture_image_preview_html = fields.Html(
         string="Portal Capture Photo",
         compute="_compute_portal_capture_image_preview_html",

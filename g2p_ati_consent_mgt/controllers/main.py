@@ -31,6 +31,80 @@ class G2PATIConsentController(http.Controller):
             return None
         return user.consent_parent_partner_id
 
+    def _guess_image_content_type(self, image_data):
+        if image_data.startswith(b"\x89PNG\r\n\x1a\n"):
+            return "image/png"
+        if image_data.startswith(b"\xff\xd8\xff"):
+            return "image/jpeg"
+        if image_data.startswith((b"GIF87a", b"GIF89a")):
+            return "image/gif"
+        if image_data.startswith(b"RIFF") and image_data[8:12] == b"WEBP":
+            return "image/webp"
+        return "image/png"
+
+    def _build_farmer_profile_image_url(self, farmer):
+        if not farmer or not farmer.image_1920:
+            return ""
+        return "/consent/farmer/%s/profile_image" % farmer.id
+
+    def _extract_face_match_values(self, post, farmer, has_camera_capture):
+        allowed_statuses = {
+            "not_attempted",
+            "matched",
+            "not_matched",
+            "no_reference",
+            "no_face_detected",
+            "error",
+        }
+        status = (post.get("face_match_status") or "not_attempted").strip().lower()
+        if status not in allowed_statuses:
+            status = "error"
+
+        values = {"face_match_status": status}
+        message = (post.get("face_match_message") or "").strip()
+        if message:
+            values["face_match_message"] = message[:1024]
+
+        checked_at_raw = (post.get("face_match_checked_at") or "").strip()
+        if checked_at_raw:
+            checked_at = fields.Datetime.to_datetime(checked_at_raw)
+            if checked_at:
+                values["face_match_checked_at"] = fields.Datetime.to_string(checked_at)
+
+        distance_raw = (post.get("face_match_distance") or "").strip()
+        if distance_raw:
+            try:
+                distance = float(distance_raw)
+            except (TypeError, ValueError):
+                distance = None
+            if distance is not None and distance >= 0:
+                values["face_match_distance"] = distance
+
+        threshold_raw = (post.get("face_match_threshold") or "").strip()
+        if threshold_raw:
+            try:
+                threshold = float(threshold_raw)
+            except (TypeError, ValueError):
+                threshold = None
+            if threshold is not None and 0 < threshold <= 1.5:
+                values["face_match_threshold"] = threshold
+
+        if not has_camera_capture:
+            values["face_match_status"] = "not_attempted"
+            return values, False
+
+        if not farmer.image_1920 and values["face_match_status"] == "matched":
+            values["face_match_status"] = "no_reference"
+
+        auto_approve = (
+            values.get("face_match_status") == "matched"
+            and values.get("face_match_distance") is not None
+            and values.get("face_match_threshold") is not None
+            and values["face_match_distance"] <= values["face_match_threshold"]
+            and bool(farmer.image_1920)
+        )
+        return values, auto_approve
+
     def _serialize_consent_request(self, req):
         created_at = req.created_at
         if created_at:
@@ -234,6 +308,29 @@ class G2PATIConsentController(http.Controller):
         ]
         return request.make_response(image_data, headers=headers)
 
+    @http.route("/consent/farmer/<int:farmer_id>/profile_image", type="http", auth="user")
+    def consent_farmer_profile_image(self, farmer_id, **kw):
+        if not self._get_consent_partner():
+            return request.not_found()
+
+        farmer = request.env["res.partner"].sudo().search(
+            self._approved_farmer_domain() + [("id", "=", farmer_id)],
+            limit=1,
+        )
+        if not farmer or not farmer.image_1920:
+            return request.not_found()
+
+        try:
+            image_data = base64.b64decode(farmer.image_1920)
+        except Exception:
+            return request.not_found()
+
+        headers = [
+            ("Content-Type", self._guess_image_content_type(image_data)),
+            ("Content-Length", str(len(image_data))),
+        ]
+        return request.make_response(image_data, headers=headers)
+
     @http.route("/consent/search_farmer", type="json", auth="user")
     def consent_search_farmer(self, farmer_id=None, national_id=None, uid=None, query=None, **kw):
         """Search farmers by Farmer ID/UID and return only approved farmer records."""
@@ -280,6 +377,7 @@ class G2PATIConsentController(http.Controller):
                         "name": p.name,
                         "farmer_id": p.farmer_id or "",
                         "reg_ids": [r.value for r in (p.reg_ids or [])],
+                        "profile_image_url": self._build_farmer_profile_image_url(p),
                     }
                     for p in farmers
                 ]
@@ -383,6 +481,7 @@ class G2PATIConsentController(http.Controller):
                 vals["allowed_data_field_ids"] = [(6, 0, allowed_ids)]
             
             attachment_ids = []
+            auto_approve_requested = False
             try:
                 files = request.httprequest.files or {}
                 upload = files.get("attachment")
@@ -426,6 +525,13 @@ class G2PATIConsentController(http.Controller):
                             return _reject("invalid_camera_timestamp")
                         vals["portal_capture_taken_at"] = fields.Datetime.to_string(capture_dt)
 
+                face_match_vals, auto_approve_requested = self._extract_face_match_values(
+                    post,
+                    farmer,
+                    has_camera_capture=bool(camera_data_b64),
+                )
+                vals.update(face_match_vals)
+
                 lat_raw = (post.get("camera_capture_latitude") or "").strip()
                 lon_raw = (post.get("camera_capture_longitude") or "").strip()
                 acc_raw = (post.get("camera_capture_accuracy") or "").strip()
@@ -458,16 +564,41 @@ class G2PATIConsentController(http.Controller):
 
             for att_id in attachment_ids:
                 request.env["ir.attachment"].sudo().browse(att_id).write({"res_id": consent.id})
+
+            auto_approved = False
+            auto_approval_failed = False
+            if auto_approve_requested:
+                try:
+                    consent.action_approve()
+                    consent.sudo().write({"auto_approved_via_face_match": True})
+                    auto_approved = consent.status == "approved"
+                except Exception as approval_error:
+                    auto_approval_failed = True
+                    _logger.exception(
+                        "Consent portal face-match auto approval failed for consent id=%s",
+                        consent.id,
+                    )
+                    failure_note = "Face match passed, but automatic approval failed: %s" % approval_error
+                    existing_message = (consent.face_match_message or "").strip()
+                    combined_message = failure_note if not existing_message else "%s\n%s" % (existing_message, failure_note)
+                    consent.sudo().write({"face_match_message": combined_message[:1024]})
             
             _logger.info(
-                "Consent request created via portal: id=%s farmer_id=%s partner_id=%s user_id=%s allowed_field_count=%s",
+                "Consent request created via portal: id=%s farmer_id=%s partner_id=%s user_id=%s allowed_field_count=%s face_match_status=%s auto_approved=%s",
                 consent.id,
                 consent.farmer_id.id,
                 consent.partner_record_id.id,
                 user_id,
                 len(allowed_ids),
+                consent.face_match_status,
+                auto_approved,
             )
-            return request.redirect("/consent/management?success=1")
+            redirect_url = "/consent/management?success=1"
+            if auto_approved:
+                redirect_url += "&auto_approved=1"
+            elif auto_approval_failed:
+                redirect_url += "&auto_approval_failed=1"
+            return request.redirect(redirect_url)
         except Exception as e:
             _logger.error("Error creating consent request: %s", e, exc_info=True)
             return request.redirect("/consent/management?error=server_error")

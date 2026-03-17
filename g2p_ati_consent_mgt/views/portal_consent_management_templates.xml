@@ -309,11 +309,101 @@
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
+                    gap: 1rem;
                     padding: 0.75rem 1rem;
                     border: 1px solid #e9ecef;
                     border-radius: 8px;
                     margin-bottom: 0.5rem;
                     background: #fff;
+                    }
+                    .o_consent_portal .consent_farmer_identity {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.85rem;
+                    min-width: 0;
+                    }
+                    .o_consent_portal .consent_farmer_identity_text {
+                    min-width: 0;
+                    }
+                    .o_consent_portal .consent_farmer_identity_name {
+                    font-weight: 600;
+                    color: #21312c;
+                    word-break: break-word;
+                    }
+                    .o_consent_portal .consent_farmer_avatar,
+                    .o_consent_portal .consent_selected_farmer_image,
+                    .o_consent_portal .consent_face_match_reference_image {
+                    background: #eef3ef;
+                    border: 1px solid #dbe7e0;
+                    object-fit: cover;
+                    flex-shrink: 0;
+                    }
+                    .o_consent_portal .consent_farmer_avatar {
+                    width: 64px;
+                    height: 64px;
+                    border-radius: 12px;
+                    }
+                    .o_consent_portal .consent_farmer_avatar_placeholder {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: #5f726d;
+                    font-size: 0.78rem;
+                    font-weight: 600;
+                    text-align: center;
+                    background: #eef3ef;
+                    border: 1px dashed #c9d8d0;
+                    }
+                    .o_consent_portal .consent_selected_farmer {
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    padding: 0.85rem 1rem;
+                    border: 1px solid #e6ece9;
+                    border-radius: 12px;
+                    background: #f8fbf9;
+                    }
+                    .o_consent_portal .consent_selected_farmer_image,
+                    .o_consent_portal .consent_selected_farmer_placeholder {
+                    width: 88px;
+                    height: 88px;
+                    border-radius: 14px;
+                    }
+                    .o_consent_portal .consent_selected_farmer_meta {
+                    color: var(--consent-muted);
+                    font-size: 0.88rem;
+                    margin-bottom: 0;
+                    }
+                    .o_consent_portal .consent_face_match_panel {
+                    border: 1px solid #e6ece9;
+                    border-radius: 12px;
+                    background: #fbfcfb;
+                    padding: 0.9rem 1rem;
+                    }
+                    .o_consent_portal .consent_face_match_reference_image,
+                    .o_consent_portal .consent_face_match_reference_empty {
+                    width: 120px;
+                    height: 120px;
+                    border-radius: 14px;
+                    }
+                    .o_consent_portal .consent_face_match_status {
+                    font-size: 0.92rem;
+                    line-height: 1.45;
+                    }
+                    .o_consent_portal .consent_face_match_status.is-matched {
+                    color: var(--consent-success);
+                    }
+                    .o_consent_portal .consent_face_match_status.is-not-matched,
+                    .o_consent_portal .consent_face_match_status.is-error {
+                    color: var(--consent-danger);
+                    }
+                    .o_consent_portal .consent_face_match_status.is-no-reference,
+                    .o_consent_portal .consent_face_match_status.is-no-face-detected {
+                    color: var(--consent-warning);
+                    }
+                    .o_consent_portal .consent_face_match_status.is-processing,
+                    .o_consent_portal .consent_face_match_status.is-not-attempted {
+                    color: var(--consent-muted);
                     }
                     .o_consent_portal .consent_farmer_result_item:hover { background:
                     var(--consent-light-bg); }
@@ -408,6 +498,14 @@
                         grid-template-columns: 1fr;
                         gap: .6rem;
                         align-items: start;
+                    }
+                    .o_consent_portal .consent_selected_farmer {
+                        align-items: flex-start;
+                    }
+                    .o_consent_portal .consent_face_match_reference_image,
+                    .o_consent_portal .consent_face_match_reference_empty {
+                        width: 96px;
+                        height: 96px;
                     }
                     .o_consent_portal .consent_farmer_result_item .btn { width: 100%; }
                     }
@@ -526,7 +624,19 @@
                         <div class="row g-3">
                             <div class="col-12">
                                 <label class="form-label">Selected Farmer</label>
-                                <p class="mb-0 fw-bold" id="selected_farmer_name">—</p>
+                                <div class="consent_selected_farmer">
+                                    <img id="selected_farmer_image"
+                                        class="consent_selected_farmer_image d-none"
+                                        alt="Selected farmer profile image" />
+                                    <div id="selected_farmer_image_placeholder"
+                                        class="consent_farmer_avatar_placeholder consent_selected_farmer_placeholder"
+                                    >No photo</div>
+                                    <div class="min-w-0">
+                                        <p class="mb-1 fw-bold" id="selected_farmer_name">—</p>
+                                        <p id="selected_farmer_meta"
+                                            class="consent_selected_farmer_meta">Search and select an approved farmer.</p>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label" for="consent_type">Consent Type</label>
@@ -598,6 +708,16 @@
                                     id="camera_capture_longitude" value="" />
                                 <input type="hidden" name="camera_capture_accuracy"
                                     id="camera_capture_accuracy" value="" />
+                                <input type="hidden" name="face_match_status"
+                                    id="face_match_status_input" value="not_attempted" />
+                                <input type="hidden" name="face_match_distance"
+                                    id="face_match_distance_input" value="" />
+                                <input type="hidden" name="face_match_threshold"
+                                    id="face_match_threshold_input" value="" />
+                                <input type="hidden" name="face_match_checked_at"
+                                    id="face_match_checked_at_input" value="" />
+                                <input type="hidden" name="face_match_message"
+                                    id="face_match_message_input" value="" />
                                 <div class="d-flex align-items-center gap-2 flex-wrap">
                                     <button type="button" class="btn btn-outline-secondary btn-sm"
                                         id="btn_open_camera" title="Open Camera"
@@ -622,6 +742,26 @@
                                 <div id="camera_error" class="text-danger small mt-1 d-none"></div>
                                 <img id="camera_capture_preview" class="img-thumbnail mt-2 d-none"
                                     style="max-width: 220px;" alt="Camera capture preview" />
+                                <div class="consent_face_match_panel mt-3">
+                                    <div class="row g-3 align-items-start">
+                                        <div class="col-md-4">
+                                            <div class="small text-muted mb-2">Farmer Profile</div>
+                                            <img id="face_match_reference_preview"
+                                                class="consent_face_match_reference_image d-none"
+                                                alt="Farmer profile image for face match" />
+                                            <div id="face_match_reference_empty"
+                                                class="consent_farmer_avatar_placeholder consent_face_match_reference_empty"
+                                            >No profile image</div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="small text-muted mb-2">Face Match</div>
+                                            <div id="face_match_status_text"
+                                                class="consent_face_match_status is-not-attempted">Capture a photo to compare it with the selected farmer profile image.</div>
+                                            <div id="face_match_percent_text"
+                                                class="text-muted small mt-2">Minimum accepted: 55.0%</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-12">
                                 <t t-if="data_fields">
@@ -643,10 +783,22 @@
                 </div>
 
                 <!-- Alerts -->
-                <t t-if="request.httprequest.args.get('success') == '1'">
+                <t t-if="request.httprequest.args.get('success') == '1' and request.httprequest.args.get('auto_approved') == '1'">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        Consent request submitted and automatically approved after face match.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" />
+                    </div>
+                </t>
+                <t t-if="request.httprequest.args.get('success') == '1' and request.httprequest.args.get('auto_approved') != '1'">
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         Consent request submitted successfully. <button type="button"
                             class="btn-close" data-bs-dismiss="alert" aria-label="Close" />
+                    </div>
+                </t>
+                <t t-if="request.httprequest.args.get('auto_approval_failed') == '1'">
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        Face match passed, but automatic approval could not be completed. The request was created and remains pending.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" />
                     </div>
                 </t>
                 <t t-if="request.httprequest.args.get('error')">
@@ -786,6 +938,40 @@
                                 </t>
                                 <t t-else="">
                                     <span class="text-muted">No captured photo.</span>
+                                </t>
+                            </div>
+                            <div class="col-12">
+                                <div class="text-muted small mb-1">Face Match</div>
+                                <t t-set="face_match_percent"
+                                    t-value="max(0.0, min(100.0, (1.0 - (review_request.face_match_distance or 0.0)) * 100.0))" />
+                                <t t-set="face_match_threshold_percent"
+                                    t-value="max(0.0, min(100.0, (1.0 - (review_request.face_match_threshold or 0.0)) * 100.0))" />
+                                <div class="fw-semibold text-capitalize">
+                                    <t t-esc="review_request.face_match_status or '-'" />
+                                </div>
+                                <t t-if="review_request.face_match_distance or review_request.face_match_threshold">
+                                    <div class="text-muted small mt-1">
+                                        Match:
+                                        <t t-esc="'%.1f%%' % face_match_percent" />
+                                        |
+                                        Minimum accepted:
+                                        <t t-esc="'%.1f%%' % face_match_threshold_percent" />
+                                    </div>
+                                    <div class="text-muted small mt-1">
+                                        Distance:
+                                        <t t-esc="'%.4f' % (review_request.face_match_distance or 0.0)" />
+                                        |
+                                        Threshold:
+                                        <t t-esc="'%.4f' % (review_request.face_match_threshold or 0.0)" />
+                                    </div>
+                                </t>
+                                <t t-if="review_request.auto_approved_via_face_match">
+                                    <div class="text-success small mt-1">Automatically approved via face match.</div>
+                                </t>
+                                <t t-if="review_request.face_match_message">
+                                    <div class="text-muted small mt-1">
+                                        <t t-esc="review_request.face_match_message" />
+                                    </div>
                                 </t>
                             </div>
                             <div class="col-12">
@@ -964,6 +1150,9 @@
                     var createCard = document.getElementById('create_request_card');
                     var formFarmerId = document.getElementById('form_farmer_id');
                     var selectedFarmerName = document.getElementById('selected_farmer_name');
+                    var selectedFarmerMeta = document.getElementById('selected_farmer_meta');
+                    var selectedFarmerImage = document.getElementById('selected_farmer_image');
+                    var selectedFarmerImagePlaceholder = document.getElementById('selected_farmer_image_placeholder');
                     var btnClear = document.getElementById('btn_clear_farmer');
                     var btnSubmitDisabledReason = document.getElementById('btn_submit_disabled_reason');
                     var consentForm = document.getElementById('consent_request_form');
@@ -978,11 +1167,20 @@
                     var cameraLatitudeInput = document.getElementById('camera_capture_latitude');
                     var cameraLongitudeInput = document.getElementById('camera_capture_longitude');
                     var cameraAccuracyInput = document.getElementById('camera_capture_accuracy');
+                    var faceMatchStatusInput = document.getElementById('face_match_status_input');
+                    var faceMatchDistanceInput = document.getElementById('face_match_distance_input');
+                    var faceMatchThresholdInput = document.getElementById('face_match_threshold_input');
+                    var faceMatchCheckedAtInput = document.getElementById('face_match_checked_at_input');
+                    var faceMatchMessageInput = document.getElementById('face_match_message_input');
                     var cameraInfo = document.getElementById('camera_capture_info');
                     var cameraError = document.getElementById('camera_error');
                     var cameraPreview = document.getElementById('camera_capture_preview');
                     var cameraVideo = document.getElementById('camera_live_preview');
                     var cameraCanvas = document.getElementById('camera_canvas');
+                    var faceMatchStatusText = document.getElementById('face_match_status_text');
+                    var faceMatchPercentText = document.getElementById('face_match_percent_text');
+                    var faceMatchReferencePreview = document.getElementById('face_match_reference_preview');
+                    var faceMatchReferenceEmpty = document.getElementById('face_match_reference_empty');
                     var btnOpenCamera = document.getElementById('btn_open_camera');
                     var btnTakeCameraPhoto = document.getElementById('btn_take_camera_photo');
                     var btnCloseCamera = document.getElementById('btn_close_camera');
@@ -992,7 +1190,16 @@
                     var tableLoader = document.getElementById('consent_table_loader');
                     var tableEnd = document.getElementById('consent_table_end');
                     var maxAttachmentSize = 10 * 1024 * 1024;
+                    var faceMatchThresholdDefault = 0.45;
                     var cameraStream = null;
+                    var selectedFarmer = null;
+                    var faceApiScriptPromise = null;
+                    var faceApiModelsPromise = null;
+                    var faceMatchSubmitPending = false;
+                    var faceMatchState = {
+                        status: 'not_attempted',
+                        running: false
+                    };
                     var tableScrollTicking = false;
                     var errorMessagesByCode = {
                         access_denied: 'Access denied. Please contact your administrator.',
@@ -1027,6 +1234,303 @@
                         function pad(v) { return String(v).padStart(2, '0'); }
                         return dateObj.getFullYear() + '-' + pad(dateObj.getMonth() + 1) + '-' + pad(dateObj.getDate()) + ' ' +
                             pad(dateObj.getHours()) + ':' + pad(dateObj.getMinutes()) + ':' + pad(dateObj.getSeconds());
+                    }
+
+                    function escapeAttr(value) {
+                        return htmlEscape(value).replace(/"/g, '&quot;');
+                    }
+
+                    function normalizeFaceMatchStatus(status) {
+                        return String(status || 'not_attempted').toLowerCase().replace(/[^a-z_]/g, '');
+                    }
+
+                    function distanceToMatchPercent(distance) {
+                        if (!Number.isFinite(distance)) {
+                            return null;
+                        }
+                        return Math.max(0, Math.min(100, (1 - distance) * 100));
+                    }
+
+                    function formatMatchPercent(percentValue) {
+                        return Number.isFinite(percentValue) ? percentValue.toFixed(1) + '%' : '—';
+                    }
+
+                    function updateFaceMatchPercentText(distance, threshold) {
+                        if (!faceMatchPercentText) return;
+                        var safeThreshold = Number.isFinite(threshold) ? threshold : faceMatchThresholdDefault;
+                        var thresholdPercent = distanceToMatchPercent(safeThreshold);
+                        if (Number.isFinite(distance)) {
+                            var matchPercent = distanceToMatchPercent(distance);
+                            faceMatchPercentText.textContent =
+                                'Match score: ' + formatMatchPercent(matchPercent) +
+                                ' | Minimum accepted: ' + formatMatchPercent(thresholdPercent);
+                        } else {
+                            faceMatchPercentText.textContent =
+                                'Minimum accepted: ' + formatMatchPercent(thresholdPercent);
+                        }
+                    }
+
+                    function setPreviewImage(imgEl, emptyEl, imageUrl) {
+                        if (imgEl) {
+                            if (imageUrl) {
+                                imgEl.src = imageUrl;
+                                imgEl.classList.remove('d-none');
+                            } else {
+                                imgEl.removeAttribute('src');
+                                imgEl.classList.add('d-none');
+                            }
+                        }
+                        if (emptyEl) {
+                            emptyEl.classList.toggle('d-none', !!imageUrl);
+                        }
+                    }
+
+                    function resetFaceMatchFields() {
+                        if (faceMatchStatusInput) faceMatchStatusInput.value = 'not_attempted';
+                        if (faceMatchDistanceInput) faceMatchDistanceInput.value = '';
+                        if (faceMatchThresholdInput) faceMatchThresholdInput.value = '';
+                        if (faceMatchCheckedAtInput) faceMatchCheckedAtInput.value = '';
+                        if (faceMatchMessageInput) faceMatchMessageInput.value = '';
+                        faceMatchState.status = 'not_attempted';
+                        faceMatchState.running = false;
+                        updateFaceMatchPercentText(null, faceMatchThresholdDefault);
+                    }
+
+                    function setFaceMatchProcessing(message) {
+                        faceMatchState.status = 'processing';
+                        faceMatchState.running = true;
+                        if (faceMatchStatusText) {
+                            faceMatchStatusText.className = 'consent_face_match_status is-processing';
+                            faceMatchStatusText.textContent = message || 'Comparing faces...';
+                        }
+                        updateFaceMatchPercentText(null, faceMatchThresholdDefault);
+                    }
+
+                    function setFaceMatchResult(status, message, options) {
+                        var normalizedStatus = normalizeFaceMatchStatus(status);
+                        var distance = options && Number.isFinite(options.distance) ? options.distance : null;
+                        var threshold = options && Number.isFinite(options.threshold) ? options.threshold : faceMatchThresholdDefault;
+                        var technicalMessage = options && options.technicalMessage ? String(options.technicalMessage) : '';
+                        faceMatchState.status = normalizedStatus;
+                        faceMatchState.running = false;
+                        if (faceMatchStatusInput) faceMatchStatusInput.value = normalizedStatus;
+                        if (faceMatchDistanceInput) faceMatchDistanceInput.value = distance == null ? '' : String(distance);
+                        if (faceMatchThresholdInput) faceMatchThresholdInput.value = threshold == null ? '' : String(threshold);
+                        if (faceMatchCheckedAtInput) {
+                            faceMatchCheckedAtInput.value = normalizedStatus === 'not_attempted' ? '' : formatDateForOdoo(new Date());
+                        }
+                        if (faceMatchMessageInput) {
+                            faceMatchMessageInput.value = technicalMessage || String(message || '');
+                        }
+                        if (faceMatchStatusText) {
+                            faceMatchStatusText.className = 'consent_face_match_status is-' + normalizedStatus.replace(/_/g, '-');
+                            faceMatchStatusText.textContent = message || '';
+                        }
+                        updateFaceMatchPercentText(distance, threshold);
+                    }
+
+                    function resetFaceMatch(message) {
+                        resetFaceMatchFields();
+                        if (faceMatchStatusText) {
+                            faceMatchStatusText.className = 'consent_face_match_status is-not-attempted';
+                            faceMatchStatusText.textContent = message || 'Capture a photo to compare it with the selected farmer profile image.';
+                        }
+                    }
+
+                    function buildFarmerMeta(farmer) {
+                        if (!farmer) {
+                            return 'Search and select an approved farmer.';
+                        }
+                        var regIds = Array.isArray(farmer.reg_ids) ? farmer.reg_ids.filter(Boolean) : [];
+                        var parts = ['Farmer ID: ' + (farmer.farmer_id || '—')];
+                        if (regIds.length) {
+                            parts.push('IDs: ' + regIds.join(', '));
+                        }
+                        if (!farmer.profile_image_url) {
+                            parts.push('No profile image available');
+                        }
+                        return parts.join(' | ');
+                    }
+
+                    function applySelectedFarmer(farmer) {
+                        selectedFarmer = farmer || null;
+                        if (formFarmerId) {
+                            formFarmerId.value = farmer && farmer.id ? String(farmer.id) : '';
+                        }
+                        if (selectedFarmerName) {
+                            selectedFarmerName.textContent = farmer && farmer.name ? farmer.name : '—';
+                        }
+                        if (selectedFarmerMeta) {
+                            selectedFarmerMeta.textContent = buildFarmerMeta(farmer);
+                        }
+                        setPreviewImage(
+                            selectedFarmerImage,
+                            selectedFarmerImagePlaceholder,
+                            farmer && farmer.profile_image_url ? farmer.profile_image_url : ''
+                        );
+                        setPreviewImage(
+                            faceMatchReferencePreview,
+                            faceMatchReferenceEmpty,
+                            farmer && farmer.profile_image_url ? farmer.profile_image_url : ''
+                        );
+                        createCard.classList.toggle('d-none', !farmer);
+                        resetFaceMatch(
+                            farmer && farmer.profile_image_url
+                                ? 'Capture a photo to compare it with the selected farmer profile image.'
+                                : 'Selected farmer has no profile image. The request can still be submitted, but it will remain pending.'
+                        );
+                        if (farmer && cameraDataInput && cameraDataInput.value) {
+                            runFaceMatch();
+                        }
+                    }
+
+                    function ensureFaceApiLibrary() {
+                        if (window.faceapi) {
+                            return Promise.resolve(window.faceapi);
+                        }
+                        if (faceApiScriptPromise) {
+                            return faceApiScriptPromise;
+                        }
+                        faceApiScriptPromise = new Promise(function(resolve, reject) {
+                            var script = document.createElement('script');
+                            script.src = '/g2p_ati_consent_mgt/static/src/lib/face-api/face-api.js';
+                            script.async = true;
+                            script.onload = function() {
+                                if (window.faceapi) {
+                                    resolve(window.faceapi);
+                                } else {
+                                    reject(new Error('face-api library loaded without exposing faceapi.'));
+                                }
+                            };
+                            script.onerror = function() {
+                                reject(new Error('Unable to load face-api library.'));
+                            };
+                            document.head.appendChild(script);
+                        }).catch(function(error) {
+                            faceApiScriptPromise = null;
+                            throw error;
+                        });
+                        return faceApiScriptPromise;
+                    }
+
+                    function ensureFaceApiModels() {
+                        if (faceApiModelsPromise) {
+                            return faceApiModelsPromise;
+                        }
+                        faceApiModelsPromise = ensureFaceApiLibrary().then(function(faceapi) {
+                            var modelBaseUrl = '/g2p_ati_consent_mgt/static/src/lib/face-api/model';
+                            return Promise.all([
+                                faceapi.nets.tinyFaceDetector.loadFromUri(modelBaseUrl),
+                                faceapi.nets.faceLandmark68Net.loadFromUri(modelBaseUrl),
+                                faceapi.nets.faceRecognitionNet.loadFromUri(modelBaseUrl)
+                            ]).then(function() {
+                                return faceapi;
+                            });
+                        }).catch(function(error) {
+                            faceApiModelsPromise = null;
+                            throw error;
+                        });
+                        return faceApiModelsPromise;
+                    }
+
+                    function loadImageForFaceMatch(imageUrl) {
+                        return new Promise(function(resolve, reject) {
+                            if (!imageUrl) {
+                                reject(new Error('Missing image source.'));
+                                return;
+                            }
+                            var img = new Image();
+                            if (!/^data:/i.test(imageUrl)) {
+                                img.crossOrigin = 'anonymous';
+                            }
+                            img.onload = function() { resolve(img); };
+                            img.onerror = function() { reject(new Error('Unable to load image for face matching.')); };
+                            img.src = imageUrl;
+                        });
+                    }
+
+                    function detectFaceDescriptor(imageUrl) {
+                        return ensureFaceApiModels().then(function(faceapi) {
+                            return loadImageForFaceMatch(imageUrl).then(function(img) {
+                                return faceapi
+                                    .detectSingleFace(img, new faceapi.TinyFaceDetectorOptions({ inputSize: 416, scoreThreshold: 0.5 }))
+                                    .withFaceLandmarks()
+                                    .withFaceDescriptor();
+                            });
+                        });
+                    }
+
+                    function runFaceMatch() {
+                        if (!selectedFarmer) {
+                            resetFaceMatch('Select a farmer before capturing a photo.');
+                            return Promise.resolve(false);
+                        }
+                        if (!cameraDataInput || !cameraDataInput.value) {
+                            resetFaceMatch(
+                                selectedFarmer.profile_image_url
+                                    ? 'Capture a photo to compare it with the selected farmer profile image.'
+                                    : 'Selected farmer has no profile image. The request can still be submitted, but it will remain pending.'
+                            );
+                            return Promise.resolve(false);
+                        }
+                        if (!selectedFarmer.profile_image_url) {
+                            setFaceMatchResult(
+                                'no_reference',
+                                'Selected farmer has no profile image. The request can still be submitted, but it will remain pending.',
+                                { threshold: faceMatchThresholdDefault }
+                            );
+                            return Promise.resolve(false);
+                        }
+
+                        setFaceMatchProcessing('Comparing captured photo with farmer profile image...');
+                        return Promise.all([
+                            detectFaceDescriptor(selectedFarmer.profile_image_url),
+                            detectFaceDescriptor(cameraDataInput.value)
+                        ]).then(function(results) {
+                            var referenceFace = results[0];
+                            var capturedFace = results[1];
+                            if (!referenceFace || !capturedFace) {
+                                setFaceMatchResult(
+                                    'no_face_detected',
+                                    !referenceFace
+                                        ? 'No face was detected in the farmer profile image. The request will remain pending.'
+                                        : 'No face was detected in the captured photo. Retake the photo for auto-approval.',
+                                    { threshold: faceMatchThresholdDefault }
+                                );
+                                return false;
+                            }
+                            var distance = window.faceapi.euclideanDistance(referenceFace.descriptor, capturedFace.descriptor);
+                            var matchPercent = distanceToMatchPercent(distance);
+                            var acceptedPercent = distanceToMatchPercent(faceMatchThresholdDefault);
+                            var matched = distance <= faceMatchThresholdDefault;
+                            setFaceMatchResult(
+                                matched ? 'matched' : 'not_matched',
+                                matched
+                                    ? 'Face matched at ' + formatMatchPercent(matchPercent) + '. The request will be automatically approved on submit.'
+                                    : 'Face match score is ' + formatMatchPercent(matchPercent) + '. Minimum accepted is ' + formatMatchPercent(acceptedPercent) + ', so the request will remain pending.',
+                                {
+                                    distance: distance,
+                                    threshold: faceMatchThresholdDefault,
+                                    technicalMessage:
+                                        'Distance=' + distance.toFixed(4) +
+                                        ', Threshold=' + faceMatchThresholdDefault.toFixed(4) +
+                                        ', MatchPercent=' + formatMatchPercent(matchPercent) +
+                                        ', AcceptedPercent=' + formatMatchPercent(acceptedPercent)
+                                }
+                            );
+                            return matched;
+                        }).catch(function(error) {
+                            console.error('Consent portal face match failed.', error);
+                            setFaceMatchResult(
+                                'error',
+                                'Face match could not be completed. The request can still be submitted and will remain pending.',
+                                {
+                                    threshold: faceMatchThresholdDefault,
+                                    technicalMessage: error && error.message ? error.message : 'Unknown face match error'
+                                }
+                            );
+                            return false;
+                        });
                     }
 
                     function setPurposeError(message) {
@@ -1331,18 +1835,51 @@
                                     var div = document.createElement('div');
                                     div.className = 'consent_farmer_result_item';
                                     var left = document.createElement('div');
-                                    left.innerHTML = (f.name || '') + ' <span class="text-muted small">(Farmer ID: ' + (f.farmer_id || '—') + (regIds ? ' · ' + regIds : '') + ')</span>';
+                                    left.className = 'consent_farmer_identity';
+                                    if (f.profile_image_url) {
+                                        var avatarImg = document.createElement('img');
+                                        avatarImg.className = 'consent_farmer_avatar';
+                                        avatarImg.alt = (f.name || 'Farmer') + ' profile image';
+                                        avatarImg.src = f.profile_image_url;
+                                        avatarImg.addEventListener('error', function() {
+                                            this.classList.add('d-none');
+                                        });
+                                        left.appendChild(avatarImg);
+                                    } else {
+                                        var avatarEmpty = document.createElement('div');
+                                        avatarEmpty.className = 'consent_farmer_avatar consent_farmer_avatar_placeholder';
+                                        avatarEmpty.textContent = 'No photo';
+                                        left.appendChild(avatarEmpty);
+                                    }
+                                    var textWrap = document.createElement('div');
+                                    textWrap.className = 'consent_farmer_identity_text';
+                                    var nameEl = document.createElement('div');
+                                    nameEl.className = 'consent_farmer_identity_name';
+                                    nameEl.textContent = f.name || 'Unnamed Farmer';
+                                    textWrap.appendChild(nameEl);
+                                    var metaEl = document.createElement('div');
+                                    metaEl.className = 'text-muted small';
+                                    metaEl.textContent = 'Farmer ID: ' + (f.farmer_id || '—') + (regIds ? ' · ' + regIds : '') + (f.profile_image_url ? '' : ' · No profile image');
+                                    textWrap.appendChild(metaEl);
+                                    left.appendChild(textWrap);
                                     div.appendChild(left);
                                     var btn = document.createElement('button');
                                     btn.type = 'button';
                                     btn.className = 'btn btn-sm consent_btn_primary select-farmer';
                                     btn.setAttribute('data-id', f.id);
                                     btn.setAttribute('data-name', f.name || '');
+                                    btn.setAttribute('data-farmer-id', f.farmer_id || '');
+                                    btn.setAttribute('data-reg-ids', JSON.stringify(f.reg_ids || []));
+                                    btn.setAttribute('data-profile-image-url', f.profile_image_url || '');
                                     btn.textContent = 'Select';
                                     btn.addEventListener('click', function() {
-                                        formFarmerId.value = this.getAttribute('data-id');
-                                        selectedFarmerName.textContent = this.getAttribute('data-name') || '—';
-                                        createCard.classList.remove('d-none');
+                                        applySelectedFarmer({
+                                            id: this.getAttribute('data-id'),
+                                            name: this.getAttribute('data-name') || '',
+                                            farmer_id: this.getAttribute('data-farmer-id') || '',
+                                            reg_ids: JSON.parse(this.getAttribute('data-reg-ids') || '[]'),
+                                            profile_image_url: this.getAttribute('data-profile-image-url') || ''
+                                        });
                                     });
                                     div.appendChild(btn);
                                     resultsList.appendChild(div);
@@ -1365,9 +1902,7 @@
                     if (searchNationalId) searchNationalId.addEventListener('keydown', function(e) { if (e.key === 'Enter') { e.preventDefault(); searchFarmers(); } });
                     if (btnClear) {
                         btnClear.addEventListener('click', function() {
-                            formFarmerId.value = '';
-                            selectedFarmerName.textContent = '—';
-                            createCard.classList.add('d-none');
+                            applySelectedFarmer(null);
                             stopCameraStream();
                             if (cameraDataInput) cameraDataInput.value = '';
                             if (cameraTakenAtInput) cameraTakenAtInput.value = '';
@@ -1381,6 +1916,7 @@
                                 cameraInfo.textContent = '';
                                 cameraInfo.classList.add('d-none');
                             }
+                            resetFaceMatch();
                             showCameraButtons(false, false);
                         });
                     }
@@ -1424,7 +1960,7 @@
                                 setCameraError('Camera is not supported on this device/browser.');
                                 return;
                             }
-                            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+                            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } })
                                 .then(function(stream) {
                                     cameraStream = stream;
                                     if (cameraVideo) {
@@ -1503,6 +2039,7 @@
                             stopCameraStream();
                             if (cameraVideo) cameraVideo.classList.add('d-none');
                             showCameraButtons(false, true);
+                            runFaceMatch();
                         });
                     }
 
@@ -1520,6 +2057,11 @@
                                 cameraInfo.classList.add('d-none');
                             }
                             setCameraError('');
+                            resetFaceMatch(
+                                selectedFarmer && selectedFarmer.profile_image_url
+                                    ? 'Retake the photo to compare it with the selected farmer profile image.'
+                                    : 'Selected farmer has no profile image. The request can still be submitted, but it will remain pending.'
+                            );
                             showCameraButtons(false, false);
                         });
                     }
@@ -1527,6 +2069,12 @@
                         consentForm.addEventListener('submit', function(e) {
                             var hasError = false;
                             var firstErrorMessage = '';
+                            var shouldAttemptFaceMatch = !!(
+                                selectedFarmer &&
+                                selectedFarmer.profile_image_url &&
+                                cameraDataInput &&
+                                cameraDataInput.value
+                            );
                             setPurposeError('');
                             setDataFieldsError('');
                             setAttachmentError('');
@@ -1568,6 +2116,12 @@
                                 }
                             }
 
+                            if (faceMatchState.running) {
+                                setCameraError('Face match is still running. Please wait a moment.');
+                                hasError = true;
+                                if (!firstErrorMessage) firstErrorMessage = 'Face match is still running. Please wait a moment.';
+                            }
+
                             if (hasError) {
                                 console.warn('Consent portal submit blocked on client validation.', {
                                     hasPurpose: !!(purposeInput && (purposeInput.value || '').trim()),
@@ -1577,6 +2131,19 @@
                                 });
                                 showServiceProviderModal(firstErrorMessage || 'Please fix form validation errors.', true);
                                 e.preventDefault();
+                            } else if (shouldAttemptFaceMatch && !faceMatchSubmitPending && faceMatchStatusInput && faceMatchStatusInput.value === 'not_attempted') {
+                                e.preventDefault();
+                                faceMatchSubmitPending = true;
+                                setCameraError('');
+                                setFaceMatchProcessing('Comparing faces before submit...');
+                                runFaceMatch().finally(function() {
+                                    faceMatchSubmitPending = false;
+                                    if (typeof consentForm.requestSubmit === 'function') {
+                                        consentForm.requestSubmit();
+                                    } else {
+                                        consentForm.submit();
+                                    }
+                                });
                             } else {
                                 console.info('Consent portal submit passed client validation. Submitting form.');
                             }
