@@ -16,6 +16,14 @@ FACE_MATCH_STATUS_SELECTION = [
     ("error", "Error"),
 ]
 
+FAYDA_OTP_STATUS_SELECTION = [
+    ("not_requested", "Not Requested"),
+    ("requested", "Requested"),
+    ("verified", "Verified"),
+    ("failed", "Failed"),
+    ("error", "Error"),
+]
+
 
 class G2PConsentRequest(models.Model):
     _name = "g2p.consent.request"
@@ -125,6 +133,24 @@ class G2PConsentRequest(models.Model):
     face_match_message = fields.Text(string="Face Match Message", readonly=True, copy=False)
     auto_approved_via_face_match = fields.Boolean(
         string="Auto Approved via Face Match",
+        readonly=True,
+        copy=False,
+    )
+    fayda_otp_status = fields.Selection(
+        FAYDA_OTP_STATUS_SELECTION,
+        string="Fayda OTP Status",
+        default="not_requested",
+        readonly=True,
+        copy=False,
+    )
+    fayda_otp_transaction_id = fields.Char(string="Fayda OTP Transaction ID", readonly=True, copy=False)
+    fayda_otp_identifier = fields.Char(string="Fayda OTP Identifier", readonly=True, copy=False)
+    fayda_otp_identifier_type = fields.Char(string="Fayda OTP Identifier Type", readonly=True, copy=False)
+    fayda_otp_masked_mobile = fields.Char(string="Fayda OTP Masked Mobile", readonly=True, copy=False)
+    fayda_otp_verified_at = fields.Datetime(string="Fayda OTP Verified At", readonly=True, copy=False)
+    fayda_otp_message = fields.Text(string="Fayda OTP Message", readonly=True, copy=False)
+    auto_approved_via_otp = fields.Boolean(
+        string="Auto Approved via Fayda OTP",
         readonly=True,
         copy=False,
     )
@@ -458,6 +484,8 @@ class G2PConsentRequest(models.Model):
                 "rejected_at": False,
                 "expired_at": False,
                 "rejection_reason": False,
+                "auto_approved_via_face_match": False,
+                "auto_approved_via_otp": False,
             }
         )
         self.mapped("receipt_ids").sudo().unlink()

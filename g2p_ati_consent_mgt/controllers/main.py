@@ -1,6 +1,10 @@
 import base64
 import logging
+import os
 from datetime import datetime, timedelta
+from uuid import uuid4
+
+import requests
 
 from odoo import fields, http
 from odoo.http import request
@@ -13,6 +17,18 @@ class G2PATIConsentController(http.Controller):
     _MAX_ATTACHMENT_SIZE = 10 * 1024 * 1024  # 10MB
     _REQUESTS_PAGE_SIZE = 12
     _TABLE_FETCH_SIZE = 10
+    _FAYDA_OTP_SESSION_KEY = "g2p_consent_fayda_otp"
+    _FAYDA_OTP_LOCAL_DEFAULTS = {
+        "base_url": "http://127.0.0.1:8787",
+        "client_id": "demo-client",
+        "client_secret": "demo-secret",
+        "env": "prod",
+        "domain_uri": "fayda.et",
+        "channel": "phone",
+        "identifier_type": "FIN",
+        "mock_host": "127.0.0.1",
+        "mock_port": "8787",
+    }
 
     def _error(self, message, code=400):
         return {"success": False, "code": code, "message": message}
@@ -46,6 +62,199 @@ class G2PATIConsentController(http.Controller):
         if not farmer or not farmer.image_1920:
             return ""
         return "/consent/farmer/%s/profile_image" % farmer.id
+
+    
+    
+    def _get_fayda_otp_config(self):
+        mock_host = (os.getenv("MOCK_FAYDA_HOST") or self._FAYDA_OTP_LOCAL_DEFAULTS["mock_host"]).strip()
+        mock_port = (os.getenv("MOCK_FAYDA_PORT") or self._FAYDA_OTP_LOCAL_DEFAULTS["mock_port"]).strip()
+        mock_base_url = "http://%s:%s" % (mock_host or self._FAYDA_OTP_LOCAL_DEFAULTS["mock_host"], mock_port or self._FAYDA_OTP_LOCAL_DEFAULTS["mock_port"])
+
+        client_id = (
+            os.getenv("G2P_FAYDA_OTP_CLIENT_ID")
+            or os.getenv("MOCK_FAYDA_CLIENT_ID")
+            or self._FAYDA_OTP_LOCAL_DEFAULTS["client_id"]
+        ).strip()
+        client_secret = (
+            os.getenv("G2P_FAYDA_OTP_CLIENT_SECRET")
+            or os.getenv("MOCK_FAYDA_CLIENT_SECRET")
+            or self._FAYDA_OTP_LOCAL_DEFAULTS["client_secret"]
+        ).strip()
+
+        try:
+            timeout = float((os.getenv("G2P_FAYDA_OTP_TIMEOUT") or "20").strip())
+        except (TypeError, ValueError):
+            timeout = 20.0
+
+        return {
+            "base_url": (os.getenv("G2P_FAYDA_OTP_BASE_URL") or mock_base_url).strip().rstrip("/"),
+            "client_id": client_id,
+            "client_secret": client_secret,
+            "version": (os.getenv("G2P_FAYDA_OTP_VERSION") or "1.0").strip() or "1.0",
+            "env": (os.getenv("G2P_FAYDA_OTP_ENV") or os.getenv("MOCK_FAYDA_ENV") or self._FAYDA_OTP_LOCAL_DEFAULTS["env"]).strip() or self._FAYDA_OTP_LOCAL_DEFAULTS["env"],
+            "domain_uri": (os.getenv("G2P_FAYDA_OTP_DOMAIN_URI") or os.getenv("MOCK_FAYDA_DOMAIN_URI") or self._FAYDA_OTP_LOCAL_DEFAULTS["domain_uri"]).strip() or self._FAYDA_OTP_LOCAL_DEFAULTS["domain_uri"],
+            "channel": (os.getenv("G2P_FAYDA_OTP_CHANNEL") or self._FAYDA_OTP_LOCAL_DEFAULTS["channel"]).strip() or self._FAYDA_OTP_LOCAL_DEFAULTS["channel"],
+            "identifier_type": (os.getenv("G2P_FAYDA_OTP_ID_TYPE") or self._FAYDA_OTP_LOCAL_DEFAULTS["identifier_type"]).strip().upper() or self._FAYDA_OTP_LOCAL_DEFAULTS["identifier_type"],
+            "preferred_reg_id_type": self._get_fayda_otp_reg_id_type_name(),
+            "thumbprint": (os.getenv("G2P_FAYDA_OTP_THUMBPRINT") or "").strip(),
+            "request_session_key": (os.getenv("G2P_FAYDA_OTP_REQUEST_SESSION_KEY") or "").strip(),
+            "request_hmac": (os.getenv("G2P_FAYDA_OTP_REQUEST_HMAC") or "").strip(),
+            "timeout": max(timeout, 1.0),
+        }
+
+    def _get_fayda_otp_reg_id_type_name(self):
+        explicit_reg_id_type = (os.getenv("G2P_FAYDA_OTP_REG_ID_TYPE") or "").strip()
+        if explicit_reg_id_type:
+            return explicit_reg_id_type
+
+        identifier_type = (
+            os.getenv("G2P_FAYDA_OTP_ID_TYPE")
+            or self._FAYDA_OTP_LOCAL_DEFAULTS["identifier_type"]
+        ).strip().upper() or self._FAYDA_OTP_LOCAL_DEFAULTS["identifier_type"]
+        identifier_map = {
+            "FIN": "UID",
+            "RID": "RID",
+        }
+        return identifier_map.get(identifier_type, identifier_type)
+
+    def _get_fayda_otp_session_store(self):
+        store = request.session.get(self._FAYDA_OTP_SESSION_KEY)
+        if not isinstance(store, dict):
+            store = {}
+            request.session[self._FAYDA_OTP_SESSION_KEY] = store
+        return store
+
+    def _mark_session_modified(self):
+        if not getattr(request, "session", None):
+            return
+        if hasattr(request.session, "is_dirty"):
+            request.session.is_dirty = True
+        elif hasattr(request.session, "modified"):
+            request.session.modified = True
+
+    def _now_iso_millis(self):
+        return datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3]
+
+
+    def _make_fayda_transaction_id(self):
+        return uuid4().hex.upper()
+
+    def _normalize_fayda_error_message(self, errors, fallback_message):
+        if not errors:
+            return fallback_message
+        if isinstance(errors, str):
+            return errors.strip() or fallback_message
+        if isinstance(errors, dict):
+            parts = []
+            for key, value in errors.items():
+                if value in (None, "", []):
+                    continue
+                parts.append("%s: %s" % (key, value))
+            return "; ".join(parts) or fallback_message
+        if isinstance(errors, (list, tuple)):
+            parts = [str(item).strip() for item in errors if str(item).strip()]
+            return "; ".join(parts) or fallback_message
+        return str(errors).strip() or fallback_message
+
+    def _call_fayda_otp_api(self, endpoint, payload):
+        config = self._get_fayda_otp_config()
+        url = "%s%s" % (config["base_url"], endpoint)
+        try:
+            response = requests.post(
+                url,
+                json=payload,
+                headers={"Content-Type": "application/json", "Accept": "application/json"},
+                timeout=config["timeout"],
+            )
+        except requests.RequestException as exc:
+            raise ValueError("Fayda OTP API request failed: %s" % exc) from exc
+
+        try:
+            response_payload = response.json()
+        except ValueError as exc:
+            raise ValueError("Fayda OTP API returned a non-JSON response.") from exc
+
+        if not response.ok:
+            message = self._normalize_fayda_error_message(
+                response_payload.get("errors") if isinstance(response_payload, dict) else None,
+                "Fayda OTP API returned HTTP %s." % response.status_code,
+            )
+            raise ValueError(message)
+
+        if not isinstance(response_payload, dict):
+            raise ValueError("Fayda OTP API returned an unexpected response format.")
+
+        return response_payload
+
+    def _get_farmer_fayda_identifier(self, farmer):
+        identifier = ""
+        source = ""
+        preferred_reg_id_type = (self._get_fayda_otp_reg_id_type_name() or "").strip().lower()
+
+        if farmer and preferred_reg_id_type:
+            for reg_id in farmer.reg_ids:
+                reg_name = (reg_id.id_type.name or "").strip().lower()
+                reg_value = (reg_id.value or "").strip()
+                if reg_name == preferred_reg_id_type and reg_value:
+                    identifier = reg_value
+                    source = reg_id.id_type.name or "reg_id"
+                    break
+
+        return {
+            "identifier": identifier,
+            "identifier_type": (os.getenv("G2P_FAYDA_OTP_ID_TYPE") or self._FAYDA_OTP_LOCAL_DEFAULTS["identifier_type"]).strip().upper() or self._FAYDA_OTP_LOCAL_DEFAULTS["identifier_type"],
+            "identifier_source": source,
+            "available": bool(identifier),
+        }
+
+    def _extract_fayda_otp_values(self, post, farmer, partner):
+        transaction_id = (post.get("fayda_otp_transaction_id") or "").strip()
+        if not transaction_id:
+            return {"fayda_otp_status": "not_requested"}, False, None
+
+        store = self._get_fayda_otp_session_store()
+        session_entry = store.get(transaction_id)
+        if not isinstance(session_entry, dict):
+            return (
+                {
+                    "fayda_otp_status": "error",
+                    "fayda_otp_transaction_id": transaction_id,
+                    "fayda_otp_message": "Fayda OTP verification session was not found.",
+                },
+                False,
+                transaction_id,
+            )
+
+        if session_entry.get("partner_id") != partner.id or session_entry.get("farmer_id") != farmer.id:
+            return (
+                {
+                    "fayda_otp_status": "error",
+                    "fayda_otp_transaction_id": transaction_id,
+                    "fayda_otp_message": "Fayda OTP verification does not match the selected farmer.",
+                },
+                False,
+                transaction_id,
+            )
+
+        status = (session_entry.get("status") or "requested").strip().lower()
+        if status not in {"requested", "verified", "failed", "error"}:
+            status = "error"
+
+        values = {
+            "fayda_otp_status": status,
+            "fayda_otp_transaction_id": transaction_id,
+            "fayda_otp_identifier": session_entry.get("identifier") or False,
+            "fayda_otp_identifier_type": session_entry.get("identifier_type") or False,
+            "fayda_otp_masked_mobile": session_entry.get("masked_mobile") or False,
+            "fayda_otp_message": (session_entry.get("message") or "")[:1024] or False,
+        }
+        verified_at = session_entry.get("verified_at")
+        if verified_at:
+            values["fayda_otp_verified_at"] = verified_at
+
+        return values, status == "verified", transaction_id
+
+
 
     def _extract_face_match_values(self, post, farmer, has_camera_capture):
         allowed_statuses = {
@@ -369,19 +578,216 @@ class G2PATIConsentController(http.Controller):
             return self._success(data={"farmers": []})
 
         farmers = partner_obj.search(base_domain + [("id", "in", list(partner_ids))], limit=10)
+        def _serialize_farmer(partner):
+            otp_identity = self._get_farmer_fayda_identifier(partner)
+            return {
+                "id": partner.id,
+                "name": partner.name,
+                "farmer_id": partner.farmer_id or "",
+                "reg_ids": [r.value for r in (partner.reg_ids or [])],
+                "profile_image_url": self._build_farmer_profile_image_url(partner),
+                "otp_identifier": otp_identity.get("identifier") or "",
+                "otp_identifier_type": otp_identity.get("identifier_type") or "",
+                "otp_identifier_source": otp_identity.get("identifier_source") or "",
+                "otp_available": otp_identity.get("available") or False,
+            }
         return self._success(
             data={
-                "farmers": [
-                    {
-                        "id": p.id,
-                        "name": p.name,
-                        "farmer_id": p.farmer_id or "",
-                        "reg_ids": [r.value for r in (p.reg_ids or [])],
-                        "profile_image_url": self._build_farmer_profile_image_url(p),
-                    }
-                    for p in farmers
-                ]
+                "farmers": [_serialize_farmer(p) for p in farmers]
             }
+        )
+
+    @http.route("/consent/fayda/request_otp", type="json", auth="user")
+    def consent_fayda_request_otp(self, farmer_id=None, **kw):
+        partner = self._get_consent_partner()
+        if not partner:
+            return self._error("Access denied", code=403)
+
+        try:
+            farmer_id = int(farmer_id or 0)
+        except (TypeError, ValueError):
+            farmer_id = 0
+        if not farmer_id:
+            return self._error("Select a farmer before requesting OTP.")
+
+        farmer = (
+            request.env["res.partner"]
+            .sudo()
+            .search(self._approved_farmer_domain() + [("id", "=", farmer_id)], limit=1)
+        )
+        if not farmer:
+            return self._error("Approved farmer not found.")
+
+        identifier_info = self._get_farmer_fayda_identifier(farmer)
+        if not identifier_info["available"]:
+            return self._error("Selected farmer has no Fayda OTP identifier configured.")
+
+        try:
+            config = self._get_fayda_otp_config()
+            transaction_id = self._make_fayda_transaction_id()
+            payload = {
+                "id": config["client_id"],
+                "clientSecret": config["client_secret"],
+                "version": config["version"],
+                "requestTime": self._now_iso_millis(),
+                "env": config["env"],
+                "domainUri": config["domain_uri"],
+                "transactionID": transaction_id,
+                "individualId": identifier_info["identifier"],
+                "individualIdType": identifier_info["identifier_type"],
+                "otpChannel": [config["channel"]],
+            }
+            response_payload = self._call_fayda_otp_api("/requestData", payload)
+        except ValueError as exc:
+            return self._error(str(exc), code=500)
+
+        errors = response_payload.get("errors")
+        if errors:
+            return self._error(
+                self._normalize_fayda_error_message(errors, "Fayda OTP request failed."),
+                code=400,
+            )
+
+        response_data = response_payload.get("response") or {}
+        returned_transaction_id = (response_payload.get("transactionID") or transaction_id or "").strip()
+        if not returned_transaction_id:
+            returned_transaction_id = transaction_id
+
+        masked_mobile = (response_data.get("maskedMobile") or "").strip()
+        masked_email = (response_data.get("maskedEmail") or "").strip()
+        session_store = self._get_fayda_otp_session_store()
+        session_store[returned_transaction_id] = {
+            "status": "requested",
+            "partner_id": partner.id,
+            "farmer_id": farmer.id,
+            "identifier": identifier_info["identifier"],
+            "identifier_type": identifier_info["identifier_type"],
+            "identifier_source": identifier_info["identifier_source"],
+            "masked_mobile": masked_mobile,
+            "masked_email": masked_email,
+            "message": "OTP requested successfully.",
+            "requested_at": fields.Datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        }
+        self._mark_session_modified()
+
+        message = "OTP sent successfully."
+        if masked_mobile:
+            message = "OTP sent to %s." % masked_mobile
+
+        return self._success(
+            data={
+                "transaction_id": returned_transaction_id,
+                "masked_mobile": masked_mobile,
+                "masked_email": masked_email,
+                "identifier_type": identifier_info["identifier_type"],
+                "identifier_source": identifier_info["identifier_source"],
+            },
+            message=message,
+        )
+
+    @http.route("/consent/fayda/verify_otp", type="json", auth="user")
+    def consent_fayda_verify_otp(self, farmer_id=None, transaction_id=None, otp_code=None, otp=None, **kw):
+        partner = self._get_consent_partner()
+        if not partner:
+            return self._error("Access denied", code=403)
+
+        try:
+            farmer_id = int(farmer_id or 0)
+        except (TypeError, ValueError):
+            farmer_id = 0
+        if not farmer_id:
+            return self._error("Select a farmer before verifying OTP.")
+
+        farmer = (
+            request.env["res.partner"]
+            .sudo()
+            .search(self._approved_farmer_domain() + [("id", "=", farmer_id)], limit=1)
+        )
+        if not farmer:
+            return self._error("Approved farmer not found.")
+
+        transaction_id = (transaction_id or "").strip()
+        otp_code = (otp_code or otp or "").strip()
+        if not transaction_id:
+            return self._error("Request OTP first.")
+        if not otp_code:
+            return self._error("Enter the OTP code.")
+
+        session_store = self._get_fayda_otp_session_store()
+        session_entry = session_store.get(transaction_id)
+        if not isinstance(session_entry, dict):
+            return self._error("OTP session expired or was not found.")
+        if session_entry.get("partner_id") != partner.id or session_entry.get("farmer_id") != farmer.id:
+            return self._error("OTP session does not match the selected farmer.", code=403)
+        if session_entry.get("status") == "verified":
+            return self._success(
+                data={
+                    "transaction_id": transaction_id,
+                    "masked_mobile": session_entry.get("masked_mobile") or "",
+                    "verified_at": session_entry.get("verified_at") or "",
+                },
+                message="OTP already verified.",
+            )
+
+        try:
+            config = self._get_fayda_otp_config()
+            verify_time = self._now_iso_millis()
+            payload = {
+                "id": config["client_id"],
+                "clientSecret": config["client_secret"],
+                "version": config["version"],
+                "requestTime": verify_time,
+                "env": config["env"],
+                "domainUri": config["domain_uri"],
+                "transactionID": transaction_id,
+                "requestedAuth": {
+                    "otp": True,
+                    "demo": False,
+                    "bio": False,
+                },
+                "consentObtained": True,
+                "individualId": session_entry.get("identifier") or "",
+                "individualIdType": session_entry.get("identifier_type") or config["identifier_type"],
+                "thumbprint": config["thumbprint"],
+                "requestSessionKey": config["request_session_key"],
+                "requestHMAC": config["request_hmac"],
+                "request": {
+                    "timestamp": verify_time,
+                    "otp": otp_code,
+                },
+            }
+            response_payload = self._call_fayda_otp_api("/getDataAuth", payload)
+        except ValueError as exc:
+            session_entry["status"] = "error"
+            session_entry["message"] = str(exc)[:1024]
+            self._mark_session_modified()
+            return self._error(str(exc), code=500)
+
+        errors = response_payload.get("errors")
+        response_data = response_payload.get("response") or {}
+        auth_status = bool(response_data.get("authStatus"))
+        if errors or not auth_status:
+            message = self._normalize_fayda_error_message(
+                errors,
+                "OTP verification failed.",
+            )
+            session_entry["status"] = "failed"
+            session_entry["message"] = message[:1024]
+            self._mark_session_modified()
+            return self._error(message, code=400)
+
+        verified_at = fields.Datetime.to_string(fields.Datetime.now())
+        session_entry["status"] = "verified"
+        session_entry["message"] = "OTP verified successfully."
+        session_entry["verified_at"] = verified_at
+        self._mark_session_modified()
+        return self._success(
+            data={
+                "transaction_id": transaction_id,
+                "masked_mobile": session_entry.get("masked_mobile") or "",
+                "verified_at": verified_at,
+            },
+            message="OTP verified successfully.",
         )
 
     @http.route("/consent/request/submit", type="http", auth="user", methods=["POST"], csrf=True)
@@ -482,6 +888,8 @@ class G2PATIConsentController(http.Controller):
             
             attachment_ids = []
             auto_approve_requested = False
+            auto_approve_method = ""
+            otp_transaction_id = None
             try:
                 files = request.httprequest.files or {}
                 upload = files.get("attachment")
@@ -525,12 +933,25 @@ class G2PATIConsentController(http.Controller):
                             return _reject("invalid_camera_timestamp")
                         vals["portal_capture_taken_at"] = fields.Datetime.to_string(capture_dt)
 
-                face_match_vals, auto_approve_requested = self._extract_face_match_values(
+                face_match_vals, face_match_auto_approve = self._extract_face_match_values(
                     post,
                     farmer,
                     has_camera_capture=bool(camera_data_b64),
                 )
                 vals.update(face_match_vals)
+
+                fayda_otp_vals, otp_auto_approve, otp_transaction_id = self._extract_fayda_otp_values(
+                    post,
+                    farmer,
+                    partner,
+                )
+                vals.update(fayda_otp_vals)
+                if otp_auto_approve:
+                    auto_approve_requested = True
+                    auto_approve_method = "otp"
+                elif face_match_auto_approve:
+                    auto_approve_requested = True
+                    auto_approve_method = "face_match"
 
                 lat_raw = (post.get("camera_capture_latitude") or "").strip()
                 lon_raw = (post.get("camera_capture_longitude") or "").strip()
@@ -570,34 +991,54 @@ class G2PATIConsentController(http.Controller):
             if auto_approve_requested:
                 try:
                     consent.action_approve()
-                    consent.sudo().write({"auto_approved_via_face_match": True})
+                    approval_flag_field = (
+                        "auto_approved_via_otp"
+                        if auto_approve_method == "otp"
+                        else "auto_approved_via_face_match"
+                    )
+                    consent.sudo().write({approval_flag_field: True})
                     auto_approved = consent.status == "approved"
                 except Exception as approval_error:
                     auto_approval_failed = True
                     _logger.exception(
-                        "Consent portal face-match auto approval failed for consent id=%s",
+                        "Consent portal automatic approval failed for consent id=%s method=%s",
                         consent.id,
+                        auto_approve_method,
                     )
-                    failure_note = "Face match passed, but automatic approval failed: %s" % approval_error
-                    existing_message = (consent.face_match_message or "").strip()
+                    if auto_approve_method == "otp":
+                        failure_note = "Fayda OTP passed, but automatic approval failed: %s" % approval_error
+                        message_field = "fayda_otp_message"
+                    else:
+                        failure_note = "Face match passed, but automatic approval failed: %s" % approval_error
+                        message_field = "face_match_message"
+                    existing_message = (getattr(consent, message_field) or "").strip()
                     combined_message = failure_note if not existing_message else "%s\n%s" % (existing_message, failure_note)
-                    consent.sudo().write({"face_match_message": combined_message[:1024]})
+                    consent.sudo().write({message_field: combined_message[:1024]})
+
+            if otp_transaction_id:
+                session_store = self._get_fayda_otp_session_store()
+                if session_store.pop(otp_transaction_id, None) is not None:
+                    self._mark_session_modified()
             
             _logger.info(
-                "Consent request created via portal: id=%s farmer_id=%s partner_id=%s user_id=%s allowed_field_count=%s face_match_status=%s auto_approved=%s",
+                "Consent request created via portal: id=%s farmer_id=%s partner_id=%s user_id=%s allowed_field_count=%s face_match_status=%s fayda_otp_status=%s auto_approved=%s auto_approve_method=%s",
                 consent.id,
                 consent.farmer_id.id,
                 consent.partner_record_id.id,
                 user_id,
                 len(allowed_ids),
                 consent.face_match_status,
+                consent.fayda_otp_status,
                 auto_approved,
+                auto_approve_method or "none",
             )
             redirect_url = "/consent/management?success=1"
             if auto_approved:
-                redirect_url += "&auto_approved=1"
+                redirect_url += "&auto_approved=1&auto_approved_method=%s" % (auto_approve_method or "manual")
             elif auto_approval_failed:
-                redirect_url += "&auto_approval_failed=1"
+                redirect_url += "&auto_approval_failed=1&auto_approval_failed_method=%s" % (
+                    auto_approve_method or "manual"
+                )
             return request.redirect(redirect_url)
         except Exception as e:
             _logger.error("Error creating consent request: %s", e, exc_info=True)
