@@ -842,7 +842,7 @@
                     }
                     .o_consent_portal .consent_verification_choice {
                     width: 100%;
-                    min-height: 110px;
+                    min-height: 150px;
                     border: none;
                     background: transparent;
                     padding: 0.85rem 0.75rem 0.8rem;
@@ -875,24 +875,33 @@
                     font-size: 0.82rem;
                     font-weight: 600;
                     color: #21312c;
-                    margin-bottom: 0;
+                    margin-bottom: 0.25rem;
                     }
                     .o_consent_portal .consent_verification_choice_text {
-                    display: block;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    min-height: 2rem;
+                    padding: 0.38rem 0.8rem;
+                    border-radius: 999px;
                     font-size: 0.74rem;
-                    font-weight: 600;
-                    color: #6c7b77;
+                    font-weight: 700;
+                    color: #62716c;
+                    background: #eef3ef;
                     margin-top: 0.15rem;
-                    line-height: 1.35;
+                    line-height: 1.2;
                     }
                     .o_consent_portal .consent_verification_choice_text.is-success {
-                    color: var(--consent-success);
+                    color: #118a52;
+                    background: rgba(17, 138, 82, 0.14);
                     }
                     .o_consent_portal .consent_verification_choice_text.is-error {
-                    color: var(--consent-danger);
+                    color: #c45555;
+                    background: rgba(196, 85, 85, 0.14);
                     }
                     .o_consent_portal .consent_verification_choice_text.is-processing {
                     color: var(--consent-primary);
+                    background: rgba(20, 167, 84, 0.12);
                     }
                     .o_consent_portal .consent_verification_separator {
                     font-size: 1.05rem;
@@ -1397,11 +1406,11 @@
                                             id="btn_select_verification_otp">
                                             <span class="consent_verification_choice_copy">
                                                 <span class="consent_verification_choice_title">Fayda OTP</span>
-                                                <!-- <span class="consent_verification_choice_text" id="otp_verification_choice_hint">Send a code to verify this farmer.</span> -->
                                             </span>
                                             <span class="consent_verification_icon is-otp" aria-hidden="true">
                                                 <i class="fa fa-mobile" aria-hidden="true"></i>
                                             </span>
+                                            <span class="consent_verification_choice_text" id="otp_verification_choice_hint">Not Attempted</span>
                                         </button>
                                         <div class="consent_verification_separator" aria-hidden="true">OR</div>
                                         <button type="button" class="consent_verification_choice"
@@ -1412,6 +1421,7 @@
                                             <span class="consent_verification_icon is-face" aria-hidden="true">
                                                 <i class="fa fa-camera" aria-hidden="true"></i>
                                             </span>
+                                            <span class="consent_verification_choice_text" id="face_verification_choice_hint">Not Attempted</span>
                                         </button>
                                     </div>
                                 </div>
@@ -2042,6 +2052,7 @@
                     var faydaOtpStatusText = document.getElementById('fayda_otp_status_text');
                     var faydaOtpMetaText = document.getElementById('fayda_otp_meta_text');
                     var otpVerificationChoiceHint = document.getElementById('otp_verification_choice_hint');
+                    var faceVerificationChoiceHint = document.getElementById('face_verification_choice_hint');
                     var faydaOtpCodeInput = document.getElementById('fayda_otp_code');
                     var btnRequestFaydaOtp = document.getElementById('btn_request_fayda_otp');
                     var btnResendFaydaOtp = document.getElementById('btn_resend_fayda_otp');
@@ -2202,7 +2213,40 @@
                             faceMatchStatusText.className = 'consent_face_match_status is-processing';
                             faceMatchStatusText.textContent = message || 'Comparing faces...';
                         }
+                        setFaceVerificationChoiceHint('processing', message || 'Comparing faces now...');
                         updateFaceMatchPercentText(null, faceMatchThresholdDefault);
+                    }
+
+                    function setFaceVerificationChoiceHint(status, message) {
+                        if (!faceVerificationChoiceHint) return;
+                        var normalizedStatus = String(status || 'not_attempted').toLowerCase().replace(/[^a-z_]/g, '');
+                        var hintMessage = message || 'Not Attempted';
+                        var extraClass = '';
+
+                        if (normalizedStatus === 'processing') {
+                            hintMessage = 'Checking...';
+                            extraClass = 'is-processing';
+                        } else if (normalizedStatus === 'matched') {
+                            hintMessage = 'Verified';
+                            extraClass = 'is-success';
+                        } else if (normalizedStatus === 'not_matched') {
+                            hintMessage = 'Not Matched';
+                            extraClass = 'is-error';
+                        } else if (normalizedStatus === 'no_reference') {
+                            hintMessage = 'No Image';
+                            extraClass = 'is-error';
+                        } else if (normalizedStatus === 'no_face_detected') {
+                            hintMessage = 'No Face';
+                            extraClass = 'is-error';
+                        } else if (normalizedStatus === 'error') {
+                            hintMessage = 'Try Again';
+                            extraClass = 'is-error';
+                        } else {
+                            hintMessage = 'Not Attempted';
+                        }
+
+                        faceVerificationChoiceHint.className = 'consent_verification_choice_text' + (extraClass ? ' ' + extraClass : '');
+                        faceVerificationChoiceHint.textContent = hintMessage;
                     }
 
                     function setFaceMatchResult(status, message, options) {
@@ -2225,6 +2269,7 @@
                             faceMatchStatusText.className = 'consent_face_match_status is-' + normalizedStatus.replace(/_/g, '-');
                             faceMatchStatusText.textContent = message || '';
                         }
+                        setFaceVerificationChoiceHint(normalizedStatus, message || 'Not Attempted');
                         updateFaceMatchPercentText(distance, threshold);
                     }
 
@@ -2234,6 +2279,7 @@
                             faceMatchStatusText.className = 'consent_face_match_status is-not-attempted';
                             faceMatchStatusText.textContent = message || 'Capture a photo to compare it with the selected farmer profile image.';
                         }
+                        setFaceVerificationChoiceHint('not_attempted', 'Not Attempted');
                     }
 
                     function getFaydaOtpUnavailableReason(farmer) {
@@ -2249,29 +2295,27 @@
                     function setOtpVerificationChoiceHint(status, options) {
                         if (!otpVerificationChoiceHint) return;
                         var normalizedStatus = String(status || 'not_requested').toLowerCase().replace(/[^a-z_]/g, '');
-                        var opts = options || {};
-                        var maskedMobile = opts.maskedMobile || '';
-                        var message = 'Send a code to verify this farmer.';
+                        var message = 'Not Attempted';
                         var extraClass = '';
 
                         if (!selectedFarmer) {
-                            message = 'Select a farmer first.';
+                            message = 'Not Attempted';
                         } else if (!selectedFarmer.otp_available) {
-                            message = 'Needs a Fayda ID before OTP can be used.';
+                            message = 'Unavailable';
                             extraClass = 'is-error';
                         } else if (normalizedStatus === 'processing') {
-                            message = 'Working on your OTP request...';
+                            message = 'Checking...';
                             extraClass = 'is-processing';
                         } else if (normalizedStatus === 'requested') {
-                            message = maskedMobile
-                                ? 'Code sent to ' + maskedMobile + '.'
-                                : 'Code sent. Enter it to continue.';
+                            message = 'Code Sent';
                         } else if (normalizedStatus === 'verified') {
-                            message = 'Verified successfully. You can send another code anytime.';
+                            message = 'Verified';
                             extraClass = 'is-success';
                         } else if (normalizedStatus === 'failed' || normalizedStatus === 'error') {
-                            message = 'Verification did not go through. You can try again.';
+                            message = 'Try Again';
                             extraClass = 'is-error';
+                        } else {
+                            message = 'Not Attempted';
                         }
 
                         otpVerificationChoiceHint.className = 'consent_verification_choice_text' + (extraClass ? ' ' + extraClass : '');
