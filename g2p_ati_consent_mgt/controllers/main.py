@@ -28,6 +28,7 @@ class G2PATIConsentController(http.Controller):
         "identifier_type": "FIN",
         "mock_host": "127.0.0.1",
         "mock_port": "8787",
+        "use_primary_phone": False,
     }
 
     def _error(self, message, code=400):
@@ -62,6 +63,22 @@ class G2PATIConsentController(http.Controller):
         if not farmer or not farmer.image_1920:
             return ""
         return "/consent/farmer/%s/profile_image" % farmer.id
+
+    def _env_flag_enabled(self, value, default=False):
+        if value in (None, ""):
+            return default
+        return str(value).strip().lower() in ("1", "true", "yes", "on")
+
+    def _get_farmer_primary_phone(self, farmer):
+        if not farmer:
+            return ""
+
+        for phone in farmer.phone_number_ids:
+            phone_no = (phone.phone_no or "").strip()
+            if phone.phone_type == "primary" and phone_no:
+                return phone_no
+
+        return (farmer.mobile or farmer.phone or "").strip()
 
     
     
@@ -99,6 +116,10 @@ class G2PATIConsentController(http.Controller):
             "thumbprint": (os.getenv("G2P_FAYDA_OTP_THUMBPRINT") or "").strip(),
             "request_session_key": (os.getenv("G2P_FAYDA_OTP_REQUEST_SESSION_KEY") or "").strip(),
             "request_hmac": (os.getenv("G2P_FAYDA_OTP_REQUEST_HMAC") or "").strip(),
+            "use_primary_phone": self._env_flag_enabled(
+                os.getenv("G2P_FAYDA_OTP_USE_PRIMARY"),
+                default=self._FAYDA_OTP_LOCAL_DEFAULTS["use_primary_phone"],
+            ),
             "timeout": max(timeout, 1.0),
         }
 
@@ -625,6 +646,7 @@ class G2PATIConsentController(http.Controller):
         try:
             config = self._get_fayda_otp_config()
             transaction_id = self._make_fayda_transaction_id()
+            preferred_phone = self._get_farmer_primary_phone(farmer) if config["use_primary_phone"] else ""
             payload = {
                 "id": config["client_id"],
                 "clientSecret": config["client_secret"],
@@ -637,6 +659,8 @@ class G2PATIConsentController(http.Controller):
                 "individualIdType": identifier_info["identifier_type"],
                 "otpChannel": [config["channel"]],
             }
+            if preferred_phone:
+                payload["preferredPhoneNumber"] = preferred_phone
             response_payload = self._call_fayda_otp_api("/requestData", payload)
         except ValueError as exc:
             return self._error(str(exc), code=500)
@@ -665,6 +689,7 @@ class G2PATIConsentController(http.Controller):
             "identifier_source": identifier_info["identifier_source"],
             "masked_mobile": masked_mobile,
             "masked_email": masked_email,
+            "preferred_phone": preferred_phone,
             "message": "OTP requested successfully.",
             "requested_at": fields.Datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         }

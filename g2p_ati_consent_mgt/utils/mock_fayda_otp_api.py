@@ -22,6 +22,9 @@ Optional env vars:
     MOCK_FAYDA_ENV=prod
     MOCK_FAYDA_DOMAIN_URI=fayda.et
     MOCK_FAYDA_MASKED_MOBILE=09xxxxxx55
+
+Optional request field:
+    preferredPhoneNumber=the farmer primary phone number to mask in the response
 """
 
 from __future__ import annotations
@@ -106,6 +109,16 @@ def require_fields(payload: dict[str, Any], names: list[str]) -> list[str]:
         if value in (None, "", []):
             missing.append(name)
     return missing
+
+
+def mask_phone_number(phone_number: str) -> str:
+    digits = "".join(ch for ch in str(phone_number or "") if ch.isdigit())
+    if len(digits) < 4:
+        return DEFAULT_MASKED_MOBILE
+    visible_prefix = digits[:2]
+    visible_suffix = digits[-2:]
+    hidden_length = max(len(digits) - 4, 2)
+    return "%s%s%s" % (visible_prefix, "x" * hidden_length, visible_suffix)
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -238,7 +251,10 @@ class Handler(BaseHTTPRequestHandler):
             return
 
         otp_code = "%06d" % random.randint(0, 999999)
-        masked_mobile = DEFAULT_MASKED_MOBILE
+        preferred_phone = str(payload.get("preferredPhoneNumber") or "").strip()
+        masked_mobile = (
+            mask_phone_number(preferred_phone) if preferred_phone else DEFAULT_MASKED_MOBILE
+        )
         STATE.put(
             transaction_id,
             {
@@ -247,6 +263,7 @@ class Handler(BaseHTTPRequestHandler):
                 "individualId": str(payload.get("individualId") or ""),
                 "individualIdType": str(payload.get("individualIdType") or ""),
                 "otpChannel": list(payload.get("otpChannel") or []),
+                "preferredPhoneNumber": preferred_phone,
                 "maskedMobile": masked_mobile,
                 "requestedAt": now_iso_millis(),
             },
@@ -257,6 +274,8 @@ class Handler(BaseHTTPRequestHandler):
         print("transactionID :", transaction_id)
         print("individualId  :", payload.get("individualId"))
         print("idType        :", payload.get("individualIdType"))
+        if preferred_phone:
+            print("phone         :", preferred_phone)
         print("otp           :", otp_code)
         print("===============================")
         print("")
