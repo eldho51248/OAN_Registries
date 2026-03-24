@@ -843,9 +843,8 @@
                     .o_consent_portal .consent_verification_choice {
                     width: 100%;
                     min-height: 110px;
-                    border: 1px solid #e1e7e3;
-                    border-radius: 14px;
-                    background: #fff;
+                    border: none;
+                    background: transparent;
                     padding: 0.85rem 0.75rem 0.8rem;
                     display: flex;
                     flex-direction: column;
@@ -853,22 +852,23 @@
                     justify-content: center;
                     gap: 0.6rem;
                     text-align: center;
-                    transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+                    transition: transform .2s ease, opacity .2s ease;
                     }
                     .o_consent_portal .consent_verification_choice:hover,
                     .o_consent_portal .consent_verification_choice:focus-visible {
-                    border-color: #cbd8d1;
-                    box-shadow: 0 8px 18px rgba(0,0,0,.05);
-                    transform: translateY(-1px);
+                    transform: translateY(-2px);
                     outline: none;
+                    opacity: 1;
                     }
                     .o_consent_portal .consent_verification_choice_copy {
                     display: block;
                     min-width: 0;
                     }
                     .o_consent_portal .consent_verification_choice.is-selected {
-                    border-color: var(--consent-primary);
-                    box-shadow: 0 0 0 3px rgba(0, 145, 71, 0.12);
+                    opacity: 1;
+                    }
+                    .o_consent_portal .consent_verification_choice:not(.is-selected) {
+                    opacity: 0.7;
                     }
                     .o_consent_portal .consent_verification_choice_title {
                     display: block;
@@ -878,7 +878,21 @@
                     margin-bottom: 0;
                     }
                     .o_consent_portal .consent_verification_choice_text {
-                    display: none;
+                    display: block;
+                    font-size: 0.74rem;
+                    font-weight: 600;
+                    color: #6c7b77;
+                    margin-top: 0.15rem;
+                    line-height: 1.35;
+                    }
+                    .o_consent_portal .consent_verification_choice_text.is-success {
+                    color: var(--consent-success);
+                    }
+                    .o_consent_portal .consent_verification_choice_text.is-error {
+                    color: var(--consent-danger);
+                    }
+                    .o_consent_portal .consent_verification_choice_text.is-processing {
+                    color: var(--consent-primary);
                     }
                     .o_consent_portal .consent_verification_separator {
                     font-size: 1.05rem;
@@ -906,13 +920,13 @@
                     margin-bottom: 0;
                     }
                     .o_consent_portal .consent_verification_icon {
-                    width: 52px;
-                    height: 52px;
+                    width: 68px;
+                    height: 68px;
                     border-radius: 50%;
                     display: inline-flex;
                     align-items: center;
                     justify-content: center;
-                    font-size: 1.25rem;
+                    font-size: 1.85rem;
                     flex-shrink: 0;
                     box-shadow: 0 6px 14px rgba(0,0,0,.08);
                     }
@@ -927,16 +941,34 @@
                     color: #b95f00;
                     }
                     .o_consent_portal .consent_verification_back {
+                    width: 32px;
+                    height: 32px;
                     border: 0;
                     padding: 0;
                     background: transparent;
                     color: var(--consent-primary);
-                    font-size: 0.86rem;
-                    font-weight: 600;
-                    text-decoration: underline;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.2rem;
+                    font-weight: 700;
+                    line-height: 1;
+                    text-decoration: none;
+                    box-shadow: none;
+                    opacity: 1;
+                    transition: color .2s ease, transform .2s ease;
                     }
-                    .o_consent_portal .consent_verification_back:hover {
+                    .o_consent_portal .consent_verification_back:hover,
+                    .o_consent_portal .consent_verification_back:focus {
                     color: var(--consent-primary-hover);
+                    background: transparent;
+                    text-decoration: none;
+                    box-shadow: none;
+                    transform: scale(1.05);
+                    }
+                    .o_consent_portal .consent_verification_back i {
+                    position: static;
+                    transform: none;
                     }
                     .o_consent_portal .consent_face_match_panel {
                     border: 1px solid #e6ece9;
@@ -1365,6 +1397,7 @@
                                             id="btn_select_verification_otp">
                                             <span class="consent_verification_choice_copy">
                                                 <span class="consent_verification_choice_title">Fayda OTP</span>
+                                                <!-- <span class="consent_verification_choice_text" id="otp_verification_choice_hint">Send a code to verify this farmer.</span> -->
                                             </span>
                                             <span class="consent_verification_icon is-otp" aria-hidden="true">
                                                 <i class="fa fa-mobile" aria-hidden="true"></i>
@@ -1382,94 +1415,139 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div class="consent_otp_panel mt-3 d-none"
-                                    id="consent_verification_otp_detail">
-                                    <div class="consent_verification_detail_head">
-                                        <div class="min-w-0">
-                                            <div class="consent_verification_option_title">Fayda OTP</div>
-                                            <div class="consent_verification_option_hint">Recommended when the farmer has a Fayda-linked identifier.</div>
-                                        </div>
-                                        <button type="button" class="consent_verification_back"
-                                            id="btn_change_verification_method_from_otp">Choose another method</button>
+                                <div class="modal fade o_consent_portal" id="modal_verification_otp" tabindex="-1" aria-labelledby="modal_verification_otp_label" aria-hidden="true" data-bs-backdrop="static">
+                                  <div class="modal-dialog modal-dialog-centered" style="background: transparent !important; border: none !important; box-shadow: none !important;">
+                                    <div class="modal-content border-0 shadow-lg w-100" style="max-width: 400px !important; margin: 0 auto; border-radius: 1.5rem; min-height: 620px !important; height: auto !important; border: none !important;">
+                                      <div class="modal-header border-0 pb-0 position-absolute end-0 top-0" style="z-index: 10;">
+                                        <button type="button" class="btn consent_verification_back" data-bs-dismiss="modal" aria-label="Close" style="margin: 1.25rem;">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </button>
+                                      </div>
+                                      <div class="modal-body consent_otp_panel px-4 py-5 d-flex flex-column justify-content-center mt-3">
+                                          <div class="text-center mb-4">
+                                              <div class="consent_verification_logo mb-3">
+                                                  <i class="fa fa-mobile fa-4x opacity-75" style="color: var(--consent-primary);"></i>
+                                              </div>
+                                              <h4 class="fw-bold text-dark mb-2" id="modal_verification_otp_label">Fayda OTP Verification</h4>
+                                              <div class="consent_verification_option_hint text-muted small px-3">A verified OTP matching the farmer's identifier is required to auto-approve the request.</div>
+                                          </div>
+                                          
+                                          <div class="bg-light rounded-3 p-3 mb-4 text-center border">
+                                              <div id="fayda_otp_status_text" class="consent_otp_status is-not-requested fw-bold text-dark mb-1" style="font-size: 0.95rem;">
+                                                  Request OTP to verify the selected farmer.
+                                              </div>
+                                              <div id="fayda_otp_meta_text" class="text-muted" style="font-size: 0.8rem;">
+                                                  A verified OTP or a successful face match will auto-approve this request on submit.
+                                              </div>
+                                          </div>
+                                      
+                                          <div class="d-flex justify-content-center gap-2 mb-4">
+                                              <button type="button" class="btn btn-outline-success px-4 rounded-pill" style="border-color: var(--consent-primary); color: var(--consent-primary);" id="btn_request_fayda_otp">
+                                                  <i class="fa fa-paper-plane me-1"></i> Send Code
+                                              </button>
+                                              <button type="button" class="btn btn-outline-secondary px-4 rounded-pill d-none" id="btn_resend_fayda_otp">
+                                                  <i class="fa fa-refresh me-1"></i> Send Another Code
+                                              </button>
+                                          </div>
+                                      
+                                          <div class="otp-input-wrapper position-relative mx-auto" style="max-width: 340px;">
+                                              <label for="fayda_otp_code" class="form-label text-muted small fw-bold text-uppercase ms-1 mb-1" style="letter-spacing: 0.5px;">Enter 6-digit Code</label>
+                                              <div class="input-group input-group-lg mb-2 shadow-sm rounded-3 overflow-hidden" style="border: 2px solid var(--consent-primary);">
+                                                  <input type="text" id="fayda_otp_code" class="form-control text-center fw-bold fs-4 border-0" inputmode="numeric" autocomplete="one-time-code" placeholder="------" style="letter-spacing: 0.5rem; color: var(--consent-primary);" />
+                                                  <button type="button" class="btn border-0 px-4 fw-bold" style="background-color: var(--consent-primary); color: white;" id="btn_verify_fayda_otp">
+                                                      Verify
+                                                  </button>
+                                              </div>
+                                          </div>
+                                      </div>
                                     </div>
-                                    <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
-                                        <div class="min-w-0">
-                                            <div id="fayda_otp_status_text"
-                                                class="consent_otp_status is-not-requested">Request OTP to verify the selected farmer.</div>
-                                            <div id="fayda_otp_meta_text"
-                                                class="text-muted small mt-2">A verified OTP or a successful face match will auto-approve this request on submit.</div>
-                                        </div>
-                                        <div class="d-flex align-items-center gap-2 flex-wrap">
-                                            <button type="button" class="btn btn-outline-secondary btn-sm"
-                                                id="btn_request_fayda_otp">Send OTP</button>
-                                            <button type="button" class="btn btn-outline-secondary btn-sm d-none"
-                                                id="btn_resend_fayda_otp">Resend OTP</button>
-                                        </div>
-                                    </div>
-                                    <div class="row g-2 mt-1">
-                                        <div class="col-md-8">
-                                            <input type="text" id="fayda_otp_code"
-                                                class="form-control" inputmode="numeric"
-                                                autocomplete="one-time-code"
-                                                placeholder="Enter OTP code" />
-                                        </div>
-                                        <div class="col-md-4 d-flex align-items-center gap-2 flex-wrap">
-                                            <button type="button" class="btn consent_btn_primary btn-sm"
-                                                id="btn_verify_fayda_otp">Verify OTP</button>
-                                        </div>
-                                    </div>
+                                  </div>
                                 </div>
-                                <div class="consent_face_match_panel mt-3 d-none"
-                                    id="consent_verification_face_detail">
-                                    <div class="consent_verification_detail_head">
-                                        <div class="min-w-0">
-                                            <div class="consent_verification_option_title">Face Match</div>
-                                            <div class="consent_verification_option_hint">Use the live camera photo to compare against the farmer profile image.</div>
-                                        </div>
-                                        <button type="button" class="consent_verification_back"
-                                            id="btn_change_verification_method_from_face">Choose another method</button>
+                                <div class="modal fade o_consent_portal" id="modal_verification_face" tabindex="-1" aria-labelledby="modal_verification_face_label" aria-hidden="true" data-bs-backdrop="static">
+                                  <div class="modal-dialog modal-dialog-centered modal-lg" style="background: transparent !important; border: none !important; box-shadow: none !important;">
+                                    <div class="modal-content border-0 shadow-lg w-100 mx-auto" style="border-radius: 1.5rem; max-width: 880px !important; min-height: fit-content !important; height: auto !important; margin: 0 auto; border: none !important;">
+                                      <div class="modal-header border-0 pb-0 position-absolute end-0 top-0" style="z-index: 10;">
+                                        <button type="button" class="btn consent_verification_back" data-bs-dismiss="modal" aria-label="Close" style="margin: 1.25rem;">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </button>
+                                      </div>
+                                      <div class="modal-body consent_face_match_panel pt-5 mt-3" style="padding-left: 3.5rem !important; padding-right: 3.5rem !important; padding-bottom: 2.5rem !important;">
+                                          <style>
+                                              #camera_live_preview:not(.d-none) ~ .camera-placeholder,
+                                              #camera_capture_preview:not(.d-none) ~ .camera-placeholder {
+                                                  display: none !important;
+                                              }
+                                              .modern-card-shadow { box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+                                          </style>
+                                          <div class="text-center mb-4">
+                                              <div class="consent_verification_logo mb-2">
+                                                  <i class="fa fa-camera-retro fa-4x opacity-75" style="color: var(--consent-primary);"></i>
+                                              </div>
+                                              <h4 class="fw-bold text-dark mb-2" id="modal_verification_face_label">Live Face Match</h4>
+                                              <div class="consent_verification_option_hint text-muted small px-4">Capture your live photo to securely match against the farmer's registered profile.</div>
+                                          </div>
+                                      
+                                          <div class="row g-3 mb-2">
+                                              <div class="col-md-6 d-flex flex-column text-center">
+                                                  <div class="small text-muted text-uppercase fw-bold mb-2" style="letter-spacing: 1px;">Live Camera</div>
+                                                  <div class="camera-wrapper position-relative w-100 bg-light shadow-sm border d-flex align-items-center justify-content-center overflow-hidden mb-3 modern-card-shadow" style="min-height: 240px; border-radius: 1rem;">
+                                                      <video id="camera_live_preview" class="w-100 h-100 d-none" style="object-fit: cover; position: absolute; top:0; left:0;" autoplay="autoplay" playsinline="playsinline"></video>
+                                                      <img id="camera_capture_preview" class="w-100 h-100 d-none" style="object-fit: cover; position: absolute; top:0; left:0;" alt="Camera capture preview" />
+                                                      
+                                                      <div class="camera-placeholder text-center text-muted p-4 position-absolute w-100 h-100 d-flex flex-column align-items-center justify-content-center" style="pointer-events: none; z-index: 1;">
+                                                          <i class="fa fa-user-circle-o fa-4x mb-3" style="opacity: 0.15;"></i>
+                                                          <span class="small fw-semibold">Camera inactive</span>
+                                                      </div>
+                                                  </div>
+                                                  
+                                                  <canvas id="camera_canvas" class="d-none"></canvas>
+                                                  
+                                                  <div class="d-flex justify-content-center gap-2 flex-wrap w-100 camera-controls mt-auto">
+                                                      <button type="button" class="btn btn-outline-success rounded-pill px-3 flex-grow-1 border-2 fw-semibold" id="btn_open_camera" style="color: var(--consent-primary); border-color: var(--consent-primary);">
+                                                          <i class="fa fa-power-off me-1"></i> Start Camera
+                                                      </button>
+                                                      <button type="button" class="btn rounded-pill px-3 flex-grow-1 d-none shadow-sm fw-bold" id="btn_take_camera_photo" style="background-color: var(--consent-primary); color: white;">
+                                                          <i class="fa fa-camera me-1"></i> Capture
+                                                      </button>
+                                                      <button type="button" class="btn btn-outline-secondary rounded-pill px-3 flex-grow-1 d-none border-2 fw-semibold" id="btn_retake_camera_photo">
+                                                          <i class="fa fa-undo me-1"></i> Retake
+                                                      </button>
+                                                      <button type="button" class="btn btn-outline-danger rounded-pill px-3 flex-grow-1 d-none border-2 fw-semibold" id="btn_close_camera">
+                                                          <i class="fa fa-times me-1"></i> Stop
+                                                      </button>
+                                                  </div>
+                                                  <div id="camera_error" class="text-danger small mt-3 fw-bold text-center d-none w-100 bg-danger bg-opacity-10 rounded p-2 border border-danger border-opacity-25"></div>
+                                                  <div id="camera_capture_info" class="text-muted small mt-2 text-center d-none"></div>
+                                              </div>
+                                      
+                                              <div class="col-md-6 d-flex flex-column text-center">
+                                                  <div class="small text-muted text-uppercase fw-bold mb-2" style="letter-spacing: 1px;">Registered Profile</div>
+                                                  <div class="profile-reference bg-light border p-4 text-center d-flex flex-column justify-content-center align-items-center modern-card-shadow" style="border-radius: 1rem; min-height: 240px; margin-bottom: 0.75rem;">
+                                                      <div class="reference-icon-wrapper rounded-circle shadow-sm overflow-hidden mb-3 border border-4 border-white position-relative bg-white mt-auto" style="width: 100px; height: 100px;">
+                                                          <img id="face_match_reference_preview" class="consent_face_match_reference_image w-100 h-100 d-none position-absolute top-0 start-0" style="object-fit: cover;" alt="Farmer Profile" />
+                                                          <div id="face_match_reference_empty" class="consent_farmer_avatar_placeholder consent_face_match_reference_empty w-100 h-100 d-flex flex-column align-items-center justify-content-center bg-light text-muted small position-absolute top-0 start-0">
+                                                              <i class="fa fa-user fa-2x mb-1 opacity-25"></i>
+                                                              <span>No Image</span>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                  
+                                                  <div class="match-results w-100 p-3 bg-white border shadow-sm mt-auto" style="border-radius: 0.75rem;">
+                                                      <div id="face_match_status_text" class="consent_face_match_status is-not-attempted fw-bold flex-grow-1 mb-2 text-dark" style="font-size: 0.95rem;">
+                                                          Waiting for capture...
+                                                      </div>
+                                                      <div class="progress shadow-none" style="height: 6px; background-color: #e9ecef;">
+                                                          <div class="progress-bar progress-bar-striped progress-bar-animated w-100" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="background-color: var(--consent-primary); opacity: 0.2;"></div>
+                                                      </div>
+                                                      <div id="face_match_percent_text" class="text-muted small mt-2 fw-semibold">
+                                                          Minimum accepted: 55.0%
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
                                     </div>
-                                    <div class="d-flex align-items-center gap-2 flex-wrap">
-                                        <button type="button" class="btn btn-outline-secondary btn-sm"
-                                            id="btn_open_camera" title="Open Camera"
-                                            aria-label="Open Camera">&#128247;</button>
-                                        <button type="button"
-                                            class="btn btn-outline-secondary btn-sm d-none"
-                                            id="btn_take_camera_photo">Take Photo</button>
-                                        <button type="button"
-                                            class="btn btn-outline-secondary btn-sm d-none"
-                                            id="btn_close_camera">Close Camera</button>
-                                        <button type="button"
-                                            class="btn btn-outline-secondary btn-sm d-none"
-                                            id="btn_retake_camera_photo">Retake</button>
-                                    </div>
-                                    <video id="camera_live_preview" class="mt-2 border rounded d-none"
-                                        style="width:100%;max-width:360px;" autoplay="autoplay"
-                                        playsinline="playsinline"></video>
-                                    <canvas id="camera_canvas" class="d-none"></canvas>
-                                    <div class="form-text">Optional. Click camera icon to open live
-                                        camera and capture.</div>
-                                    <div id="camera_capture_info" class="text-muted small mt-1 d-none"></div>
-                                    <div id="camera_error" class="text-danger small mt-1 d-none"></div>
-                                    <img id="camera_capture_preview" class="img-thumbnail mt-2 d-none"
-                                        style="max-width: 220px;" alt="Camera capture preview" />
-                                    <div class="row g-3 align-items-start mt-3">
-                                        <div class="col-sm-4">
-                                            <div class="small text-muted mb-2">Farmer Profile</div>
-                                            <img id="face_match_reference_preview"
-                                                class="consent_face_match_reference_image d-none"
-                                                alt="Farmer profile image for face match" />
-                                            <div id="face_match_reference_empty"
-                                                class="consent_farmer_avatar_placeholder consent_face_match_reference_empty"
-                                            >No profile image</div>
-                                        </div>
-                                        <div class="col-sm-8">
-                                            <div id="face_match_status_text"
-                                                class="consent_face_match_status is-not-attempted">Capture a photo to compare it with the selected farmer profile image.</div>
-                                            <div id="face_match_percent_text"
-                                                class="text-muted small mt-2">Minimum accepted: 55.0%</div>
-                                        </div>
-                                    </div>
+                                  </div>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -1963,6 +2041,7 @@
                     var btnRetakeCameraPhoto = document.getElementById('btn_retake_camera_photo');
                     var faydaOtpStatusText = document.getElementById('fayda_otp_status_text');
                     var faydaOtpMetaText = document.getElementById('fayda_otp_meta_text');
+                    var otpVerificationChoiceHint = document.getElementById('otp_verification_choice_hint');
                     var faydaOtpCodeInput = document.getElementById('fayda_otp_code');
                     var btnRequestFaydaOtp = document.getElementById('btn_request_fayda_otp');
                     var btnResendFaydaOtp = document.getElementById('btn_resend_fayda_otp');
@@ -2004,6 +2083,22 @@
                         transactionId: '',
                         maskedMobile: ''
                     };
+
+                    function closeModalById(modalId) {
+                        if (!modalId) return;
+                        var modalEl = document.getElementById(modalId);
+                        if (!modalEl) return;
+                        if (window.bootstrap && window.bootstrap.Modal) {
+                            var modalInstance = window.bootstrap.Modal.getInstance(modalEl);
+                            if (modalInstance) {
+                                modalInstance.hide();
+                                return;
+                            }
+                        }
+                        if (window.jQuery && window.jQuery.fn && window.jQuery.fn.modal) {
+                            window.jQuery(modalEl).modal('hide');
+                        }
+                    }
                     var tableScrollTicking = false;
                     var errorMessagesByCode = {
                         access_denied: 'Access denied. Please contact your administrator.',
@@ -2141,14 +2236,64 @@
                         }
                     }
 
+                    function getFaydaOtpUnavailableReason(farmer) {
+                        if (!farmer) {
+                            return 'Select a farmer before requesting OTP.';
+                        }
+                        if (farmer.otp_available) {
+                            return '';
+                        }
+                        return 'OTP is unavailable for this farmer because the Fayda flow requires a Fayda identifier from the IDs tab. A primary phone can be used as the destination only when that identifier exists.';
+                    }
+
+                    function setOtpVerificationChoiceHint(status, options) {
+                        if (!otpVerificationChoiceHint) return;
+                        var normalizedStatus = String(status || 'not_requested').toLowerCase().replace(/[^a-z_]/g, '');
+                        var opts = options || {};
+                        var maskedMobile = opts.maskedMobile || '';
+                        var message = 'Send a code to verify this farmer.';
+                        var extraClass = '';
+
+                        if (!selectedFarmer) {
+                            message = 'Select a farmer first.';
+                        } else if (!selectedFarmer.otp_available) {
+                            message = 'Needs a Fayda ID before OTP can be used.';
+                            extraClass = 'is-error';
+                        } else if (normalizedStatus === 'processing') {
+                            message = 'Working on your OTP request...';
+                            extraClass = 'is-processing';
+                        } else if (normalizedStatus === 'requested') {
+                            message = maskedMobile
+                                ? 'Code sent to ' + maskedMobile + '.'
+                                : 'Code sent. Enter it to continue.';
+                        } else if (normalizedStatus === 'verified') {
+                            message = 'Verified successfully. You can send another code anytime.';
+                            extraClass = 'is-success';
+                        } else if (normalizedStatus === 'failed' || normalizedStatus === 'error') {
+                            message = 'Verification did not go through. You can try again.';
+                            extraClass = 'is-error';
+                        }
+
+                        otpVerificationChoiceHint.className = 'consent_verification_choice_text' + (extraClass ? ' ' + extraClass : '');
+                        otpVerificationChoiceHint.textContent = message;
+                    }
+
                     function setFaydaOtpButtonsState(inFlight, hasTransaction) {
                         var otpAvailable = !!(selectedFarmer && selectedFarmer.otp_available);
-                        if (btnRequestFaydaOtp) btnRequestFaydaOtp.disabled = !!inFlight || !otpAvailable;
+                        var unavailableReason = getFaydaOtpUnavailableReason(selectedFarmer);
+                        if (btnRequestFaydaOtp) {
+                            btnRequestFaydaOtp.disabled = !!inFlight || !otpAvailable;
+                            btnRequestFaydaOtp.title = !otpAvailable ? unavailableReason : '';
+                        }
                         if (btnResendFaydaOtp) {
                             btnResendFaydaOtp.disabled = !!inFlight || !otpAvailable;
                             btnResendFaydaOtp.classList.toggle('d-none', !hasTransaction);
+                            btnResendFaydaOtp.title = !otpAvailable ? unavailableReason : '';
                         }
-                        if (btnVerifyFaydaOtp) btnVerifyFaydaOtp.disabled = !!inFlight || !hasTransaction;
+                        if (btnVerifyFaydaOtp) {
+                            btnVerifyFaydaOtp.disabled = !!inFlight || !hasTransaction;
+                            btnVerifyFaydaOtp.title = !hasTransaction && !otpAvailable ? unavailableReason : '';
+                        }
                         if (faydaOtpCodeInput) faydaOtpCodeInput.disabled = !!inFlight || !hasTransaction;
                     }
 
@@ -2182,6 +2327,7 @@
                             }
                             faydaOtpMetaText.textContent = metaParts.join(' | ');
                         }
+                        setOtpVerificationChoiceHint(normalizedStatus, { maskedMobile: maskedMobile });
                         setFaydaOtpButtonsState(normalizedStatus === 'processing', !!transactionId);
                     }
 
@@ -2203,6 +2349,7 @@
                         if (faydaOtpMetaText) {
                             faydaOtpMetaText.textContent = 'A verified OTP or a successful face match will auto-approve this request on submit.';
                         }
+                        setOtpVerificationChoiceHint('not_requested');
                         setFaydaOtpButtonsState(false, false);
                     }
 
@@ -2218,7 +2365,7 @@
                     function getDefaultFaydaOtpMessage(farmer) {
                         return farmer && farmer.otp_available
                             ? 'Request OTP to verify the selected farmer.'
-                            : 'Selected farmer has no Fayda OTP identifier. OTP verification is unavailable.';
+                            : getFaydaOtpUnavailableReason(farmer);
                     }
 
                     function clearCameraCapture() {
@@ -2256,20 +2403,31 @@
 
                         selectedVerificationMethod = normalizedMethod;
 
-                        if (verificationSelector) {
-                            verificationSelector.classList.toggle('d-none', !!normalizedMethod);
-                        }
-                        if (verificationOtpDetail) {
-                            verificationOtpDetail.classList.toggle('d-none', normalizedMethod !== 'otp');
-                        }
-                        if (verificationFaceDetail) {
-                            verificationFaceDetail.classList.toggle('d-none', normalizedMethod !== 'face');
-                        }
                         if (btnSelectVerificationOtp) {
                             btnSelectVerificationOtp.classList.toggle('is-selected', normalizedMethod === 'otp');
                         }
                         if (btnSelectVerificationFace) {
                             btnSelectVerificationFace.classList.toggle('is-selected', normalizedMethod === 'face');
+                        }
+
+                        if (normalizedMethod === 'otp') {
+                            var modalOtp = document.getElementById('modal_verification_otp');
+                            if (modalOtp) {
+                                if (window.bootstrap && window.bootstrap.Modal) {
+                                    window.bootstrap.Modal.getOrCreateInstance(modalOtp).show();
+                                } else if (window.jQuery) {
+                                    window.jQuery('#modal_verification_otp').modal('show');
+                                }
+                            }
+                        } else if (normalizedMethod === 'face') {
+                            var modalFace = document.getElementById('modal_verification_face');
+                            if (modalFace) {
+                                if (window.bootstrap && window.bootstrap.Modal) {
+                                    window.bootstrap.Modal.getOrCreateInstance(modalFace).show();
+                                } else if (window.jQuery) {
+                                    window.jQuery('#modal_verification_face').modal('show');
+                                }
+                            }
                         }
                     }
 
@@ -2513,11 +2671,11 @@
                     function requestFaydaOtp() {
                         var actionToken = ++faydaOtpActionToken;
                         if (!selectedFarmer || !selectedFarmer.id) {
-                            showServiceProviderModal('Select a farmer before requesting OTP.', true);
+                            setFaydaOtpStatus('error', 'Select a farmer before requesting OTP.');
                             return Promise.resolve(false);
                         }
                         if (!selectedFarmer.otp_available) {
-                            showServiceProviderModal('Selected farmer has no Fayda OTP identifier.', true);
+                            setFaydaOtpStatus('error', 'Selected farmer has no Fayda OTP identifier.');
                             return Promise.resolve(false);
                         }
                         setFaydaOtpStatus(
@@ -2561,7 +2719,6 @@
                                     identifierSource: selectedFarmer.otp_identifier_source || ''
                                 }
                             );
-                            showServiceProviderModal(error && error.message ? error.message : 'Unable to request OTP.', true);
                             return false;
                         });
                     }
@@ -2569,16 +2726,16 @@
                     function verifyFaydaOtp() {
                         var actionToken = ++faydaOtpActionToken;
                         if (!selectedFarmer || !selectedFarmer.id) {
-                            showServiceProviderModal('Select a farmer before verifying OTP.', true);
+                            setFaydaOtpStatus('error', 'Select a farmer before verifying OTP.');
                             return Promise.resolve(false);
                         }
                         if (!faydaOtpState.transactionId) {
-                            showServiceProviderModal('Request OTP first.', true);
+                            setFaydaOtpStatus('error', 'Request OTP first.');
                             return Promise.resolve(false);
                         }
                         var otpCode = faydaOtpCodeInput ? (faydaOtpCodeInput.value || '').trim() : '';
                         if (!otpCode) {
-                            showServiceProviderModal('Enter the OTP code.', true);
+                            setFaydaOtpStatus('error', 'Enter the OTP code.');
                             return Promise.resolve(false);
                         }
                         setFaydaOtpStatus(
@@ -2602,7 +2759,7 @@
                             var data = res.data || {};
                             setFaydaOtpStatus(
                                 'verified',
-                                res.message || 'OTP verified successfully.',
+                                res.message || 'Fayda OTP verified successfully.',
                                 {
                                     transactionId: data.transaction_id || faydaOtpState.transactionId,
                                     maskedMobile: data.masked_mobile || faydaOtpState.maskedMobile,
@@ -2611,6 +2768,10 @@
                                     verifiedAt: data.verified_at || ''
                                 }
                             );
+                            closeModalById('modal_verification_otp');
+                            window.setTimeout(function() {
+                                showServiceProviderModal('Fayda OTP verified successfully. You can now submit the request.', false);
+                            }, 250);
                             return true;
                         }).catch(function(error) {
                             if (actionToken !== faydaOtpActionToken || selectedVerificationMethod !== 'otp') {
@@ -2626,7 +2787,6 @@
                                     identifierSource: selectedFarmer.otp_identifier_source || ''
                                 }
                             );
-                            showServiceProviderModal(error && error.message ? error.message : 'OTP verification failed.', true);
                             return false;
                         });
                     }
@@ -3125,15 +3285,23 @@
                             setVerificationMethod('face');
                         });
                     }
-                    if (btnChangeVerificationMethodFromOtp) {
-                        btnChangeVerificationMethodFromOtp.addEventListener('click', function() {
-                            setVerificationMethod('');
-                        });
+                    var modalOtpEl = document.getElementById('modal_verification_otp');
+                    if (modalOtpEl) {
+                        document.body.appendChild(modalOtpEl);
                     }
-                    if (btnChangeVerificationMethodFromFace) {
-                        btnChangeVerificationMethodFromFace.addEventListener('click', function() {
-                            setVerificationMethod('');
+                    var modalFaceEl = document.getElementById('modal_verification_face');
+                    if (modalFaceEl) {
+                        document.body.appendChild(modalFaceEl);
+                        modalFaceEl.addEventListener('hidden.bs.modal', function() {
+                            stopCameraStream();
+                            showCameraButtons(false, !!(cameraDataInput && cameraDataInput.value));
                         });
+                        if (window.jQuery) {
+                            window.jQuery(modalFaceEl).on('hidden.bs.modal', function() {
+                                stopCameraStream();
+                                showCameraButtons(false, !!(cameraDataInput && cameraDataInput.value));
+                            });
+                        }
                     }
                     if (btnRequestFaydaOtp) {
                         btnRequestFaydaOtp.addEventListener('click', function() {
