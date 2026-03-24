@@ -2438,11 +2438,8 @@
                         var previousMethod = selectedVerificationMethod;
 
                         if (previousMethod === 'face' && normalizedMethod !== 'face') {
-                            clearCameraCapture();
-                            resetFaceMatch(getDefaultFaceMatchMessage(selectedFarmer, false));
-                        }
-                        if (previousMethod === 'otp' && normalizedMethod !== 'otp') {
-                            resetFaydaOtp(getDefaultFaydaOtpMessage(selectedFarmer));
+                            stopCameraStream();
+                            showCameraButtons(false, !!(cameraDataInput && cameraDataInput.value));
                         }
 
                         selectedVerificationMethod = normalizedMethod;
@@ -3332,16 +3329,34 @@
                     var modalOtpEl = document.getElementById('modal_verification_otp');
                     if (modalOtpEl) {
                         document.body.appendChild(modalOtpEl);
+                        modalOtpEl.addEventListener('hidden.bs.modal', function() {
+                            if (selectedVerificationMethod === 'otp') {
+                                setVerificationMethod('');
+                            }
+                        });
+                        if (window.jQuery) {
+                            window.jQuery(modalOtpEl).on('hidden.bs.modal', function() {
+                                if (selectedVerificationMethod === 'otp') {
+                                    setVerificationMethod('');
+                                }
+                            });
+                        }
                     }
                     var modalFaceEl = document.getElementById('modal_verification_face');
                     if (modalFaceEl) {
                         document.body.appendChild(modalFaceEl);
                         modalFaceEl.addEventListener('hidden.bs.modal', function() {
+                            if (selectedVerificationMethod === 'face') {
+                                setVerificationMethod('');
+                            }
                             stopCameraStream();
                             showCameraButtons(false, !!(cameraDataInput && cameraDataInput.value));
                         });
                         if (window.jQuery) {
                             window.jQuery(modalFaceEl).on('hidden.bs.modal', function() {
+                                if (selectedVerificationMethod === 'face') {
+                                    setVerificationMethod('');
+                                }
                                 stopCameraStream();
                                 showCameraButtons(false, !!(cameraDataInput && cameraDataInput.value));
                             });
