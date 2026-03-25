@@ -21,6 +21,18 @@
                     opacity: 0;
                     animation: consentFadeIn .4s ease-out forwards;
                     }
+                    .modal.o_consent_portal {
+                    max-width: none;
+                    width: 100vw;
+                    opacity: 1;
+                    animation: none;
+                    }
+                    body.consent-portal-page .modal-backdrop {
+                    position: fixed;
+                    inset: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    }
                     .o_consent_portal .consent_portal_header {
                     display: flex;
                     align-items: center;
@@ -821,18 +833,19 @@
                     }
                     .o_consent_portal .consent_verification_selector {
                     max-width: 560px;
-                    margin: 0.35rem auto 0;
-                    padding: 0.95rem 1rem 1rem;
-                    border: 1px solid #e3e8e5;
-                    border-radius: 16px;
-                    background: #fff;
-                    box-shadow: 0 16px 34px rgba(25, 40, 32, 0.10);
+                    margin: 1rem auto 1.35rem;
+                    padding: 0;
+                    border: none;
+                    border-radius: 0;
+                    background: transparent;
+                    box-shadow: none;
                     }
                     .o_consent_portal .consent_verification_selector_title {
                     font-size: 0.95rem;
                     font-weight: 700;
                     color: #1a2321;
-                    margin-bottom: 0.85rem;
+                    margin-bottom: 1rem;
+                    text-align: center;
                     }
                     .o_consent_portal .consent_verification_selector_options {
                     display: grid;
