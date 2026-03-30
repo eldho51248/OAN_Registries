@@ -9,6 +9,8 @@ _logger = logging.getLogger(__name__)
 class ResPartnerATIWebsub(models.Model):
     _inherit = "res.partner"
 
+    _ATI_WEBSUB_TRACKING_FIELDS = {"websub_last_shared_at"}
+
     def _internal_publisher_count(self, event_type):
         return self.env["g2p.datashare.config.websub"].search_count(
             [("event_type", "=", event_type), ("active", "=", True), ("publisher_type", "=", "internal")]
@@ -78,6 +80,24 @@ class ResPartnerATIWebsub(models.Model):
 
     def write(self, vals):
         res = super(ResPartnerATIWebsub, self.with_context(ati_skip_base_websub_publish=True)).write(vals)
+
+        if self.env.context.get("ati_skip_websub_enqueue"):
+            _logger.info(
+                "ATI WebSub Debug - Skipped enqueue on write due to ati_skip_websub_enqueue context partner_ids=%s "
+                "payload_keys=%s",
+                self.ids,
+                sorted(vals.keys()) if isinstance(vals, dict) else None,
+            )
+            return res
+
+        changed_fields = set((vals or {}).keys())
+        if changed_fields and changed_fields.issubset(self._ATI_WEBSUB_TRACKING_FIELDS):
+            _logger.info(
+                "ATI WebSub Debug - Skipped enqueue on tracking-only write partner_ids=%s payload_keys=%s",
+                self.ids,
+                sorted(changed_fields),
+            )
+            return res
 
         for rec in self:
             if not rec.is_registrant or rec.state != "approved":

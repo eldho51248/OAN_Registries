@@ -22,7 +22,6 @@
         "views/create_portal_user_wizard_views.xml",
         "views/consent_request_views.xml",
         "views/consent_receipt_views.xml",
-        "views/consent_data_field_views.xml",
         "views/res_partner_consent_views.xml",
         "views/portal_consent_management_templates.xml",
     ],

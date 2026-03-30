@@ -57,7 +57,7 @@ class AuditDatabaseManager(models.AbstractModel):
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS g2p_change_log (
                     id SERIAL PRIMARY KEY,
-                    name VARCHAR(64),
+                    name TEXT,
                     model_id INTEGER,
                     model_name VARCHAR(255),
                     model_model VARCHAR(255),
@@ -91,6 +91,12 @@ class AuditDatabaseManager(models.AbstractModel):
                     create_uid INTEGER,
                     write_uid INTEGER
                 )
+            """)
+
+            # Keep existing databases in sync with the expected schema.
+            cursor.execute("""
+                ALTER TABLE g2p_change_log
+                ALTER COLUMN name TYPE TEXT
             """)
             
             # Create indexes

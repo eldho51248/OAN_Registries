@@ -13,7 +13,7 @@ class ResPartner(models.Model):
     consent_websub_config_id = fields.Many2one(
         "g2p.datashare.config.websub",
         string="WebSub Configuration",
-        domain="[('event_type', '=', 'WEBSUB_INDIVIDUAL_UPDATED'), ('active', '=', True)]",
+        domain="[('event_type', '=', 'WEBSUB_INDIVIDUAL_UPDATED'), ('active', '=', True), ('publisher_type', '=', 'external')]",
         help="Selected WebSub configuration used when this partner's consent requests are approved.",
     )
     allowed_data_field_ids = fields.Many2many(

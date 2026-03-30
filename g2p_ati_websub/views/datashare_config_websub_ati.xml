@@ -18,6 +18,16 @@
         <field name="arch" type="xml">
             <xpath expr="//group[@name='basic_details']/field[@name='event_type']" position="after">
                 <field name="publisher_type" />
+                <field name="data_field_mode" />
+            </xpath>
+            <xpath expr="//group[@name='websub_details']" position="before">
+                <group string="Payload Settings" name="payload_settings">
+                    <field
+                        name="shared_data_field_ids"
+                        widget="many2many_tags"
+                        placeholder="Used to build the shared record payload"
+                    />
+                </group>
             </xpath>
         </field>
     </record>
