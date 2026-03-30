@@ -1,4 +1,7 @@
 import logging
+from collections import OrderedDict
+from datetime import date, datetime, time, timedelta
+
 from odoo import _, api, fields, models
 from odoo import fields as odoo_fields
 from odoo.exceptions import UserError
@@ -7,6 +10,142 @@ import traceback
 
 
 _logger = logging.getLogger(__name__)
+
+
+def _flatten_export_value(value, import_compat=False):
+    if isinstance(value, tuple):
+        if import_compat:
+            return value[0]
+        return value[1] if len(value) > 1 else value[0]
+    if isinstance(value, list):
+        flattened = [_flatten_export_value(item, import_compat=import_compat) for item in value]
+        return ", ".join(str(item) for item in flattened if item not in (False, None, ""))
+    if value in (False, None):
+        return ""
+    if hasattr(value, "strftime"):
+        return value.strftime("%Y-%m-%d %H:%M:%S")
+    return value
+
+
+def _normalize_domain_value(value):
+    if isinstance(value, tuple) and value:
+        return value[0]
+    if isinstance(value, list):
+        if value and isinstance(value[0], (list, tuple)):
+            return value
+        if len(value) == 2:
+            return value[0]
+    return value
+
+
+def _domain_truthy_sql(value):
+    return "TRUE" if value else "FALSE"
+
+
+def _compile_sql_domain(domain, leaf_builder):
+    tokens = list(domain or [])
+    params = {}
+    param_counter = 0
+
+    def add_param(value):
+        nonlocal param_counter
+        param_name = f"param_{param_counter}"
+        param_counter += 1
+        params[param_name] = value
+        return f"%({param_name})s"
+
+    def parse_term(index):
+        token = tokens[index]
+        if token == "&":
+            left_sql, next_index = parse_term(index + 1)
+            right_sql, next_index = parse_term(next_index)
+            return f"({left_sql} AND {right_sql})", next_index
+        if token == "|":
+            left_sql, next_index = parse_term(index + 1)
+            right_sql, next_index = parse_term(next_index)
+            return f"({left_sql} OR {right_sql})", next_index
+        if token == "!":
+            inner_sql, next_index = parse_term(index + 1)
+            return f"(NOT ({inner_sql}))", next_index
+        if isinstance(token, (list, tuple)) and len(token) >= 3:
+            leaf_sql = leaf_builder(token[0], token[1], token[2], add_param)
+            return leaf_sql or "TRUE", index + 1
+        return "TRUE", index + 1
+
+    expressions = []
+    index = 0
+    while index < len(tokens):
+        expr_sql, index = parse_term(index)
+        if expr_sql:
+            expressions.append(expr_sql)
+
+    where_clause = "WHERE " + " AND ".join(f"({expr})" for expr in expressions) if expressions else ""
+    return where_clause, params
+
+
+def _build_sql_order_clause(order, field_map, default_sql):
+    if not order:
+        return f"ORDER BY {default_sql}"
+
+    order_terms = []
+    for raw_term in order.split(","):
+        raw_term = raw_term.strip()
+        if not raw_term:
+            continue
+        parts = raw_term.split()
+        field_name = parts[0].split(":")[0]
+        sql_field = field_map.get(field_name)
+        if not sql_field:
+            continue
+        direction = parts[1].upper() if len(parts) > 1 and parts[1].upper() in {"ASC", "DESC"} else "ASC"
+        order_terms.append(f"{sql_field} {direction}")
+
+    return f"ORDER BY {', '.join(order_terms)}" if order_terms else f"ORDER BY {default_sql}"
+
+
+def _period_start(dt_value, granularity):
+    if granularity == "year":
+        return dt_value.replace(month=1, day=1, hour=0, minute=0, second=0, microsecond=0)
+    if granularity == "quarter":
+        first_month = ((dt_value.month - 1) // 3) * 3 + 1
+        return dt_value.replace(month=first_month, day=1, hour=0, minute=0, second=0, microsecond=0)
+    if granularity == "month":
+        return dt_value.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    if granularity == "week":
+        start = dt_value - timedelta(days=dt_value.weekday())
+        return start.replace(hour=0, minute=0, second=0, microsecond=0)
+    return dt_value.replace(hour=0, minute=0, second=0, microsecond=0)
+
+
+def _period_end(start_value, granularity):
+    if granularity == "year":
+        return start_value.replace(year=start_value.year + 1)
+    if granularity == "quarter":
+        month = start_value.month + 3
+        year = start_value.year + (month - 1) // 12
+        month = ((month - 1) % 12) + 1
+        return start_value.replace(year=year, month=month)
+    if granularity == "month":
+        month = start_value.month + 1
+        year = start_value.year + (month - 1) // 12
+        month = ((month - 1) % 12) + 1
+        return start_value.replace(year=year, month=month)
+    if granularity == "week":
+        return start_value + timedelta(days=7)
+    return start_value + timedelta(days=1)
+
+
+def _format_period_label(start_value, granularity):
+    if granularity == "year":
+        return start_value.strftime("%Y")
+    if granularity == "quarter":
+        quarter = ((start_value.month - 1) // 3) + 1
+        return f"Q{quarter} {start_value.year}"
+    if granularity == "month":
+        return start_value.strftime("%B %Y")
+    if granularity == "week":
+        return f"Week of {start_value.strftime('%Y-%m-%d')}"
+    return start_value.strftime("%Y-%m-%d")
 
 
 class G2PChangeLog(models.Model):
@@ -21,7 +160,7 @@ class G2PChangeLog(models.Model):
         "read": "log_read",
     }
 
-    name = fields.Char("Resource Name", size=64)
+    name = fields.Char("Resource Name")
     model_id = fields.Many2one(
         "ir.model", string="Model", index=True, ondelete="set null"
     )
@@ -179,34 +318,33 @@ class G2PChangeLog(models.Model):
         """
 
         # print(f"🔧 About to execute query with db_manager: {db_manager}")
-        try:
-            result = db_manager.execute_audit_query(query, external_vals, fetch=True)
-            # print(f"🔧 Query result: {result}")
-            return result[0]['id'] if result else None
-        except Exception as e:
-            # print(f"❌ Exception in _create_in_external_db: {e}")
-            import traceback
-            # print(f"❌ Traceback: {traceback.format_exc()}")
-            # Return a fake ID to see if this is the issue
-            import random
-            fake_id = random.randint(10, 99)
-            # print(f"🔧 Returning fake ID: {fake_id}")
-            return fake_id
+        result = db_manager.execute_audit_query(query, external_vals, fetch=True)
+        return result[0]['id'] if result else None
 
     def _create_log_lines_in_external_db(self, log_id, line_ids_commands):
         """Create audit log lines in external database"""
         db_manager = self._get_audit_db_manager()
+        field_model = self.env["ir.model.fields"].sudo()
 
         for command in line_ids_commands:
             if command[0] == 0:  # Command.create()
                 line_vals = command[2]  # The actual values dict
+                field_id = line_vals.get("field_id")
+                field_name = line_vals.get("field_name")
+                field_description = line_vals.get("field_description")
+
+                if field_id and (not field_name or not field_description):
+                    field = field_model.browse(field_id)
+                    if field.exists():
+                        field_name = field_name or field.name
+                        field_description = field_description or field.field_description
 
                 # Prepare data for external database
                 external_line_vals = {
                     'log_id': log_id,
-                    'field_id': line_vals.get('field_id'),
-                    'field_name': line_vals.get('field_name'),
-                    'field_description': line_vals.get('field_description'),
+                    'field_id': field_id,
+                    'field_name': field_name,
+                    'field_description': field_description,
                     'old_value': line_vals.get('old_value'),
                     'new_value': line_vals.get('new_value'),
                     'old_value_text': line_vals.get('old_value_text'),
@@ -681,6 +819,209 @@ class G2PChangeLogView(models.Model):
     def _db(self):
         return self.env['g2p.change.log.database.manager']
 
+    def _sql_field_map(self):
+        return {
+            "id": "al.id",
+            "name": "al.name",
+            "model_id": "al.model_id",
+            "model_name": "al.model_name",
+            "model_model": "al.model_model",
+            "res_id": "al.res_id",
+            "user_id": "al.user_id",
+            "method": "al.method",
+            "log_type": "al.log_type",
+            "http_session_id": "al.http_session_id",
+            "http_request_id": "al.http_request_id",
+            "create_date": "al.create_date",
+            "create_uid": "al.create_uid",
+            "write_date": "al.write_date",
+            "write_uid": "al.write_uid",
+        }
+
+    def _sql_text_condition(self, expressions, operator, value, add_param):
+        text_value = "" if value in (False, None) else str(value)
+        if operator in {"like", "ilike", "not like", "not ilike"}:
+            text_value = f"%{text_value}%"
+        comparator = {
+            "=": "=",
+            "!=": "!=",
+            "like": "LIKE",
+            "ilike": "ILIKE",
+            "not like": "NOT LIKE",
+            "not ilike": "NOT ILIKE",
+            "=like": "LIKE",
+            "=ilike": "ILIKE",
+        }.get(operator)
+        if not comparator:
+            return None
+        placeholder = add_param(text_value)
+        joiner = " OR " if not comparator.startswith("NOT ") else " AND "
+        return "(" + joiner.join(f"{expr} {comparator} {placeholder}" for expr in expressions) + ")"
+
+    def _user_ids_for_text_search(self, value):
+        return self.env["res.users"].sudo().search(
+            ["|", ("name", "ilike", value), ("login", "ilike", value)]
+        ).ids
+
+    def _domain_leaf_to_sql(self, field, operator, value, add_param):
+        field = (field or "").split(".")[0]
+        value = _normalize_domain_value(value)
+        field_map = self._sql_field_map()
+
+        if field == "display_name":
+            return self._sql_text_condition(["al.name", "al.model_name", "al.model_model"], "ilike", value, add_param)
+
+        if field == "model_id" and isinstance(value, str) and operator in {"like", "ilike", "not like", "not ilike", "=like", "=ilike"}:
+            return self._sql_text_condition(["al.model_name", "al.model_model"], operator, value, add_param)
+
+        if field in {"user_id", "create_uid", "write_uid"} and isinstance(value, str) and operator in {
+            "like", "ilike", "not like", "not ilike", "=like", "=ilike"
+        }:
+            user_ids = self._user_ids_for_text_search(value)
+            positive = operator in {"like", "ilike", "=like", "=ilike"}
+            if not user_ids:
+                return _domain_truthy_sql(not positive)
+            placeholder = add_param(user_ids)
+            return f"({field_map[field]} = ANY({placeholder}))" if positive else f"(NOT ({field_map[field]} = ANY({placeholder})))"
+
+        sql_field = field_map.get(field)
+        if not sql_field:
+            return None
+
+        if operator == "=?":
+            return "TRUE" if value in (False, None, "") else f"({sql_field} = {add_param(value)})"
+
+        if operator in {"=", "!="} and value in (False, None):
+            return f"({sql_field} IS {'NOT ' if operator == '!=' else ''}NULL)"
+
+        if operator in {"in", "not in"}:
+            values = value or []
+            values = [_normalize_domain_value(item) for item in values]
+            if not values:
+                return _domain_truthy_sql(operator == "not in")
+            placeholder = add_param(values)
+            comparator = "!= ALL" if operator == "not in" else "= ANY"
+            return f"({sql_field} {comparator}({placeholder}))"
+
+        if operator in {"like", "ilike", "not like", "not ilike", "=like", "=ilike"}:
+            if field in {"id", "model_id", "res_id", "user_id", "create_uid", "write_uid"}:
+                cast_field = f"CAST({sql_field} AS TEXT)"
+                return self._sql_text_condition([cast_field], operator, value, add_param)
+            return self._sql_text_condition([sql_field], operator, value, add_param)
+
+        comparator = {
+            "=": "=",
+            "!=": "!=",
+            ">": ">",
+            "<": "<",
+            ">=": ">=",
+            "<=": "<=",
+        }.get(operator)
+        if comparator:
+            return f"({sql_field} {comparator} {add_param(value)})"
+        return None
+
+    def _domain_to_sql(self, domain):
+        return _compile_sql_domain(domain, self._domain_leaf_to_sql)
+
+    def _normalize_groupby(self, groupby, lazy=True):
+        annoted_groupby = self._read_group_get_annoted_groupby(groupby, lazy=lazy)
+        return list(annoted_groupby.items())
+
+    def _get_groupby_value(self, row, original_spec, normalized_spec):
+        field_name = normalized_spec.split(":")[0]
+        granularity = normalized_spec.split(":")[1] if ":" in normalized_spec else None
+        field = self._fields[field_name]
+        raw_value = row.get(field_name)
+
+        if field.type == "many2one":
+            value_id = raw_value[0] if isinstance(raw_value, tuple) else raw_value
+            value_label = raw_value[1] if isinstance(raw_value, tuple) and len(raw_value) > 1 else self._get_many2one_display_name(field_name, value_id) if value_id else False
+            return {
+                "result_key": original_spec,
+                "result_value": (value_id, value_label) if value_id else False,
+                "domain": [(field_name, "=", value_id or False)],
+                "sort_key": value_label or "",
+            }
+
+        if field.type in {"date", "datetime"}:
+            if not raw_value:
+                return {
+                    "result_key": original_spec,
+                    "result_value": False,
+                    "domain": [(field_name, "=", False)],
+                    "range": {},
+                    "sort_key": "",
+                }
+            dt_value = fields.Datetime.to_datetime(raw_value) if isinstance(raw_value, str) else raw_value
+            dt_value = dt_value if isinstance(dt_value, datetime) else datetime.combine(dt_value, time.min)
+            start_value = _period_start(dt_value, granularity or "month")
+            end_value = _period_end(start_value, granularity or "month")
+            db_format = "%Y-%m-%d %H:%M:%S" if field.type == "datetime" else "%Y-%m-%d"
+            return {
+                "result_key": original_spec,
+                "result_value": _format_period_label(start_value, granularity or "month"),
+                "domain": [(field_name, ">=", start_value.strftime(db_format)), (field_name, "<", end_value.strftime(db_format))],
+                "range": {
+                    original_spec: {
+                        "from": start_value.strftime(db_format),
+                        "to": end_value.strftime(db_format),
+                    }
+                },
+                "sort_key": start_value,
+            }
+
+        return {
+            "result_key": original_spec,
+            "result_value": raw_value,
+            "domain": [(field_name, "=", raw_value or False)],
+            "sort_key": raw_value if raw_value is not False else "",
+        }
+
+    def _read_group_external(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
+        groupby = [groupby] if isinstance(groupby, str) else (groupby or [])
+        group_specs = self._normalize_groupby(groupby, lazy=lazy)
+        if not group_specs:
+            return [], 0
+
+        needed_fields = list({spec.split(":")[0] for _, spec in group_specs})
+        rows = self.search_read(domain or [], needed_fields, 0, None, orderby)
+
+        groups = OrderedDict()
+        for row in rows:
+            key_parts = []
+            group_payload = []
+            for original_spec, normalized_spec in group_specs:
+                payload = self._get_groupby_value(row, original_spec, normalized_spec)
+                key_parts.append(payload["sort_key"])
+                group_payload.append(payload)
+            key = tuple(key_parts)
+            if key not in groups:
+                group_row = {payload["result_key"]: payload["result_value"] for payload in group_payload}
+                group_row["__domain"] = expression.AND([domain or [], sum((payload["domain"] for payload in group_payload), [])])
+                group_row["__context"] = {"group_by": groupby[1:]} if lazy and len(groupby) > 1 else {}
+                if any(payload.get("range") for payload in group_payload):
+                    combined_range = {}
+                    for payload in group_payload:
+                        combined_range.update(payload.get("range") or {})
+                    group_row["__range"] = combined_range
+                group_row["__count"] = 0
+                if len(group_payload) == 1:
+                    group_row[f"{group_payload[0]['result_key'].split(':')[0]}_count"] = 0
+                groups[key] = group_row
+            groups[key]["__count"] += 1
+            if len(group_payload) == 1:
+                count_key = f"{group_payload[0]['result_key'].split(':')[0]}_count"
+                groups[key][count_key] = groups[key]["__count"]
+
+        grouped_rows = list(groups.values())
+        total_length = len(grouped_rows)
+        if offset:
+            grouped_rows = grouped_rows[offset:]
+        if limit:
+            grouped_rows = grouped_rows[:limit]
+        return grouped_rows, total_length
+
     def _table_query(self):
         """Return empty query since we handle data fetching manually"""
         return """
@@ -706,48 +1047,18 @@ class G2PChangeLogView(models.Model):
 
     @api.model
     def _read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
-        """Override _read_group to prevent database queries and return empty results"""
-        return []
+        groups, _total = self._read_group_external(domain, [], groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)
+        return groups
 
-    # Reuse same domain parser as Line model
-    def _domain_to_sql(self, domain):
-        """Convert Odoo domain to SQL WHERE clause"""
-        if not domain:
-            return "", {}
+    @api.model
+    def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
+        groups, _total = self._read_group_external(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)
+        return groups
 
-        where_conditions = []
-        params = {}
-        param_counter = 0
-
-        for clause in domain:
-            if len(clause) == 3:
-                field, operator, value = clause
-                param_name = f"param_{param_counter}"
-                param_counter += 1
-
-                if operator == '=':
-                    where_conditions.append(f"al.{field} = %({param_name})s")
-                elif operator == '!=':
-                    where_conditions.append(f"al.{field} != %({param_name})s")
-                elif operator == 'like':
-                    where_conditions.append(f"al.{field} LIKE %({param_name})s")
-                elif operator == 'ilike':
-                    where_conditions.append(f"al.{field} ILIKE %({param_name})s")
-                elif operator == 'in':
-                    where_conditions.append(f"al.{field} = ANY(%({param_name})s)")
-                elif operator == '>':
-                    where_conditions.append(f"al.{field} > %({param_name})s")
-                elif operator == '<':
-                    where_conditions.append(f"al.{field} < %({param_name})s")
-                elif operator == '>=':
-                    where_conditions.append(f"al.{field} >= %({param_name})s")
-                elif operator == '<=':
-                    where_conditions.append(f"al.{field} <= %({param_name})s")
-
-                params[param_name] = value
-
-        where_clause = "WHERE " + " AND ".join(where_conditions) if where_conditions else ""
-        return where_clause, params
+    @api.model
+    def web_read_group(self, domain, fields, groupby, limit=None, offset=0, orderby=False, lazy=True):
+        groups, total = self._read_group_external(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)
+        return {"groups": groups, "length": total}
 
     # ---------------------------------------
     # WEB INTERFACE METHODS
@@ -764,10 +1075,11 @@ class G2PChangeLogView(models.Model):
         try:
             # Get records using our custom search_read
             records = self.search_read(domain, fields, offset, limit, order)
+            total_count = self.search_count(domain)
 
             # Format the result as expected by web interface
             result = {
-                'length': len(records) + offset if records else 0,
+                'length': total_count,
                 'records': records,
             }
 
@@ -783,6 +1095,25 @@ class G2PChangeLogView(models.Model):
             _logger.error(f"❌ Traceback: {traceback.format_exc()}")
             return {'length': 0, 'records': []}
 
+    def export_data(self, fields_to_export):
+        if not (self.env.is_admin() or self.env.user.has_group('base.group_allow_export')):
+            raise UserError(_("You don't have the rights to export data. Please contact an Administrator."))
+
+        import_compat = self.env.context.get("import_compat", False)
+        rows = self.read(fields_to_export)
+        return {
+            "datas": [
+                [
+                    _flatten_export_value(
+                        row.get("id") if field_name in (".id", "id") else row.get(field_name),
+                        import_compat=import_compat,
+                    )
+                    for field_name in fields_to_export
+                ]
+                for row in rows
+            ]
+        }
+
     # ---------------------------------------
     # SEARCH + READ COMBINED
     # ---------------------------------------
@@ -794,12 +1125,7 @@ class G2PChangeLogView(models.Model):
 
         where_clause, params = self._domain_to_sql(domain or [])
 
-        # ORDER BY
-        if order:
-            order_parts = order.split()[0]
-            order_clause = f"ORDER BY al.{order_parts}"
-        else:
-            order_clause = "ORDER BY al.create_date DESC"
+        order_clause = _build_sql_order_clause(order, self._sql_field_map(), "al.create_date DESC")
 
         # MAIN SQL
         sql = f"""
@@ -872,13 +1198,7 @@ class G2PChangeLogView(models.Model):
             # Build WHERE clause from domain
             where_clause, params = self._domain_to_sql(domain or [])
 
-            # Build ORDER BY clause
-            order_clause = ""
-            if order:
-                order_parts = order.split()[0]
-                order_clause = f"ORDER BY al.{order_parts}"
-            else:
-                order_clause = "ORDER BY al.create_date DESC"
+            order_clause = _build_sql_order_clause(order, self._sql_field_map(), "al.create_date DESC")
 
             # Build the query
             query = f"""
@@ -1297,6 +1617,222 @@ class G2PChangeLogLineView(models.Model):
         """Get audit database manager"""
         return self.env['g2p.change.log.database.manager']
 
+    def _hydrate_field_metadata(self, row):
+        row_dict = dict(row)
+        field_id = row_dict.get("field_id")
+        if field_id and (not row_dict.get("field_name") or not row_dict.get("field_description")):
+            field_record = self.env["ir.model.fields"].browse(field_id)
+            if field_record.exists():
+                row_dict["field_name"] = row_dict.get("field_name") or field_record.name
+                row_dict["field_description"] = (
+                    row_dict.get("field_description") or field_record.field_description
+                )
+        return row_dict
+
+    def _sql_field_map(self):
+        return {
+            "id": "ll.id",
+            "log_id": "ll.log_id",
+            "field_id": "ll.field_id",
+            "field_name": "ll.field_name",
+            "field_description": "ll.field_description",
+            "old_value": "ll.old_value",
+            "new_value": "ll.new_value",
+            "old_value_text": "ll.old_value_text",
+            "new_value_text": "ll.new_value_text",
+            "create_date": "ll.create_date",
+        }
+
+    def _field_ids_for_text_search(self, value):
+        return self.env["ir.model.fields"].sudo().search(
+            ["|", ("name", "ilike", value), ("field_description", "ilike", value)]
+        ).ids
+
+    def _log_ids_for_text_search(self, value):
+        query = """
+            SELECT id
+            FROM g2p_change_log
+            WHERE name ILIKE %(term)s
+               OR model_name ILIKE %(term)s
+               OR model_model ILIKE %(term)s
+        """
+        rows = self._get_audit_db_manager().execute_audit_query(query, {"term": f"%{value}%"}, fetch=True)
+        return [row["id"] for row in rows] if rows else []
+
+    def _domain_leaf_to_sql(self, field, operator, value, add_param):
+        field = (field or "").split(".")[0]
+        value = _normalize_domain_value(value)
+        field_map = self._sql_field_map()
+
+        if field == "display_name":
+            return f"(ll.field_description ILIKE {add_param(f'%{value}%')})"
+
+        if field == "log_id" and isinstance(value, str) and operator in {"like", "ilike", "not like", "not ilike", "=like", "=ilike"}:
+            log_ids = self._log_ids_for_text_search(value)
+            positive = operator in {"like", "ilike", "=like", "=ilike"}
+            if not log_ids:
+                return _domain_truthy_sql(not positive)
+            placeholder = add_param(log_ids)
+            return f"(ll.log_id = ANY({placeholder}))" if positive else f"(NOT (ll.log_id = ANY({placeholder})))"
+
+        if field == "field_id" and isinstance(value, str) and operator in {"like", "ilike", "not like", "not ilike", "=like", "=ilike"}:
+            field_ids = self._field_ids_for_text_search(value)
+            positive = operator in {"like", "ilike", "=like", "=ilike"}
+            if not field_ids:
+                return _domain_truthy_sql(not positive)
+            placeholder = add_param(field_ids)
+            return f"(ll.field_id = ANY({placeholder}))" if positive else f"(NOT (ll.field_id = ANY({placeholder})))"
+
+        sql_field = field_map.get(field)
+        if not sql_field:
+            return None
+
+        if operator == "=?":
+            return "TRUE" if value in (False, None, "") else f"({sql_field} = {add_param(value)})"
+
+        if operator in {"=", "!="} and value in (False, None):
+            return f"({sql_field} IS {'NOT ' if operator == '!=' else ''}NULL)"
+
+        if operator in {"in", "not in"}:
+            values = value or []
+            values = [_normalize_domain_value(item) for item in values]
+            if not values:
+                return _domain_truthy_sql(operator == "not in")
+            placeholder = add_param(values)
+            comparator = "!= ALL" if operator == "not in" else "= ANY"
+            return f"({sql_field} {comparator}({placeholder}))"
+
+        if operator in {"like", "ilike", "not like", "not ilike", "=like", "=ilike"}:
+            comparator = {
+                "like": "LIKE",
+                "ilike": "ILIKE",
+                "not like": "NOT LIKE",
+                "not ilike": "NOT ILIKE",
+                "=like": "LIKE",
+                "=ilike": "ILIKE",
+            }[operator]
+            placeholder = add_param(str(value) if operator in {"=like", "=ilike"} else f"%{value}%")
+            joiner = " OR " if not comparator.startswith("NOT ") else " AND "
+            expression_sql = f"CAST({sql_field} AS TEXT)" if field in {"id", "log_id", "field_id"} else sql_field
+            return "(" + joiner.join([f"{expression_sql} {comparator} {placeholder}"]) + ")"
+
+        comparator = {
+            "=": "=",
+            "!=": "!=",
+            ">": ">",
+            "<": "<",
+            ">=": ">=",
+            "<=": "<=",
+        }.get(operator)
+        if comparator:
+            return f"({sql_field} {comparator} {add_param(value)})"
+        return None
+
+    def _domain_to_sql(self, domain):
+        return _compile_sql_domain(domain, self._domain_leaf_to_sql)
+
+    def _normalize_groupby(self, groupby, lazy=True):
+        annoted_groupby = self._read_group_get_annoted_groupby(groupby, lazy=lazy)
+        return list(annoted_groupby.items())
+
+    def _get_groupby_value(self, row, original_spec, normalized_spec):
+        field_name = normalized_spec.split(":")[0]
+        granularity = normalized_spec.split(":")[1] if ":" in normalized_spec else None
+        field = self._fields[field_name]
+        raw_value = row.get(field_name)
+
+        if field.type == "many2one":
+            value_id = raw_value[0] if isinstance(raw_value, tuple) else raw_value
+            value_label = raw_value[1] if isinstance(raw_value, tuple) and len(raw_value) > 1 else self._get_many2one_display_name(field_name, value_id) if value_id else False
+            return {
+                "result_key": original_spec,
+                "result_value": (value_id, value_label) if value_id else False,
+                "domain": [(field_name, "=", value_id or False)],
+                "sort_key": value_label or "",
+            }
+
+        if field.type in {"date", "datetime"}:
+            if not raw_value:
+                return {
+                    "result_key": original_spec,
+                    "result_value": False,
+                    "domain": [(field_name, "=", False)],
+                    "range": {},
+                    "sort_key": "",
+                }
+            dt_value = fields.Datetime.to_datetime(raw_value) if isinstance(raw_value, str) else raw_value
+            dt_value = dt_value if isinstance(dt_value, datetime) else datetime.combine(dt_value, time.min)
+            start_value = _period_start(dt_value, granularity or "month")
+            end_value = _period_end(start_value, granularity or "month")
+            db_format = "%Y-%m-%d %H:%M:%S" if field.type == "datetime" else "%Y-%m-%d"
+            return {
+                "result_key": original_spec,
+                "result_value": _format_period_label(start_value, granularity or "month"),
+                "domain": [(field_name, ">=", start_value.strftime(db_format)), (field_name, "<", end_value.strftime(db_format))],
+                "range": {
+                    original_spec: {
+                        "from": start_value.strftime(db_format),
+                        "to": end_value.strftime(db_format),
+                    }
+                },
+                "sort_key": start_value,
+            }
+
+        return {
+            "result_key": original_spec,
+            "result_value": raw_value,
+            "domain": [(field_name, "=", raw_value or False)],
+            "sort_key": raw_value if raw_value is not False else "",
+        }
+
+    def _read_group_external(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
+        groupby = [groupby] if isinstance(groupby, str) else (groupby or [])
+        log_id = self._extract_log_id(domain)
+        if log_id:
+            domain = expression.AND([domain or [], [("log_id", "=", log_id)]])
+
+        group_specs = self._normalize_groupby(groupby, lazy=lazy)
+        if not group_specs:
+            return [], 0
+
+        needed_fields = list({spec.split(":")[0] for _, spec in group_specs})
+        rows = self.search_read(domain or [], needed_fields, 0, None, orderby)
+
+        groups = OrderedDict()
+        for row in rows:
+            key_parts = []
+            group_payload = []
+            for original_spec, normalized_spec in group_specs:
+                payload = self._get_groupby_value(row, original_spec, normalized_spec)
+                key_parts.append(payload["sort_key"])
+                group_payload.append(payload)
+            key = tuple(key_parts)
+            if key not in groups:
+                group_row = {payload["result_key"]: payload["result_value"] for payload in group_payload}
+                group_row["__domain"] = expression.AND([domain or [], sum((payload["domain"] for payload in group_payload), [])])
+                group_row["__context"] = {"group_by": groupby[1:]} if lazy and len(groupby) > 1 else {}
+                if any(payload.get("range") for payload in group_payload):
+                    combined_range = {}
+                    for payload in group_payload:
+                        combined_range.update(payload.get("range") or {})
+                    group_row["__range"] = combined_range
+                group_row["__count"] = 0
+                if len(group_payload) == 1:
+                    group_row[f"{group_payload[0]['result_key'].split(':')[0]}_count"] = 0
+                groups[key] = group_row
+            groups[key]["__count"] += 1
+            if len(group_payload) == 1:
+                count_key = f"{group_payload[0]['result_key'].split(':')[0]}_count"
+                groups[key][count_key] = groups[key]["__count"]
+
+        grouped_rows = list(groups.values())
+        total_length = len(grouped_rows)
+        if offset:
+            grouped_rows = grouped_rows[offset:]
+        if limit:
+            grouped_rows = grouped_rows[:limit]
+        return grouped_rows, total_length
+
     def _table_query(self):
         """Return empty query since we handle data fetching manually"""
         return """
@@ -1316,9 +1852,8 @@ class G2PChangeLogLineView(models.Model):
 
     @api.model
     def _read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
-        """Override _read_group to prevent database queries and return empty results"""
-        # _logger.info(f"🚫 _read_group called with groupby: {groupby} - returning empty to prevent grouping")
-        return []
+        groups, _total = self._read_group_external(domain, [], groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)
+        return groups
 
     # ---------------------------------------
     # SEARCH
@@ -1337,19 +1872,11 @@ class G2PChangeLogLineView(models.Model):
             # _logger.info(f"🔍 Line SEARCH count={cnt}")
             return cnt
 
-        order_clause = ""
-        if order:
-            order_parts = order.split(',')[0].strip().split()
-            if order_parts:
-                field = order_parts[0]
-                direction = order_parts[1].upper() if len(order_parts) > 1 else "ASC"
-                order_clause = f"ORDER BY {field} {direction}"
-        else:
-            order_clause = "ORDER BY create_date DESC"
+        order_clause = _build_sql_order_clause(order, self._sql_field_map(), "ll.create_date DESC")
 
         query = f"""
-            SELECT id
-            FROM g2p_change_log_line
+            SELECT ll.id
+            FROM g2p_change_log_line ll
             {where_clause}
             {order_clause}
         """
@@ -1364,49 +1891,15 @@ class G2PChangeLogLineView(models.Model):
         # _logger.info(f"🔍 Line SEARCH returning ids: {ids}")
         return self.browse(ids)
 
+    @api.model
     def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
-        """Override read_group to prevent grouping entirely"""
-        # _logger.info(f"🚫 read_group called with groupby: {groupby} - returning empty to prevent grouping")
-        return []
+        groups, _total = self._read_group_external(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)
+        return groups
 
-    def _domain_to_sql(self, domain):
-        """Convert Odoo domain to SQL WHERE clause"""
-        if not domain:
-            return "", {}
-
-        where_conditions = []
-        params = {}
-        param_counter = 0
-
-        for clause in domain:
-            if len(clause) == 3:
-                field, operator, value = clause
-                param_name = f"param_{param_counter}"
-                param_counter += 1
-
-                if operator == '=':
-                    where_conditions.append(f"{field} = %({param_name})s")
-                elif operator == '!=':
-                    where_conditions.append(f"{field} != %({param_name})s")
-                elif operator == 'like':
-                    where_conditions.append(f"{field} LIKE %({param_name})s")
-                elif operator == 'ilike':
-                    where_conditions.append(f"{field} ILIKE %({param_name})s")
-                elif operator == 'in':
-                    where_conditions.append(f"{field} = ANY(%({param_name})s)")
-                elif operator == '>':
-                    where_conditions.append(f"{field} > %({param_name})s")
-                elif operator == '<':
-                    where_conditions.append(f"{field} < %({param_name})s")
-                elif operator == '>=':
-                    where_conditions.append(f"{field} >= %({param_name})s")
-                elif operator == '<=':
-                    where_conditions.append(f"{field} <= %({param_name})s")
-
-                params[param_name] = value
-
-        where_clause = "WHERE " + " AND ".join(where_conditions) if where_conditions else ""
-        return where_clause, params
+    @api.model
+    def web_read_group(self, domain, fields, groupby, limit=None, offset=0, orderby=False, lazy=True):
+        groups, total = self._read_group_external(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)
+        return {"groups": groups, "length": total}
 
     def _extract_log_id(self, domain):
         """Get log_id from context or domain"""
@@ -1445,24 +1938,15 @@ class G2PChangeLogLineView(models.Model):
             where_clause, params = self._domain_to_sql(domain or [])
 
             # Build ORDER BY clause - simple approach
-            order_clause = ""
-            if order:
-                # Simple order parsing - just take the first field
-                order_parts = order.split(',')[0].strip().split()
-                if len(order_parts) >= 1:
-                    field = order_parts[0]
-                    direction = "DESC" if len(order_parts) > 1 and order_parts[1].upper() == "DESC" else "ASC"
-                    order_clause = f"ORDER BY {field} {direction}"
-            else:
-                order_clause = "ORDER BY create_date DESC"
+            order_clause = _build_sql_order_clause(order, self._sql_field_map(), "ll.create_date DESC")
 
             # Build the query
             query = f"""
                 SELECT
-                    id, log_id, field_id, field_name, field_description,
-                    old_value, new_value, old_value_text, new_value_text,
-                    create_date
-                FROM g2p_change_log_line
+                    ll.id, ll.log_id, ll.field_id, ll.field_name, ll.field_description,
+                    ll.old_value, ll.new_value, ll.old_value_text, ll.new_value_text,
+                    ll.create_date
+                FROM g2p_change_log_line ll
                 {where_clause}
                 {order_clause}
             """
@@ -1483,6 +1967,7 @@ class G2PChangeLogLineView(models.Model):
             # Convert result to match Odoo's expected format
             records = []
             for row in result:
+                row = self._hydrate_field_metadata(row)
                 record = {'id': row.get('id')}
                 # Add all requested fields
                 for field_name in (fields or ['id', 'log_id', 'field_name', 'field_description', 'old_value_text', 'new_value_text', 'create_date']):
@@ -1521,7 +2006,7 @@ class G2PChangeLogLineView(models.Model):
 
         for row in rows or []:
             r = {}
-            row_dict = dict(row)
+            row_dict = self._hydrate_field_metadata(row)
 
             row_id = row_dict.get('id')
             if row_id is not None:
@@ -1618,10 +2103,11 @@ class G2PChangeLogLineView(models.Model):
         try:
             # Get records using our custom search_read
             records = self.search_read(domain, fields, offset, limit, order)
+            total_count = self.search_count(domain)
 
             # Format the result as expected by web interface
             result = {
-                'length': len(records) + offset if records else 0,
+                'length': total_count,
                 'records': records,
             }
 
@@ -1636,6 +2122,25 @@ class G2PChangeLogLineView(models.Model):
             _logger.error(f"❌ web_search_read failed: {e}")
             _logger.error(f"❌ Traceback: {traceback.format_exc()}")
             return {'length': 0, 'records': []}
+
+    def export_data(self, fields_to_export):
+        if not (self.env.is_admin() or self.env.user.has_group('base.group_allow_export')):
+            raise UserError(_("You don't have the rights to export data. Please contact an Administrator."))
+
+        import_compat = self.env.context.get("import_compat", False)
+        rows = self.read(fields_to_export)
+        return {
+            "datas": [
+                [
+                    _flatten_export_value(
+                        row.get("id") if field_name in (".id", "id") else row.get(field_name),
+                        import_compat=import_compat,
+                    )
+                    for field_name in fields_to_export
+                ]
+                for row in rows
+            ]
+        }
 
     # @api.model
     # def search(self, domain=None, offset=0, limit=None, order=None, count=False):
@@ -1735,9 +2240,24 @@ class G2PChangeLogLineView(models.Model):
         """Get display name for many2one fields"""
         try:
             if field_name == 'log_id':
-                # Get log name from g2p.change.log.view
-                log_record = self.env['g2p.change.log.view'].browse(record_id)
-                return log_record.name if log_record.exists() else f"Log {record_id}"
+                rows = self._get_audit_db_manager().execute_audit_query(
+                    """
+                        SELECT name, model_name, res_id
+                        FROM g2p_change_log
+                        WHERE id = %(log_id)s
+                        LIMIT 1
+                    """,
+                    {"log_id": record_id},
+                    fetch=True,
+                )
+                if rows:
+                    row = rows[0]
+                    return row.get("name") or (
+                        f"{row.get('model_name')} {row.get('res_id')}"
+                        if row.get("model_name") and row.get("res_id")
+                        else f"Log {record_id}"
+                    )
+                return f"Log {record_id}"
             elif field_name == 'field_id':
                 # Get field name from ir.model.fields
                 field_record = self.env['ir.model.fields'].browse(record_id)
@@ -1784,7 +2304,7 @@ class G2PChangeLogLineView(models.Model):
             # Build the query
             query = f"""
                 SELECT COUNT(*) as count
-                FROM g2p_change_log_line
+                FROM g2p_change_log_line ll
                 {where_clause}
             """
 

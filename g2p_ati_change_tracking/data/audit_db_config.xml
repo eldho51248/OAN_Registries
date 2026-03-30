@@ -23,7 +23,7 @@
         </record>
 
         <record id="audit_db_password" model="ir.config_parameter">
-            <field name="key"></field>
+            <field name="key">log_db.db.password</field>
             <field name="value"></field>
         </record>
     </data>

@@ -45,21 +45,8 @@
 
 
 
-<xpath expr="//div[hasclass('nav-user')]" position="inside">
-  <div class="nav-logged-in-user-labels d-sm-none nav-user_grid_item2"><a
-                    style="color:black !important;"
-                    href="/serviceprovider/myprofile"
-                    t-esc="env.user.name"
-                /></div>
-  <div style="font-size: 13px;" class="logout-div nav-user_grid_item5 text-black fw-bold"><a
-                    href="/web/session/logout?redirect=/serviceprovider/login"
-                    class="text-black fw-bold link"
-                >Logout</a></div>
-</xpath>
-
-
 <xpath expr="//div[hasclass('nav-user')]" position="attributes">
-    <attribute name="class">nav-user fade-in-nav-user </attribute>
+    <attribute name="class">nav-user fade-in-nav-user ati-topbar-actions</attribute>
     <attribute name="id">nav-user-resp</attribute>
 </xpath>
 
@@ -67,12 +54,7 @@
 
 
 <xpath expr="//div[hasclass('language-dropdown')]" position="attributes">
-  <attribute name="class">language-dropdown label_and_row nav-user_grid_item4 mb-3 language-box</attribute>
-</xpath>
-
-
-<xpath expr="//div[hasclass('language-dropdown')]/button" position="before">
-  <div class="nav-user-labels">Language</div>
+  <attribute name="class">language-dropdown language-box ati-topbar-language</attribute>
 </xpath>
 
 
@@ -80,7 +62,19 @@
 
 
 <xpath expr="//div[hasclass('nav-user')]/div[hasclass('user')]" position="attributes">
-    <attribute name="class">dropdown user nav-user_grid_item1</attribute>
+    <attribute name="class">dropdown user ati-topbar-user</attribute>
+</xpath>
+
+<xpath expr="//div[hasclass('nav-user')]/div[hasclass('user')]/a" position="inside">
+    <span class="ati-topbar-user-name" t-esc="env.user.name or 'User'" />
+</xpath>
+
+<xpath expr="//div[hasclass('nav-user')]/div[hasclass('user')]//a[@href='/portal/myprofile']" position="attributes">
+    <attribute name="href">/serviceprovider/myprofile</attribute>
+</xpath>
+
+<xpath expr="//div[hasclass('nav-user')]/div[hasclass('user')]//a[contains(@href, '/web/session/logout')]" position="attributes">
+    <attribute name="href">/web/session/logout?redirect=/serviceprovider/login</attribute>
 </xpath>
 
 
@@ -108,7 +102,7 @@
 </xpath>
 
  <xpath expr="//body" position="attributes">
-    <attribute name="class">fade-in-ati</attribute>
+    <attribute name="class">fade-in-ati ati-sp-portal</attribute>
     <attribute name="id">content</attribute>
     <attribute name="style">opacity:0;</attribute>
  </xpath>

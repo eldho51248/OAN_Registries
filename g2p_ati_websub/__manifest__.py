@@ -13,10 +13,18 @@
     ],
     "external_dependencies": {},
     "data": [
+        "data/queue_job_cron.xml",
         "security/ir.model.access.csv",
+        "views/datashare_config_websub_ati.xml",
+        "views/data_field_views.xml",
+        "views/res_partner_websub_views.xml",
     ],
     "assets": {
-        "web.assets_backend": [],
+        "web.assets_backend": [
+            "/g2p_ati_websub/static/src/js/data_field_widgets.js",
+            "/g2p_ati_websub/static/src/xml/data_field_widgets.xml",
+            "/g2p_ati_websub/static/src/scss/data_field_widgets.scss",
+        ],
     },
     "demo": [],
     "images": [],

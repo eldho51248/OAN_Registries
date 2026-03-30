@@ -699,8 +699,8 @@ input.is-invalid {
 }
 
 .header-container .nav .main-logo {
-    width: 175px;
-    height: 81px;
+    width: auto;
+    max-height: 60px;
     margin-top: 0px !important;
     margin-bottom: 0px !important;
     /* opacity: 1; */
@@ -719,8 +719,9 @@ input.is-invalid {
 .header-container .nav {
     top: 0px;
     left: 0px;
-    width: 1313px !important;
-    height: auto !important;
+    width: min(1400px, calc(100% - 24px)) !important;
+    min-height: 50px;
+    padding: 0.16rem 0.65rem;
     border: none;
     background: #ffffff 0% 0% no-repeat padding-box;
     /* display: flex; */
@@ -1450,5 +1451,543 @@ hr {
     }
     .custom-dashboard-background .card:last-child {
         margin-bottom: 40px; /* Extra margin for the last card */
+    }
+}
+
+/* -------------------------------------------------------------------------- */
+/* ATI Service Provider Portal shell refresh (header/footer + mobile nav)     */
+/* -------------------------------------------------------------------------- */
+body.ati-sp-portal {
+    background: linear-gradient(180deg, #f5f7f8 0%, #f2f4f7 100%);
+}
+
+body.ati-sp-portal .header-container {
+    padding-bottom: 0;
+}
+
+body.ati-sp-portal .header-container .nav {
+    width: min(1400px, calc(100% - 24px)) !important;
+    min-height: 50px;
+    margin: 0 auto;
+    padding: 0.16rem 0.65rem;
+    border: 1px solid #e2e8e4;
+    border-top: none;
+    border-radius: 0 0 14px 14px;
+    box-shadow: 0 10px 24px rgba(21, 46, 32, 0.08);
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(4px);
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+body.ati-sp-portal .header-container .nav:hover {
+    box-shadow: 0 12px 30px rgba(21, 46, 32, 0.12);
+}
+
+body.ati-sp-portal .header-container .nav .main-logo {
+    width: auto;
+    max-height: 60px;
+    height: auto;
+    transition: transform 0.2s ease;
+}
+
+body.ati-sp-portal .header-container .nav .main-logo:hover {
+    transform: translateY(-1px);
+}
+
+body.ati-sp-portal .header-container .nav .nav-user {
+    display: flex !important;
+    align-items: center;
+    gap: 0.45rem;
+    position: relative;
+    top: auto;
+    width: auto;
+    padding: 0;
+    background: transparent;
+}
+
+body.ati-sp-portal #hamburger-icon {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid #d8e2db;
+    border-radius: 8px;
+    background: #fff;
+    color: #1f2d23;
+    font-size: 1.2rem;
+    transition: all 0.2s ease;
+}
+
+body.ati-sp-portal #hamburger-icon.active {
+    background: #009147;
+    border-color: #009147;
+    color: #fff;
+}
+
+body.ati-sp-portal .nav-user .language-box .button {
+    height: 30px;
+    margin-left: 0;
+    padding: 0 10px;
+    border-radius: 999px;
+    border: 1px solid #d4ddd7;
+    background: #fff;
+    color: #2f3d34;
+    transition: all 0.2s ease;
+}
+
+body.ati-sp-portal .nav-user .language-box .button:hover {
+    border-color: #009147;
+    color: #009147;
+}
+
+body.ati-sp-portal .nav-user .user-image {
+    border: 2px solid #e5ece8;
+    width: 34px;
+    height: 34px;
+    transition: all 0.2s ease;
+}
+
+body.ati-sp-portal .nav-user .user-image:hover {
+    border-color: #009147;
+    transform: translateY(-1px);
+}
+
+body.ati-sp-portal .dropdown-menu.user-block {
+    border: 1px solid #e3e8e4;
+    border-radius: 12px;
+    box-shadow: 0 10px 24px rgba(21, 46, 32, 0.12);
+    padding: 0.35rem 0;
+    animation: atiDropdownFade 0.22s ease;
+}
+
+body.ati-sp-portal .dropdown-menu.user-block .link {
+    transition: color 0.2s ease;
+}
+
+body.ati-sp-portal .dropdown-menu.user-block .link:hover {
+    color: #009147 !important;
+}
+
+body.ati-sp-portal .footer-container {
+    padding-top: 14px !important;
+    border-top: 1px solid #e2e8e4;
+    background: #fff;
+    box-shadow: 0 -8px 22px rgba(21, 46, 32, 0.06);
+}
+
+body.ati-sp-portal .footer-container .nav {
+    width: min(1400px, calc(100% - 24px)) !important;
+    margin: 0 auto;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+body.ati-sp-portal .footer-container .list-container {
+    margin: 0;
+    padding-left: 0 !important;
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    flex-wrap: wrap;
+}
+
+body.ati-sp-portal .footer-container .list-container .link {
+    color: #2f3d34;
+    transition: color 0.2s ease;
+}
+
+body.ati-sp-portal .footer-container .list-container .link:hover {
+    color: #009147;
+}
+
+@keyframes atiDropdownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    body.ati-sp-portal .header-container .nav {
+        width: calc(100% - 12px) !important;
+        min-height: 46px;
+        padding: 0.1rem 0.45rem;
+        border-radius: 0 0 12px 12px;
+    }
+
+    body.ati-sp-portal .header-container .nav .main-logo {
+        max-height: 36px;
+    }
+
+    body.ati-sp-portal .footer-container {
+        height: auto !important;
+        padding-top: 12px !important;
+        padding-bottom: 8px;
+    }
+
+    body.ati-sp-portal .footer-container .nav {
+        width: calc(100% - 12px) !important;
+        justify-content: center;
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    body.ati-sp-portal #hamburger-icon {
+        display: inline-flex !important;
+        cursor: pointer;
+        margin-left: auto;
+    }
+
+    body.ati-sp-portal .header-container .nav .nav-user {
+        display: grid !important;
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 0;
+        right: 0;
+        width: auto;
+        padding: 0.85rem 0.9rem;
+        border: 1px solid #dce5de;
+        border-radius: 12px;
+        box-shadow: 0 14px 26px rgba(21, 46, 32, 0.14);
+        background: #fff;
+        opacity: 0;
+        transform: translateY(-8px);
+        pointer-events: none;
+        visibility: hidden;
+        transition: opacity 0.22s ease, transform 0.22s ease;
+        z-index: 30;
+    }
+
+    body.ati-sp-portal .header-container .nav #hamburger-icon.active ~ .nav-user {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+        visibility: visible;
+    }
+
+    body.ati-sp-portal .nav-user .language-box {
+        height: auto;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    body.ati-sp-portal .nav-user-labels {
+        display: block !important;
+        font-size: 0.76rem;
+        color: #6c757d;
+        margin-bottom: 2px;
+    }
+
+    body.ati-sp-portal .nav-logged-in-user-labels a {
+        font-size: 0.92rem;
+        font-weight: 600;
+    }
+
+    body.ati-sp-portal .logout-div {
+        padding-top: 0;
+        margin-top: 2px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.ati-sp-portal .header-container .nav,
+    body.ati-sp-portal .dropdown-menu.user-block,
+    body.ati-sp-portal .header-container .nav .main-logo,
+    body.ati-sp-portal .header-container .nav .nav-user {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* -------------------------------------------------------------------------- */
+/* ATI top header controls refresh                                            */
+/* -------------------------------------------------------------------------- */
+body.ati-sp-portal .nav-user-labels,
+body.ati-sp-portal .logout-div,
+body.ati-sp-portal .nav-logged-in-user-labels {
+    display: none !important;
+}
+
+body.ati-sp-portal .header-container .nav {
+    min-height: 74px;
+    padding: 0.5rem 0.95rem;
+    border-radius: 0 0 22px 22px;
+}
+
+body.ati-sp-portal .header-container .nav .main-logo {
+    max-height: 52px;
+}
+
+body.ati-sp-portal .ati-topbar-actions {
+    gap: 0.6rem;
+}
+
+body.ati-sp-portal .ati-topbar-language,
+body.ati-sp-portal .ati-topbar-notifications,
+body.ati-sp-portal .ati-topbar-user {
+    margin: 0 !important;
+    flex: 0 0 auto;
+}
+
+body.ati-sp-portal .ati-topbar-language .button,
+body.ati-sp-portal .ati-topbar-user > a,
+body.ati-sp-portal .ati-topbar-notifications #show_notification {
+    min-height: 42px;
+    border: 1px solid #d8e2db;
+    border-radius: 999px;
+    background: #fff;
+    color: #2c3934;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0 0.9rem;
+    box-shadow: 0 6px 16px rgba(21, 46, 32, 0.08);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+body.ati-sp-portal .ati-topbar-language .button:hover,
+body.ati-sp-portal .ati-topbar-user > a:hover,
+body.ati-sp-portal .ati-topbar-notifications #show_notification:hover,
+body.ati-sp-portal .ati-topbar-language .button:focus,
+body.ati-sp-portal .ati-topbar-user > a:focus,
+body.ati-sp-portal .ati-topbar-notifications #show_notification:focus {
+    border-color: #c7d6ce;
+    box-shadow: 0 10px 20px rgba(21, 46, 32, 0.12);
+    transform: translateY(-1px);
+}
+
+body.ati-sp-portal .ati-topbar-language .button {
+    margin: 0;
+}
+
+body.ati-sp-portal .ati-topbar-language .button span {
+    width: auto;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: #22302e;
+}
+
+body.ati-sp-portal .ati-topbar-language .button::after,
+body.ati-sp-portal .ati-topbar-user > a::after {
+    margin-left: 0.2rem;
+    vertical-align: 0.08rem;
+}
+
+body.ati-sp-portal .ati-topbar-notifications #show_notification {
+    position: relative;
+    width: 42px;
+    min-width: 42px;
+    padding: 0;
+}
+
+body.ati-sp-portal .ati-topbar-notifications #show_notification .request_log {
+    width: auto;
+    height: auto;
+    font-size: 1rem;
+    color: #32403b;
+    line-height: 1;
+}
+
+body.ati-sp-portal .ati-topbar-notifications .notification_number {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    min-width: 18px;
+    height: 18px;
+    margin: 0;
+    padding: 0 0.25rem;
+    border-radius: 999px;
+    background: #d72638;
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: center;
+    box-shadow: 0 0 0 2px #fff;
+}
+
+body.ati-sp-portal .ati-topbar-user > a {
+    padding-left: 0.4rem;
+    padding-right: 0.7rem;
+    text-decoration: none;
+}
+
+body.ati-sp-portal .ati-topbar-user-name {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: #22302e;
+}
+
+body.ati-sp-portal .ati-topbar-user .user-image {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #d9e2dd;
+}
+
+body.ati-sp-portal .ati-topbar-language .dropdown-menu,
+body.ati-sp-portal .dropdown-menu.user-block,
+body.ati-sp-portal .notification_dd {
+    border: 1px solid #e3e8e4;
+    border-radius: 16px;
+    box-shadow: 0 18px 36px rgba(21, 46, 32, 0.14);
+    background: #fff;
+}
+
+body.ati-sp-portal .ati-topbar-language .dropdown-menu {
+    min-width: 170px;
+    margin-top: 0.45rem;
+    padding: 0.35rem;
+}
+
+body.ati-sp-portal .ati-topbar-language .dropdown-item,
+body.ati-sp-portal .dropdown-menu.user-block .link {
+    display: block;
+    padding: 0.68rem 0.82rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #22302e;
+}
+
+body.ati-sp-portal .ati-topbar-language .dropdown-item:hover,
+body.ati-sp-portal .dropdown-menu.user-block .link:hover {
+    background: rgba(0, 145, 71, 0.10);
+    color: #0b7a3b !important;
+}
+
+body.ati-sp-portal .dropdown-menu.user-block {
+    min-width: 220px;
+    margin-top: 0.45rem;
+    padding: 0.35rem;
+}
+
+body.ati-sp-portal .dropdown-menu.user-block ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+body.ati-sp-portal .dropdown-menu.user-block hr {
+    margin: 0.2rem 0;
+    border-top: 1px solid #edf2ee;
+}
+
+body.ati-sp-portal .ati-topbar-dropdown-header {
+    padding: 0.8rem 0.9rem 0.25rem;
+    border-bottom: 1px solid #edf2ee;
+}
+
+body.ati-sp-portal .notification_header_new {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1d2624;
+}
+
+body.ati-sp-portal .notification_dd {
+    top: calc(100% + 8px);
+    left: auto;
+    right: 0;
+    transform: none;
+    min-width: 320px;
+    max-width: min(92vw, 320px);
+    display: none;
+}
+
+body.ati-sp-portal .notification_dd:before {
+    display: none;
+}
+
+body.ati-sp-portal .notification_ul {
+    margin: 0;
+    padding: 0.4rem;
+    list-style: none;
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+body.ati-sp-portal .notification_ul li {
+    margin: 0 0 0.45rem;
+    padding: 0.8rem 0.85rem;
+    border: 1px solid #e8efeb;
+    border-radius: 14px;
+    background: #f9fcfa;
+    display: block;
+}
+
+body.ati-sp-portal .notification_ul li:last-child {
+    margin-bottom: 0;
+}
+
+body.ati-sp-portal .notification_ul li.show_all {
+    padding: 0.2rem 0.1rem 0.05rem;
+    border: 0;
+    background: transparent;
+    text-align: right;
+}
+
+body.ati-sp-portal .notification_ul li .link {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #22302e;
+    word-break: break-word;
+}
+
+body.ati-sp-portal .notification_ul li.show_all .link {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #0a8c46;
+}
+
+@media (max-width: 576px) {
+    body.ati-sp-portal .header-container .nav {
+        min-height: 56px;
+        padding: 0.35rem 0.55rem;
+        border-radius: 0 0 16px 16px;
+    }
+
+    body.ati-sp-portal .header-container .nav .main-logo {
+        max-height: 38px;
+    }
+
+    body.ati-sp-portal .ati-topbar-actions {
+        gap: 0.65rem;
+    }
+
+    body.ati-sp-portal .ati-topbar-language .button,
+    body.ati-sp-portal .ati-topbar-user > a,
+    body.ati-sp-portal .ati-topbar-notifications #show_notification {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    body.ati-sp-portal .ati-topbar-notifications #show_notification {
+        justify-content: center;
+    }
+
+    body.ati-sp-portal .ati-topbar-user-name {
+        max-width: none;
+    }
+
+    body.ati-sp-portal .notification_dd,
+    body.ati-sp-portal .dropdown-menu.user-block,
+    body.ati-sp-portal .ati-topbar-language .dropdown-menu {
+        min-width: 100%;
+        max-width: 100%;
     }
 }

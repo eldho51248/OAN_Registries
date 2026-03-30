@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="g2p_registry_individual.view_individuals_list_tree" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='registration_date']" position="after">
-                <field string="Status" name="edit_state" />
+                <field string="Edit Status" name="edit_state" />
             </xpath>
         </field>
         </record>

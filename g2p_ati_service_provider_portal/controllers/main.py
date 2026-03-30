@@ -22,6 +22,12 @@ _logger = logging.getLogger(__name__)
 
 
 class AtiServiceProviderContorller(G2PregistrationPortalBase):
+    def _get_update_request_model(self):
+        try:
+            return request.env["request"].sudo()
+        except KeyError:
+            return None
+
     @http.route(["/serviceprovider/home"], type="http", auth="user", website=True)
     def portal_home(self, **kwargs):
         # domain = []
@@ -63,8 +69,11 @@ class AtiServiceProviderContorller(G2PregistrationPortalBase):
     @http.route(["/serviceprovider/update/suggests"], type="http", auth="user", website=True)
     def portal_update_suggests(self, **kwargs):
         user_id = request.env.user.id
+        request_model = self._get_update_request_model()
         updte_suggests = (
-            request.env["request"].sudo().search([("enumerator_id", "=", user_id)], order="create_date desc")
+            request_model.search([("enumerator_id", "=", user_id)], order="create_date desc")
+            if request_model
+            else []
         )
         return request.render(
             "g2p_ati_service_provider_portal.ati_update_suggests_template",
@@ -75,10 +84,11 @@ class AtiServiceProviderContorller(G2PregistrationPortalBase):
 
     @http.route(["/get_notifications"], type="http", auth="user", website=True)
     def get_notifications(self, **kwargs):
+        request_model = self._get_update_request_model()
+        if not request_model:
+            return json.dumps([])
         user_id = request.env.user.id
-        notifications = (
-            request.env["request"].sudo().search([("seen", "=", False), ("enumerator_id", "=", user_id)])
-        )
+        notifications = request_model.search([("seen", "=", False), ("enumerator_id", "=", user_id)])
 
         notifications_data = []
         for notif in notifications:
@@ -95,18 +105,20 @@ class AtiServiceProviderContorller(G2PregistrationPortalBase):
 
     @http.route(["/get_notification_count"], type="http", auth="user", website=True, csrf=False)
     def get_notification_count(self, **kwargs):
+        request_model = self._get_update_request_model()
+        if not request_model:
+            return json.dumps([{"count": 0}])
         user_id = request.env.user.id
-        notification_count = (
-            request.env["request"]
-            .sudo()
-            .search_count(
-                [("seen", "=", False), ("status", "=", "newSuggestion"), ("enumerator_id", "=", user_id)]
-            )
+        notification_count = request_model.search_count(
+            [("seen", "=", False), ("status", "=", "newSuggestion"), ("enumerator_id", "=", user_id)]
         )
         return json.dumps([{"count": notification_count}])
 
     @http.route("/mark_notification_seen", type="json", auth="user", csrf=False)
     def mark_notification_seen(self):
+        request_model = self._get_update_request_model()
+        if not request_model:
+            return {"status": "success"}
         json_data = request.httprequest.get_json()
         notification_id = json_data.get("notification_id")
 
@@ -114,7 +126,7 @@ class AtiServiceProviderContorller(G2PregistrationPortalBase):
             return {"status": "error", "message": "Notification ID is missing"}
 
         try:
-            notification = request.env["request"].sudo().browse(int(notification_id))
+            notification = request_model.browse(int(notification_id))
 
         except ValueError:
             return {"status": "error", "message": "Invalid Notification ID"}
@@ -127,10 +139,11 @@ class AtiServiceProviderContorller(G2PregistrationPortalBase):
 
     @http.route(["/set_all_notifications_seen"], type="http", auth="user", website=True, csrf=False)
     def set_all_notifications_seen(self, **kwargs):
+        request_model = self._get_update_request_model()
+        if not request_model:
+            return json.dumps({"status": "success"})
         user_id = request.env.user.id
-        notifications = (
-            request.env["request"].sudo().search([("seen", "=", False), ("enumerator_id", "=", user_id)])
-        )
+        notifications = request_model.search([("seen", "=", False), ("enumerator_id", "=", user_id)])
 
         for notif in notifications:
             notif.seen = True
@@ -139,10 +152,11 @@ class AtiServiceProviderContorller(G2PregistrationPortalBase):
 
     @http.route(["/view_all_notifications"], type="http", auth="user", website=True)
     def view_all_notifications(self, **kwargs):
+        request_model = self._get_update_request_model()
+        if not request_model:
+            return json.dumps({"status": "success"})
         user_id = request.env.user.id
-        notifications = (
-            request.env["request"].sudo().search([("seen", "=", False), ("enumerator_id", "=", user_id)])
-        )
+        notifications = request_model.search([("seen", "=", False), ("enumerator_id", "=", user_id)])
 
         for notif in notifications:
             notif.seen = True

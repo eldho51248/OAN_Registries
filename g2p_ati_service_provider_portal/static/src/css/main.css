@@ -250,7 +250,8 @@ form-group .ssp-login-box .card-body {
     top: 0px;
     left: 0px;
     /* width: 1366px; */
-    height: 90px;
+    height: auto !important;
+    padding: 0.5em !important;
     /* background: #ffffff 0% 0% no-repeat padding-box;
     box-shadow: 0px 4px 5px #0000000d; */
     opacity: 1;
@@ -262,7 +263,7 @@ form-group .ssp-login-box .card-body {
     /* margin-left: 139px;
     margin-right: 152px; */
     width: 1313px;
-    height: 90px;
+    /* height: 90px; */
     border: none;
     background: #ffffff 0% 0% no-repeat padding-box;
     display: flex;
@@ -272,7 +273,7 @@ form-group .ssp-login-box .card-body {
 }
 .header-container .nav .main-logo {
     width: auto;
-    height: 75px;
+    /* height: 75px; */
     /* UI Properties */
     /* margin-top: 16px; */
     /* margin-bottom: 15.77px; */

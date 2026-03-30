@@ -8,41 +8,23 @@
         priority="200"
     >
         <xpath expr="//div[hasclass('search-box')]" position="before">
-            <div class="navbar_right label_and_row nav-user_grid_item3 d-flex">
-  <div class="nav-user-labels">Notifications</div>
-
+            <div class="ati-topbar-notifications">
                 <div class="notifications_button_div">
-                    <button id="show_notification">
+                    <button id="show_notification" type="button" aria-label="Notifications">
                         <p class="notification_number" style="display: none;"><span /></p>
-                        <img
-                            class="request_log"
-                            src="/g2p_ati_service_provider_portal/static/src/img/notification.png"
-                            style="width: 26px; height: 26px;"
-                            alt="Notification"
-                        />
+                        <i class="fa fa-bell-o request_log" aria-hidden="true"></i>
                     </button>
 
                     <div class="notification_dd" id="notification_dd">
-                        <ul class="notification_ul">
+                        <div class="ati-topbar-dropdown-header">
                             <h5 class="notification_header_new">Notifications</h5>
-                            <p class="notification_number" />
-                            <!-- Notifications will be dynamically inserted here by JavaScript -->
-                            <li class="show_all">
-                                <a
-                                    style="margin: 0  auto !important; margin"
-                                    href="#"
-                                    class="mx-auto link"
-                                    id="view_all_notif"
-                                    onclick="viewAllNotifications()"
-                                >View All Notifications</a>
-                            </li>
-                        </ul>
+                        </div>
+                        <ul class="notification_ul"></ul>
                     </div>
                 </div>
             </div>
             <link rel="stylesheet" href="/g2p_ati_service_provider_portal/static/src/css/notification.css" />
             <script src="https://kit.fontawesome.com/b99e675b6e.js" />
-            <script src="https://code.jquery.com/jquery-3.4.1.min.js" />
             <script src="/g2p_ati_service_provider_portal/static/src/js/notification.js" />
         </xpath>
     </template>
