@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <data>
+
+        <!-- Tree View -->
+        <record id="view_crop_registry_tree" model="ir.ui.view">
+            <field name="name">g2p.crop.registry.tree</field>
+            <field name="model">g2p.crop.registry</field>
+            <field name="arch" type="xml">
+                <tree string="Crop Registry">
+                    <field name="zone_name"/>
+<!--                    <field name="woreda_name"/>-->
+<!--                    <field name="kebele_name"/>-->
+<!--                    <field name="kebele_code"/>-->
+                    <field name="land_id"/>
+                    <field name="land_area"/>
+                    <field name="owner_name"/>
+<!--                    <field name="ownership_type"/>-->
+<!--                    <field name="land_certificate"/>-->
+<!--                    <field name="soil_fertility"/>-->
+<!--                    <field name="current_land_use"/>-->
+<!--                    <field name="crop_name"/>-->
+<!--                    <field name="crop_verity"/>-->
+<!--                    <field name="crop_area"/>-->
+<!--                    <field name="crop_season"/>-->
+<!--                    <field name="crop_produce_min"/>-->
+<!--                    <field name="crop_produce_max"/>-->
+<!--                    <field name="crop_wholesale_min"/>-->
+<!--                    <field name="crop_wholesale_max"/>-->
+<!--                    <field name="crop_retail_min"/>-->
+<!--                    <field name="crop_retail_max"/>-->
+<!--                    <field name="crop_volume"/>-->
+<!--                    <field name="live_stock_type"/>-->
+<!--                    <field name="live_stock_number"/>-->
+<!--                    <field name="live_strock_water_source"/>-->
+<!--                    <field name="cultivation_land"/>-->
+<!--                    <field name="cultivation_area"/>-->
+<!--                    <field name="cultivation_crop_name"/>-->
+<!--                    <field name="sown_land"/>-->
+<!--                    <field name="sown_area"/>-->
+<!--                    <field name="sown_crop_name"/>-->
+<!--                    <field name="harvested_land"/>-->
+<!--                    <field name="harvested_area"/>-->
+<!--                    <field name="harvested_crop_name"/>-->
+<!--                    <field name="irrigation_type"/>-->
+<!--                    <field name="surveyor_name"/>-->
+<!--                    <field name="surveyor_fullname"/>-->
+<!--                    <field name="surveyor_mobile_number"/>-->
+<!--                    <field name="supervisor_name"/>-->
+<!--                    <field name="supervisor_fullname"/>-->
+<!--                    <field name="supervisor_mobile_number"/>-->
+<!--                    <field name="first_approvel_status"/>-->
+<!--                    <field name="second_approvel_status"/>-->
+<!--                    <field name="verifier_name"/>-->
+<!--                    <field name="verifier_mobile_number"/>-->
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_g2p_crop_registry_form" model="ir.ui.view">
+            <field name="name">g2p.crop.registry.form</field>
+            <field name="model">g2p.crop.registry</field>
+            <field name="arch" type="xml">
+                <form string="Crop Registry">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="zone_name"/>
+                                <field name="woreda_name"/>
+                                <field name="kebele_name"/>
+                                <field name="kebele_code"/>
+                                <field name="land_id"/>
+                                <field name="land_area"/>
+                                <field name="owner_name"/>
+                                <field name="ownership_type"/>
+                                <field name="land_certificate"/>
+                                <field name="soil_fertility"/>
+                                <field name="current_land_use"/>
+                                <field name="crop_name"/>
+                                <field name="crop_verity"/>
+                                <field name="crop_area"/>
+                                <field name="crop_season"/>
+                                <field name="crop_produce_min"/>
+                                <field name="crop_produce_max"/>
+                                <field name="crop_wholesale_min"/>
+                                <field name="crop_wholesale_max"/>
+                                <field name="crop_retail_min"/>
+                                <field name="crop_retail_max"/>
+                                <field name="crop_volume"/>
+                                <field name="live_stock_type"/>
+                                <field name="live_stock_number"/>
+                            </group>
+                            <group>
+                                <field name="live_strock_water_source"/>
+                                <field name="cultivation_land"/>
+                                <field name="cultivation_area"/>
+                                <field name="cultivation_crop_name"/>
+                                <field name="sown_land"/>
+                                <field name="sown_area"/>
+                                <field name="sown_crop_name"/>
+                                <field name="harvested_land"/>
+                                <field name="harvested_area"/>
+                                <field name="harvested_crop_name"/>
+                                <field name="irrigation_type"/>
+                                <field name="surveyor_name"/>
+                                <field name="surveyor_fullname"/>
+                                <field name="surveyor_mobile_number"/>
+                                <field name="supervisor_name"/>
+                                <field name="supervisor_fullname"/>
+                                <field name="supervisor_mobile_number"/>
+                                <field name="first_approvel_status"/>
+                                <field name="second_approvel_status"/>
+                                <field name="verifier_name"/>
+                                <field name="verifier_mobile_number"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_g2p_crop_registry" model="ir.actions.act_window">
+            <field name="name">Crop Registry</field>
+            <field name="res_model">g2p.crop.registry</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menu -->
+        <menuitem id="g2p_crop_registry_menu_item_id"
+                  name="Crop Registry"/>
+
+        <menuitem
+            id="menu_gn_division"
+            name="Crop Registry"
+            parent="g2p_crop_registry_menu_item_id"
+            action="action_g2p_crop_registry"
+            we
+            sequence="6"
+        />
+
+    </data>
+
+</odoo>
