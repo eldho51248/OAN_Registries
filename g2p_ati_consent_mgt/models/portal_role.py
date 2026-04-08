@@ -32,6 +32,7 @@ class G2PConsentPortalRole(models.Model):
         "user_id",
         string="Portal Users",
     )
+    user_count = fields.Integer(string="Assigned Users", compute="_compute_user_count")
 
     _sql_constraints = [
         (
@@ -40,6 +41,11 @@ class G2PConsentPortalRole(models.Model):
             "Role names must be unique inside the same consent parent.",
         ),
     ]
+
+    @api.depends("user_ids")
+    def _compute_user_count(self):
+        for rec in self:
+            rec.user_count = len(rec.user_ids)
 
     @api.constrains("parent_id", "consent_parent_partner_id")
     def _check_parent_hierarchy(self):

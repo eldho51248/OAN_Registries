@@ -138,7 +138,7 @@
                                         <div class="col-12">
                                             <div class="form-check">
                                                 <input type="checkbox" name="can_manage_hierarchy" class="form-check-input" id="can_manage_hierarchy_create" />
-                                                <label class="form-check-label" for="can_manage_hierarchy_create">Can manage portal users, roles, and hierarchy</label>
+                                                <label class="form-check-label" for="can_manage_hierarchy_create">Can create users and manage roles/hierarchy</label>
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -321,7 +321,7 @@
                                                                         t-att-id="'portal_manage_%s' % portal_user.id"
                                                                         t-att-checked="'checked' if portal_user.consent_portal_can_manage_hierarchy else None"
                                                                     />
-                                                                    <label class="form-check-label" t-att-for="'portal_manage_%s' % portal_user.id">Can manage portal hierarchy</label>
+                                                                    <label class="form-check-label" t-att-for="'portal_manage_%s' % portal_user.id">Can create users and manage roles/hierarchy</label>
                                                                 </div>
                                                             </div>
                                                             <div class="col-12">
