@@ -1991,3 +1991,303 @@ body.ati-sp-portal .notification_ul li.show_all .link {
         max-width: 100%;
     }
 }
+
+/* -------------------------------------------------------------------------- */
+/* ATI Service Provider portal header - consent style                         */
+/* -------------------------------------------------------------------------- */
+body.ati-sp-portal .header-container {
+    background: #ffffff;
+    border-bottom: 1px solid #e7ebf0;
+    box-shadow: 0 2px 14px rgba(16, 24, 40, 0.06);
+}
+
+body.ati-sp-portal .header-container .nav {
+    width: min(1400px, calc(100% - 36px)) !important;
+    min-height: 90px;
+    margin: 0 auto;
+    padding: 0 0.4rem;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+body.ati-sp-portal .header-container .nav:hover {
+    box-shadow: none;
+}
+
+body.ati-sp-portal #hamburger-icon {
+    display: none !important;
+}
+
+body.ati-sp-portal .ati-portal-logo-link {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+}
+
+body.ati-sp-portal .header-container .nav .main-logo {
+    max-height: 66px;
+    width: auto;
+}
+
+body.ati-sp-portal .ati-portal-header-divider {
+    width: 1px;
+    height: 56px;
+    background: #d7dce3;
+    flex: 0 0 auto;
+}
+
+body.ati-sp-portal .ati-portal-brand-block {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-right: auto;
+    min-width: 0;
+}
+
+body.ati-sp-portal .ati-portal-badge {
+    width: 52px;
+    height: 52px;
+    border-radius: 999px;
+    background: #0a9a4a;
+    color: #ffffff;
+    font-size: 1.9rem;
+    font-weight: 700;
+    line-height: 52px;
+    text-align: center;
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.2);
+    flex: 0 0 auto;
+}
+
+body.ati-sp-portal .ati-portal-brand-title {
+    color: #111827;
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+body.ati-sp-portal .header-container .nav .search-box {
+    display: none !important;
+}
+
+body.ati-sp-portal .ati-topbar-actions {
+    margin-left: auto;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 1rem;
+}
+
+body.ati-sp-portal .ati-topbar-notifications #show_notification {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+    border: 0 !important;
+    border-radius: 0;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0;
+}
+
+body.ati-sp-portal .ati-topbar-notifications #show_notification:hover,
+body.ati-sp-portal .ati-topbar-notifications #show_notification:focus {
+    transform: none;
+}
+
+body.ati-sp-portal .ati-topbar-notifications #show_notification .request_log {
+    font-size: 1.55rem;
+    color: #0f172a;
+}
+
+body.ati-sp-portal .ati-topbar-notifications .notification_number {
+    top: 3px;
+    right: 0;
+    min-width: 10px;
+    width: 10px;
+    height: 10px;
+    line-height: 10px;
+    padding: 0;
+    border-radius: 999px;
+    background: #dc2626;
+    box-shadow: 0 0 0 2px #ffffff;
+    font-size: 0;
+}
+
+body.ati-sp-portal .ati-topbar-language .button {
+    min-height: 42px;
+    border: 1px solid #d5dbe3;
+    border-radius: 10px;
+    box-shadow: none;
+    background: #ffffff;
+    padding: 0 0.9rem;
+}
+
+body.ati-sp-portal .ati-topbar-language .button:hover,
+body.ati-sp-portal .ati-topbar-language .button:focus {
+    border-color: #c6ced9;
+    transform: none;
+    box-shadow: none;
+}
+
+body.ati-sp-portal .ati-topbar-language .button span {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #111827;
+}
+
+body.ati-sp-portal .ati-topbar-user > a {
+    min-height: 0;
+    border: 0 !important;
+    border-radius: 0;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 0 0 0.25rem;
+    text-decoration: none;
+}
+
+body.ati-sp-portal .ati-topbar-user > a:hover,
+body.ati-sp-portal .ati-topbar-user > a:focus {
+    transform: none;
+}
+
+body.ati-sp-portal .ati-topbar-user-name {
+    display: none;
+}
+
+body.ati-sp-portal .ati-topbar-user .user-image {
+    width: 52px;
+    height: 52px;
+    border: 0;
+    object-fit: cover;
+}
+
+body.ati-sp-portal .ati-topbar-user > a::after {
+    margin-left: 0.55rem;
+    color: #111827;
+    vertical-align: 0.18rem;
+}
+
+body.ati-sp-portal .notification_dd {
+    top: calc(100% + 10px);
+    right: 0;
+    left: auto;
+    min-width: 320px;
+    max-width: min(92vw, 320px);
+}
+
+@media (max-width: 992px) {
+    body.ati-sp-portal .header-container .nav {
+        width: calc(100% - 18px) !important;
+        min-height: 76px;
+        gap: 0.7rem;
+    }
+
+    body.ati-sp-portal .header-container .nav .main-logo {
+        max-height: 54px;
+    }
+
+    body.ati-sp-portal .ati-portal-header-divider {
+        height: 46px;
+    }
+
+    body.ati-sp-portal .ati-portal-badge {
+        width: 44px;
+        height: 44px;
+        line-height: 44px;
+        font-size: 1.55rem;
+    }
+
+    body.ati-sp-portal .ati-portal-brand-title {
+        font-size: 1.7rem;
+    }
+
+    body.ati-sp-portal .ati-topbar-actions {
+        gap: 0.75rem;
+    }
+}
+
+@media (max-width: 768px) {
+    body.ati-sp-portal .header-container .nav {
+        min-height: 64px;
+        padding: 0.35rem 0.1rem;
+        gap: 0.55rem;
+    }
+
+    body.ati-sp-portal .header-container .nav .main-logo {
+        max-height: 42px;
+    }
+
+    body.ati-sp-portal .ati-portal-header-divider {
+        display: none;
+    }
+
+    body.ati-sp-portal .ati-portal-brand-block {
+        gap: 0.55rem;
+    }
+
+    body.ati-sp-portal .ati-portal-badge {
+        width: 38px;
+        height: 38px;
+        line-height: 38px;
+        font-size: 1.28rem;
+    }
+
+    body.ati-sp-portal .ati-portal-brand-title {
+        font-size: 1.3rem;
+    }
+
+    body.ati-sp-portal .ati-topbar-language .button {
+        min-height: 36px;
+        padding: 0 0.65rem;
+    }
+
+    body.ati-sp-portal .ati-topbar-language .button span {
+        font-size: 0.9rem;
+    }
+
+    body.ati-sp-portal .ati-topbar-notifications #show_notification {
+        width: 30px;
+        height: 30px;
+        min-width: 30px;
+        min-height: 30px;
+    }
+
+    body.ati-sp-portal .ati-topbar-notifications #show_notification .request_log {
+        font-size: 1.35rem;
+    }
+
+    body.ati-sp-portal .ati-topbar-user .user-image {
+        width: 40px;
+        height: 40px;
+    }
+
+    body.ati-sp-portal .ati-topbar-user > a::after {
+        margin-left: 0.35rem;
+        vertical-align: 0.1rem;
+    }
+}
+
+@media (max-width: 520px) {
+    body.ati-sp-portal .header-container .nav {
+        width: calc(100% - 12px) !important;
+    }
+
+    body.ati-sp-portal .ati-portal-brand-title {
+        display: none;
+    }
+
+    body.ati-sp-portal .ati-topbar-actions {
+        gap: 0.55rem;
+    }
+
+    body.ati-sp-portal .notification_dd {
+        min-width: 280px;
+        max-width: min(94vw, 280px);
+    }
+}

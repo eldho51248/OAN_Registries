@@ -75,6 +75,9 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="consent_parent_partner_id" />
+                <field name="consent_portal_can_manage_hierarchy" />
+                <field name="consent_portal_manager_user_id" />
+                <field name="consent_portal_role_ids" widget="many2many_tags" />
             </xpath>
         </field>
     </record>

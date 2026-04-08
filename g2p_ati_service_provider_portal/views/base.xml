@@ -27,7 +27,15 @@
 
 
 <xpath expr="//div[hasclass('nav')]/a" position="attributes">
-    <attribute name="class">px-2 mx-md-0</attribute>
+    <attribute name="class">px-2 mx-md-0 ati-portal-logo-link</attribute>
+</xpath>
+
+<xpath expr="//div[hasclass('nav')]/a" position="after">
+    <div class="ati-portal-header-divider" aria-hidden="true"></div>
+    <div class="ati-portal-brand-block">
+      <span class="ati-portal-badge" aria-hidden="true">C</span>
+      <span class="ati-portal-brand-title">Consent Portal</span>
+    </div>
 </xpath>
 
 

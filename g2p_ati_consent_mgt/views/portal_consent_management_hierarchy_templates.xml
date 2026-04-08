@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template
+        id="portal_consent_management_hierarchy_alerts"
+        inherit_id="g2p_ati_consent_mgt.portal_consent_management"
+    >
+        <xpath expr="//t[@t-if='review_request']" position="before">
+            <t t-if="request.httprequest.args.get('mgmt_success')">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <t t-if="request.httprequest.args.get('mgmt_success') == 'role_created'">Portal role created successfully.</t>
+                    <t t-elif="request.httprequest.args.get('mgmt_success') == 'role_updated'">Portal role updated successfully.</t>
+                    <t t-elif="request.httprequest.args.get('mgmt_success') == 'user_created'">Portal user created successfully.</t>
+                    <t t-elif="request.httprequest.args.get('mgmt_success') == 'user_updated'">Portal user updated successfully.</t>
+                    <t t-else="">Portal management action completed successfully.</t>
+                    <t t-if="request.httprequest.args.get('mgmt_message')">
+                        <div class="small mt-1">
+                            <t t-esc="request.httprequest.args.get('mgmt_message')" />
+                        </div>
+                    </t>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" />
+                </div>
+            </t>
+            <t t-if="request.httprequest.args.get('mgmt_error')">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <t t-if="request.httprequest.args.get('mgmt_error') == 'access_denied'">You are not allowed to manage portal users or roles.</t>
+                    <t t-elif="request.httprequest.args.get('mgmt_error') == 'missing_role_name'">Role name is required.</t>
+                    <t t-elif="request.httprequest.args.get('mgmt_error') == 'invalid_role_parent'">Select a valid parent role.</t>
+                    <t t-elif="request.httprequest.args.get('mgmt_error') == 'invalid_role'">Role not found.</t>
+                    <t t-elif="request.httprequest.args.get('mgmt_error') == 'missing_user_fields'">Name, login, and password are required for portal users.</t>
+                    <t t-elif="request.httprequest.args.get('mgmt_error') == 'invalid_user_manager'">Select a valid portal manager.</t>
+                    <t t-elif="request.httprequest.args.get('mgmt_error') == 'invalid_user'">Portal user not found.</t>
+                    <t t-elif="request.httprequest.args.get('mgmt_error') == 'duplicate_login'">That login is already in use.</t>
+                    <t t-elif="request.httprequest.args.get('mgmt_error') == 'role_create_failed'">Portal role could not be created.</t>
+                    <t t-elif="request.httprequest.args.get('mgmt_error') == 'role_update_failed'">Portal role could not be updated.</t>
+                    <t t-elif="request.httprequest.args.get('mgmt_error') == 'user_create_failed'">Portal user could not be created.</t>
+                    <t t-elif="request.httprequest.args.get('mgmt_error') == 'user_update_failed'">Portal user could not be updated.</t>
+                    <t t-else="">Portal management action failed.</t>
+                    <t t-if="request.httprequest.args.get('mgmt_message')">
+                        <div class="small mt-1">
+                            <t t-esc="request.httprequest.args.get('mgmt_message')" />
+                        </div>
+                    </t>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" />
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+    <template
+        id="portal_consent_management_hierarchy_section"
+        inherit_id="g2p_ati_consent_mgt.portal_consent_management"
+    >
+        <xpath expr="//div[contains(@class, 'consent_requests_header')][1]" position="before">
+            <t t-if="portal_management_enabled">
+                <div id="portal_management" class="mb-4">
+                    <div class="consent_requests_header">
+                        <h5 class="consent_card_title mb-0">Portal Management</h5>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-xl-4">
+                            <div class="consent_card h-100">
+                                <h5 class="consent_card_title">Create Role</h5>
+                                <p class="text-muted small mb-3">Create consent portal roles and place them in the role hierarchy.</p>
+                                <form action="/consent/management/role/create" method="post">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                    <div class="mb-3">
+                                        <label class="form-label">Role Name</label>
+                                        <input type="text" name="name" class="form-control" required="required" />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Parent Role</label>
+                                        <select name="parent_id" class="form-select">
+                                            <option value="">No parent</option>
+                                            <t t-foreach="portal_role_options" t-as="role_option">
+                                                <option t-att-value="role_option.id">
+                                                    <t t-esc="role_option.name" />
+                                                </option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Description</label>
+                                        <textarea name="description" class="form-control" rows="3"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn consent_btn_primary">Create Role</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-xl-8">
+                            <div class="consent_card h-100">
+                                <h5 class="consent_card_title">Create Portal User</h5>
+                                <p class="text-muted small mb-3">Create portal users, assign multiple roles, and place them anywhere in the user hierarchy.</p>
+                                <form action="/consent/management/user/create" method="post">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Name</label>
+                                            <input type="text" name="name" class="form-control" required="required" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Login</label>
+                                            <input type="text" name="login" class="form-control" required="required" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Email</label>
+                                            <input type="email" name="email" class="form-control" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Phone</label>
+                                            <input type="text" name="phone" class="form-control" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Password</label>
+                                            <input type="password" name="password" class="form-control" required="required" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Manager</label>
+                                            <select name="manager_user_id" class="form-select">
+                                                <option value="">No manager</option>
+                                                <t t-foreach="portal_user_options" t-as="portal_user">
+                                                    <option t-att-value="portal_user.id">
+                                                        <t t-esc="portal_user.name" />
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label">Roles</label>
+                                            <select name="role_ids" class="form-select" multiple="multiple" size="4">
+                                                <t t-foreach="portal_role_options" t-as="role_option">
+                                                    <option t-att-value="role_option.id">
+                                                        <t t-esc="role_option.name" />
+                                                    </option>
+                                                </t>
+                                            </select>
+                                            <div class="form-text">Hold Ctrl or Command to select multiple roles.</div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-check">
+                                                <input type="checkbox" name="can_manage_hierarchy" class="form-check-input" id="can_manage_hierarchy_create" />
+                                                <label class="form-check-label" for="can_manage_hierarchy_create">Can manage portal users, roles, and hierarchy</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <button type="submit" class="btn consent_btn_primary">Create Portal User</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mt-1">
+                        <div class="col-xl-4">
+                            <div class="consent_card h-100">
+                                <h5 class="consent_card_title">Role Hierarchy</h5>
+                                <t t-if="portal_role_records">
+                                    <div class="d-flex flex-column gap-3">
+                                        <t t-foreach="portal_role_records" t-as="role">
+                                            <div class="consent_request_card">
+                                                <div class="consent_request_card_header mb-2">
+                                                    <div class="consent_request_card_body">
+                                                        <div class="consent_request_card_title">
+                                                            <t t-esc="role.name" />
+                                                        </div>
+                                                        <div class="consent_request_card_meta_secondary">
+                                                            Parent:
+                                                            <t t-esc="role.parent_id.name or 'Root role'" />
+                                                        </div>
+                                                    </div>
+                                                    <span t-attf-class="consent_status_badge #{'consent_status_approved' if role.active else 'consent_status_rejected'}">
+                                                        <span><t t-esc="'Active' if role.active else 'Inactive'" /></span>
+                                                    </span>
+                                                </div>
+                                                <form action="/consent/management/role/update" method="post">
+                                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                                    <input type="hidden" name="role_id" t-att-value="role.id" />
+                                                    <div class="mb-2">
+                                                        <label class="form-label">Role Name</label>
+                                                        <input type="text" name="name" class="form-control" t-att-value="role.name" required="required" />
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="form-label">Parent Role</label>
+                                                        <select name="parent_id" class="form-select">
+                                                            <option value="">No parent</option>
+                                                            <t t-foreach="portal_role_options" t-as="role_option">
+                                                                <option
+                                                                    t-if="role_option.id != role.id"
+                                                                    t-att-value="role_option.id"
+                                                                    t-att-selected="'selected' if role.parent_id.id == role_option.id else None"
+                                                                >
+                                                                    <t t-esc="role_option.name" />
+                                                                </option>
+                                                            </t>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="form-label">Description</label>
+                                                        <textarea name="description" class="form-control" rows="2"><t t-esc="role.description or ''" /></textarea>
+                                                    </div>
+                                                    <div class="form-check mb-3">
+                                                        <input
+                                                            type="checkbox"
+                                                            name="active"
+                                                            class="form-check-input"
+                                                            t-att-id="'role_active_%s' % role.id"
+                                                            t-att-checked="'checked' if role.active else None"
+                                                        />
+                                                        <label class="form-check-label" t-att-for="'role_active_%s' % role.id">Active</label>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-outline-secondary btn-sm">Update Role</button>
+                                                </form>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <p class="text-muted mb-0">No portal roles have been created yet.</p>
+                                </t>
+                            </div>
+                        </div>
+                        <div class="col-xl-8">
+                            <div class="consent_card h-100">
+                                <div class="consent_requests_header mb-3">
+                                    <h5 class="consent_card_title mb-0">Portal Users</h5>
+                                </div>
+                                <t t-if="portal_user_records">
+                                    <div class="row g-3">
+                                        <t t-foreach="portal_user_records" t-as="portal_user">
+                                            <div class="col-lg-6">
+                                                <div class="consent_request_card h-100">
+                                                    <div class="consent_request_card_header mb-2">
+                                                        <div class="consent_request_card_body">
+                                                            <div class="consent_request_card_title">
+                                                                <t t-esc="portal_user.name" />
+                                                                <t t-if="portal_user.id == current_portal_user.id">
+                                                                    <span class="consent_data_tag ms-2">You</span>
+                                                                </t>
+                                                            </div>
+                                                            <div class="consent_request_card_meta">
+                                                                <span class="consent_request_id"><t t-esc="portal_user.login" /></span>
+                                                            </div>
+                                                            <div class="consent_request_card_meta_secondary">
+                                                                Manager:
+                                                                <t t-esc="portal_user.consent_portal_manager_user_id.name or 'None'" />
+                                                            </div>
+                                                        </div>
+                                                        <span t-attf-class="consent_status_badge #{'consent_status_approved' if portal_user.active else 'consent_status_rejected'}">
+                                                            <span><t t-esc="'Active' if portal_user.active else 'Inactive'" /></span>
+                                                        </span>
+                                                    </div>
+                                                    <div class="d-flex flex-wrap gap-2 mb-3">
+                                                        <t t-foreach="portal_user.consent_portal_role_ids" t-as="assigned_role">
+                                                            <span class="consent_data_tag" t-esc="assigned_role.name" />
+                                                        </t>
+                                                        <t t-if="not portal_user.consent_portal_role_ids">
+                                                            <span class="text-muted small">No roles assigned.</span>
+                                                        </t>
+                                                        <t t-if="portal_user.consent_portal_can_manage_hierarchy">
+                                                            <span class="consent_data_tag">Hierarchy Manager</span>
+                                                        </t>
+                                                    </div>
+                                                    <form action="/consent/management/user/update" method="post">
+                                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                                        <input type="hidden" name="user_id" t-att-value="portal_user.id" />
+                                                        <div class="row g-2">
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">Name</label>
+                                                                <input type="text" name="name" class="form-control" t-att-value="portal_user.name" required="required" />
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">Login</label>
+                                                                <input type="text" name="login" class="form-control" t-att-value="portal_user.login" required="required" />
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">Email</label>
+                                                                <input type="email" name="email" class="form-control" t-att-value="portal_user.email or ''" />
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">Phone</label>
+                                                                <input type="text" name="phone" class="form-control" t-att-value="portal_user.partner_id.phone or ''" />
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">Manager</label>
+                                                                <select name="manager_user_id" class="form-select">
+                                                                    <option value="">No manager</option>
+                                                                    <t t-foreach="portal_user_options" t-as="manager_option">
+                                                                        <option
+                                                                            t-if="manager_option.id != portal_user.id"
+                                                                            t-att-value="manager_option.id"
+                                                                            t-att-selected="'selected' if portal_user.consent_portal_manager_user_id.id == manager_option.id else None"
+                                                                        >
+                                                                            <t t-esc="manager_option.name" />
+                                                                        </option>
+                                                                    </t>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">New Password</label>
+                                                                <input type="password" name="password" class="form-control" placeholder="Leave blank to keep current password" />
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <label class="form-label">Roles</label>
+                                                                <select name="role_ids" class="form-select" multiple="multiple" size="4">
+                                                                    <t t-foreach="portal_role_options" t-as="role_option">
+                                                                        <option
+                                                                            t-att-value="role_option.id"
+                                                                            t-att-selected="'selected' if role_option.id in portal_user.consent_portal_role_ids.ids else None"
+                                                                        >
+                                                                            <t t-esc="role_option.name" />
+                                                                        </option>
+                                                                    </t>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="form-check">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        name="can_manage_hierarchy"
+                                                                        class="form-check-input"
+                                                                        t-att-id="'portal_manage_%s' % portal_user.id"
+                                                                        t-att-checked="'checked' if portal_user.consent_portal_can_manage_hierarchy else None"
+                                                                    />
+                                                                    <label class="form-check-label" t-att-for="'portal_manage_%s' % portal_user.id">Can manage portal hierarchy</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="form-check">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        name="active"
+                                                                        class="form-check-input"
+                                                                        t-att-id="'portal_active_%s' % portal_user.id"
+                                                                        t-att-checked="'checked' if portal_user.active else None"
+                                                                    />
+                                                                    <label class="form-check-label" t-att-for="'portal_active_%s' % portal_user.id">Active</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <button type="submit" class="btn btn-outline-secondary btn-sm">Update User</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <p class="text-muted mb-0">No portal users found for this consent partner.</p>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>

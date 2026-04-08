@@ -2,6 +2,7 @@ import base64
 import logging
 import os
 from datetime import datetime, timedelta
+from urllib.parse import urlencode
 from uuid import uuid4
 
 import requests
@@ -47,6 +48,89 @@ class G2PATIConsentController(http.Controller):
         if not user.consent_parent_partner_id:
             return None
         return user.consent_parent_partner_id
+
+    def _can_manage_consent_portal_hierarchy(self):
+        user = request.env.user.sudo()
+        return bool(user.consent_parent_partner_id and user.consent_portal_can_manage_hierarchy)
+
+    def _get_portal_consent_request_domain(self, partner=None):
+        partner = partner or self._get_consent_partner()
+        if not partner:
+            return []
+        visible_user_ids = request.env.user.sudo()._get_consent_portal_visible_user_ids()
+        domain = [("partner_record_id", "=", partner.id)]
+        if visible_user_ids:
+            domain.append(("requester_user_id", "in", visible_user_ids))
+        else:
+            domain.append(("requester_user_id", "=", request.env.user.id))
+        return domain
+
+    def _get_portal_management_context(self, partner):
+        empty_user_model = request.env["res.users"].browse()
+        empty_role_model = request.env["g2p.consent.portal.role"].browse()
+        if not partner or not self._can_manage_consent_portal_hierarchy():
+            return {
+                "portal_management_enabled": False,
+                "current_portal_user": request.env.user.sudo(),
+                "portal_role_records": empty_role_model,
+                "portal_role_options": empty_role_model,
+                "portal_user_records": empty_user_model,
+                "portal_user_options": empty_user_model,
+            }
+
+        portal_group = request.env.ref("base.group_portal")
+        portal_user_model = request.env["res.users"].sudo().with_context(active_test=False)
+        portal_role_model = request.env["g2p.consent.portal.role"].sudo().with_context(active_test=False)
+        portal_users = portal_user_model.search(
+            [
+                ("consent_parent_partner_id", "=", partner.id),
+                ("groups_id", "in", [portal_group.id]),
+            ],
+            order="consent_portal_manager_user_id asc, active desc, name asc",
+        )
+        portal_roles = portal_role_model.search(
+            [("consent_parent_partner_id", "=", partner.id)],
+            order="parent_id asc, active desc, name asc",
+        )
+        return {
+            "portal_management_enabled": True,
+            "current_portal_user": request.env.user.sudo(),
+            "portal_role_records": portal_roles,
+            "portal_role_options": portal_roles,
+            "portal_user_records": portal_users,
+            "portal_user_options": portal_users,
+        }
+
+    def _management_redirect(self, success=None, error=None, message=None):
+        params = {}
+        if success:
+            params["mgmt_success"] = success
+        if error:
+            params["mgmt_error"] = error
+        if message:
+            params["mgmt_message"] = str(message)[:240]
+        query = urlencode(params)
+        return request.redirect(
+            "/consent/management%s#portal_management" % (("?%s" % query) if query else "")
+        )
+
+    def _parse_portal_role_ids(self, raw_values, partner):
+        role_ids = []
+        for role_id in raw_values or []:
+            try:
+                role_ids.append(int(role_id))
+            except (TypeError, ValueError):
+                continue
+        if not role_ids:
+            return []
+        role_model = request.env["g2p.consent.portal.role"].sudo()
+        roles = role_model.search(
+            [
+                ("id", "in", role_ids),
+                ("consent_parent_partner_id", "=", partner.id),
+            ]
+        )
+        return roles.ids
 
     def _guess_image_content_type(self, image_data):
         if image_data.startswith(b"\x89PNG\r\n\x1a\n"):
@@ -424,7 +508,7 @@ class G2PATIConsentController(http.Controller):
             view_mode = "card"
 
         ConsentRequest = request.env["g2p.consent.request"].sudo()
-        requests_domain = [("partner_record_id", "=", partner.id)]
+        requests_domain = self._get_portal_consent_request_domain(partner)
         total_requests = ConsentRequest.search_count(requests_domain)
         pager = None
         request_limit = self._TABLE_FETCH_SIZE if view_mode == "table" else self._REQUESTS_PAGE_SIZE
@@ -454,10 +538,11 @@ class G2PATIConsentController(http.Controller):
                 review_id = 0
             if review_id:
                 review_request = ConsentRequest.search(
-                    [("id", "=", review_id), ("partner_record_id", "=", partner.id)],
+                    requests_domain + [("id", "=", review_id)],
                     limit=1,
                 )
         view_base_url = "/consent/management/page/%s" % page if page > 1 else "/consent/management"
+        management_context = self._get_portal_management_context(partner)
         return request.render(
             "g2p_ati_consent_mgt.portal_consent_management",
             {
@@ -472,6 +557,7 @@ class G2PATIConsentController(http.Controller):
                 "table_fetch_size": self._TABLE_FETCH_SIZE,
                 "total_requests": total_requests,
                 "current_page": page,
+                **management_context,
             },
         )
 
@@ -496,7 +582,7 @@ class G2PATIConsentController(http.Controller):
         limit = min(limit, 50)
 
         ConsentRequest = request.env["g2p.consent.request"].sudo()
-        domain = [("partner_record_id", "=", partner.id)]
+        domain = self._get_portal_consent_request_domain(partner)
         total = ConsentRequest.search_count(domain)
         rows = ConsentRequest.search(domain, order="create_date desc", offset=offset, limit=limit)
         return self._success(
@@ -521,7 +607,7 @@ class G2PATIConsentController(http.Controller):
             return request.not_found()
 
         consent = request.env["g2p.consent.request"].sudo().search(
-            [("id", "=", consent_id), ("partner_record_id", "=", partner.id)],
+            self._get_portal_consent_request_domain(partner) + [("id", "=", consent_id)],
             limit=1,
         )
         if not consent or not consent.portal_capture_image:
@@ -537,6 +623,256 @@ class G2PATIConsentController(http.Controller):
             ("Content-Length", str(len(image_data))),
         ]
         return request.make_response(image_data, headers=headers)
+
+    @http.route("/consent/management/role/create", type="http", auth="user", methods=["POST"], csrf=True)
+    def consent_management_role_create(self, **post):
+        partner = self._get_consent_partner()
+        if not partner or not self._can_manage_consent_portal_hierarchy():
+            return self._management_redirect(error="access_denied")
+
+        name = (post.get("name") or "").strip()
+        if not name:
+            return self._management_redirect(error="missing_role_name")
+
+        parent_role = request.env["g2p.consent.portal.role"].sudo().browse()
+        parent_id = post.get("parent_id")
+        if parent_id:
+            try:
+                parent_id = int(parent_id)
+            except (TypeError, ValueError):
+                return self._management_redirect(error="invalid_role_parent")
+            parent_role = request.env["g2p.consent.portal.role"].sudo().search(
+                [
+                    ("id", "=", parent_id),
+                    ("consent_parent_partner_id", "=", partner.id),
+                ],
+                limit=1,
+            )
+            if not parent_role:
+                return self._management_redirect(error="invalid_role_parent")
+
+        values = {
+            "name": name,
+            "consent_parent_partner_id": partner.id,
+            "parent_id": parent_role.id or False,
+            "description": (post.get("description") or "").strip() or False,
+        }
+        try:
+            request.env["g2p.consent.portal.role"].sudo().create(values)
+        except Exception as exc:
+            _logger.exception("Failed to create consent portal role for partner %s", partner.id)
+            return self._management_redirect(error="role_create_failed", message=exc)
+        return self._management_redirect(success="role_created")
+
+    @http.route("/consent/management/role/update", type="http", auth="user", methods=["POST"], csrf=True)
+    def consent_management_role_update(self, **post):
+        partner = self._get_consent_partner()
+        if not partner or not self._can_manage_consent_portal_hierarchy():
+            return self._management_redirect(error="access_denied")
+
+        try:
+            role_id = int(post.get("role_id") or 0)
+        except (TypeError, ValueError):
+            role_id = 0
+        if not role_id:
+            return self._management_redirect(error="invalid_role")
+
+        role = request.env["g2p.consent.portal.role"].sudo().search(
+            [
+                ("id", "=", role_id),
+                ("consent_parent_partner_id", "=", partner.id),
+            ],
+            limit=1,
+        )
+        if not role:
+            return self._management_redirect(error="invalid_role")
+
+        name = (post.get("name") or "").strip()
+        if not name:
+            return self._management_redirect(error="missing_role_name")
+
+        parent_role = request.env["g2p.consent.portal.role"].sudo().browse()
+        parent_id = post.get("parent_id")
+        if parent_id:
+            try:
+                parent_id = int(parent_id)
+            except (TypeError, ValueError):
+                return self._management_redirect(error="invalid_role_parent")
+            parent_role = request.env["g2p.consent.portal.role"].sudo().search(
+                [
+                    ("id", "=", parent_id),
+                    ("consent_parent_partner_id", "=", partner.id),
+                ],
+                limit=1,
+            )
+            if not parent_role:
+                return self._management_redirect(error="invalid_role_parent")
+
+        values = {
+            "name": name,
+            "parent_id": parent_role.id or False,
+            "description": (post.get("description") or "").strip() or False,
+            "active": bool(post.get("active")),
+        }
+        try:
+            role.write(values)
+        except Exception as exc:
+            _logger.exception("Failed to update consent portal role %s", role.id)
+            return self._management_redirect(error="role_update_failed", message=exc)
+        return self._management_redirect(success="role_updated")
+
+    @http.route("/consent/management/user/create", type="http", auth="user", methods=["POST"], csrf=True)
+    def consent_management_user_create(self, **post):
+        partner = self._get_consent_partner()
+        if not partner or not self._can_manage_consent_portal_hierarchy():
+            return self._management_redirect(error="access_denied")
+
+        name = (post.get("name") or "").strip()
+        login = (post.get("login") or "").strip()
+        email = (post.get("email") or "").strip()
+        phone = (post.get("phone") or "").strip()
+        password = post.get("password") or ""
+        if not name or not login or not password:
+            return self._management_redirect(error="missing_user_fields")
+
+        manager = request.env["res.users"].sudo().browse()
+        manager_id = post.get("manager_user_id")
+        if manager_id:
+            try:
+                manager_id = int(manager_id)
+            except (TypeError, ValueError):
+                return self._management_redirect(error="invalid_user_manager")
+            manager = request.env["res.users"].sudo().search(
+                [
+                    ("id", "=", manager_id),
+                    ("consent_parent_partner_id", "=", partner.id),
+                ],
+                limit=1,
+            )
+            if not manager:
+                return self._management_redirect(error="invalid_user_manager")
+
+        role_ids = self._parse_portal_role_ids(
+            request.httprequest.form.getlist("role_ids"),
+            partner,
+        )
+
+        if request.env["res.users"].sudo().with_context(active_test=False).search_count([("login", "=", login)]):
+            return self._management_redirect(error="duplicate_login")
+
+        child_partner = request.env["res.partner"].sudo().create(
+            {
+                "name": name,
+                "email": email or False,
+                "phone": phone or False,
+                "type": "contact",
+                "parent_id": partner.id,
+            }
+        )
+        portal_group = request.env.ref("base.group_portal")
+        user_values = {
+            "name": name,
+            "login": login,
+            "email": email or False,
+            "partner_id": child_partner.id,
+            "consent_parent_partner_id": partner.id,
+            "consent_portal_manager_user_id": manager.id or False,
+            "consent_portal_role_ids": [(6, 0, role_ids)],
+            "consent_portal_can_manage_hierarchy": bool(post.get("can_manage_hierarchy")),
+            "groups_id": [(6, 0, [portal_group.id])],
+            "password": password,
+        }
+        try:
+            request.env["res.users"].sudo().with_context(no_reset_password=True).create(user_values)
+        except Exception as exc:
+            _logger.exception("Failed to create consent portal user for partner %s", partner.id)
+            if child_partner.exists():
+                child_partner.unlink()
+            return self._management_redirect(error="user_create_failed", message=exc)
+        return self._management_redirect(success="user_created")
+
+    @http.route("/consent/management/user/update", type="http", auth="user", methods=["POST"], csrf=True)
+    def consent_management_user_update(self, **post):
+        partner = self._get_consent_partner()
+        if not partner or not self._can_manage_consent_portal_hierarchy():
+            return self._management_redirect(error="access_denied")
+
+        try:
+            user_id = int(post.get("user_id") or 0)
+        except (TypeError, ValueError):
+            user_id = 0
+        if not user_id:
+            return self._management_redirect(error="invalid_user")
+
+        portal_group = request.env.ref("base.group_portal")
+        target_user = request.env["res.users"].sudo().with_context(active_test=False).search(
+            [
+                ("id", "=", user_id),
+                ("consent_parent_partner_id", "=", partner.id),
+                ("groups_id", "in", [portal_group.id]),
+            ],
+            limit=1,
+        )
+        if not target_user:
+            return self._management_redirect(error="invalid_user")
+
+        name = (post.get("name") or "").strip()
+        login = (post.get("login") or "").strip()
+        email = (post.get("email") or "").strip()
+        phone = (post.get("phone") or "").strip()
+        if not name or not login:
+            return self._management_redirect(error="missing_user_fields")
+
+        manager = request.env["res.users"].sudo().browse()
+        manager_id = post.get("manager_user_id")
+        if manager_id:
+            try:
+                manager_id = int(manager_id)
+            except (TypeError, ValueError):
+                return self._management_redirect(error="invalid_user_manager")
+            manager = request.env["res.users"].sudo().search(
+                [
+                    ("id", "=", manager_id),
+                    ("consent_parent_partner_id", "=", partner.id),
+                ],
+                limit=1,
+            )
+            if not manager:
+                return self._management_redirect(error="invalid_user_manager")
+
+        duplicate_domain = [("login", "=", login), ("id", "!=", target_user.id)]
+        if request.env["res.users"].sudo().with_context(active_test=False).search_count(duplicate_domain):
+            return self._management_redirect(error="duplicate_login")
+
+        role_ids = self._parse_portal_role_ids(
+            request.httprequest.form.getlist("role_ids"),
+            partner,
+        )
+        user_values = {
+            "name": name,
+            "login": login,
+            "email": email or False,
+            "consent_portal_manager_user_id": manager.id or False,
+            "consent_portal_role_ids": [(6, 0, role_ids)],
+            "consent_portal_can_manage_hierarchy": bool(post.get("can_manage_hierarchy")),
+            "active": bool(post.get("active")),
+        }
+        password = post.get("password") or ""
+        if password:
+            user_values["password"] = password
+        partner_values = {
+            "name": name,
+            "email": email or False,
+            "phone": phone or False,
+        }
+        try:
+            target_user.write(user_values)
+            if target_user.partner_id:
+                target_user.partner_id.sudo().write(partner_values)
+        except Exception as exc:
+            _logger.exception("Failed to update consent portal user %s", target_user.id)
+            return self._management_redirect(error="user_update_failed", message=exc)
+        return self._management_redirect(success="user_updated")
 
     @http.route("/consent/farmer/<int:farmer_id>/profile_image", type="http", auth="user")
     def consent_farmer_profile_image(self, farmer_id, **kw):
@@ -1073,15 +1409,23 @@ class G2PATIConsentController(http.Controller):
     def create_consent_request(self, **kwargs):
         payload = request.jsonrequest or {}
         partner_record_id = payload.get("partner_record_id") or payload.get("partner_id")
-
+        partner = self._get_consent_partner()
+        if not partner:
+            return self._error("Access denied", code=403)
         if not partner_record_id:
             return self._error("partner_id is required")
+        try:
+            requested_partner_id = int(partner_record_id)
+        except (TypeError, ValueError):
+            return self._error("Invalid partner_id")
+        if requested_partner_id != partner.id:
+            return self._error("Access denied", code=403)
 
         farmer = self._find_farmer(payload)
         if not farmer:
             return self._error("Farmer not found. Provide farmer_db_id, farmer_id or national_id")
 
-        partner_record = request.env["res.partner"].sudo().browse(int(partner_record_id))
+        partner_record = request.env["res.partner"].sudo().browse(requested_partner_id)
         if not partner_record.exists() or not partner_record.is_consent_parent:
             return self._error("Consent partner not found")
         if not partner_record.active:
@@ -1146,11 +1490,15 @@ class G2PATIConsentController(http.Controller):
         consent_id = payload.get("consent_id")
         consent_request_id = payload.get("consent_creation_request_id")
 
-        domain = []
+        partner = self._get_consent_partner()
+        if not partner:
+            return self._error("Access denied", code=403)
+
+        domain = self._get_portal_consent_request_domain(partner)
         if consent_id:
-            domain = [("id", "=", int(consent_id))]
+            domain.append(("id", "=", int(consent_id)))
         elif consent_request_id:
-            domain = [("consent_creation_request_id", "=", consent_request_id)]
+            domain.append(("consent_creation_request_id", "=", consent_request_id))
         else:
             return self._error("Provide consent_id or consent_creation_request_id")
 
@@ -1174,11 +1522,15 @@ class G2PATIConsentController(http.Controller):
         consent_id = payload.get("consent_id")
         consent_request_id = payload.get("consent_creation_request_id")
 
-        domain = []
+        partner = self._get_consent_partner()
+        if not partner:
+            return self._error("Access denied", code=403)
+
+        domain = self._get_portal_consent_request_domain(partner)
         if consent_id:
-            domain = [("id", "=", int(consent_id))]
+            domain.append(("id", "=", int(consent_id)))
         elif consent_request_id:
-            domain = [("consent_creation_request_id", "=", consent_request_id)]
+            domain.append(("consent_creation_request_id", "=", consent_request_id))
         else:
             return self._error("Provide consent_id or consent_creation_request_id")
 
@@ -1206,11 +1558,15 @@ class G2PATIConsentController(http.Controller):
         consent_id = payload.get("consent_id")
         consent_request_id = payload.get("consent_creation_request_id")
 
-        domain = []
+        partner = self._get_consent_partner()
+        if not partner:
+            return self._error("Access denied", code=403)
+
+        domain = self._get_portal_consent_request_domain(partner)
         if consent_id:
-            domain = [("id", "=", int(consent_id))]
+            domain.append(("id", "=", int(consent_id)))
         elif consent_request_id:
-            domain = [("consent_creation_request_id", "=", consent_request_id)]
+            domain.append(("consent_creation_request_id", "=", consent_request_id))
         else:
             return self._error("Provide consent_id or consent_creation_request_id")
 
@@ -1232,8 +1588,14 @@ class G2PATIConsentController(http.Controller):
     def list_pending_consent_requests(self, **kwargs):
         payload = request.jsonrequest or {}
         limit = int(payload.get("limit", 80))
+        partner = self._get_consent_partner()
+        if not partner:
+            return self._error("Access denied", code=403)
 
-        consents = request.env["g2p.consent.request"].sudo().search([("status", "=", "pending")], limit=limit)
+        consents = request.env["g2p.consent.request"].sudo().search(
+            self._get_portal_consent_request_domain(partner) + [("status", "=", "pending")],
+            limit=limit,
+        )
         return self._success(
             {
                 "count": len(consents),
