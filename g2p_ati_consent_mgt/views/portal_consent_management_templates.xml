@@ -322,6 +322,42 @@
                     font-size: 0.95rem;
                     margin-bottom: 1.5rem;
                     }
+                    .o_consent_portal .consent_top_tabs {
+                    margin-bottom: 1.35rem;
+                    }
+                    .o_consent_portal .consent_top_tabs .nav {
+                    gap: 0.65rem;
+                    flex-wrap: wrap;
+                    }
+                    .o_consent_portal .consent_top_tabs .nav-link {
+                    border: 1px solid rgba(0, 145, 71, 0.3);
+                    border-radius: 999px;
+                    background: linear-gradient(135deg, rgba(0, 145, 71, 0.82) 0%, rgba(10, 123, 66, 0.88) 100%);
+                    color: #fff;
+                    font-size: 0.92rem;
+                    font-weight: 700;
+                    padding: 0.7rem 1.15rem;
+                    line-height: 1.2;
+                    box-shadow: 0 10px 24px rgba(0, 145, 71, 0.12);
+                    opacity: 0.82;
+                    }
+                    .o_consent_portal .consent_top_tabs .nav-link:hover,
+                    .o_consent_portal .consent_top_tabs .nav-link:focus {
+                    border-color: rgba(0, 145, 71, 0.45);
+                    background: linear-gradient(135deg, #009147 0%, #0a7b42 100%);
+                    color: #fff;
+                    opacity: 1;
+                    }
+                    .o_consent_portal .consent_top_tabs .nav-link.active {
+                    border-color: var(--consent-primary);
+                    background: linear-gradient(135deg, #009147 0%, #0a7b42 100%);
+                    color: #fff;
+                    box-shadow: 0 14px 28px rgba(0, 145, 71, 0.18);
+                    opacity: 1;
+                    }
+                    .o_consent_portal .consent_tab_panel {
+                    outline: 0;
+                    }
                     .o_consent_portal .consent_search_panel {
                     border: 1px solid rgba(48, 161, 102, 0.48);
                     border-radius: 18px;
@@ -767,17 +803,39 @@
                     align-items: center;
                     justify-content: space-between;
                     gap: 1rem;
-                    padding: 0.75rem 1rem;
-                    border: 1px solid #e9ecef;
-                    border-radius: 8px;
+                    padding: 0.95rem 1.05rem;
+                    border: 1px solid #e3ebe7;
+                    border-radius: 16px;
                     margin-bottom: 0.5rem;
-                    background: #fff;
+                    background: linear-gradient(180deg, #ffffff 0%, #fbfdfc 100%);
                     }
                     .o_consent_portal .consent_farmer_identity {
                     display: flex;
                     align-items: center;
                     gap: 0.85rem;
                     min-width: 0;
+                    }
+                    .o_consent_portal .consent_farmer_result_status {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    min-width: 112px;
+                    min-height: 38px;
+                    padding: 0 0.85rem;
+                    border-radius: 999px;
+                    font-size: 0.8rem;
+                    font-weight: 800;
+                    letter-spacing: 0.02em;
+                    text-transform: uppercase;
+                    line-height: 1.1;
+                    }
+                    .o_consent_portal .consent_farmer_result_status.is-found {
+                    background: rgba(0,145,71,.11);
+                    color: #0f7a45;
+                    }
+                    .o_consent_portal .consent_farmer_result_status.is-missing {
+                    background: rgba(220,53,69,.10);
+                    color: #b02a37;
                     }
                     .o_consent_portal .consent_farmer_identity_text {
                     min-width: 0;
@@ -786,6 +844,17 @@
                     font-weight: 600;
                     color: #21312c;
                     word-break: break-word;
+                    }
+                    .o_consent_portal .consent_farmer_result_message {
+                    font-size: 1rem;
+                    font-weight: 700;
+                    color: #1c2825;
+                    }
+                    .o_consent_portal .consent_farmer_result_hint {
+                    margin-top: 0.25rem;
+                    color: #70807c;
+                    font-size: 0.88rem;
+                    line-height: 1.45;
                     }
                     .o_consent_portal .consent_farmer_avatar,
                     .o_consent_portal .consent_selected_farmer_image,
@@ -872,6 +941,78 @@
                     transform: translateY(-2px);
                     outline: none;
                     opacity: 1;
+                    }
+                    .o_consent_portal .consent_verification_gate_notice {
+                    max-width: 620px;
+                    margin: 0 auto 1.1rem;
+                    padding: 0.8rem 0.95rem;
+                    border: 1px solid #e2ebe6;
+                    border-radius: 14px;
+                    background: #f8fbf9;
+                    color: #687774;
+                    font-size: 0.89rem;
+                    text-align: center;
+                    line-height: 1.45;
+                    }
+                    .o_consent_portal .consent_verification_gate_notice.is-success {
+                    border-color: #cfe5d7;
+                    background: rgba(0,145,71,.08);
+                    color: #126f40;
+                    }
+                    .o_consent_portal .consent_request_fields_shell {
+                    border-top: 1px solid #e8eeeb;
+                    padding-top: 1rem;
+                    }
+                    .o_consent_portal .consent_request_fields_intro {
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: space-between;
+                    gap: 1rem;
+                    margin-bottom: 1rem;
+                    }
+                    .o_consent_portal .consent_request_fields_intro_copy {
+                    flex: 1 1 auto;
+                    min-width: 0;
+                    }
+                    .o_consent_portal .consent_request_fields_intro .consent_card_title {
+                    margin-bottom: 0.25rem;
+                    }
+                    .o_consent_portal .consent_selected_farmer--summary {
+                    flex: 0 0 320px;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 0.85rem;
+                    padding: 0.9rem 1rem;
+                    box-shadow: 0 10px 22px rgba(25, 40, 32, 0.05);
+                    }
+                    .o_consent_portal .consent_selected_farmer_details {
+                    min-width: 0;
+                    }
+                    .o_consent_portal .consent_selected_farmer_label {
+                    display: inline-flex;
+                    align-items: center;
+                    padding: 0.22rem 0.55rem;
+                    border-radius: 999px;
+                    background: rgba(0, 145, 71, 0.1);
+                    color: #0f7f45;
+                    font-size: 0.72rem;
+                    font-weight: 700;
+                    letter-spacing: 0.04em;
+                    text-transform: uppercase;
+                    margin-bottom: 0.5rem;
+                    }
+                    .o_consent_portal .consent_selected_farmer_name {
+                    font-size: 1rem;
+                    font-weight: 700;
+                    color: #1c2825;
+                    line-height: 1.3;
+                    margin-bottom: 0.28rem;
+                    word-break: break-word;
+                    }
+                    .o_consent_portal .consent_selected_farmer_placeholder {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
                     }
                     .o_consent_portal .consent_verification_choice_copy {
                     display: block;
@@ -1102,7 +1243,6 @@
                     }
                     .o_consent_portal .consent_farmer_result_item:hover {
                     border-color: #cde2d5;
-                    transform: translateX(2px);
                     }
                     @keyframes consentFadeIn {
                     from { opacity: 0; }
@@ -1167,6 +1307,13 @@
                         height: 96px;
                     }
                     .o_consent_portal .consent_farmer_result_item .btn { width: 100%; }
+                    .o_consent_portal .consent_request_fields_intro {
+                        flex-direction: column;
+                    }
+                    .o_consent_portal .consent_selected_farmer--summary {
+                        width: 100%;
+                        flex: 1 1 auto;
+                    }
                     }
                     @media (max-width: 576px) {
                     body.consent-portal-page .header-container .nav {
@@ -1251,6 +1398,17 @@
                     .o_consent_portal .consent_search_submit {
                         width: 100%;
                     }
+                    .o_consent_portal .consent_farmer_result_item {
+                        flex-direction: column;
+                        align-items: stretch;
+                    }
+                    .o_consent_portal .consent_farmer_result_item .btn {
+                        width: 100%;
+                    }
+                    .o_consent_portal .consent_selected_farmer--summary {
+                        flex-direction: column-reverse;
+                        align-items: flex-start;
+                    }
                     }
                     @media (prefers-reduced-motion: reduce) {
                     .o_consent_portal,
@@ -1273,6 +1431,59 @@
                     </div>
                 </div>
                 <p class="consent_page_subtitle">Search farmers and submit consent requests.</p>
+
+                <div class="consent_top_tabs">
+                    <ul class="nav nav-pills" role="tablist" aria-label="Consent portal sections">
+                        <li class="nav-item" role="presentation">
+                            <a
+                                id="consent_workspace_tab_link"
+                                class="nav-link active"
+                                data-bs-toggle="tab"
+                                href="#consent_workspace"
+                                role="tab"
+                                aria-controls="consent_workspace"
+                                aria-selected="true"
+                            >
+                                Consent
+                            </a>
+                        </li>
+                        <t t-if="portal_management_enabled">
+                            <li class="nav-item" role="presentation">
+                                <a
+                                    id="portal_roles_tab_link"
+                                    class="nav-link"
+                                    data-bs-toggle="tab"
+                                    href="#portal_roles_pane"
+                                    role="tab"
+                                    aria-controls="portal_roles_pane"
+                                    aria-selected="false"
+                                >
+                                    Roles
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a
+                                    id="portal_users_tab_link"
+                                    class="nav-link"
+                                    data-bs-toggle="tab"
+                                    href="#portal_users_pane"
+                                    role="tab"
+                                    aria-controls="portal_users_pane"
+                                    aria-selected="false"
+                                >
+                                    Users
+                                </a>
+                            </li>
+                        </t>
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    <div
+                        id="consent_workspace"
+                        class="tab-pane fade show active consent_tab_panel"
+                        role="tabpanel"
+                        aria-labelledby="consent_workspace_tab_link"
+                    >
 
                 <!-- Search: single bar with icon (like sample) -->
                 <div class="consent_card consent_search_panel">
@@ -1298,7 +1509,6 @@
                     </div>
                     <input type="text" id="search_farmer_id" class="d-none" placeholder="Farmer ID" />
                     <div id="farmer_search_results" class="mt-3 d-none">
-                        <p class="small fw-bold mb-2">Select a farmer for consent request:</p>
                         <div id="farmer_results_list"></div>
                     </div>
                 </div>
@@ -1306,88 +1516,13 @@
                 <!-- Create request (shown after farmer selected) -->
                 <div class="consent_card consent_create_request_card d-none"
                     id="create_request_card">
-                    <h5 class="consent_card_title">Create Request</h5>
-                    <p class="text-muted small mb-3">Create a new consent request for the selected
-                        farmer.</p>
+                    <h5 class="consent_card_title">Verification</h5>
+                    <p class="text-muted small mb-3">Choose a verification method first. Consent fields will only appear after successful verification.</p>
                     <form action="/consent/request/submit" method="post"
                         enctype="multipart/form-data" id="consent_request_form">
                         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                         <input type="hidden" name="farmer_id" id="form_farmer_id" value="" />
                         <div class="row g-3">
-                            <div class="col-12">
-                                <label class="form-label">Selected Farmer</label>
-                                <div class="consent_selected_farmer">
-                                    <img id="selected_farmer_image"
-                                        class="consent_selected_farmer_image d-none"
-                                        alt="Selected farmer profile image" />
-                                    <div id="selected_farmer_image_placeholder"
-                                        class="consent_farmer_avatar_placeholder consent_selected_farmer_placeholder"
-                                    >No photo</div>
-                                    <div class="min-w-0">
-                                        <p class="mb-1 fw-bold" id="selected_farmer_name">—</p>
-                                        <p id="selected_farmer_meta"
-                                            class="consent_selected_farmer_meta">Search and select an approved farmer.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label" for="consent_type">Consent Type</label>
-                                <select name="consent_type" id="consent_type" class="form-select">
-                                    <option value="specific">Specific (Single Farmer)</option>
-                                    <option value="baseline">Baseline</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label" for="validity_months">Duration</label>
-                                <select name="validity_months" id="validity_months"
-                                    class="form-select">
-                                    <option value="3">3 months</option>
-                                    <option value="6">6 months</option>
-                                    <option value="12" selected="1">12 months</option>
-                                    <option value="24">24 months</option>
-                                    <option value="36">36 months</option>
-                                </select>
-                            </div>
-                            <div class="col-12">
-                                <label class="form-label" for="purpose">Purpose</label>
-                                <textarea name="purpose" id="purpose" class="form-control" rows="3"
-                                    placeholder="Describe the purpose of this consent request..."
-                                    required="required"></textarea>
-                                <div id="purpose_error" class="text-danger small mt-1 d-none"></div>
-                            </div>
-                            <t t-if="data_fields">
-                                <div class="col-12">
-                                    <label class="form-label">Data fields to request</label>
-                                    <div class="consent_data_field_chips d-flex flex-wrap gap-2">
-                                        <t t-foreach="data_fields" t-as="df">
-                                            <div class="form-check">
-                                                <input type="checkbox"
-                                                    class="form-check-input d-none"
-                                                    t-att-name="'allowed_data_field_ids'"
-                                                    t-att-value="df.id" t-att-id="'df_%s' % df.id" />
-                                                <label class="form-check-label"
-                                                    t-att-for="'df_%s' % df.id" t-esc="df.name" />
-                                            </div>
-                                        </t>
-                                    </div>
-                                    <div id="data_fields_error"
-                                        class="text-danger small mt-1 d-none"></div>
-                                </div>
-                            </t>
-                            <t t-else="">
-                                <div class="col-12">
-                                    <div class="alert alert-warning py-2 mb-0">
-                                        No data fields are configured for your consent partner. Please contact admin.
-                                    </div>
-                                </div>
-                            </t>
-                            <div class="col-12">
-                                <label class="form-label">Upload consent form (attachment)</label>
-                                <input type="file" name="attachment" class="form-control"
-                                    accept=".pdf,.doc,.docx,image/*" required="required" />
-                                <div class="form-text">Maximum 10MB</div>
-                                <div id="attachment_error" class="text-danger small mt-1 d-none"></div>
-                            </div>
                             <div class="col-12">
                                 <input type="hidden" name="camera_capture_data"
                                     id="camera_capture_data" value="" />
@@ -1437,6 +1572,9 @@
                                             <span class="consent_verification_choice_text" id="face_verification_choice_hint">Not Attempted</span>
                                         </button>
                                     </div>
+                                </div>
+                                <div id="verification_required_notice" class="consent_verification_gate_notice">
+                                    Complete Fayda OTP or Face Match to unlock the consent form.
                                 </div>
                                 <div class="modal fade o_consent_portal" id="modal_verification_otp" tabindex="-1" aria-labelledby="modal_verification_otp_label" aria-hidden="true" data-bs-backdrop="static">
                                   <div class="modal-dialog modal-dialog-centered" style="background: transparent !important; border: none !important; box-shadow: none !important;">
@@ -1573,19 +1711,106 @@
                                   </div>
                                 </div>
                             </div>
+                            <div id="consent_form_fields_wrapper" class="col-12 d-none">
+                                <div class="consent_request_fields_shell">
+                                    <div class="consent_request_fields_intro">
+                                        <div class="consent_request_fields_intro_copy">
+                                            <h5 class="consent_card_title">Consent Details</h5>
+                                            <p class="text-muted small mb-0">Verification has succeeded. You can now complete and submit the consent request.</p>
+                                        </div>
+                                        <div class="consent_selected_farmer consent_selected_farmer--summary">
+                                            <div class="consent_selected_farmer_details">
+                                                <div class="consent_selected_farmer_label">Selected Farmer</div>
+                                                <div id="selected_farmer_name" class="consent_selected_farmer_name">—</div>
+                                                <p id="selected_farmer_meta" class="consent_selected_farmer_meta">Farmer ID: —</p>
+                                            </div>
+                                            <div class="consent_selected_farmer_media">
+                                                <img id="selected_farmer_image" class="consent_selected_farmer_image d-none"
+                                                    alt="Selected farmer photo" />
+                                                <div id="selected_farmer_image_placeholder"
+                                                    class="consent_farmer_avatar_placeholder consent_selected_farmer_placeholder">
+                                                    No photo
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="consent_type">Consent Type</label>
+                                            <select name="consent_type" id="consent_type" class="form-select">
+                                                <option value="specific">Specific (Single Farmer)</option>
+                                                <option value="baseline">Baseline</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="validity_months">Duration</label>
+                                            <select name="validity_months" id="validity_months"
+                                                class="form-select">
+                                                <option value="3">3 months</option>
+                                                <option value="6">6 months</option>
+                                                <option value="12" selected="1">12 months</option>
+                                                <option value="24">24 months</option>
+                                                <option value="36">36 months</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label" for="purpose">Purpose</label>
+                                            <textarea name="purpose" id="purpose" class="form-control" rows="3"
+                                                placeholder="Describe the purpose of this consent request..."
+                                                required="required"></textarea>
+                                            <div id="purpose_error" class="text-danger small mt-1 d-none"></div>
+                                        </div>
+                                        <t t-if="data_fields">
+                                            <div class="col-12">
+                                                <label class="form-label">Data fields to request</label>
+                                                <div class="consent_data_field_chips d-flex flex-wrap gap-2">
+                                                    <t t-foreach="data_fields" t-as="df">
+                                                        <div class="form-check">
+                                                            <input type="checkbox"
+                                                                class="form-check-input d-none"
+                                                                t-att-name="'allowed_data_field_ids'"
+                                                                t-att-value="df.id" t-att-id="'df_%s' % df.id" />
+                                                            <label class="form-check-label"
+                                                                t-att-for="'df_%s' % df.id" t-esc="df.name" />
+                                                        </div>
+                                                    </t>
+                                                </div>
+                                                <div id="data_fields_error"
+                                                    class="text-danger small mt-1 d-none"></div>
+                                            </div>
+                                        </t>
+                                        <t t-else="">
+                                            <div class="col-12">
+                                                <div class="alert alert-warning py-2 mb-0">
+                                                    No data fields are configured for your consent partner. Please contact admin.
+                                                </div>
+                                            </div>
+                                        </t>
+                                        <div class="col-12">
+                                            <label class="form-label">Upload consent form (attachment)</label>
+                                            <input type="file" name="attachment" class="form-control"
+                                                accept=".pdf,.doc,.docx,image/*" required="required" />
+                                            <div class="form-text">Maximum 10MB</div>
+                                            <div id="attachment_error" class="text-danger small mt-1 d-none"></div>
+                                        </div>
+                                        <div class="col-12">
+                                            <t t-if="data_fields">
+                                                <button type="submit" class="btn consent_btn_primary">Submit Request</button>
+                                            </t>
+                                            <t t-else="">
+                                                <button
+                                                    type="button"
+                                                    class="btn consent_btn_primary"
+                                                    id="btn_submit_disabled_reason"
+                                                    title="No data fields configured for your consent partner."
+                                                >Submit Request</button>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-12">
-                                <t t-if="data_fields">
-                                    <button type="submit" class="btn consent_btn_primary">Submit Request</button>
-                                </t>
-                                <t t-else="">
-                                    <button
-                                        type="button"
-                                        class="btn consent_btn_primary"
-                                        id="btn_submit_disabled_reason"
-                                        title="No data fields configured for your consent partner."
-                                    >Submit Request</button>
-                                </t>
-                                <button type="button" class="btn btn-outline-secondary ms-2"
+                                <button type="button" class="btn btn-outline-secondary"
                                     id="btn_clear_farmer">Clear selection</button>
                             </div>
                         </div>
@@ -2014,6 +2239,28 @@
                             submit a request above.</p>
                     </div>
                 </t>
+                    </div>
+                    <t t-if="portal_management_enabled">
+                        <div id="portal_management_alerts_anchor"></div>
+                        <div id="portal_management_section_anchor" class="d-none"></div>
+                        <div
+                            id="portal_roles_pane"
+                            class="tab-pane fade consent_tab_panel"
+                            role="tabpanel"
+                            aria-labelledby="portal_roles_tab_link"
+                        >
+                            <div id="portal_roles_section_anchor"></div>
+                        </div>
+                        <div
+                            id="portal_users_pane"
+                            class="tab-pane fade consent_tab_panel"
+                            role="tabpanel"
+                            aria-labelledby="portal_users_tab_link"
+                        >
+                            <div id="portal_users_section_anchor"></div>
+                        </div>
+                    </t>
+                </div>
             </div>
 
             <script><![CDATA[
@@ -2025,6 +2272,8 @@
                     var resultsList = document.getElementById('farmer_results_list');
                     var createCard = document.getElementById('create_request_card');
                     var formFarmerId = document.getElementById('form_farmer_id');
+                    var verificationRequiredNotice = document.getElementById('verification_required_notice');
+                    var consentFormFieldsWrapper = document.getElementById('consent_form_fields_wrapper');
                     var selectedFarmerName = document.getElementById('selected_farmer_name');
                     var selectedFarmerMeta = document.getElementById('selected_farmer_meta');
                     var selectedFarmerImage = document.getElementById('selected_farmer_image');
@@ -2208,6 +2457,40 @@
                         }
                     }
 
+                    function isConsentVerificationComplete() {
+                        return faydaOtpState.status === 'verified' || faceMatchState.status === 'matched';
+                    }
+
+                    function updateConsentFormVisibility() {
+                        var isUnlocked = isConsentVerificationComplete();
+                        if (consentFormFieldsWrapper) {
+                            consentFormFieldsWrapper.classList.toggle('d-none', !isUnlocked);
+                            var fieldNodes = consentFormFieldsWrapper.querySelectorAll('input, select, textarea, button');
+                            for (var i = 0; i < fieldNodes.length; i++) {
+                                fieldNodes[i].disabled = !isUnlocked;
+                            }
+                        }
+                        if (verificationRequiredNotice) {
+                            verificationRequiredNotice.classList.toggle('is-success', isUnlocked);
+                            verificationRequiredNotice.textContent = isUnlocked
+                                ? 'Verification successful. You can now complete the consent request.'
+                                : 'Complete Fayda OTP or Face Match to unlock the consent form.';
+                        }
+                    }
+
+                    function resetConsentFormInputs() {
+                        if (consentForm) {
+                            consentForm.reset();
+                        }
+                        if (formFarmerId) {
+                            formFarmerId.value = '';
+                        }
+                        setPurposeError('');
+                        setDataFieldsError('');
+                        setAttachmentError('');
+                        setCameraError('');
+                    }
+
                     function resetFaceMatchFields() {
                         if (faceMatchStatusInput) faceMatchStatusInput.value = 'not_attempted';
                         if (faceMatchDistanceInput) faceMatchDistanceInput.value = '';
@@ -2284,6 +2567,7 @@
                         }
                         setFaceVerificationChoiceHint(normalizedStatus, message || 'Not Attempted');
                         updateFaceMatchPercentText(distance, threshold);
+                        updateConsentFormVisibility();
                     }
 
                     function resetFaceMatch(message) {
@@ -2293,6 +2577,7 @@
                             faceMatchStatusText.textContent = message || 'Capture a photo to compare it with the selected farmer profile image.';
                         }
                         setFaceVerificationChoiceHint('not_attempted', 'Not Attempted');
+                        updateConsentFormVisibility();
                     }
 
                     function getFaydaOtpUnavailableReason(farmer) {
@@ -2386,6 +2671,7 @@
                         }
                         setOtpVerificationChoiceHint(normalizedStatus, { maskedMobile: maskedMobile });
                         setFaydaOtpButtonsState(normalizedStatus === 'processing', !!transactionId);
+                        updateConsentFormVisibility();
                     }
 
                     function resetFaydaOtp(message) {
@@ -2408,6 +2694,7 @@
                         }
                         setOtpVerificationChoiceHint('not_requested');
                         setFaydaOtpButtonsState(false, false);
+                        updateConsentFormVisibility();
                     }
 
                     function getDefaultFaceMatchMessage(farmer, isRetake) {
@@ -2520,25 +2807,13 @@
 
                     function buildFarmerMeta(farmer) {
                         if (!farmer) {
-                            return 'Search and select an approved farmer.';
+                            return 'Farmer ID: —';
                         }
-                        var regIds = Array.isArray(farmer.reg_ids) ? farmer.reg_ids.filter(Boolean) : [];
-                        var parts = ['Farmer ID: ' + (farmer.farmer_id || '—')];
-                        if (regIds.length) {
-                            parts.push('IDs: ' + regIds.join(', '));
-                        }
-                        if (farmer.otp_available) {
-                            parts.push('OTP: ' + (farmer.otp_identifier_type || 'ID') + ' ready');
-                        } else {
-                            parts.push('OTP unavailable');
-                        }
-                        if (!farmer.profile_image_url) {
-                            parts.push('No profile image available');
-                        }
-                        return parts.join(' | ');
+                        return 'Farmer ID: ' + (farmer.farmer_id || '—');
                     }
 
                     function applySelectedFarmer(farmer) {
+                        resetConsentFormInputs();
                         selectedFarmer = farmer || null;
                         if (formFarmerId) {
                             formFarmerId.value = farmer && farmer.id ? String(farmer.id) : '';
@@ -2554,16 +2829,29 @@
                             selectedFarmerImagePlaceholder,
                             farmer && farmer.profile_image_url ? farmer.profile_image_url : ''
                         );
+                        if (selectedFarmerImage) {
+                            selectedFarmerImage.alt = farmer && farmer.name
+                                ? farmer.name + ' photo'
+                                : 'Selected farmer photo';
+                        }
                         setPreviewImage(
                             faceMatchReferencePreview,
                             faceMatchReferenceEmpty,
                             farmer && farmer.profile_image_url ? farmer.profile_image_url : ''
                         );
                         createCard.classList.toggle('d-none', !farmer);
+                        if (resultsDiv) {
+                            if (farmer) {
+                                resultsDiv.classList.add('d-none');
+                            } else {
+                                resultsDiv.classList.toggle('d-none', !(resultsList && resultsList.innerHTML && resultsList.innerHTML.trim()));
+                            }
+                        }
                         clearCameraCapture();
                         setVerificationMethod('');
                         resetFaceMatch(getDefaultFaceMatchMessage(farmer, false));
                         resetFaydaOtp(getDefaultFaydaOtpMessage(farmer));
+                        updateConsentFormVisibility();
                     }
 
                     function ensureFaceApiLibrary() {
@@ -2704,6 +2992,12 @@
                                         ', AcceptedPercent=' + formatMatchPercent(acceptedPercent)
                                 }
                             );
+                            if (matched) {
+                                closeModalById('modal_verification_face');
+                                window.setTimeout(function() {
+                                    showServiceProviderModal('Face match verified successfully. You can now complete the consent request.', false);
+                                }, 250);
+                            }
                             return matched;
                         }).catch(function(error) {
                             if (actionToken !== faceMatchActionToken || selectedVerificationMethod !== 'face') {
@@ -3219,82 +3513,91 @@
 
                     function searchFarmers() {
                         var singleQuery = (searchNationalId && searchNationalId.value) ? searchNationalId.value.trim() : '';
+                        applySelectedFarmer(null);
+                        if (resultsList) {
+                            resultsList.innerHTML = '';
+                        }
                         if (!singleQuery) {
-                            resultsDiv.classList.add('d-none');
+                            if (resultsDiv) {
+                                resultsDiv.classList.add('d-none');
+                            }
                             return;
                         }
                         callJsonRoute('/consent/search_farmer', { query: singleQuery })
                             .then(function(res) {
                             if (res.success && res.data && res.data.farmers && res.data.farmers.length) {
-                                resultsList.innerHTML = '';
-                                res.data.farmers.forEach(function(f) {
-                                    var regIds = (f.reg_ids && f.reg_ids.length) ? f.reg_ids.join(', ') : '';
-                                    var div = document.createElement('div');
-                                    div.className = 'consent_farmer_result_item';
-                                    var left = document.createElement('div');
-                                    left.className = 'consent_farmer_identity';
-                                    if (f.profile_image_url) {
-                                        var avatarImg = document.createElement('img');
-                                        avatarImg.className = 'consent_farmer_avatar';
-                                        avatarImg.alt = (f.name || 'Farmer') + ' profile image';
-                                        avatarImg.src = f.profile_image_url;
-                                        avatarImg.addEventListener('error', function() {
-                                            this.classList.add('d-none');
-                                        });
-                                        left.appendChild(avatarImg);
-                                    } else {
-                                        var avatarEmpty = document.createElement('div');
-                                        avatarEmpty.className = 'consent_farmer_avatar consent_farmer_avatar_placeholder';
-                                        avatarEmpty.textContent = 'No photo';
-                                        left.appendChild(avatarEmpty);
-                                    }
-                                    var textWrap = document.createElement('div');
-                                    textWrap.className = 'consent_farmer_identity_text';
-                                    var nameEl = document.createElement('div');
-                                    nameEl.className = 'consent_farmer_identity_name';
-                                    nameEl.textContent = f.name || 'Unnamed Farmer';
-                                    textWrap.appendChild(nameEl);
-                                    var metaEl = document.createElement('div');
-                                    metaEl.className = 'text-muted small';
-                                    metaEl.textContent = 'Farmer ID: ' + (f.farmer_id || '—') + (regIds ? ' · ' + regIds : '') + (f.profile_image_url ? '' : ' · No profile image');
-                                    textWrap.appendChild(metaEl);
-                                    left.appendChild(textWrap);
-                                    div.appendChild(left);
-                                    var btn = document.createElement('button');
-                                    btn.type = 'button';
-                                    btn.className = 'btn btn-sm consent_btn_primary select-farmer';
-                                    btn.setAttribute('data-id', f.id);
-                                    btn.setAttribute('data-name', f.name || '');
-                                    btn.setAttribute('data-farmer-id', f.farmer_id || '');
-                                    btn.setAttribute('data-reg-ids', JSON.stringify(f.reg_ids || []));
-                                    btn.setAttribute('data-profile-image-url', f.profile_image_url || '');
-                                    btn.setAttribute('data-otp-available', f.otp_available ? '1' : '0');
-                                    btn.setAttribute('data-otp-identifier-type', f.otp_identifier_type || '');
-                                    btn.setAttribute('data-otp-identifier-source', f.otp_identifier_source || '');
-                                    btn.textContent = 'Select';
-                                    btn.addEventListener('click', function() {
-                                        applySelectedFarmer({
-                                            id: this.getAttribute('data-id'),
-                                            name: this.getAttribute('data-name') || '',
-                                            farmer_id: this.getAttribute('data-farmer-id') || '',
-                                            reg_ids: JSON.parse(this.getAttribute('data-reg-ids') || '[]'),
-                                            profile_image_url: this.getAttribute('data-profile-image-url') || '',
-                                            otp_available: this.getAttribute('data-otp-available') === '1',
-                                            otp_identifier_type: this.getAttribute('data-otp-identifier-type') || '',
-                                            otp_identifier_source: this.getAttribute('data-otp-identifier-source') || ''
-                                        });
+                                var f = res.data.farmers[0];
+                                var div = document.createElement('div');
+                                div.className = 'consent_farmer_result_item';
+
+                                var left = document.createElement('div');
+                                left.className = 'consent_farmer_identity';
+
+                                var textWrap = document.createElement('div');
+                                textWrap.className = 'consent_farmer_identity_text';
+
+                                var statusEl = document.createElement('div');
+                                statusEl.className = 'consent_farmer_result_status is-found';
+                                statusEl.textContent = 'Found';
+                                textWrap.appendChild(statusEl);
+
+                                var messageEl = document.createElement('div');
+                                messageEl.className = 'consent_farmer_result_message';
+                                messageEl.textContent = 'Farmer found';
+                                textWrap.appendChild(messageEl);
+
+                                var hintEl = document.createElement('div');
+                                hintEl.className = 'consent_farmer_result_hint';
+                                hintEl.textContent = 'Click Select to continue to verification.';
+                                textWrap.appendChild(hintEl);
+
+                                left.appendChild(textWrap);
+                                div.appendChild(left);
+
+                                var btn = document.createElement('button');
+                                btn.type = 'button';
+                                btn.className = 'btn btn-sm consent_btn_primary select-farmer';
+                                btn.textContent = 'Select';
+                                btn.addEventListener('click', function() {
+                                    applySelectedFarmer({
+                                        id: f.id,
+                                        name: f.name || '',
+                                        farmer_id: f.farmer_id || '',
+                                        reg_ids: Array.isArray(f.reg_ids) ? f.reg_ids : [],
+                                        profile_image_url: f.profile_image_url || '',
+                                        otp_available: !!f.otp_available,
+                                        otp_identifier_type: f.otp_identifier_type || '',
+                                        otp_identifier_source: f.otp_identifier_source || ''
                                     });
-                                    div.appendChild(btn);
-                                    resultsList.appendChild(div);
                                 });
+                                div.appendChild(btn);
+                                resultsList.appendChild(div);
                                 resultsDiv.classList.remove('d-none');
                             } else {
-                                resultsList.innerHTML = '<p class="text-muted mb-0">No farmers found.</p>';
+                                resultsList.innerHTML =
+                                    '<div class="consent_farmer_result_item">' +
+                                        '<div class="consent_farmer_identity">' +
+                                            '<div class="consent_farmer_identity_text">' +
+                                                '<div class="consent_farmer_result_status is-missing">Not Found</div>' +
+                                                '<div class="consent_farmer_result_message">Farmer not found</div>' +
+                                                '<div class="consent_farmer_result_hint">Check the Farmer ID or National ID and try again.</div>' +
+                                            '</div>' +
+                                        '</div>' +
+                                    '</div>';
                                 resultsDiv.classList.remove('d-none');
                             }
                             })
                             .catch(function(error) {
-                                resultsList.innerHTML = '<p class="text-danger mb-0">' + htmlEscape(error && error.message ? error.message : 'Search failed.') + '</p>';
+                                resultsList.innerHTML =
+                                    '<div class="consent_farmer_result_item">' +
+                                        '<div class="consent_farmer_identity">' +
+                                            '<div class="consent_farmer_identity_text">' +
+                                                '<div class="consent_farmer_result_status is-missing">Error</div>' +
+                                                '<div class="consent_farmer_result_message">Search failed</div>' +
+                                                '<div class="consent_farmer_result_hint">' + htmlEscape(error && error.message ? error.message : 'Unable to search for the farmer right now.') + '</div>' +
+                                            '</div>' +
+                                        '</div>' +
+                                    '</div>';
                                 resultsDiv.classList.remove('d-none');
                             });
                     }
@@ -3549,6 +3852,14 @@
                             setAttachmentError('');
                             setCameraError('');
 
+                            if (!selectedFarmer || !formFarmerId || !formFarmerId.value) {
+                                hasError = true;
+                                if (!firstErrorMessage) firstErrorMessage = 'Please search and select a farmer first.';
+                            }
+                            if (!isConsentVerificationComplete()) {
+                                hasError = true;
+                                if (!firstErrorMessage) firstErrorMessage = 'Complete Fayda OTP or Face Match before continuing.';
+                            }
                             if (!purposeInput || !(purposeInput.value || '').trim()) {
                                 setPurposeError('Purpose is required.');
                                 hasError = true;
@@ -3626,6 +3937,7 @@
                     setVerificationMethod('');
                     resetFaceMatch(getDefaultFaceMatchMessage(null, false));
                     resetFaydaOtp(getDefaultFaydaOtpMessage(null));
+                    updateConsentFormVisibility();
 
                     (function showServerErrorPopup() {
                         var errorCode = '';
@@ -3638,6 +3950,41 @@
                         var message = errorMessagesByCode[errorCode];
                         if (!message) return;
                         showServiceProviderModal(message, true);
+                    })();
+                    (function initPortalSectionTabs() {
+                        var managementTabLink = document.getElementById('portal_management_tab_link');
+                        var workspaceTabLink = document.getElementById('consent_workspace_tab_link');
+                        if (!managementTabLink || !workspaceTabLink || !window.bootstrap || !window.bootstrap.Tab) {
+                            return;
+                        }
+
+                        function showTabFromHash() {
+                            if (window.location.hash === '#portal_management') {
+                                window.bootstrap.Tab.getOrCreateInstance(managementTabLink).show();
+                                return;
+                            }
+                            if (window.location.hash === '#consent_workspace') {
+                                window.bootstrap.Tab.getOrCreateInstance(workspaceTabLink).show();
+                            }
+                        }
+
+                        managementTabLink.addEventListener('shown.bs.tab', function() {
+                            if (window.location.hash !== '#portal_management') {
+                                window.history.replaceState(null, '', '#portal_management');
+                            }
+                        });
+                        workspaceTabLink.addEventListener('shown.bs.tab', function() {
+                            if (window.location.hash === '#portal_management') {
+                                window.history.replaceState(
+                                    null,
+                                    '',
+                                    window.location.pathname + window.location.search + '#consent_workspace'
+                                );
+                            }
+                        });
+
+                        window.addEventListener('hashchange', showTabFromHash);
+                        showTabFromHash();
                     })();
                     window.addEventListener('beforeunload', function() {
                         stopCameraStream();

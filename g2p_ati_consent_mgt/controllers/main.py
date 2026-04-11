@@ -111,7 +111,7 @@ class G2PATIConsentController(http.Controller):
             params["mgmt_message"] = str(message)[:240]
         query = urlencode(params)
         return request.redirect(
-            "/consent/management%s#portal_management" % (("?%s" % query) if query else "")
+            "/consent/management%s#portal_roles_pane" % (("?%s" % query) if query else "")
         )
 
     def _parse_portal_role_ids(self, raw_values, partner):
