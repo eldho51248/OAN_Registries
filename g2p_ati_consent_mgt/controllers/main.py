@@ -729,7 +729,7 @@ class G2PATIConsentController(http.Controller):
 
         name = (post.get("name") or "").strip()
         login = (post.get("login") or "").strip()
-        email = (post.get("email") or "").strip()
+        email = login or False
         phone = (post.get("phone") or "").strip()
         password = post.get("password") or ""
         if not name or not login or not password:
@@ -818,7 +818,7 @@ class G2PATIConsentController(http.Controller):
 
         name = (post.get("name") or "").strip()
         login = (post.get("login") or "").strip()
-        email = (post.get("email") or "").strip()
+        email = login or False
         phone = (post.get("phone") or "").strip()
         if not name or not login:
             return self._management_redirect(error="missing_user_fields")
@@ -941,6 +941,7 @@ class G2PATIConsentController(http.Controller):
                 "id": partner.id,
                 "name": partner.name,
                 "farmer_id": partner.farmer_id or "",
+                "phone": self._get_farmer_primary_phone(partner),
                 "reg_ids": [r.value for r in (partner.reg_ids or [])],
                 "profile_image_url": self._build_farmer_profile_image_url(partner),
                 "otp_identifier": otp_identity.get("identifier") or "",

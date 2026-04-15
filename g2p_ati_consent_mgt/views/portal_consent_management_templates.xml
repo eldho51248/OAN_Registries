@@ -384,6 +384,12 @@
                     box-shadow: 0 6px 16px rgba(0, 145, 71, 0.1);
                     flex: 0 0 auto;
                     }
+                    .o_consent_portal .consent_search_panel_icon_img {
+                    width: 22px;
+                    height: 22px;
+                    object-fit: contain;
+                    display: block;
+                    }
                     .o_consent_portal .consent_search_panel_title {
                     font-size: 1rem;
                     line-height: 1.1;
@@ -409,11 +415,21 @@
                     }
                     .o_consent_portal .consent_search_wrapper .form-control {
                     padding-left: 2.8rem;
+                    padding-right: 8.5rem;
                     border-radius: 9px;
                     border: 1px solid rgba(48, 161, 102, 0.65);
                     background: #ffffff;
                     min-height: 46px;
                     box-shadow: inset 0 1px 2px rgba(17, 24, 39, 0.04);
+                    }
+                    .o_consent_portal .consent_search_wrapper .form-control.is-found {
+                    border-color: rgba(48, 161, 102, 0.82);
+                    box-shadow: 0 0 0 0.16rem rgba(0, 145, 71, 0.10);
+                    }
+                    .o_consent_portal .consent_search_wrapper .form-control.is-missing,
+                    .o_consent_portal .consent_search_wrapper .form-control.is-error {
+                    border-color: rgba(220, 53, 69, 0.55);
+                    box-shadow: 0 0 0 0.16rem rgba(220, 53, 69, 0.10);
                     }
                     .o_consent_portal .consent_search_wrapper .form-control:focus {
                     border-color: rgba(0, 145, 71, 0.8);
@@ -427,6 +443,33 @@
                     color: #83908c;
                     pointer-events: none;
                     font-size: 1rem;
+                    }
+                    .o_consent_portal .consent_search_inline_status {
+                    position: absolute;
+                    right: 0.95rem;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.35rem;
+                    font-size: 0.82rem;
+                    font-weight: 700;
+                    opacity: 0;
+                    visibility: hidden;
+                    pointer-events: none;
+                    transition: opacity .2s ease, visibility .2s ease;
+                    white-space: nowrap;
+                    }
+                    .o_consent_portal .consent_search_inline_status.is-visible {
+                    opacity: 1;
+                    visibility: visible;
+                    }
+                    .o_consent_portal .consent_search_inline_status.is-found {
+                    color: #16824a;
+                    }
+                    .o_consent_portal .consent_search_inline_status.is-missing,
+                    .o_consent_portal .consent_search_inline_status.is-error {
+                    color: #c03a45;
                     }
                     .o_consent_portal .consent_search_submit {
                     min-width: 112px;
@@ -967,18 +1010,20 @@
                     display: flex;
                     align-items: flex-start;
                     justify-content: space-between;
+                    flex-wrap: wrap;
                     gap: 1rem;
                     margin-bottom: 1rem;
                     }
                     .o_consent_portal .consent_request_fields_intro_copy {
-                    flex: 1 1 auto;
+                    flex: 1 1 100%;
                     min-width: 0;
                     }
                     .o_consent_portal .consent_request_fields_intro .consent_card_title {
                     margin-bottom: 0.25rem;
                     }
                     .o_consent_portal .consent_selected_farmer--summary {
-                    flex: 0 0 320px;
+                    width: 100%;
+                    flex: 1 1 100%;
                     justify-content: space-between;
                     align-items: center;
                     gap: 0.85rem;
@@ -987,6 +1032,13 @@
                     }
                     .o_consent_portal .consent_selected_farmer_details {
                     min-width: 0;
+                    flex: 1 1 auto;
+                    }
+                    .o_consent_portal .consent_selected_farmer_meta_row {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 0.55rem 1rem;
+                    align-items: center;
                     }
                     .o_consent_portal .consent_selected_farmer_label {
                     display: inline-flex;
@@ -1008,6 +1060,10 @@
                     line-height: 1.3;
                     margin-bottom: 0.28rem;
                     word-break: break-word;
+                    }
+                    .o_consent_portal .consent_selected_farmer_media {
+                    flex: 0 0 auto;
+                    margin-left: auto;
                     }
                     .o_consent_portal .consent_selected_farmer_placeholder {
                     display: inline-flex;
@@ -1409,6 +1465,14 @@
                         flex-direction: column-reverse;
                         align-items: flex-start;
                     }
+                    .o_consent_portal .consent_selected_farmer_media {
+                        margin-left: 0;
+                    }
+                    .o_consent_portal .consent_selected_farmer_meta_row {
+                        flex-direction: column;
+                        align-items: flex-start;
+                        gap: 0.25rem;
+                    }
                     }
                     @media (prefers-reduced-motion: reduce) {
                     .o_consent_portal,
@@ -1489,11 +1553,10 @@
                 <div class="consent_card consent_search_panel">
                     <div class="consent_search_panel_head">
                         <span class="consent_search_panel_icon" aria-hidden="true">
-                            <i class="fa fa-search"></i>
+                            <img src="/g2p_ati_consent_mgt/static/description/farmer.png" alt="" class="consent_search_panel_icon_img" />
                         </span>
                         <div>
                             <div class="consent_search_panel_title">Farmer</div>
-                            <div class="consent_search_panel_subtitle">/ Farmer ID, National ID</div>
                         </div>
                     </div>
                     <div class="consent_search_bar">
@@ -1503,6 +1566,10 @@
                             </span>
                             <input type="text" id="search_national_id" class="form-control"
                                 placeholder="Search by Farmer ID or National ID..." />
+                            <span id="search_inline_status" class="consent_search_inline_status" aria-live="polite">
+                                <i id="search_inline_status_icon" class="fa fa-check-circle" aria-hidden="true"></i>
+                                <span id="search_inline_status_text">Found</span>
+                            </span>
                         </div>
                         <button type="button" class="btn consent_btn_primary consent_search_submit"
                             id="btn_search_farmer">Search</button>
@@ -1722,7 +1789,9 @@
                                             <div class="consent_selected_farmer_details">
                                                 <div class="consent_selected_farmer_label">Selected Farmer</div>
                                                 <div id="selected_farmer_name" class="consent_selected_farmer_name">—</div>
-                                                <p id="selected_farmer_meta" class="consent_selected_farmer_meta">Farmer ID: —</p>
+                                                <div class="consent_selected_farmer_meta_row">
+                                                    <p id="selected_farmer_meta" class="consent_selected_farmer_meta">Farmer ID: —</p>
+                                                </div>
                                             </div>
                                             <div class="consent_selected_farmer_media">
                                                 <img id="selected_farmer_image" class="consent_selected_farmer_image d-none"
@@ -2268,6 +2337,9 @@
                     var btnSearch = document.getElementById('btn_search_farmer');
                     var searchFarmerId = document.getElementById('search_farmer_id');
                     var searchNationalId = document.getElementById('search_national_id');
+                    var searchInlineStatus = document.getElementById('search_inline_status');
+                    var searchInlineStatusIcon = document.getElementById('search_inline_status_icon');
+                    var searchInlineStatusText = document.getElementById('search_inline_status_text');
                     var resultsDiv = document.getElementById('farmer_search_results');
                     var resultsList = document.getElementById('farmer_results_list');
                     var createCard = document.getElementById('create_request_card');
@@ -2355,6 +2427,11 @@
                         running: false,
                         transactionId: '',
                         maskedMobile: ''
+                    };
+                    var searchState = {
+                        status: 'idle',
+                        query: '',
+                        farmer: null
                     };
 
                     function closeModalById(modalId) {
@@ -2810,6 +2887,82 @@
                             return 'Farmer ID: —';
                         }
                         return 'Farmer ID: ' + (farmer.farmer_id || '—');
+                    }
+
+                    function setSearchButtonMode(mode) {
+                        if (!btnSearch) return;
+                        btnSearch.textContent = mode === 'select' ? 'Select' : 'Search';
+                    }
+
+                    function setSearchInlineState(status, text) {
+                        if (searchNationalId) {
+                            searchNationalId.classList.remove('is-found', 'is-missing', 'is-error');
+                        }
+                        if (searchInlineStatus) {
+                            searchInlineStatus.className = 'consent_search_inline_status';
+                        }
+                        if (searchInlineStatusIcon) {
+                            searchInlineStatusIcon.className = 'fa';
+                        }
+                        if (searchInlineStatusText) {
+                            searchInlineStatusText.textContent = '';
+                        }
+
+                        if (!status || status === 'idle') {
+                            return;
+                        }
+
+                        var iconClass = 'fa-info-circle';
+                        if (status === 'found') {
+                            iconClass = 'fa-check-circle';
+                        } else if (status === 'missing' || status === 'error') {
+                            iconClass = 'fa-times-circle';
+                        }
+
+                        if (searchNationalId) {
+                            searchNationalId.classList.add('is-' + status);
+                        }
+                        if (searchInlineStatus) {
+                            searchInlineStatus.classList.add('is-visible', 'is-' + status);
+                        }
+                        if (searchInlineStatusIcon) {
+                            searchInlineStatusIcon.classList.add(iconClass);
+                        }
+                        if (searchInlineStatusText) {
+                            searchInlineStatusText.textContent = text || '';
+                        }
+                    }
+
+                    function clearFarmerSearchResultState(options) {
+                        var opts = options || {};
+                        searchState.status = 'idle';
+                        searchState.query = '';
+                        searchState.farmer = null;
+                        setSearchInlineState('idle', '');
+                        setSearchButtonMode('search');
+                        if (resultsList) {
+                            resultsList.innerHTML = '';
+                        }
+                        if (resultsDiv) {
+                            resultsDiv.classList.add('d-none');
+                        }
+                        if (!opts.keepSelection) {
+                            applySelectedFarmer(null);
+                        }
+                    }
+
+                    function buildSearchFarmerPayload(farmer) {
+                        return {
+                            id: farmer.id,
+                            name: farmer.name || '',
+                            farmer_id: farmer.farmer_id || '',
+                            phone: farmer.phone || '',
+                            reg_ids: Array.isArray(farmer.reg_ids) ? farmer.reg_ids : [],
+                            profile_image_url: farmer.profile_image_url || '',
+                            otp_available: !!farmer.otp_available,
+                            otp_identifier_type: farmer.otp_identifier_type || '',
+                            otp_identifier_source: farmer.otp_identifier_source || ''
+                        };
                     }
 
                     function applySelectedFarmer(farmer) {
@@ -3513,97 +3666,55 @@
 
                     function searchFarmers() {
                         var singleQuery = (searchNationalId && searchNationalId.value) ? searchNationalId.value.trim() : '';
+
+                        if (searchState.status === 'found' && searchState.farmer && searchState.query === singleQuery) {
+                            applySelectedFarmer(searchState.farmer);
+                            return;
+                        }
+
                         applySelectedFarmer(null);
                         if (resultsList) {
                             resultsList.innerHTML = '';
                         }
+                        if (resultsDiv) {
+                            resultsDiv.classList.add('d-none');
+                        }
                         if (!singleQuery) {
-                            if (resultsDiv) {
-                                resultsDiv.classList.add('d-none');
-                            }
+                            clearFarmerSearchResultState({ keepSelection: true });
                             return;
                         }
                         callJsonRoute('/consent/search_farmer', { query: singleQuery })
                             .then(function(res) {
                             if (res.success && res.data && res.data.farmers && res.data.farmers.length) {
-                                var f = res.data.farmers[0];
-                                var div = document.createElement('div');
-                                div.className = 'consent_farmer_result_item';
-
-                                var left = document.createElement('div');
-                                left.className = 'consent_farmer_identity';
-
-                                var textWrap = document.createElement('div');
-                                textWrap.className = 'consent_farmer_identity_text';
-
-                                var statusEl = document.createElement('div');
-                                statusEl.className = 'consent_farmer_result_status is-found';
-                                statusEl.textContent = 'Found';
-                                textWrap.appendChild(statusEl);
-
-                                var messageEl = document.createElement('div');
-                                messageEl.className = 'consent_farmer_result_message';
-                                messageEl.textContent = 'Farmer found';
-                                textWrap.appendChild(messageEl);
-
-                                var hintEl = document.createElement('div');
-                                hintEl.className = 'consent_farmer_result_hint';
-                                hintEl.textContent = 'Click Select to continue to verification.';
-                                textWrap.appendChild(hintEl);
-
-                                left.appendChild(textWrap);
-                                div.appendChild(left);
-
-                                var btn = document.createElement('button');
-                                btn.type = 'button';
-                                btn.className = 'btn btn-sm consent_btn_primary select-farmer';
-                                btn.textContent = 'Select';
-                                btn.addEventListener('click', function() {
-                                    applySelectedFarmer({
-                                        id: f.id,
-                                        name: f.name || '',
-                                        farmer_id: f.farmer_id || '',
-                                        reg_ids: Array.isArray(f.reg_ids) ? f.reg_ids : [],
-                                        profile_image_url: f.profile_image_url || '',
-                                        otp_available: !!f.otp_available,
-                                        otp_identifier_type: f.otp_identifier_type || '',
-                                        otp_identifier_source: f.otp_identifier_source || ''
-                                    });
-                                });
-                                div.appendChild(btn);
-                                resultsList.appendChild(div);
-                                resultsDiv.classList.remove('d-none');
+                                searchState.status = 'found';
+                                searchState.query = singleQuery;
+                                searchState.farmer = buildSearchFarmerPayload(res.data.farmers[0]);
+                                setSearchInlineState('found', 'Found');
+                                setSearchButtonMode('select');
                             } else {
-                                resultsList.innerHTML =
-                                    '<div class="consent_farmer_result_item">' +
-                                        '<div class="consent_farmer_identity">' +
-                                            '<div class="consent_farmer_identity_text">' +
-                                                '<div class="consent_farmer_result_status is-missing">Not Found</div>' +
-                                                '<div class="consent_farmer_result_message">Farmer not found</div>' +
-                                                '<div class="consent_farmer_result_hint">Check the Farmer ID or National ID and try again.</div>' +
-                                            '</div>' +
-                                        '</div>' +
-                                    '</div>';
-                                resultsDiv.classList.remove('d-none');
+                                searchState.status = 'missing';
+                                searchState.query = singleQuery;
+                                searchState.farmer = null;
+                                setSearchInlineState('missing', 'Not Found');
+                                setSearchButtonMode('search');
                             }
                             })
                             .catch(function(error) {
-                                resultsList.innerHTML =
-                                    '<div class="consent_farmer_result_item">' +
-                                        '<div class="consent_farmer_identity">' +
-                                            '<div class="consent_farmer_identity_text">' +
-                                                '<div class="consent_farmer_result_status is-missing">Error</div>' +
-                                                '<div class="consent_farmer_result_message">Search failed</div>' +
-                                                '<div class="consent_farmer_result_hint">' + htmlEscape(error && error.message ? error.message : 'Unable to search for the farmer right now.') + '</div>' +
-                                            '</div>' +
-                                        '</div>' +
-                                    '</div>';
-                                resultsDiv.classList.remove('d-none');
+                                searchState.status = 'error';
+                                searchState.query = singleQuery;
+                                searchState.farmer = null;
+                                setSearchInlineState('error', 'Search Failed');
+                                setSearchButtonMode('search');
                             });
                     }
 
                     if (btnSearch) btnSearch.addEventListener('click', searchFarmers);
                     if (searchNationalId) searchNationalId.addEventListener('keydown', function(e) { if (e.key === 'Enter') { e.preventDefault(); searchFarmers(); } });
+                    if (searchNationalId) {
+                        searchNationalId.addEventListener('input', function() {
+                            clearFarmerSearchResultState();
+                        });
+                    }
                     if (notificationToggle) {
                         notificationToggle.addEventListener('click', function(e) {
                             e.preventDefault();
