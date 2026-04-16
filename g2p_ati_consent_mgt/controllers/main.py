@@ -20,7 +20,7 @@ _logger = logging.getLogger(__name__)
 
 class G2PATIConsentController(http.Controller):
     _MAX_ATTACHMENT_SIZE = 10 * 1024 * 1024  # 10MB
-    _REQUESTS_PAGE_SIZE = 12
+    _REQUESTS_PAGE_SIZE = 10
     _TABLE_FETCH_SIZE = 10
     _FAYDA_OTP_SESSION_KEY = "g2p_consent_fayda_otp"
     _FAYDA_OTP_LOCAL_DEFAULTS = {
@@ -762,7 +762,7 @@ class G2PATIConsentController(http.Controller):
             "consent_type": req.consent_type or "",
             "status": req.status or "",
             "created_at": created_at or "",
-            "review_url": "/consent/management/review/%s?view=table#review_request" % req.id,
+            "review_url": "/consent/management/review/%s?view=table" % req.id,
         }
 
     def _find_farmer(self, payload):
@@ -842,18 +842,15 @@ class G2PATIConsentController(http.Controller):
         ConsentRequest = request.env["g2p.consent.request"].sudo()
         requests_domain = self._get_portal_consent_request_domain(partner)
         total_requests = ConsentRequest.search_count(requests_domain)
-        pager = None
-        request_limit = self._TABLE_FETCH_SIZE if view_mode == "table" else self._REQUESTS_PAGE_SIZE
-        request_offset = 0
-        if view_mode != "table":
-            pager = portal_pager(
-                url="/consent/management",
-                total=total_requests,
-                page=page,
-                step=self._REQUESTS_PAGE_SIZE,
-                url_args={"view": view_mode},
-            )
-            request_offset = pager.get("offset", 0)
+        pager = portal_pager(
+            url="/consent/management",
+            total=total_requests,
+            page=page,
+            step=self._REQUESTS_PAGE_SIZE,
+            url_args={"view": view_mode},
+        )
+        request_limit = self._REQUESTS_PAGE_SIZE
+        request_offset = pager.get("offset", 0)
         consent_requests = ConsentRequest.search(
             requests_domain,
             order="create_date desc",
@@ -878,6 +875,7 @@ class G2PATIConsentController(http.Controller):
                     limit=1,
                 )
         view_base_url = "/consent/management/page/%s" % page if page > 1 else "/consent/management"
+        review_close_url = "%s?view=%s" % (view_base_url, view_mode)
         management_context = self._get_portal_management_context(partner)
         return request.render(
             "g2p_ati_consent_mgt.portal_consent_management",
@@ -894,6 +892,7 @@ class G2PATIConsentController(http.Controller):
                 "table_fetch_size": self._TABLE_FETCH_SIZE,
                 "total_requests": total_requests,
                 "current_page": page,
+                "review_close_url": review_close_url,
                 **management_context,
             },
         )

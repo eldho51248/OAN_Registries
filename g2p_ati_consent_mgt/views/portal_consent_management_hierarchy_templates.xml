@@ -286,12 +286,12 @@
                         border: 0;
                         }
                         .consent_mgmt_modal .modal-header {
-                        padding: 1.7rem 2.3rem 1.2rem;
+                        padding: 1.7rem 2.85rem 1.2rem;
                         border-bottom: 1px solid #edf2ef;
                         background: linear-gradient(180deg, #fbfdfc 0%, #f6faf7 100%);
                         }
                         .consent_mgmt_modal .modal-body {
-                        padding: 1.8rem 2.3rem;
+                        padding: 1.8rem 2.85rem;
                         background: #ffffff;
                         }
                         .consent_mgmt_modal .modal-title {
@@ -343,13 +343,13 @@
                         --bs-gutter-y: 1.25rem;
                         margin-left: 0;
                         margin-right: 0;
-                        padding-left: 0.75rem;
-                        padding-right: 0.75rem;
+                        padding-left: 1.35rem;
+                        padding-right: 1.35rem;
                         }
                         .consent_mgmt_modal .modal-body > .mb-3,
                         .consent_mgmt_modal .modal-body > div:not(.row.g-3):not(.consent_mgmt_meta_grid) {
-                        padding-left: 0.75rem;
-                        padding-right: 0.75rem;
+                        padding-left: 1.35rem;
+                        padding-right: 1.35rem;
                         }
                         .consent_mgmt_modal .form-label {
                         margin-bottom: 0.48rem;
@@ -566,7 +566,7 @@
                         cursor: pointer;
                         }
                         .consent_mgmt_modal .modal-footer {
-                        padding: 1.2rem 2.3rem 1.55rem;
+                        padding: 1.2rem 2.85rem 1.55rem;
                         border-top: 1px solid #edf2ef;
                         background: linear-gradient(180deg, #fcfefd 0%, #f8fbf9 100%);
                         align-items: center;
@@ -640,22 +640,22 @@
                             align-items: stretch;
                         }
                         .consent_mgmt_modal .modal-header {
-                            padding: 1.35rem 1.8rem 1rem;
+                            padding: 1.35rem 2.2rem 1rem;
                         }
                         .consent_mgmt_modal .modal-body {
-                            padding: 1.35rem 1.8rem;
+                            padding: 1.35rem 2.2rem;
                         }
                         .consent_mgmt_modal .row.g-3 {
-                            padding-left: 0.5rem;
-                            padding-right: 0.5rem;
+                            padding-left: 0.9rem;
+                            padding-right: 0.9rem;
                         }
                         .consent_mgmt_modal .modal-body > .mb-3,
                         .consent_mgmt_modal .modal-body > div:not(.row.g-3):not(.consent_mgmt_meta_grid) {
-                            padding-left: 0.5rem;
-                            padding-right: 0.5rem;
+                            padding-left: 0.9rem;
+                            padding-right: 0.9rem;
                         }
                         .consent_mgmt_modal .modal-footer {
-                            padding: 1rem 1.8rem 1.35rem;
+                            padding: 1rem 2.2rem 1.35rem;
                         }
                         }
                         @media (max-width: 575.98px) {
@@ -667,19 +667,19 @@
                             border-radius: 22px;
                         }
                         .consent_mgmt_modal .modal-header {
-                            padding: 1.1rem 1.25rem 0.9rem;
+                            padding: 1.1rem 1.45rem 0.9rem;
                         }
                         .consent_mgmt_modal .modal-body {
-                            padding: 1rem 1.25rem;
+                            padding: 1rem 1.45rem;
                         }
                         .consent_mgmt_modal .row.g-3,
                         .consent_mgmt_modal .modal-body > .mb-3,
                         .consent_mgmt_modal .modal-body > div:not(.row.g-3):not(.consent_mgmt_meta_grid) {
-                            padding-left: 0.3rem;
-                            padding-right: 0.3rem;
+                            padding-left: 0.55rem;
+                            padding-right: 0.55rem;
                         }
                         .consent_mgmt_modal .modal-footer {
-                            padding: 0.9rem 1.25rem 1rem;
+                            padding: 0.9rem 1.45rem 1rem;
                             flex-direction: column-reverse;
                         }
                         .consent_mgmt_modal .modal-footer .btn {

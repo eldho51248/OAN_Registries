@@ -55,7 +55,7 @@
           align-items: center;
           gap: 1.15rem;
           flex: 0 0 auto;
-          min-height: 44px;
+          min-height: 42px;
         }
         .ati-topbar-language,
         .ati-topbar-notifications,
@@ -63,10 +63,14 @@
           display: inline-flex !important;
           align-items: center !important;
           align-self: center;
+          height: 42px;
+          min-height: 42px;
+          line-height: 1;
           visibility: visible !important;
           opacity: 1 !important;
         }
         .ati-topbar-language {
+          display: none !important;
           position: relative;
           top: 0;
           z-index: 1102;
@@ -74,8 +78,9 @@
         .ati-topbar-language .button {
           width: auto !important;
           min-width: 118px !important;
+          height: 42px !important;
           min-height: 42px !important;
-          padding: 0.7rem 1rem !important;
+          padding: 0 1rem !important;
           border: 1px solid rgba(0, 145, 71, 0.18) !important;
           border-radius: 999px !important;
           box-shadow: 0 10px 24px rgba(0, 145, 71, 0.08) !important;
@@ -127,9 +132,13 @@
           position: relative;
           display: inline-flex;
           align-items: center;
+          align-self: center;
+          height: 42px;
         }
         .ati-topbar-notifications #show_notification {
           width: auto !important;
+          height: 42px !important;
+          max-height: 42px !important;
           height: 42px !important;
           min-width: 0 !important;
           min-height: 42px !important;
@@ -173,6 +182,8 @@
           flex: 0 0 auto;
         }
         .ati-topbar-user > a {
+          height: 42px !important;
+          max-height: 42px !important;
           min-height: 42px !important;
           padding: 0 !important;
           border: 0 !important;
@@ -221,6 +232,15 @@
         }
         .notification_dd {
           z-index: 1205 !important;
+          position: absolute !important;
+          top: calc(100% + 0.85rem) !important;
+          right: 0 !important;
+          left: auto !important;
+          transform: none !important;
+          min-width: 240px !important;
+          max-width: 280px !important;
+          margin: 0 !important;
+          padding: 0.4rem !important;
           background: #ffffff !important;
           border: 1px solid rgba(0, 145, 71, 0.12) !important;
           border-radius: 16px !important;
@@ -235,6 +255,58 @@
         .notification_dd li span,
         .notification_dd li p {
           background: #ffffff !important;
+        }
+        .notification_dd:before {
+          display: none !important;
+        }
+        .notification_dd .ati-topbar-dropdown-header {
+          padding: 0.35rem 0.4rem 0.2rem !important;
+          border: 0 !important;
+        }
+        .notification_dd .notification_header_new {
+          margin: 0 !important;
+          color: #355241 !important;
+          font-size: 0.94rem !important;
+          font-weight: 600 !important;
+          line-height: 1.3 !important;
+          font-family: inherit !important;
+        }
+        .notification_dd .notification_ul {
+          display: flex;
+          flex-direction: column;
+          gap: 0.15rem;
+          margin: 0 !important;
+          padding: 0 !important;
+          list-style: none !important;
+        }
+        .notification_dd .notification_ul li {
+          display: block !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          border: 0 !important;
+        }
+        .notification_dd .notification_ul li .link,
+        .notification_dd .notification_ul li.show_all .link {
+          display: flex !important;
+          align-items: center !important;
+          width: 100%;
+          min-height: 42px;
+          padding: 0.72rem 0.9rem !important;
+          border-radius: 12px !important;
+          color: #355241 !important;
+          font-size: 0.94rem !important;
+          font-weight: 600 !important;
+          line-height: 1.35 !important;
+          text-decoration: none !important;
+          box-sizing: border-box;
+        }
+        .notification_dd .notification_ul li .link:hover,
+        .notification_dd .notification_ul li .link:focus,
+        .notification_dd .notification_ul li.show_all .link:hover,
+        .notification_dd .notification_ul li.show_all .link:focus {
+          background: rgba(0, 145, 71, 0.08) !important;
+          color: #17633f !important;
+          text-decoration: none !important;
         }
         .ati-mobile-menu {
           display: none;
@@ -522,7 +594,7 @@
           data-bs-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
-          style="display: inline-flex !important; align-items: center !important; justify-content: center !important; min-width: 118px !important; min-height: 42px !important; padding: 0.7rem 1rem !important; border: 1px solid rgba(0, 145, 71, 0.18) !important; border-radius: 999px !important; background: rgba(0, 145, 71, 0.05) !important; box-shadow: 0 10px 24px rgba(0, 145, 71, 0.08) !important;"
+          style="display: inline-flex !important; align-items: center !important; justify-content: center !important; min-width: 118px !important; height: 42px !important; min-height: 42px !important; padding: 0 1rem !important; border: 1px solid rgba(0, 145, 71, 0.18) !important; border-radius: 999px !important; background: rgba(0, 145, 71, 0.05) !important; box-shadow: 0 10px 24px rgba(0, 145, 71, 0.08) !important;"
         >
           <img
             src="/g2p_ati_service_provider_portal/static/src/img/logo@2x.png"

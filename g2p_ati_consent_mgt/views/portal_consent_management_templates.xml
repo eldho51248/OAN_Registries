@@ -724,13 +724,48 @@
                     display: flex;
                     justify-content: center;
                     }
+                    .o_consent_portal .consent_pager_wrap .pagination {
+                    gap: 0.35rem;
+                    align-items: center;
+                    }
+                    .o_consent_portal .consent_pager_wrap .pagination .page-item {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    }
                     .o_consent_portal .consent_pager_wrap .pagination .page-link {
-                    color: #206046;
+                    min-width: 40px;
+                    height: 40px;
+                    border: 0;
+                    border-radius: 14px;
+                    background: transparent;
+                    color: #52625f;
+                    font-size: 1rem;
+                    font-weight: 500;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0 0.7rem;
+                    box-shadow: none;
+                    }
+                    .o_consent_portal .consent_pager_wrap .pagination .page-link:hover,
+                    .o_consent_portal .consent_pager_wrap .pagination .page-link:focus {
+                    background: rgba(0, 145, 71, 0.06);
+                    color: #294b3e;
                     }
                     .o_consent_portal .consent_pager_wrap .pagination .page-item.active .page-link {
-                    background-color: #009147;
-                    border-color: #009147;
-                    color: #fff;
+                    background: rgba(0, 145, 71, 0.12);
+                    color: #0f6c3c;
+                    }
+                    .o_consent_portal .consent_pager_wrap .pagination .page-item.disabled .page-link {
+                    opacity: 0.38;
+                    background: transparent;
+                    color: #8b9794;
+                    pointer-events: none;
+                    }
+                    .o_consent_portal .consent_pager_wrap .pagination .page-item:first-child .page-link,
+                    .o_consent_portal .consent_pager_wrap .pagination .page-item:last-child .page-link {
+                    font-size: 1.05rem;
                     }
                     .o_consent_portal .consent_table_state {
                     text-align: center;
@@ -739,6 +774,199 @@
                     font-size: 0.88rem;
                     border-top: 1px solid #edf1ef;
                     background: #fff;
+                    }
+                    .o_consent_portal.consent_review_modal .modal-dialog {
+                    max-width: min(960px, calc(100vw - 2.5rem));
+                    margin: 1.5rem auto;
+                    }
+                    .o_consent_portal.consent_review_modal .modal-content {
+                    border: 1px solid rgba(0, 145, 71, 0.14);
+                    border-radius: 24px;
+                    box-shadow: 0 24px 60px rgba(18, 45, 31, 0.18);
+                    overflow: hidden;
+                    }
+                    .o_consent_portal .consent_review_modal_header {
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: space-between;
+                    gap: 1rem;
+                    padding: 1.65rem 1.75rem 1.15rem;
+                    background: linear-gradient(180deg, #ffffff 0%, #f7fcf9 100%);
+                    border-bottom: 1px solid #ebf3ee;
+                    }
+                    .o_consent_portal .consent_review_modal_title {
+                    font-size: 1.18rem;
+                    font-weight: 600;
+                    color: #162120;
+                    margin: 0 0 0.35rem;
+                    }
+                    .o_consent_portal .consent_review_modal_subtitle {
+                    color: #72807d;
+                    font-size: 0.92rem;
+                    margin: 0;
+                    line-height: 1.6;
+                    }
+                    .o_consent_portal .consent_review_modal_close {
+                    width: 42px;
+                    height: 42px;
+                    border-radius: 50%;
+                    border: 1px solid rgba(0, 145, 71, 0.16);
+                    background: rgba(0, 145, 71, 0.06);
+                    color: #227149;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex: 0 0 auto;
+                    }
+                    .o_consent_portal .consent_review_modal_close:hover,
+                    .o_consent_portal .consent_review_modal_close:focus {
+                    background: rgba(0, 145, 71, 0.12);
+                    border-color: rgba(0, 145, 71, 0.24);
+                    color: #0f5d36;
+                    }
+                    .o_consent_portal .consent_review_modal_body {
+                    padding: 1.65rem 1.75rem 1.75rem;
+                    background: linear-gradient(180deg, #ffffff 0%, #fbfdfc 100%);
+                    }
+                    .o_consent_portal .consent_review_layout {
+                    display: grid;
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                    gap: 1.2rem;
+                    }
+                    .o_consent_portal .consent_review_panel {
+                    border: 1px solid #e5eeea;
+                    border-radius: 18px;
+                    background: #fff;
+                    padding: 1.25rem 1.3rem;
+                    box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+                    }
+                    .o_consent_portal .consent_review_panel--wide {
+                    grid-column: 1 / -1;
+                    }
+                    .o_consent_portal .consent_review_panel_title {
+                    font-size: 1rem;
+                    font-weight: 600;
+                    color: #1c2825;
+                    margin-bottom: 1rem;
+                    }
+                    .o_consent_portal .consent_review_info_grid {
+                    display: grid;
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                    gap: 1rem 1.3rem;
+                    }
+                    .o_consent_portal .consent_review_info_item {
+                    min-width: 0;
+                    }
+                    .o_consent_portal .consent_review_label {
+                    display: block;
+                    font-size: 0.79rem;
+                    font-weight: 600;
+                    letter-spacing: 0.04em;
+                    text-transform: uppercase;
+                    color: #7a8885;
+                    margin-bottom: 0.32rem;
+                    }
+                    .o_consent_portal .consent_review_value {
+                    display: block;
+                    font-size: 0.96rem;
+                    font-weight: 400;
+                    color: #1e2a28;
+                    overflow-wrap: anywhere;
+                    line-height: 1.6;
+                    }
+                    .o_consent_portal .consent_review_value.is-body {
+                    font-weight: 400;
+                    color: #31403d;
+                    line-height: 1.7;
+                    }
+                    .o_consent_portal .consent_review_meta_list {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.85rem;
+                    }
+                    .o_consent_portal .consent_review_meta_row {
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: space-between;
+                    gap: 1rem;
+                    padding-bottom: 0.75rem;
+                    border-bottom: 1px solid #eef3f0;
+                    }
+                    .o_consent_portal .consent_review_meta_row:last-child {
+                    border-bottom: 0;
+                    padding-bottom: 0;
+                    }
+                    .o_consent_portal .consent_review_meta_row .consent_review_label {
+                    margin-bottom: 0;
+                    }
+                    .o_consent_portal .consent_review_capture {
+                    display: grid;
+                    grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
+                    gap: 1.25rem;
+                    align-items: start;
+                    }
+                    .o_consent_portal .consent_review_capture_image {
+                    width: 100%;
+                    border-radius: 16px;
+                    border: 1px solid #e4ece8;
+                    object-fit: cover;
+                    box-shadow: 0 10px 24px rgba(18, 45, 31, 0.08);
+                    }
+                    .o_consent_portal .consent_review_capture_empty {
+                    min-height: 220px;
+                    border-radius: 16px;
+                    border: 1px dashed #d5e3db;
+                    background: linear-gradient(180deg, #fbfdfc 0%, #f5faf7 100%);
+                    color: #81918d;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    text-align: center;
+                    padding: 1rem;
+                    }
+                    .o_consent_portal .consent_review_capture_notes {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1rem;
+                    }
+                    .o_consent_portal .consent_review_inline_notice {
+                    margin-top: 0.95rem;
+                    padding: 0.9rem 1rem;
+                    border-radius: 14px;
+                    background: #f7fbf8;
+                    border: 1px solid #e5eeea;
+                    color: #556461;
+                    font-size: 0.9rem;
+                    line-height: 1.6;
+                    }
+                    .o_consent_portal .consent_review_attachment_list {
+                    margin: 0;
+                    padding-left: 1.2rem;
+                    color: #31403d;
+                    line-height: 1.7;
+                    }
+                    .o_consent_portal .consent_review_attachment_list li + li {
+                    margin-top: 0.55rem;
+                    }
+                    .o_consent_portal .consent_review_modal_footer {
+                    display: flex;
+                    justify-content: flex-end;
+                    padding: 0 1.75rem 1.75rem;
+                    }
+                    .o_consent_portal .consent_review_back_btn {
+                    min-height: 42px;
+                    border-radius: 999px;
+                    padding: 0.55rem 1.1rem;
+                    border: 1px solid #dbe7e0;
+                    background: #fff;
+                    color: #2d3d39;
+                    font-weight: 500;
+                    }
+                    .o_consent_portal .consent_review_back_btn:hover,
+                    .o_consent_portal .consent_review_back_btn:focus {
+                    border-color: #c7d8cf;
+                    background: #f7fbf8;
+                    color: #1f2b28;
                     }
                     .o_consent_portal .consent_request_card_header {
                     display: flex;
@@ -1370,6 +1598,13 @@
                         width: 100%;
                         flex: 1 1 auto;
                     }
+                    .o_consent_portal .consent_review_layout,
+                    .o_consent_portal .consent_review_info_grid {
+                        grid-template-columns: 1fr;
+                    }
+                    .o_consent_portal .consent_review_capture {
+                        grid-template-columns: 1fr;
+                    }
                     }
                     @media (max-width: 576px) {
                     body.consent-portal-page .header-container .nav {
@@ -1433,6 +1668,20 @@
                     }
                     .o_consent_portal .consent_verification_selector {
                         padding: .85rem;
+                    }
+                    .o_consent_portal.consent_review_modal .modal-dialog {
+                        max-width: calc(100vw - 1rem);
+                        margin: .5rem auto;
+                    }
+                    .o_consent_portal .consent_review_modal_header,
+                    .o_consent_portal .consent_review_modal_body {
+                        padding-left: 1rem;
+                        padding-right: 1rem;
+                    }
+                    .o_consent_portal .consent_review_modal_footer {
+                        padding-left: 1rem;
+                        padding-right: 1rem;
+                        padding-bottom: 1rem;
                     }
                     .o_consent_portal .consent_verification_selector_options {
                         grid-template-columns: 1fr;
@@ -1951,212 +2200,247 @@
                     </div>
                 </t>
                 <t t-if="review_request">
-                    <div class="consent_card mb-3" id="review_request">
-                        <div
-                            class="d-flex justify-content-between align-items-start flex-wrap gap-2">
-                            <h5 class="mb-0">Request Review: <t
-                                    t-esc="review_request.consent_creation_request_id" /></h5>
-                            <a
-                                t-att-href="'/consent/management/page/%s?view=%s' % (current_page, view_mode) if current_page > 1 else '/consent/management?view=%s' % view_mode"
-                                class="btn btn-sm btn-outline-secondary px-2" title="Close"
-                                aria-label="Close"
-                            >&#10005;</a>
-                        </div>
-                        <hr class="my-3" />
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <div class="text-muted small">Farmer</div>
-                                <div class="fw-semibold">
-                                    <t t-esc="review_request.farmer_id.display_name" />
+                    <t t-set="face_match_percent"
+                        t-value="max(0.0, min(100.0, (1.0 - (review_request.face_match_distance or 0.0)) * 100.0))" />
+                    <t t-set="face_match_threshold_percent"
+                        t-value="max(0.0, min(100.0, (1.0 - (review_request.face_match_threshold or 0.0)) * 100.0))" />
+                    <div
+                        class="modal fade o_consent_portal consent_review_modal"
+                        id="consent_review_modal"
+                        tabindex="-1"
+                        aria-labelledby="consent_review_modal_title"
+                        aria-hidden="true"
+                        t-att-data-close-url="review_close_url"
+                    >
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="consent_review_modal_header">
+                                    <div>
+                                        <h5 class="consent_review_modal_title" id="consent_review_modal_title">
+                                            <t t-esc="review_request.farmer_id.display_name or 'Consent request'" />
+                                        </h5>
+                                        <p class="consent_review_modal_subtitle">
+                                            Review farmer, verification, and requested access.
+                                        </p>
+                                    </div>
+                                    <a
+                                        t-att-href="review_close_url"
+                                        class="btn consent_review_modal_close"
+                                        aria-label="Close"
+                                    >&#10005;</a>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="text-muted small">Status</div>
-                                <div>
-                                    <span
-                                        t-attf-class="consent_status_badge consent_status_#{review_request.status}">
-                                        <t t-esc="review_request.status" />
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="text-muted small">Consent Type</div>
-                                <div class="fw-semibold">
-                                    <t t-esc="review_request.consent_type" />
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="text-muted small">Created</div>
-                                <div class="fw-semibold">
-                                    <t t-esc="review_request.created_at" />
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="text-muted small">Valid From</div>
-                                <div class="fw-semibold">
-                                    <t t-esc="review_request.validity_from or '-'" />
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="text-muted small">Valid Until</div>
-                                <div class="fw-semibold">
-                                    <t t-esc="review_request.validity_to or '-'" />
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="text-muted small">Consent Reason</div>
-                                <div>
-                                    <t t-esc="review_request.consent_reason_id.name or review_request.purpose or '-'" />
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="text-muted small mb-1">Captured Photo</div>
-                                <t t-if="review_request.portal_capture_image">
-                                    <div class="d-flex flex-column gap-2">
-                                        <a
-                                            t-att-href="'/consent/request/%s/capture_image' % review_request.id"
-                                            target="_blank"
-                                            rel="noopener"
-                                        >
-                                            <img
-                                                t-att-src="'/consent/request/%s/capture_image' % review_request.id"
-                                                alt="Captured photo"
-                                                style="max-width: 260px; border: 1px solid #e9ecef; border-radius: 8px;"
-                                            />
-                                        </a>
-                                        <div
-                                            class="text-muted small d-flex align-items-center gap-1">
-                                            <span>Captured At:</span>
-                                            <span class="text-body" style="opacity: 1;">
-                                                <t
-                                                    t-esc="review_request.portal_capture_taken_at or '-'" />
-                                            </span>
-                                        </div>
-                                        <t
-                                            t-if="review_request.portal_capture_latitude is not False and review_request.portal_capture_longitude is not False">
-                                            <div
-                                                class="text-muted small d-flex align-items-center gap-1 flex-wrap">
-                                                <span>Capture Location:</span>
-                                                <span class="text-body" style="opacity: 1;">
-                                                    <t
-                                                        t-esc="('%.6f' % review_request.portal_capture_latitude) + ', ' + ('%.6f' % review_request.portal_capture_longitude)" />
-                                                </span>
-                                                <t t-if="review_request.portal_capture_accuracy_m">
-                                                    <span class="text-body" style="opacity: 1;">
-                                                        <t
-                                                            t-esc="'(± %.1f m)' % review_request.portal_capture_accuracy_m" />
+                                <div class="modal-body consent_review_modal_body">
+                                    <div class="consent_review_layout">
+                                        <section class="consent_review_panel">
+                                            <h6 class="consent_review_panel_title">Request information</h6>
+                                            <div class="consent_review_info_grid">
+                                                <div class="consent_review_info_item">
+                                                    <span class="consent_review_label">Farmer</span>
+                                                    <span class="consent_review_value">
+                                                        <t t-esc="review_request.farmer_id.display_name" />
                                                     </span>
+                                                </div>
+                                                <div class="consent_review_info_item">
+                                                    <span class="consent_review_label">Status</span>
+                                                    <span
+                                                        t-attf-class="consent_status_badge consent_status_#{review_request.status}">
+                                                        <t t-esc="review_request.status" />
+                                                    </span>
+                                                </div>
+                                                <div class="consent_review_info_item">
+                                                    <span class="consent_review_label">Consent type</span>
+                                                    <span class="consent_review_value">
+                                                        <t t-esc="review_request.consent_type or '-'" />
+                                                    </span>
+                                                </div>
+                                                <div class="consent_review_info_item">
+                                                    <span class="consent_review_label">Created</span>
+                                                    <span class="consent_review_value">
+                                                        <t t-esc="review_request.created_at or '-'" />
+                                                    </span>
+                                                </div>
+                                                <div class="consent_review_info_item">
+                                                    <span class="consent_review_label">Valid from</span>
+                                                    <span class="consent_review_value">
+                                                        <t t-esc="review_request.validity_from or '-'" />
+                                                    </span>
+                                                </div>
+                                                <div class="consent_review_info_item">
+                                                    <span class="consent_review_label">Valid until</span>
+                                                    <span class="consent_review_value">
+                                                        <t t-esc="review_request.validity_to or '-'" />
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </section>
+                                        <section class="consent_review_panel">
+                                            <h6 class="consent_review_panel_title">Verification summary</h6>
+                                            <div class="consent_review_meta_list">
+                                                <div class="consent_review_meta_row">
+                                                    <span class="consent_review_label">Face match</span>
+                                                    <span class="consent_review_value text-capitalize">
+                                                        <t t-esc="review_request.face_match_status or '-'" />
+                                                    </span>
+                                                </div>
+                                                <t t-if="review_request.face_match_distance or review_request.face_match_threshold">
+                                                    <div class="consent_review_meta_row">
+                                                        <span class="consent_review_label">Match score</span>
+                                                        <span class="consent_review_value">
+                                                            <t t-esc="'%.1f%%' % face_match_percent" />
+                                                        </span>
+                                                    </div>
+                                                    <div class="consent_review_meta_row">
+                                                        <span class="consent_review_label">Minimum accepted</span>
+                                                        <span class="consent_review_value">
+                                                            <t t-esc="'%.1f%%' % face_match_threshold_percent" />
+                                                        </span>
+                                                    </div>
+                                                </t>
+                                                <div class="consent_review_meta_row">
+                                                    <span class="consent_review_label">Fayda OTP</span>
+                                                    <span class="consent_review_value text-capitalize">
+                                                        <t t-esc="review_request.fayda_otp_status or '-'" />
+                                                    </span>
+                                                </div>
+                                                <t t-if="review_request.fayda_otp_verified_at">
+                                                    <div class="consent_review_meta_row">
+                                                        <span class="consent_review_label">OTP verified at</span>
+                                                        <span class="consent_review_value">
+                                                            <t t-esc="review_request.fayda_otp_verified_at" />
+                                                        </span>
+                                                    </div>
                                                 </t>
                                             </div>
-                                        </t>
+                                            <t t-if="review_request.auto_approved_via_face_match or review_request.auto_approved_via_otp or review_request.face_match_message or review_request.fayda_otp_message">
+                                                <div class="consent_review_inline_notice">
+                                                    <t t-if="review_request.auto_approved_via_face_match">
+                                                        Automatically approved via face match.
+                                                    </t>
+                                                    <t t-elif="review_request.auto_approved_via_otp">
+                                                        Automatically approved via Fayda OTP.
+                                                    </t>
+                                                    <t t-elif="review_request.face_match_message">
+                                                        <t t-esc="review_request.face_match_message" />
+                                                    </t>
+                                                    <t t-else="">
+                                                        <t t-esc="review_request.fayda_otp_message" />
+                                                    </t>
+                                                </div>
+                                            </t>
+                                        </section>
+                                        <section class="consent_review_panel consent_review_panel--wide">
+                                            <h6 class="consent_review_panel_title">Purpose and requested access</h6>
+                                            <div class="consent_review_info_grid">
+                                                <div class="consent_review_info_item" style="grid-column: 1 / -1;">
+                                                    <span class="consent_review_label">Purpose</span>
+                                                    <span class="consent_review_value is-body">
+                                                        <t t-esc="review_request.purpose or '-'" />
+                                                    </span>
+                                                </div>
+                                                <div class="consent_review_info_item">
+                                                    <span class="consent_review_label">Requested data fields</span>
+                                                    <div class="d-flex flex-wrap gap-2">
+                                                        <t t-if="review_request.allowed_data_field_ids">
+                                                            <t t-foreach="review_request.allowed_data_field_ids" t-as="fld">
+                                                                <span class="consent_data_tag" t-esc="fld.name" />
+                                                            </t>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <span class="consent_review_value is-body">No data fields selected.</span>
+                                                        </t>
+                                                    </div>
+                                                </div>
+                                                <div class="consent_review_info_item">
+                                                    <span class="consent_review_label">Attachments</span>
+                                                    <t t-if="review_request.attachment_ids">
+                                                        <ul class="consent_review_attachment_list">
+                                                            <t t-foreach="review_request.attachment_ids" t-as="att">
+                                                                <li><span t-esc="att.name" /></li>
+                                                            </t>
+                                                        </ul>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <span class="consent_review_value is-body">No attachments.</span>
+                                                    </t>
+                                                </div>
+                                            </div>
+                                        </section>
+                                        <section class="consent_review_panel consent_review_panel--wide">
+                                            <h6 class="consent_review_panel_title">Captured information</h6>
+                                            <div class="consent_review_capture">
+                                                <t t-if="review_request.portal_capture_image">
+                                                    <a
+                                                        t-att-href="'/consent/request/%s/capture_image' % review_request.id"
+                                                        target="_blank"
+                                                        rel="noopener"
+                                                    >
+                                                        <img
+                                                            class="consent_review_capture_image"
+                                                            t-att-src="'/consent/request/%s/capture_image' % review_request.id"
+                                                            alt="Captured photo"
+                                                        />
+                                                    </a>
+                                                </t>
+                                                <t t-else="">
+                                                    <div class="consent_review_capture_empty">No captured photo available.</div>
+                                                </t>
+                                                <div class="consent_review_capture_notes">
+                                                    <div class="consent_review_meta_list">
+                                                        <div class="consent_review_meta_row">
+                                                            <span class="consent_review_label">Captured at</span>
+                                                            <span class="consent_review_value">
+                                                                <t t-esc="review_request.portal_capture_taken_at or '-'" />
+                                                            </span>
+                                                        </div>
+                                                        <div class="consent_review_meta_row">
+                                                            <span class="consent_review_label">Transaction</span>
+                                                            <span class="consent_review_value">
+                                                                <t t-esc="review_request.fayda_otp_transaction_id or '-'" />
+                                                            </span>
+                                                        </div>
+                                                        <div class="consent_review_meta_row">
+                                                            <span class="consent_review_label">Identifier</span>
+                                                            <span class="consent_review_value">
+                                                                <t t-if="review_request.fayda_otp_identifier">
+                                                                    <t t-esc="review_request.fayda_otp_identifier_type or '-'" /> |
+                                                                    <t t-esc="review_request.fayda_otp_identifier" />
+                                                                </t>
+                                                                <t t-else="">-</t>
+                                                            </span>
+                                                        </div>
+                                                        <t t-if="review_request.portal_capture_latitude is not False and review_request.portal_capture_longitude is not False">
+                                                            <div class="consent_review_meta_row">
+                                                                <span class="consent_review_label">Capture location</span>
+                                                                <span class="consent_review_value">
+                                                                    <t t-esc="('%.6f' % review_request.portal_capture_latitude) + ', ' + ('%.6f' % review_request.portal_capture_longitude)" />
+                                                                    <t t-if="review_request.portal_capture_accuracy_m">
+                                                                        <span>
+                                                                            <t t-esc="' (± %.1f m)' % review_request.portal_capture_accuracy_m" />
+                                                                        </span>
+                                                                    </t>
+                                                                </span>
+                                                            </div>
+                                                        </t>
+                                                        <t t-if="review_request.fayda_otp_masked_mobile">
+                                                            <div class="consent_review_meta_row">
+                                                                <span class="consent_review_label">Masked mobile</span>
+                                                                <span class="consent_review_value">
+                                                                    <t t-esc="review_request.fayda_otp_masked_mobile" />
+                                                                </span>
+                                                            </div>
+                                                        </t>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
                                     </div>
-                                </t>
-                                <t t-else="">
-                                    <span class="text-muted">No captured photo.</span>
-                                </t>
-                            </div>
-                            <div class="col-12">
-                                <div class="text-muted small mb-1">Face + Liveness Verification</div>
-                                <t t-set="face_match_percent"
-                                    t-value="max(0.0, min(100.0, (1.0 - (review_request.face_match_distance or 0.0)) * 100.0))" />
-                                <t t-set="face_match_threshold_percent"
-                                    t-value="max(0.0, min(100.0, (1.0 - (review_request.face_match_threshold or 0.0)) * 100.0))" />
-                                <div class="fw-semibold text-capitalize">
-                                    <t t-esc="review_request.face_match_status or '-'" />
                                 </div>
-                                <t t-if="review_request.face_match_distance or review_request.face_match_threshold">
-                                    <div class="text-muted small mt-1">
-                                        Match:
-                                        <t t-esc="'%.1f%%' % face_match_percent" />
-                                        |
-                                        Minimum accepted:
-                                        <t t-esc="'%.1f%%' % face_match_threshold_percent" />
-                                    </div>
-                                    <div class="text-muted small mt-1">
-                                        Distance:
-                                        <t t-esc="'%.4f' % (review_request.face_match_distance or 0.0)" />
-                                        |
-                                        Threshold:
-                                        <t t-esc="'%.4f' % (review_request.face_match_threshold or 0.0)" />
-                                    </div>
-                                </t>
-                                <t t-if="review_request.auto_approved_via_face_match">
-                                    <div class="text-success small mt-1">Automatically approved via face + liveness verification.</div>
-                                </t>
-                                <t t-if="review_request.face_match_message">
-                                    <div class="text-muted small mt-1">
-                                        <t t-esc="review_request.face_match_message" />
-                                    </div>
-                                </t>
-                            </div>
-                            <div class="col-12">
-                                <div class="text-muted small mb-1">Fayda OTP</div>
-                                <div class="fw-semibold text-capitalize">
-                                    <t t-esc="review_request.fayda_otp_status or '-'" />
+                                <div class="consent_review_modal_footer">
+                                    <a
+                                        t-att-href="review_close_url"
+                                        class="btn consent_review_back_btn"
+                                    >Back to requests</a>
                                 </div>
-                                <t t-if="review_request.fayda_otp_transaction_id">
-                                    <div class="text-muted small mt-1">
-                                        Transaction:
-                                        <t t-esc="review_request.fayda_otp_transaction_id" />
-                                    </div>
-                                </t>
-                                <t t-if="review_request.fayda_otp_identifier">
-                                    <div class="text-muted small mt-1">
-                                        Identifier:
-                                        <t t-esc="review_request.fayda_otp_identifier_type or '-'" />
-                                        |
-                                        <t t-esc="review_request.fayda_otp_identifier" />
-                                    </div>
-                                </t>
-                                <t t-if="review_request.fayda_otp_masked_mobile">
-                                    <div class="text-muted small mt-1">
-                                        Masked Mobile:
-                                        <t t-esc="review_request.fayda_otp_masked_mobile" />
-                                    </div>
-                                </t>
-                                <t t-if="review_request.fayda_otp_verified_at">
-                                    <div class="text-muted small mt-1">
-                                        Verified At:
-                                        <t t-esc="review_request.fayda_otp_verified_at" />
-                                    </div>
-                                </t>
-                                <t t-if="review_request.auto_approved_via_otp">
-                                    <div class="text-success small mt-1">Automatically approved via Fayda OTP.</div>
-                                </t>
-                                <t t-if="review_request.fayda_otp_message">
-                                    <div class="text-muted small mt-1">
-                                        <t t-esc="review_request.fayda_otp_message" />
-                                    </div>
-                                </t>
-                            </div>
-                            <div class="col-12">
-                                <div class="text-muted small mb-1">Requested Data Fields</div>
-                                <div class="d-flex flex-wrap gap-2">
-                                    <t t-if="review_request.allowed_data_field_ids">
-                                        <t t-foreach="review_request.allowed_data_field_ids"
-                                            t-as="fld">
-                                            <span class="consent_data_tag" t-esc="fld.name" />
-                                        </t>
-                                    </t>
-                                    <t t-else="">
-                                        <span class="text-muted">No data fields selected.</span>
-                                    </t>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="text-muted small mb-1">Attachments</div>
-                                <ul class="mb-0 ps-3">
-                                    <t t-if="review_request.attachment_ids">
-                                        <t t-foreach="review_request.attachment_ids" t-as="att">
-                                            <li>
-                                                <span t-esc="att.name" />
-                                            </li>
-                                        </t>
-                                    </t>
-                                    <t t-else="">
-                                        <li class="text-muted">No attachments.</li>
-                                    </t>
-                                </ul>
                             </div>
                         </div>
                     </div>
@@ -2187,13 +2471,7 @@
                 </div>
                 <t t-if="consent_requests">
                     <t t-if="view_mode == 'table'">
-                        <div
-                            class="consent_table_wrap"
-                            id="consent_table_wrap"
-                            t-att-data-total="total_requests"
-                            t-att-data-limit="table_fetch_size"
-                            t-att-data-offset="len(consent_requests)"
-                        >
+                        <div class="consent_table_wrap" id="consent_table_wrap">
                             <table class="consent_request_table table table-sm mb-0">
                                 <thead>
                                     <tr>
@@ -2209,7 +2487,7 @@
                                     <t t-foreach="consent_requests" t-as="req">
                                         <tr t-attf-class="consent_request_row consent_request_row--#{req.status}">
                                             <td class="consent_table_id">
-                                                <t t-esc="req.consent_creation_request_id" />
+                                                <t t-esc="req.consent_creation_request_id or '-'" />
                                             </td>
                                             <td>
                                                 <span class="fw-semibold consent_farmer_name consent_table_farmer_name"><t
@@ -2235,7 +2513,7 @@
                                             </td>
                                             <td class="consent_table_action">
                                                 <a
-                                                    t-att-href="'/consent/management/review/%s?view=%s&amp;page=%s#review_request' % (req.id, view_mode, current_page)"
+                                                    t-att-href="'/consent/management/review/%s?view=%s&amp;page=%s' % (req.id, view_mode, current_page)"
                                                     class="btn btn-sm consent_request_card_btn"
                                                 ><i class="fa fa-eye" aria-hidden="true"></i>View Details</a>
                                             </td>
@@ -2243,8 +2521,6 @@
                                     </t>
                                 </tbody>
                             </table>
-                            <div class="consent_table_state d-none" id="consent_table_loader">Loading more...</div>
-                            <div class="consent_table_state d-none" id="consent_table_end">End of requests</div>
                         </div>
                     </t>
                     <t t-else="">
@@ -2254,7 +2530,7 @@
                                     t-attf-class="consent_request_card consent_request_card--#{req.status}"
                                     t-att-data-consent-id="req.id"
                                     t-att-data-status="req.status"
-                                    t-att-data-review-url="'/consent/management/review/%s?view=%s&amp;page=%s#review_request' % (req.id, view_mode, current_page)"
+                                    t-att-data-review-url="'/consent/management/review/%s?view=%s&amp;page=%s' % (req.id, view_mode, current_page)"
                                 >
                                     <div class="consent_request_card_header">
                                         <div class="consent_request_card_body">
@@ -2262,10 +2538,10 @@
                                                 <t t-esc="req.farmer_id.display_name" />
                                             </div>
                                             <div class="consent_request_card_meta">
-                                                <span class="consent_request_id">
-                                                    <t t-esc="req.consent_creation_request_id" />
+                                                <span>
+                                                    <t t-esc="req.consent_creation_request_id or '-'" />
                                                 </span>
-                                                <span class="consent_request_meta_sep">|</span>
+                                                <span class="consent_request_meta_sep">&#8226;</span>
                                                 <span>
                                                     <t t-esc="req.created_at" />
                                                 </span>
@@ -2285,7 +2561,7 @@
                                     </div>
                                     <div class="consent_request_card_actions is-single">
                                         <a
-                                            t-att-href="'/consent/management/review/%s?view=%s&amp;page=%s#review_request' % (req.id, view_mode, current_page)"
+                                            t-att-href="'/consent/management/review/%s?view=%s&amp;page=%s' % (req.id, view_mode, current_page)"
                                             class="btn btn-sm consent_request_card_btn"
                                         ><i class="fa fa-eye" aria-hidden="true"></i>View Details</a>
                                     </div>
@@ -2293,7 +2569,7 @@
                             </t>
                         </div>
                     </t>
-                    <div class="consent_pager_wrap" t-if="view_mode != 'table' and pager and pager.get('page_count', 0) > 1">
+                    <div class="consent_pager_wrap" t-if="pager and pager.get('page_count', 0) > 1">
                         <t t-call="portal.pager" />
                     </div>
                 </t>
@@ -2394,6 +2670,7 @@
                     var tableBody = document.getElementById('consent_request_table_body');
                     var tableLoader = document.getElementById('consent_table_loader');
                     var tableEnd = document.getElementById('consent_table_end');
+                    var reviewModalEl = document.getElementById('consent_review_modal');
                     var notificationToggle = document.getElementById('consent_header_notification_toggle');
                     var notificationMenu = document.getElementById('consent_header_notification_menu');
                     var notificationCount = document.getElementById('consent_header_notification_count');
@@ -2448,6 +2725,33 @@
                         }
                         if (window.jQuery && window.jQuery.fn && window.jQuery.fn.modal) {
                             window.jQuery(modalEl).modal('hide');
+                        }
+                    }
+
+                    function initReviewModal() {
+                        if (!reviewModalEl) return;
+                        var closeUrl = reviewModalEl.getAttribute('data-close-url') || '/consent/management';
+                        var reviewModalRedirecting = false;
+
+                        function redirectToReviewList() {
+                            if (reviewModalRedirecting) return;
+                            reviewModalRedirecting = true;
+                            window.location.href = closeUrl;
+                        }
+
+                        if (reviewModalEl.parentElement !== document.body) {
+                            document.body.appendChild(reviewModalEl);
+                        }
+
+                        reviewModalEl.addEventListener('hidden.bs.modal', redirectToReviewList);
+
+                        if (window.bootstrap && window.bootstrap.Modal) {
+                            window.bootstrap.Modal.getOrCreateInstance(reviewModalEl).show();
+                        } else if (window.jQuery && window.jQuery.fn && window.jQuery.fn.modal) {
+                            window.jQuery(reviewModalEl).modal('show');
+                        } else {
+                            reviewModalEl.classList.add('show');
+                            reviewModalEl.style.display = 'block';
                         }
                     }
                     var tableScrollTicking = false;
@@ -3741,7 +4045,7 @@
                     }
 
                     function buildTableRowHtml(row) {
-                        var reqId = htmlEscape(row.request_id || '');
+                        var requestId = htmlEscape(row.consent_creation_request_id || row.request_id || '');
                         var farmerName = htmlEscape(row.farmer_name || '');
                         var consentType = htmlEscape(row.consent_type || '');
                         var createdAt = htmlEscape(row.created_at || '');
@@ -3749,10 +4053,10 @@
                         var normalizedStatus = normalizeStatus(statusValue);
                         var statusText = htmlEscape(statusValue || '');
                         var statusHtml = '<span class="consent_status_badge consent_status_' + normalizedStatus + '">' + statusIcon(statusValue) + statusText + '</span>';
-                        var reviewUrl = row.review_url || ('/consent/management/review/' + String(row.id || '') + '?view=table#review_request');
+                        var reviewUrl = row.review_url || ('/consent/management/review/' + String(row.id || '') + '?view=table');
                         var reviewHref = htmlEscape(reviewUrl);
                         return '<tr class="consent_request_row consent_request_row--' + normalizedStatus + '">' +
-                            '<td class="consent_table_id">' + reqId + '</td>' +
+                            '<td class="consent_table_id">' + (requestId || '-') + '</td>' +
                             '<td><span class="fw-semibold consent_farmer_name consent_table_farmer_name">' + farmerName + '</span></td>' +
                             '<td><span class="consent_table_type_chip">' + consentType + '</span></td>' +
                             '<td>' + statusHtml + '</td>' +
@@ -4308,6 +4612,7 @@
                         window.addEventListener('hashchange', showTabFromHash);
                         showTabFromHash();
                     })();
+                    initReviewModal();
                     window.addEventListener('beforeunload', function() {
                         stopCameraStream();
                     });
