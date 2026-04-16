@@ -1601,16 +1601,10 @@
                                     id="camera_capture_longitude" value="" />
                                 <input type="hidden" name="camera_capture_accuracy"
                                     id="camera_capture_accuracy" value="" />
-                                <input type="hidden" name="face_match_status"
-                                    id="face_match_status_input" value="not_attempted" />
-                                <input type="hidden" name="face_match_distance"
-                                    id="face_match_distance_input" value="" />
-                                <input type="hidden" name="face_match_threshold"
-                                    id="face_match_threshold_input" value="" />
-                                <input type="hidden" name="face_match_checked_at"
-                                    id="face_match_checked_at_input" value="" />
-                                <input type="hidden" name="face_match_message"
-                                    id="face_match_message_input" value="" />
+                                <input type="hidden" name="liveness_challenge_id"
+                                    id="liveness_challenge_id_input" value="" />
+                                <input type="hidden" name="liveness_verification_token"
+                                    id="liveness_verification_token_input" value="" />
                                 <input type="hidden" name="fayda_otp_transaction_id"
                                     id="fayda_otp_transaction_id_input" value="" />
                                 <div class="consent_verification_selector mt-2"
@@ -1631,7 +1625,7 @@
                                         <button type="button" class="consent_verification_choice"
                                             id="btn_select_verification_face">
                                             <span class="consent_verification_choice_copy">
-                                                <span class="consent_verification_choice_title">Face Match</span>
+                                                <span class="consent_verification_choice_title">Face + Liveness</span>
                                             </span>
                                             <span class="consent_verification_icon is-face" aria-hidden="true">
                                                 <i class="fa fa-camera" aria-hidden="true"></i>
@@ -1641,7 +1635,7 @@
                                     </div>
                                 </div>
                                 <div id="verification_required_notice" class="consent_verification_gate_notice">
-                                    Complete Fayda OTP or Face Match to unlock the consent form.
+                                    Complete Fayda OTP or Face + Liveness verification to unlock the consent form.
                                 </div>
                                 <div class="modal fade o_consent_portal" id="modal_verification_otp" tabindex="-1" aria-labelledby="modal_verification_otp_label" aria-hidden="true" data-bs-backdrop="static">
                                   <div class="modal-dialog modal-dialog-centered" style="background: transparent !important; border: none !important; box-shadow: none !important;">
@@ -1665,7 +1659,7 @@
                                                   Request OTP to verify the selected farmer.
                                               </div>
                                               <div id="fayda_otp_meta_text" class="text-muted" style="font-size: 0.8rem;">
-                                                  A verified OTP or a successful face match will auto-approve this request on submit.
+                                                  A verified OTP or successful face + liveness verification will auto-approve this request on submit.
                                               </div>
                                           </div>
                                       
@@ -1711,8 +1705,8 @@
                                               <div class="consent_verification_logo mb-2">
                                                   <i class="fa fa-camera-retro fa-4x opacity-75" style="color: var(--consent-primary);"></i>
                                               </div>
-                                              <h4 class="fw-bold text-dark mb-2" id="modal_verification_face_label">Live Face Match</h4>
-                                              <div class="consent_verification_option_hint text-muted small px-4">Capture your live photo to securely match against the farmer's registered profile.</div>
+                                              <h4 class="fw-bold text-dark mb-2" id="modal_verification_face_label">Face + Liveness Verification</h4>
+                                              <div class="consent_verification_option_hint text-muted small px-4">Complete both checks in one step: face match against the selected farmer and random liveness challenge.</div>
                                           </div>
                                       
                                           <div class="row g-3 mb-2">
@@ -1749,26 +1743,19 @@
                                               </div>
                                       
                                               <div class="col-md-6 d-flex flex-column text-center">
-                                                  <div class="small text-muted text-uppercase fw-bold mb-2" style="letter-spacing: 1px;">Registered Profile</div>
-                                                  <div class="profile-reference bg-light border p-4 text-center d-flex flex-column justify-content-center align-items-center modern-card-shadow" style="border-radius: 1rem; min-height: 240px; margin-bottom: 0.75rem;">
-                                                      <div class="reference-icon-wrapper rounded-circle shadow-sm overflow-hidden mb-3 border border-4 border-white position-relative bg-white mt-auto" style="width: 100px; height: 100px;">
-                                                          <img id="face_match_reference_preview" class="consent_face_match_reference_image w-100 h-100 d-none position-absolute top-0 start-0" style="object-fit: cover;" alt="Farmer Profile" />
-                                                          <div id="face_match_reference_empty" class="consent_farmer_avatar_placeholder consent_face_match_reference_empty w-100 h-100 d-flex flex-column align-items-center justify-content-center bg-light text-muted small position-absolute top-0 start-0">
-                                                              <i class="fa fa-user fa-2x mb-1 opacity-25"></i>
-                                                              <span>No Image</span>
-                                                          </div>
-                                                      </div>
-                                                  </div>
-                                                  
+                                                  <div class="small text-muted text-uppercase fw-bold mb-2" style="letter-spacing: 1px;">Verification Status</div>
+                                                  <img id="face_match_reference_preview" class="d-none" alt="Farmer profile reference for face match" />
+                                                  <div id="face_match_reference_empty" class="d-none"></div>
+
                                                   <div class="match-results w-100 p-3 bg-white border shadow-sm mt-auto" style="border-radius: 0.75rem;">
                                                       <div id="face_match_status_text" class="consent_face_match_status is-not-attempted fw-bold flex-grow-1 mb-2 text-dark" style="font-size: 0.95rem;">
-                                                          Waiting for capture...
+                                                          Waiting for face + liveness verification...
                                                       </div>
                                                       <div class="progress shadow-none" style="height: 6px; background-color: #e9ecef;">
                                                           <div class="progress-bar progress-bar-striped progress-bar-animated w-100" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="background-color: var(--consent-primary); opacity: 0.2;"></div>
                                                       </div>
                                                       <div id="face_match_percent_text" class="text-muted small mt-2 fw-semibold">
-                                                          Minimum accepted: 55.0%
+                                                          Challenge prompt and face score will appear here.
                                                       </div>
                                                   </div>
                                               </div>
@@ -1823,11 +1810,16 @@
                                             </select>
                                         </div>
                                         <div class="col-12">
-                                            <label class="form-label" for="purpose">Purpose</label>
-                                            <textarea name="purpose" id="purpose" class="form-control" rows="3"
-                                                placeholder="Describe the purpose of this consent request..."
-                                                required="required"></textarea>
-                                            <div id="purpose_error" class="text-danger small mt-1 d-none"></div>
+                                            <label class="form-label" for="consent_reason_id">Consent Reason</label>
+                                            <select name="consent_reason_id" id="consent_reason_id" class="form-select" required="required">
+                                                <option value="">Select reason</option>
+                                                <t t-foreach="consent_reasons" t-as="reason">
+                                                    <option t-att-value="reason.id">
+                                                        <t t-esc="reason.name" />
+                                                    </option>
+                                                </t>
+                                            </select>
+                                            <div id="consent_reason_error" class="text-danger small mt-1 d-none"></div>
                                         </div>
                                         <t t-if="data_fields">
                                             <div class="col-12">
@@ -1892,8 +1884,8 @@
                         <t t-if="request.httprequest.args.get('auto_approved_method') == 'otp'">
                             Consent request submitted and automatically approved after Fayda OTP verification.
                         </t>
-                        <t t-elif="request.httprequest.args.get('auto_approved_method') == 'face_match'">
-                            Consent request submitted and automatically approved after face match.
+                        <t t-elif="request.httprequest.args.get('auto_approved_method') in ('liveness', 'face_match')">
+                            Consent request submitted and automatically approved after face + liveness verification.
                         </t>
                         <t t-else="">
                             Consent request submitted and automatically approved.
@@ -1912,8 +1904,8 @@
                         <t t-if="request.httprequest.args.get('auto_approval_failed_method') == 'otp'">
                             Fayda OTP verification passed, but automatic approval could not be completed. The request was created and remains pending.
                         </t>
-                        <t t-elif="request.httprequest.args.get('auto_approval_failed_method') == 'face_match'">
-                            Face match passed, but automatic approval could not be completed. The request was created and remains pending.
+                        <t t-elif="request.httprequest.args.get('auto_approval_failed_method') in ('liveness', 'face_match')">
+                            Face + liveness verification passed, but automatic approval could not be completed. The request was created and remains pending.
                         </t>
                         <t t-else="">
                             Verification passed, but automatic approval could not be completed. The request was created and remains pending.
@@ -1931,8 +1923,11 @@
                             not found.</t>
                         <t t-if="request.httprequest.args.get('error') == 'access_denied'">Access
                             denied. Please contact your administrator.</t>
-                        <t t-if="request.httprequest.args.get('error') == 'missing_purpose'">Purpose
-                            is required.</t>
+                        <t
+                            t-if="request.httprequest.args.get('error') in ('missing_consent_reason', 'missing_purpose')"
+                        >Consent reason is required.</t>
+                        <t t-if="request.httprequest.args.get('error') == 'invalid_consent_reason'">Invalid
+                            consent reason selected.</t>
                         <t t-if="request.httprequest.args.get('error') == 'missing_data_fields'">Select
                             at least one data field.</t>
                         <t t-if="request.httprequest.args.get('error') == 'missing_attachment'">Attachment
@@ -2009,9 +2004,9 @@
                                 </div>
                             </div>
                             <div class="col-12">
-                                <div class="text-muted small">Purpose</div>
+                                <div class="text-muted small">Consent Reason</div>
                                 <div>
-                                    <t t-esc="review_request.purpose or '-'" />
+                                    <t t-esc="review_request.consent_reason_id.name or review_request.purpose or '-'" />
                                 </div>
                             </div>
                             <div class="col-12">
@@ -2061,7 +2056,7 @@
                                 </t>
                             </div>
                             <div class="col-12">
-                                <div class="text-muted small mb-1">Face Match</div>
+                                <div class="text-muted small mb-1">Face + Liveness Verification</div>
                                 <t t-set="face_match_percent"
                                     t-value="max(0.0, min(100.0, (1.0 - (review_request.face_match_distance or 0.0)) * 100.0))" />
                                 <t t-set="face_match_threshold_percent"
@@ -2086,7 +2081,7 @@
                                     </div>
                                 </t>
                                 <t t-if="review_request.auto_approved_via_face_match">
-                                    <div class="text-success small mt-1">Automatically approved via face match.</div>
+                                    <div class="text-success small mt-1">Automatically approved via face + liveness verification.</div>
                                 </t>
                                 <t t-if="review_request.face_match_message">
                                     <div class="text-muted small mt-1">
@@ -2353,8 +2348,8 @@
                     var btnClear = document.getElementById('btn_clear_farmer');
                     var btnSubmitDisabledReason = document.getElementById('btn_submit_disabled_reason');
                     var consentForm = document.getElementById('consent_request_form');
-                    var purposeInput = document.getElementById('purpose');
-                    var purposeError = document.getElementById('purpose_error');
+                    var consentReasonInput = document.getElementById('consent_reason_id');
+                    var consentReasonError = document.getElementById('consent_reason_error');
                     var dataFieldInputs = consentForm ? consentForm.querySelectorAll('input[name="allowed_data_field_ids"]') : [];
                     var dataFieldsError = document.getElementById('data_fields_error');
                     var attachmentInput = consentForm ? consentForm.querySelector('input[name="attachment"]') : null;
@@ -2364,11 +2359,8 @@
                     var cameraLatitudeInput = document.getElementById('camera_capture_latitude');
                     var cameraLongitudeInput = document.getElementById('camera_capture_longitude');
                     var cameraAccuracyInput = document.getElementById('camera_capture_accuracy');
-                    var faceMatchStatusInput = document.getElementById('face_match_status_input');
-                    var faceMatchDistanceInput = document.getElementById('face_match_distance_input');
-                    var faceMatchThresholdInput = document.getElementById('face_match_threshold_input');
-                    var faceMatchCheckedAtInput = document.getElementById('face_match_checked_at_input');
-                    var faceMatchMessageInput = document.getElementById('face_match_message_input');
+                    var livenessChallengeIdInput = document.getElementById('liveness_challenge_id_input');
+                    var livenessVerificationTokenInput = document.getElementById('liveness_verification_token_input');
                     var faydaOtpTransactionIdInput = document.getElementById('fayda_otp_transaction_id_input');
                     var cameraInfo = document.getElementById('camera_capture_info');
                     var cameraError = document.getElementById('camera_error');
@@ -2409,18 +2401,27 @@
                     var notificationEmpty = document.getElementById('consent_header_notification_empty');
                     var notificationMarkAll = document.getElementById('consent_header_notification_mark_all');
                     var maxAttachmentSize = 10 * 1024 * 1024;
-                    var faceMatchThresholdDefault = 0.45;
+                    var livenessChallengeTtlSeconds = 90;
+                    var faceApiScriptUrl = '/g2p_ati_consent_mgt/static/src/lib/face-api/face-api.js';
+                    var faceApiModelUrl = '/g2p_ati_consent_mgt/static/src/lib/face-api/model';
+                    var faceApiLoadPromise = null;
+                    var faceMatchDefaultThreshold = 0.45;
                     var cameraStream = null;
                     var selectedFarmer = null;
                     var selectedVerificationMethod = '';
-                    var faceApiScriptPromise = null;
-                    var faceApiModelsPromise = null;
                     var faceMatchSubmitPending = false;
                     var faceMatchActionToken = 0;
                     var faydaOtpActionToken = 0;
                     var faceMatchState = {
                         status: 'not_attempted',
-                        running: false
+                        running: false,
+                        challengeId: '',
+                        nonce: '',
+                        promptSequence: [],
+                        expiresAt: '',
+                        verificationToken: '',
+                        distance: null,
+                        threshold: faceMatchDefaultThreshold
                     };
                     var faydaOtpState = {
                         status: 'not_requested',
@@ -2455,7 +2456,9 @@
                         missing_farmer: 'Please search and select a farmer first.',
                         invalid_farmer: 'Invalid farmer selected.',
                         farmer_not_found: 'Farmer not found.',
-                        missing_purpose: 'Purpose is required.',
+                        missing_purpose: 'Consent reason is required.',
+                        missing_consent_reason: 'Consent reason is required.',
+                        invalid_consent_reason: 'Invalid consent reason selected.',
                         missing_data_fields: 'No valid data fields selected. Configure partner data fields first.',
                         missing_attachment: 'Attachment is required.',
                         attachment_too_large: 'Attachment must be 10MB or smaller.',
@@ -2493,30 +2496,41 @@
                         return String(status || 'not_attempted').toLowerCase().replace(/[^a-z_]/g, '');
                     }
 
-                    function distanceToMatchPercent(distance) {
-                        if (!Number.isFinite(distance)) {
-                            return null;
-                        }
-                        return Math.max(0, Math.min(100, (1 - distance) * 100));
+                    function formatLivenessPrompt(prompt) {
+                        return String(prompt || '')
+                            .split('_')
+                            .filter(function(part) { return !!part; })
+                            .map(function(part) {
+                                return part.charAt(0).toUpperCase() + part.slice(1);
+                            })
+                            .join(' ');
                     }
 
-                    function formatMatchPercent(percentValue) {
-                        return Number.isFinite(percentValue) ? percentValue.toFixed(1) + '%' : '—';
-                    }
-
-                    function updateFaceMatchPercentText(distance, threshold) {
+                    function updateFaceMatchPercentText() {
                         if (!faceMatchPercentText) return;
-                        var safeThreshold = Number.isFinite(threshold) ? threshold : faceMatchThresholdDefault;
-                        var thresholdPercent = distanceToMatchPercent(safeThreshold);
-                        if (Number.isFinite(distance)) {
-                            var matchPercent = distanceToMatchPercent(distance);
-                            faceMatchPercentText.textContent =
-                                'Match score: ' + formatMatchPercent(matchPercent) +
-                                ' | Minimum accepted: ' + formatMatchPercent(thresholdPercent);
-                        } else {
-                            faceMatchPercentText.textContent =
-                                'Minimum accepted: ' + formatMatchPercent(thresholdPercent);
+                        var prompts = Array.isArray(faceMatchState.promptSequence) ? faceMatchState.promptSequence : [];
+                        if (!prompts.length) {
+                            faceMatchPercentText.textContent = 'Challenge prompt and face score will appear here.';
+                            return;
                         }
+                        var promptText = prompts.map(formatLivenessPrompt).join(' -> ');
+                        var expiresText = '';
+                        var faceScoreText = '';
+                        if (typeof faceMatchState.distance === 'number' && Number.isFinite(faceMatchState.distance)) {
+                            var similarityPct = Math.max(0, Math.min(100, (1 - faceMatchState.distance) * 100));
+                            var thresholdPct = Math.max(
+                                0,
+                                Math.min(100, (1 - (faceMatchState.threshold || faceMatchDefaultThreshold)) * 100)
+                            );
+                            faceScoreText = ' | Face: ' + similarityPct.toFixed(1) + '% (min ' + thresholdPct.toFixed(1) + '%)';
+                        }
+                        if (faceMatchState.expiresAt) {
+                            var expiresDate = new Date(faceMatchState.expiresAt.replace(' ', 'T') + 'Z');
+                            if (!Number.isNaN(expiresDate.getTime())) {
+                                expiresText = ' | Expires: ' + expiresDate.toLocaleTimeString();
+                            }
+                        }
+                        faceMatchPercentText.textContent = 'Challenge: ' + promptText + faceScoreText + expiresText;
                     }
 
                     function setPreviewImage(imgEl, emptyEl, imageUrl) {
@@ -2551,7 +2565,7 @@
                             verificationRequiredNotice.classList.toggle('is-success', isUnlocked);
                             verificationRequiredNotice.textContent = isUnlocked
                                 ? 'Verification successful. You can now complete the consent request.'
-                                : 'Complete Fayda OTP or Face Match to unlock the consent form.';
+                                : 'Complete Fayda OTP or Face + Liveness verification to unlock the consent form.';
                         }
                     }
 
@@ -2562,21 +2576,25 @@
                         if (formFarmerId) {
                             formFarmerId.value = '';
                         }
-                        setPurposeError('');
+                        setConsentReasonError('');
                         setDataFieldsError('');
                         setAttachmentError('');
                         setCameraError('');
                     }
 
                     function resetFaceMatchFields() {
-                        if (faceMatchStatusInput) faceMatchStatusInput.value = 'not_attempted';
-                        if (faceMatchDistanceInput) faceMatchDistanceInput.value = '';
-                        if (faceMatchThresholdInput) faceMatchThresholdInput.value = '';
-                        if (faceMatchCheckedAtInput) faceMatchCheckedAtInput.value = '';
-                        if (faceMatchMessageInput) faceMatchMessageInput.value = '';
+                        if (livenessChallengeIdInput) livenessChallengeIdInput.value = '';
+                        if (livenessVerificationTokenInput) livenessVerificationTokenInput.value = '';
                         faceMatchState.status = 'not_attempted';
                         faceMatchState.running = false;
-                        updateFaceMatchPercentText(null, faceMatchThresholdDefault);
+                        faceMatchState.challengeId = '';
+                        faceMatchState.nonce = '';
+                        faceMatchState.promptSequence = [];
+                        faceMatchState.expiresAt = '';
+                        faceMatchState.verificationToken = '';
+                        faceMatchState.distance = null;
+                        faceMatchState.threshold = faceMatchDefaultThreshold;
+                        updateFaceMatchPercentText();
                     }
 
                     function setFaceMatchProcessing(message) {
@@ -2584,10 +2602,10 @@
                         faceMatchState.running = true;
                         if (faceMatchStatusText) {
                             faceMatchStatusText.className = 'consent_face_match_status is-processing';
-                            faceMatchStatusText.textContent = message || 'Comparing faces...';
+                            faceMatchStatusText.textContent = message || 'Checking face + liveness...';
                         }
-                        setFaceVerificationChoiceHint('processing', message || 'Comparing faces now...');
-                        updateFaceMatchPercentText(null, faceMatchThresholdDefault);
+                        setFaceVerificationChoiceHint('processing', message || 'Checking face + liveness...');
+                        updateFaceMatchPercentText();
                     }
 
                     function setFaceVerificationChoiceHint(status, message) {
@@ -2602,15 +2620,6 @@
                         } else if (normalizedStatus === 'matched') {
                             hintMessage = 'Verified';
                             extraClass = 'is-success';
-                        } else if (normalizedStatus === 'not_matched') {
-                            hintMessage = 'Not Matched';
-                            extraClass = 'is-error';
-                        } else if (normalizedStatus === 'no_reference') {
-                            hintMessage = 'No Image';
-                            extraClass = 'is-error';
-                        } else if (normalizedStatus === 'no_face_detected') {
-                            hintMessage = 'No Face';
-                            extraClass = 'is-error';
                         } else if (normalizedStatus === 'error') {
                             hintMessage = 'Try Again';
                             extraClass = 'is-error';
@@ -2624,26 +2633,38 @@
 
                     function setFaceMatchResult(status, message, options) {
                         var normalizedStatus = normalizeFaceMatchStatus(status);
-                        var distance = options && Number.isFinite(options.distance) ? options.distance : null;
-                        var threshold = options && Number.isFinite(options.threshold) ? options.threshold : faceMatchThresholdDefault;
-                        var technicalMessage = options && options.technicalMessage ? String(options.technicalMessage) : '';
+                        var opts = options || {};
                         faceMatchState.status = normalizedStatus;
                         faceMatchState.running = false;
-                        if (faceMatchStatusInput) faceMatchStatusInput.value = normalizedStatus;
-                        if (faceMatchDistanceInput) faceMatchDistanceInput.value = distance == null ? '' : String(distance);
-                        if (faceMatchThresholdInput) faceMatchThresholdInput.value = threshold == null ? '' : String(threshold);
-                        if (faceMatchCheckedAtInput) {
-                            faceMatchCheckedAtInput.value = normalizedStatus === 'not_attempted' ? '' : formatDateForOdoo(new Date());
+                        faceMatchState.challengeId = opts.challengeId || faceMatchState.challengeId || '';
+                        faceMatchState.nonce = opts.nonce || faceMatchState.nonce || '';
+                        faceMatchState.promptSequence = Array.isArray(opts.promptSequence)
+                            ? opts.promptSequence
+                            : (faceMatchState.promptSequence || []);
+                        faceMatchState.expiresAt = opts.expiresAt || faceMatchState.expiresAt || '';
+                        faceMatchState.verificationToken = opts.verificationToken || '';
+                        faceMatchState.distance = typeof opts.distance === 'number' && Number.isFinite(opts.distance)
+                            ? opts.distance
+                            : (typeof faceMatchState.distance === 'number' && Number.isFinite(faceMatchState.distance) ? faceMatchState.distance : null);
+                        faceMatchState.threshold = typeof opts.threshold === 'number' && Number.isFinite(opts.threshold)
+                            ? opts.threshold
+                            : (typeof faceMatchState.threshold === 'number' && Number.isFinite(faceMatchState.threshold) ? faceMatchState.threshold : faceMatchDefaultThreshold);
+
+                        if (livenessChallengeIdInput) {
+                            livenessChallengeIdInput.value = faceMatchState.challengeId || '';
                         }
-                        if (faceMatchMessageInput) {
-                            faceMatchMessageInput.value = technicalMessage || String(message || '');
+                        if (livenessVerificationTokenInput) {
+                            livenessVerificationTokenInput.value =
+                                normalizedStatus === 'matched'
+                                    ? (faceMatchState.verificationToken || '')
+                                    : '';
                         }
                         if (faceMatchStatusText) {
                             faceMatchStatusText.className = 'consent_face_match_status is-' + normalizedStatus.replace(/_/g, '-');
                             faceMatchStatusText.textContent = message || '';
                         }
                         setFaceVerificationChoiceHint(normalizedStatus, message || 'Not Attempted');
-                        updateFaceMatchPercentText(distance, threshold);
+                        updateFaceMatchPercentText();
                         updateConsentFormVisibility();
                     }
 
@@ -2651,9 +2672,10 @@
                         resetFaceMatchFields();
                         if (faceMatchStatusText) {
                             faceMatchStatusText.className = 'consent_face_match_status is-not-attempted';
-                            faceMatchStatusText.textContent = message || 'Capture a photo to compare it with the selected farmer profile image.';
+                            faceMatchStatusText.textContent = message || 'Capture a photo to run face + liveness verification.';
                         }
                         setFaceVerificationChoiceHint('not_attempted', 'Not Attempted');
+                        updateFaceMatchPercentText();
                         updateConsentFormVisibility();
                     }
 
@@ -2742,7 +2764,7 @@
                             if (identifierSource) metaParts.push('Source: ' + identifierSource);
                             if (verifiedAt) metaParts.push('Verified at: ' + verifiedAt);
                             if (!metaParts.length) {
-                                metaParts.push('A verified OTP or a successful face match will auto-approve this request on submit.');
+                                metaParts.push('A verified OTP or successful face + liveness verification will auto-approve this request on submit.');
                             }
                             faydaOtpMetaText.textContent = metaParts.join(' | ');
                         }
@@ -2767,7 +2789,7 @@
                             faydaOtpStatusText.textContent = message || 'Request OTP to verify the selected farmer.';
                         }
                         if (faydaOtpMetaText) {
-                            faydaOtpMetaText.textContent = 'A verified OTP or a successful face match will auto-approve this request on submit.';
+                            faydaOtpMetaText.textContent = 'A verified OTP or successful face + liveness verification will auto-approve this request on submit.';
                         }
                         setOtpVerificationChoiceHint('not_requested');
                         setFaydaOtpButtonsState(false, false);
@@ -2775,12 +2797,12 @@
                     }
 
                     function getDefaultFaceMatchMessage(farmer, isRetake) {
-                        if (farmer && farmer.profile_image_url) {
+                        if (farmer) {
                             return isRetake
-                                ? 'Retake the photo to compare it with the selected farmer profile image.'
-                                : 'Capture a photo to compare it with the selected farmer profile image.';
+                                ? 'Retake the photo and complete face + liveness verification again.'
+                                : 'Capture a photo to run face + liveness verification.';
                         }
-                        return 'Selected farmer has no profile image. The request can still be submitted, but it will remain pending.';
+                        return 'Select a farmer, then capture a photo to run face + liveness verification.';
                     }
 
                     function getDefaultFaydaOtpMessage(farmer) {
@@ -2846,6 +2868,7 @@
                                     window.jQuery('#modal_verification_face').modal('show');
                                 }
                             }
+                            requestLivenessChallenge();
                         }
                     }
 
@@ -3007,165 +3030,351 @@
                         updateConsentFormVisibility();
                     }
 
-                    function ensureFaceApiLibrary() {
-                        if (window.faceapi) {
-                            return Promise.resolve(window.faceapi);
-                        }
-                        if (faceApiScriptPromise) {
-                            return faceApiScriptPromise;
-                        }
-                        faceApiScriptPromise = new Promise(function(resolve, reject) {
-                            var script = document.createElement('script');
-                            script.src = '/g2p_ati_consent_mgt/static/src/lib/face-api/face-api.js';
-                            script.async = true;
-                            script.onload = function() {
-                                if (window.faceapi) {
-                                    resolve(window.faceapi);
-                                } else {
-                                    reject(new Error('face-api library loaded without exposing faceapi.'));
-                                }
-                            };
-                            script.onerror = function() {
-                                reject(new Error('Unable to load face-api library.'));
-                            };
-                            document.head.appendChild(script);
-                        }).catch(function(error) {
-                            faceApiScriptPromise = null;
-                            throw error;
-                        });
-                        return faceApiScriptPromise;
+                    function parseOdooDate(value) {
+                        if (!value) return null;
+                        var normalized = String(value).replace(' ', 'T');
+                        var parsed = new Date(normalized + (normalized.endsWith('Z') ? '' : 'Z'));
+                        return Number.isNaN(parsed.getTime()) ? null : parsed;
                     }
 
-                    function ensureFaceApiModels() {
-                        if (faceApiModelsPromise) {
-                            return faceApiModelsPromise;
-                        }
-                        faceApiModelsPromise = ensureFaceApiLibrary().then(function(faceapi) {
-                            var modelBaseUrl = '/g2p_ati_consent_mgt/static/src/lib/face-api/model';
-                            return Promise.all([
-                                faceapi.nets.tinyFaceDetector.loadFromUri(modelBaseUrl),
-                                faceapi.nets.faceLandmark68Net.loadFromUri(modelBaseUrl),
-                                faceapi.nets.faceRecognitionNet.loadFromUri(modelBaseUrl)
-                            ]).then(function() {
-                                return faceapi;
-                            });
-                        }).catch(function(error) {
-                            faceApiModelsPromise = null;
-                            throw error;
-                        });
-                        return faceApiModelsPromise;
+                    function toFiniteNumber(value, fallback) {
+                        var parsed = Number(value);
+                        return Number.isFinite(parsed) ? parsed : fallback;
                     }
 
-                    function loadImageForFaceMatch(imageUrl) {
+                    function loadImageForFaceMatch(src) {
                         return new Promise(function(resolve, reject) {
-                            if (!imageUrl) {
-                                reject(new Error('Missing image source.'));
+                            if (!src) {
+                                reject(new Error('Missing image source for face matching.'));
                                 return;
                             }
                             var img = new Image();
-                            if (!/^data:/i.test(imageUrl)) {
-                                img.crossOrigin = 'anonymous';
-                            }
-                            img.onload = function() { resolve(img); };
-                            img.onerror = function() { reject(new Error('Unable to load image for face matching.')); };
-                            img.src = imageUrl;
+                            img.onload = function() {
+                                resolve(img);
+                            };
+                            img.onerror = function() {
+                                reject(new Error('Unable to load image for face matching.'));
+                            };
+                            img.src = src;
                         });
                     }
 
-                    function detectFaceDescriptor(imageUrl) {
-                        return ensureFaceApiModels().then(function(faceapi) {
-                            return loadImageForFaceMatch(imageUrl).then(function(img) {
-                                return faceapi
-                                    .detectSingleFace(img, new faceapi.TinyFaceDetectorOptions({ inputSize: 416, scoreThreshold: 0.5 }))
-                                    .withFaceLandmarks()
-                                    .withFaceDescriptor();
+                    function ensureFaceApiReady() {
+                        if (window.faceapi && window.faceapi.nets && window.faceapi.nets.tinyFaceDetector && window.faceapi.nets.tinyFaceDetector.params) {
+                            return Promise.resolve(window.faceapi);
+                        }
+                        if (faceApiLoadPromise) {
+                            return faceApiLoadPromise;
+                        }
+                        faceApiLoadPromise = new Promise(function(resolve, reject) {
+                            function loadModels() {
+                                if (!window.faceapi || !window.faceapi.nets) {
+                                    reject(new Error('Face API library failed to initialize.'));
+                                    return;
+                                }
+                                Promise.all([
+                                    window.faceapi.nets.tinyFaceDetector.loadFromUri(faceApiModelUrl),
+                                    window.faceapi.nets.faceLandmark68Net.loadFromUri(faceApiModelUrl),
+                                    window.faceapi.nets.faceRecognitionNet.loadFromUri(faceApiModelUrl),
+                                ])
+                                    .then(function() {
+                                        resolve(window.faceapi);
+                                    })
+                                    .catch(function(err) {
+                                        reject(new Error(err && err.message ? err.message : 'Unable to load face recognition models.'));
+                                    });
+                            }
+
+                            if (window.faceapi) {
+                                loadModels();
+                                return;
+                            }
+
+                            var existingScript = document.querySelector('script[data-face-api-lib="1"]');
+                            if (existingScript) {
+                                existingScript.addEventListener('load', loadModels, { once: true });
+                                existingScript.addEventListener(
+                                    'error',
+                                    function() {
+                                        reject(new Error('Unable to load face recognition library.'));
+                                    },
+                                    { once: true }
+                                );
+                                return;
+                            }
+
+                            var script = document.createElement('script');
+                            script.src = faceApiScriptUrl;
+                            script.async = true;
+                            script.defer = true;
+                            script.setAttribute('data-face-api-lib', '1');
+                            script.onload = loadModels;
+                            script.onerror = function() {
+                                reject(new Error('Unable to load face recognition library.'));
+                            };
+                            document.head.appendChild(script);
+                        }).catch(function(err) {
+                            faceApiLoadPromise = null;
+                            throw err;
+                        });
+                        return faceApiLoadPromise;
+                    }
+
+                    function computeFaceDescriptorFromImage(imageEl) {
+                        if (!window.faceapi) {
+                            return Promise.resolve(null);
+                        }
+                        return window.faceapi
+                            .detectSingleFace(
+                                imageEl,
+                                new window.faceapi.TinyFaceDetectorOptions({ inputSize: 416, scoreThreshold: 0.4 })
+                            )
+                            .withFaceLandmarks()
+                            .withFaceDescriptor()
+                            .then(function(result) {
+                                if (!result || !result.descriptor) {
+                                    return null;
+                                }
+                                return result.descriptor;
                             });
+                    }
+
+                    function runClientFaceMatch() {
+                        var referenceUrl = selectedFarmer && selectedFarmer.profile_image_url ? selectedFarmer.profile_image_url : '';
+                        if (!referenceUrl) {
+                            return Promise.resolve({
+                                passed: false,
+                                distance: null,
+                                threshold: faceMatchDefaultThreshold,
+                                message: 'Selected farmer has no profile image for face matching.',
+                            });
+                        }
+                        if (!cameraDataInput || !cameraDataInput.value) {
+                            return Promise.resolve({
+                                passed: false,
+                                distance: null,
+                                threshold: faceMatchDefaultThreshold,
+                                message: 'Capture a photo before running face match.',
+                            });
+                        }
+
+                        return ensureFaceApiReady()
+                            .then(function() {
+                                return Promise.all([
+                                    loadImageForFaceMatch(referenceUrl),
+                                    loadImageForFaceMatch(cameraDataInput.value),
+                                ]);
+                            })
+                            .then(function(images) {
+                                return Promise.all([
+                                    computeFaceDescriptorFromImage(images[0]),
+                                    computeFaceDescriptorFromImage(images[1]),
+                                ]);
+                            })
+                            .then(function(descriptors) {
+                                var referenceDescriptor = descriptors[0];
+                                var capturedDescriptor = descriptors[1];
+                                if (!referenceDescriptor) {
+                                    return {
+                                        passed: false,
+                                        distance: null,
+                                        threshold: faceMatchDefaultThreshold,
+                                        message: 'No face detected in the farmer profile image.',
+                                    };
+                                }
+                                if (!capturedDescriptor) {
+                                    return {
+                                        passed: false,
+                                        distance: null,
+                                        threshold: faceMatchDefaultThreshold,
+                                        message: 'No face detected in the captured image.',
+                                    };
+                                }
+                                var distance = window.faceapi.euclideanDistance(referenceDescriptor, capturedDescriptor);
+                                var threshold = faceMatchDefaultThreshold;
+                                var passed = Number.isFinite(distance) && distance <= threshold;
+                                if (!passed) {
+                                    return {
+                                        passed: false,
+                                        distance: Number.isFinite(distance) ? distance : null,
+                                        threshold: threshold,
+                                        message: 'Face match failed. Retake and align to the selected farmer.',
+                                    };
+                                }
+                                var similarityPct = Math.max(0, Math.min(100, (1 - distance) * 100));
+                                return {
+                                    passed: true,
+                                    distance: distance,
+                                    threshold: threshold,
+                                    message: 'Face match passed (' + similarityPct.toFixed(1) + '%).',
+                                };
+                            })
+                            .catch(function(error) {
+                                return {
+                                    passed: false,
+                                    distance: null,
+                                    threshold: faceMatchDefaultThreshold,
+                                    message: error && error.message ? error.message : 'Face matching failed.',
+                                };
+                            });
+                    }
+
+                    function requestLivenessChallenge() {
+                        var actionToken = ++faceMatchActionToken;
+                        if (!selectedFarmer || !selectedFarmer.id) {
+                            resetFaceMatch('Select a farmer before requesting liveness challenge.');
+                            return Promise.resolve(false);
+                        }
+                        setFaceMatchProcessing('Requesting liveness challenge...');
+                        return callJsonRoute('/consent/liveness/request_challenge', {
+                            farmer_id: selectedFarmer.id
+                        }).then(function(res) {
+                            if (actionToken !== faceMatchActionToken || selectedVerificationMethod !== 'face') {
+                                return false;
+                            }
+                            var data = res.data || {};
+                            var ttlCandidate = Number(data.ttl_seconds || 0);
+                            if (Number.isFinite(ttlCandidate) && ttlCandidate > 0) {
+                                livenessChallengeTtlSeconds = ttlCandidate;
+                            }
+                            setFaceMatchResult(
+                                'not_attempted',
+                                'Challenge ready. Follow prompt and capture your photo.',
+                                {
+                                    challengeId: data.challenge_id || '',
+                                    nonce: data.nonce || '',
+                                    promptSequence: data.prompt_sequence || [],
+                                    expiresAt: data.expires_at || ''
+                                }
+                            );
+                            return data;
+                        }).catch(function(error) {
+                            if (actionToken !== faceMatchActionToken || selectedVerificationMethod !== 'face') {
+                                return false;
+                            }
+                            setFaceMatchResult(
+                                'error',
+                                error && error.message ? error.message : 'Unable to request liveness challenge.',
+                                {}
+                            );
+                            return false;
+                        });
+                    }
+
+                    function ensureLivenessChallenge() {
+                        var now = new Date();
+                        var expiresAt = parseOdooDate(faceMatchState.expiresAt);
+                        var hasValidChallenge = !!(
+                            faceMatchState.challengeId &&
+                            faceMatchState.nonce &&
+                            Array.isArray(faceMatchState.promptSequence) &&
+                            faceMatchState.promptSequence.length
+                        );
+                        if (!hasValidChallenge) {
+                            return requestLivenessChallenge();
+                        }
+                        if (expiresAt && now.getTime() >= expiresAt.getTime()) {
+                            return requestLivenessChallenge();
+                        }
+                        return Promise.resolve({
+                            challenge_id: faceMatchState.challengeId,
+                            nonce: faceMatchState.nonce,
+                            prompt_sequence: faceMatchState.promptSequence,
+                            expires_at: faceMatchState.expiresAt,
+                            ttl_seconds: livenessChallengeTtlSeconds
                         });
                     }
 
                     function runFaceMatch() {
                         var actionToken = ++faceMatchActionToken;
-                        if (!selectedFarmer) {
+                        if (!selectedFarmer || !selectedFarmer.id) {
                             resetFaceMatch('Select a farmer before capturing a photo.');
                             return Promise.resolve(false);
                         }
                         if (!cameraDataInput || !cameraDataInput.value) {
-                            resetFaceMatch(
-                                selectedFarmer.profile_image_url
-                                    ? 'Capture a photo to compare it with the selected farmer profile image.'
-                                    : 'Selected farmer has no profile image. The request can still be submitted, but it will remain pending.'
-                            );
-                            return Promise.resolve(false);
-                        }
-                        if (!selectedFarmer.profile_image_url) {
-                            setFaceMatchResult(
-                                'no_reference',
-                                'Selected farmer has no profile image. The request can still be submitted, but it will remain pending.',
-                                { threshold: faceMatchThresholdDefault }
-                            );
+                            resetFaceMatch('Capture a photo before verifying liveness.');
                             return Promise.resolve(false);
                         }
 
-                        setFaceMatchProcessing('Comparing captured photo with farmer profile image...');
-                        return Promise.all([
-                            detectFaceDescriptor(selectedFarmer.profile_image_url),
-                            detectFaceDescriptor(cameraDataInput.value)
-                        ]).then(function(results) {
+                        setFaceMatchProcessing('Preparing face + liveness checks...');
+                        return ensureLivenessChallenge().then(function(challengeData) {
+                            if (!challengeData) return false;
                             if (actionToken !== faceMatchActionToken || selectedVerificationMethod !== 'face') {
                                 return false;
                             }
-                            var referenceFace = results[0];
-                            var capturedFace = results[1];
-                            if (!referenceFace || !capturedFace) {
-                                setFaceMatchResult(
-                                    'no_face_detected',
-                                    !referenceFace
-                                        ? 'No face was detected in the farmer profile image. The request will remain pending.'
-                                        : 'No face was detected in the captured photo. Retake the photo for auto-approval.',
-                                    { threshold: faceMatchThresholdDefault }
-                                );
-                                return false;
-                            }
-                            var distance = window.faceapi.euclideanDistance(referenceFace.descriptor, capturedFace.descriptor);
-                            var matchPercent = distanceToMatchPercent(distance);
-                            var acceptedPercent = distanceToMatchPercent(faceMatchThresholdDefault);
-                            var matched = distance <= faceMatchThresholdDefault;
-                            setFaceMatchResult(
-                                matched ? 'matched' : 'not_matched',
-                                matched
-                                    ? 'Face matched at ' + formatMatchPercent(matchPercent) + '. The request will be automatically approved on submit.'
-                                    : 'Face match score is ' + formatMatchPercent(matchPercent) + '. Minimum accepted is ' + formatMatchPercent(acceptedPercent) + ', so the request will remain pending.',
-                                {
-                                    distance: distance,
-                                    threshold: faceMatchThresholdDefault,
-                                    technicalMessage:
-                                        'Distance=' + distance.toFixed(4) +
-                                        ', Threshold=' + faceMatchThresholdDefault.toFixed(4) +
-                                        ', MatchPercent=' + formatMatchPercent(matchPercent) +
-                                        ', AcceptedPercent=' + formatMatchPercent(acceptedPercent)
+                            setFaceMatchProcessing('Running face match...');
+                            return runClientFaceMatch().then(function(faceMatchResult) {
+                                if (actionToken !== faceMatchActionToken || selectedVerificationMethod !== 'face') {
+                                    return false;
                                 }
-                            );
-                            if (matched) {
-                                closeModalById('modal_verification_face');
-                                window.setTimeout(function() {
-                                    showServiceProviderModal('Face match verified successfully. You can now complete the consent request.', false);
-                                }, 250);
-                            }
-                            return matched;
-                        }).catch(function(error) {
-                            if (actionToken !== faceMatchActionToken || selectedVerificationMethod !== 'face') {
-                                return false;
-                            }
-                            console.error('Consent portal face match failed.', error);
-                            setFaceMatchResult(
-                                'error',
-                                'Face match could not be completed. The request can still be submitted and will remain pending.',
-                                {
-                                    threshold: faceMatchThresholdDefault,
-                                    technicalMessage: error && error.message ? error.message : 'Unknown face match error'
+                                if (!faceMatchResult || !faceMatchResult.passed) {
+                                    setFaceMatchResult(
+                                        'error',
+                                        faceMatchResult && faceMatchResult.message
+                                            ? faceMatchResult.message
+                                            : 'Face match failed.',
+                                        {
+                                            challengeId: faceMatchState.challengeId || '',
+                                            nonce: faceMatchState.nonce || '',
+                                            promptSequence: faceMatchState.promptSequence || [],
+                                            expiresAt: faceMatchState.expiresAt || '',
+                                            distance: faceMatchResult ? faceMatchResult.distance : null,
+                                            threshold: faceMatchResult ? faceMatchResult.threshold : faceMatchDefaultThreshold,
+                                        }
+                                    );
+                                    return false;
                                 }
-                            );
-                            return false;
+                                setFaceMatchProcessing('Verifying liveness challenge...');
+                                return callJsonRoute('/consent/liveness/verify_challenge', {
+                                    farmer_id: selectedFarmer.id,
+                                    challenge_id: challengeData.challenge_id || faceMatchState.challengeId || '',
+                                    capture_image: cameraDataInput.value,
+                                    captured_at: cameraTakenAtInput ? (cameraTakenAtInput.value || '') : '',
+                                    face_match_passed: true,
+                                    face_match_distance: faceMatchResult.distance,
+                                    face_match_threshold: faceMatchResult.threshold
+                                }).then(function(res) {
+                                    if (actionToken !== faceMatchActionToken || selectedVerificationMethod !== 'face') {
+                                        return false;
+                                    }
+                                    var data = res.data || {};
+                                    setFaceMatchResult(
+                                        'matched',
+                                        res.message || 'Face + liveness verified successfully. The request will be automatically approved on submit.',
+                                        {
+                                            challengeId: data.challenge_id || faceMatchState.challengeId || '',
+                                            nonce: faceMatchState.nonce || '',
+                                            promptSequence: data.prompt_sequence || faceMatchState.promptSequence || [],
+                                            expiresAt: faceMatchState.expiresAt || '',
+                                            verificationToken: data.verification_token || '',
+                                            distance: toFiniteNumber(data.face_match_distance, faceMatchResult.distance),
+                                            threshold: toFiniteNumber(data.face_match_threshold, faceMatchResult.threshold)
+                                        }
+                                    );
+                                    closeModalById('modal_verification_face');
+                                    window.setTimeout(function() {
+                                        showServiceProviderModal('Face + liveness verified successfully. You can now complete the consent request.', false);
+                                    }, 250);
+                                    return true;
+                                }).catch(function(error) {
+                                    if (actionToken !== faceMatchActionToken || selectedVerificationMethod !== 'face') {
+                                        return false;
+                                    }
+                                    setFaceMatchResult(
+                                        'error',
+                                        error && error.message ? error.message : 'Face + liveness verification failed.',
+                                        {
+                                            challengeId: faceMatchState.challengeId || '',
+                                            nonce: faceMatchState.nonce || '',
+                                            promptSequence: faceMatchState.promptSequence || [],
+                                            expiresAt: faceMatchState.expiresAt || '',
+                                            distance: faceMatchResult.distance,
+                                            threshold: faceMatchResult.threshold
+                                        }
+                                    );
+                                    return false;
+                                });
+                            });
                         });
                     }
 
@@ -3292,14 +3501,14 @@
                         });
                     }
 
-                    function setPurposeError(message) {
-                        if (!purposeError) return;
+                    function setConsentReasonError(message) {
+                        if (!consentReasonError) return;
                         if (message) {
-                            purposeError.textContent = message;
-                            purposeError.classList.remove('d-none');
+                            consentReasonError.textContent = message;
+                            consentReasonError.classList.remove('d-none');
                         } else {
-                            purposeError.textContent = '';
-                            purposeError.classList.add('d-none');
+                            consentReasonError.textContent = '';
+                            consentReasonError.classList.add('d-none');
                         }
                     }
 
@@ -3834,10 +4043,10 @@
                             }
                         });
                     }
-                    if (purposeInput) {
-                        purposeInput.addEventListener('input', function() {
+                    if (consentReasonInput) {
+                        consentReasonInput.addEventListener('change', function() {
                             if ((this.value || '').trim()) {
-                                setPurposeError('');
+                                setConsentReasonError('');
                             }
                         });
                     }
@@ -3944,6 +4153,9 @@
                         btnRetakeCameraPhoto.addEventListener('click', function() {
                             clearCameraCapture();
                             resetFaceMatch(getDefaultFaceMatchMessage(selectedFarmer, true));
+                            if (selectedFarmer && selectedFarmer.id && selectedVerificationMethod === 'face') {
+                                requestLivenessChallenge();
+                            }
                         });
                     }
                     if (consentForm) {
@@ -3953,12 +4165,11 @@
                             var shouldAttemptFaceMatch = !!(
                                 selectedVerificationMethod === 'face' &&
                                 selectedFarmer &&
-                                selectedFarmer.profile_image_url &&
                                 cameraDataInput &&
                                 cameraDataInput.value &&
                                 faydaOtpState.status !== 'verified'
                             );
-                            setPurposeError('');
+                            setConsentReasonError('');
                             setDataFieldsError('');
                             setAttachmentError('');
                             setCameraError('');
@@ -3969,12 +4180,12 @@
                             }
                             if (!isConsentVerificationComplete()) {
                                 hasError = true;
-                                if (!firstErrorMessage) firstErrorMessage = 'Complete Fayda OTP or Face Match before continuing.';
+                                if (!firstErrorMessage) firstErrorMessage = 'Complete Fayda OTP or Face + Liveness verification before continuing.';
                             }
-                            if (!purposeInput || !(purposeInput.value || '').trim()) {
-                                setPurposeError('Purpose is required.');
+                            if (!consentReasonInput || !(consentReasonInput.value || '').trim()) {
+                                setConsentReasonError('Consent reason is required.');
                                 hasError = true;
-                                if (!firstErrorMessage) firstErrorMessage = 'Purpose is required.';
+                                if (!firstErrorMessage) firstErrorMessage = 'Consent reason is required.';
                             }
                             if (dataFieldInputs && dataFieldInputs.length && !hasSelectedDataField()) {
                                 setDataFieldsError('Select at least one data field.');
@@ -4008,9 +4219,9 @@
                             }
 
                             if (faceMatchState.running) {
-                                setCameraError('Face match is still running. Please wait a moment.');
+                                setCameraError('Face + liveness verification is still running. Please wait a moment.');
                                 hasError = true;
-                                if (!firstErrorMessage) firstErrorMessage = 'Face match is still running. Please wait a moment.';
+                                if (!firstErrorMessage) firstErrorMessage = 'Face + liveness verification is still running. Please wait a moment.';
                             }
                             if (faydaOtpState.running) {
                                 hasError = true;
@@ -4019,18 +4230,18 @@
 
                             if (hasError) {
                                 console.warn('Consent portal submit blocked on client validation.', {
-                                    hasPurpose: !!(purposeInput && (purposeInput.value || '').trim()),
+                                    hasReason: !!(consentReasonInput && (consentReasonInput.value || '').trim()),
                                     hasSelectedDataField: hasSelectedDataField(),
                                     hasAttachment: !!(attachmentInput && attachmentInput.files && attachmentInput.files.length),
                                     dataFieldInputsCount: dataFieldInputs ? dataFieldInputs.length : 0
                                 });
                                 showServiceProviderModal(firstErrorMessage || 'Please fix form validation errors.', true);
                                 e.preventDefault();
-                            } else if (shouldAttemptFaceMatch && !faceMatchSubmitPending && faceMatchStatusInput && faceMatchStatusInput.value === 'not_attempted') {
+                            } else if (shouldAttemptFaceMatch && !faceMatchSubmitPending && faceMatchState.status !== 'matched') {
                                 e.preventDefault();
                                 faceMatchSubmitPending = true;
                                 setCameraError('');
-                                setFaceMatchProcessing('Comparing faces before submit...');
+                                setFaceMatchProcessing('Verifying face + liveness before submit...');
                                 runFaceMatch().finally(function() {
                                     faceMatchSubmitPending = false;
                                     if (typeof consentForm.requestSubmit === 'function') {

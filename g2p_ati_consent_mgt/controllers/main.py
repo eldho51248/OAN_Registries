@@ -1,6 +1,10 @@
 import base64
+import hashlib
+import hmac
+import json
 import logging
 import os
+import random
 from datetime import datetime, timedelta
 from urllib.parse import urlencode
 from uuid import uuid4
@@ -30,6 +34,23 @@ class G2PATIConsentController(http.Controller):
         "mock_host": "127.0.0.1",
         "mock_port": "8787",
         "use_primary_phone": False,
+    }
+    _LIVENESS_SESSION_KEY = "g2p_consent_liveness"
+    _LIVENESS_LOCAL_DEFAULTS = {
+        "ttl_seconds": 90,
+        "prompt_count": 3,
+        "verify_timeout": 20.0,
+        "verify_url": "",
+        "signing_secret": "change-me-liveness-signing-secret",
+        "allow_local_provider": True,
+        "prompt_library": [
+            "blink_twice",
+            "turn_left",
+            "turn_right",
+            "nod",
+            "smile",
+            "open_mouth",
+        ],
     }
 
     def _error(self, message, code=400):
@@ -229,6 +250,95 @@ class G2PATIConsentController(http.Controller):
             request.session[self._FAYDA_OTP_SESSION_KEY] = store
         return store
 
+    def _get_liveness_config(self):
+        try:
+            ttl_seconds = int((os.getenv("G2P_LIVENESS_TTL_SECONDS") or "").strip() or self._LIVENESS_LOCAL_DEFAULTS["ttl_seconds"])
+        except (TypeError, ValueError):
+            ttl_seconds = self._LIVENESS_LOCAL_DEFAULTS["ttl_seconds"]
+        ttl_seconds = max(20, min(ttl_seconds, 300))
+
+        try:
+            prompt_count = int((os.getenv("G2P_LIVENESS_PROMPT_COUNT") or "").strip() or self._LIVENESS_LOCAL_DEFAULTS["prompt_count"])
+        except (TypeError, ValueError):
+            prompt_count = self._LIVENESS_LOCAL_DEFAULTS["prompt_count"]
+        prompt_count = max(1, min(prompt_count, 3))
+
+        try:
+            verify_timeout = float(
+                (os.getenv("G2P_LIVENESS_VERIFY_TIMEOUT") or "").strip()
+                or self._LIVENESS_LOCAL_DEFAULTS["verify_timeout"]
+            )
+        except (TypeError, ValueError):
+            verify_timeout = self._LIVENESS_LOCAL_DEFAULTS["verify_timeout"]
+        verify_timeout = max(2.0, verify_timeout)
+
+        prompt_library_raw = (os.getenv("G2P_LIVENESS_PROMPTS") or "").strip()
+        prompt_library = []
+        if prompt_library_raw:
+            prompt_library = [
+                item.strip()
+                for item in prompt_library_raw.split(",")
+                if item and item.strip()
+            ]
+        if not prompt_library:
+            prompt_library = list(self._LIVENESS_LOCAL_DEFAULTS["prompt_library"])
+
+        return {
+            "ttl_seconds": ttl_seconds,
+            "prompt_count": prompt_count,
+            "verify_timeout": verify_timeout,
+            "verify_url": (os.getenv("G2P_LIVENESS_VERIFY_URL") or self._LIVENESS_LOCAL_DEFAULTS["verify_url"]).strip(),
+            "signing_secret": (
+                os.getenv("G2P_LIVENESS_SIGNING_SECRET")
+                or self._LIVENESS_LOCAL_DEFAULTS["signing_secret"]
+            ).strip(),
+            "allow_local_provider": self._env_flag_enabled(
+                os.getenv("G2P_LIVENESS_ALLOW_LOCAL_PROVIDER"),
+                default=self._LIVENESS_LOCAL_DEFAULTS["allow_local_provider"],
+            ),
+            "prompt_library": prompt_library,
+        }
+
+    def _get_liveness_session_store(self):
+        store = request.session.get(self._LIVENESS_SESSION_KEY)
+        if not isinstance(store, dict):
+            store = {}
+            request.session[self._LIVENESS_SESSION_KEY] = store
+        return store
+
+    def _parse_session_datetime(self, value):
+        if not value:
+            return None
+        if isinstance(value, datetime):
+            return value
+        parsed = fields.Datetime.to_datetime(value)
+        return parsed
+
+    def _prune_liveness_session_store(self):
+        store = self._get_liveness_session_store()
+        now_dt = fields.Datetime.now()
+        modified = False
+        for challenge_id, entry in list(store.items()):
+            if not isinstance(entry, dict):
+                store.pop(challenge_id, None)
+                modified = True
+                continue
+
+            expires_at = self._parse_session_datetime(entry.get("expires_at"))
+            if expires_at and expires_at < now_dt:
+                store.pop(challenge_id, None)
+                modified = True
+                continue
+
+            consumed_at = self._parse_session_datetime(entry.get("consumed_at"))
+            if consumed_at and consumed_at < now_dt - timedelta(minutes=15):
+                store.pop(challenge_id, None)
+                modified = True
+
+        if modified:
+            self._mark_session_modified()
+        return store
+
     def _mark_session_modified(self):
         if not getattr(request, "session", None):
             return
@@ -239,6 +349,198 @@ class G2PATIConsentController(http.Controller):
 
     def _now_iso_millis(self):
         return datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3]
+
+    def _make_liveness_challenge_id(self):
+        return uuid4().hex
+
+    def _make_liveness_nonce(self):
+        return uuid4().hex
+
+    def _random_liveness_prompt_sequence(self):
+        config = self._get_liveness_config()
+        prompt_library = list(config["prompt_library"] or [])
+        if not prompt_library:
+            prompt_library = list(self._LIVENESS_LOCAL_DEFAULTS["prompt_library"])
+        prompt_count = min(config["prompt_count"], len(prompt_library))
+        if prompt_count <= 0:
+            prompt_count = 1
+        return random.sample(prompt_library, prompt_count)
+
+    def _canonical_json_bytes(self, payload):
+        return json.dumps(
+            payload or {},
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+        ).encode("utf-8")
+
+    def _verify_hmac_sha256_signature(self, payload, provided_signature, signing_secret):
+        if not provided_signature or not signing_secret:
+            return False
+        expected = hmac.new(
+            signing_secret.encode("utf-8"),
+            self._canonical_json_bytes(payload),
+            hashlib.sha256,
+        ).hexdigest()
+        return hmac.compare_digest(expected, str(provided_signature).strip())
+
+    def _decode_jws_segment(self, value):
+        value = (value or "").strip()
+        if not value:
+            raise ValueError("Empty JWS segment.")
+        padding = "=" * (-len(value) % 4)
+        decoded = base64.urlsafe_b64decode(value + padding)
+        return decoded.decode("utf-8")
+
+    def _verify_jws_hs256(self, token, signing_secret):
+        token = (token or "").strip()
+        parts = token.split(".")
+        if len(parts) != 3:
+            raise ValueError("Invalid JWS format.")
+        if not signing_secret:
+            raise ValueError("Missing signing secret for JWS verification.")
+
+        header_json = self._decode_jws_segment(parts[0])
+        payload_json = self._decode_jws_segment(parts[1])
+        try:
+            header = json.loads(header_json)
+            payload = json.loads(payload_json)
+        except ValueError as exc:
+            raise ValueError("Invalid JWS JSON payload.") from exc
+
+        algorithm = str(header.get("alg") or "").upper()
+        if algorithm != "HS256":
+            raise ValueError("Unsupported JWS algorithm: %s" % (algorithm or "unknown"))
+
+        signing_input = ("%s.%s" % (parts[0], parts[1])).encode("utf-8")
+        expected_signature = hmac.new(
+            signing_secret.encode("utf-8"),
+            signing_input,
+            hashlib.sha256,
+        ).digest()
+        provided_signature = base64.urlsafe_b64decode(parts[2] + ("=" * (-len(parts[2]) % 4)))
+        if not hmac.compare_digest(expected_signature, provided_signature):
+            raise ValueError("JWS signature mismatch.")
+        if not isinstance(payload, dict):
+            raise ValueError("Invalid JWS payload content.")
+        return payload
+
+    def _verify_provider_signed_payload(self, provider_response, signing_secret):
+        if not isinstance(provider_response, dict):
+            raise ValueError("Liveness provider returned an invalid response format.")
+
+        if provider_response.get("jws"):
+            payload = self._verify_jws_hs256(provider_response.get("jws"), signing_secret)
+            if not isinstance(payload, dict):
+                raise ValueError("Invalid JWS verification payload.")
+            return payload
+
+        verification_payload = provider_response.get("verification")
+        if not isinstance(verification_payload, dict):
+            raise ValueError("Liveness provider did not return verification payload.")
+
+        signature_algorithm = str(
+            provider_response.get("signature_algorithm")
+            or provider_response.get("algorithm")
+            or "hmac_sha256"
+        ).strip().lower()
+        signature = str(provider_response.get("signature") or "").strip()
+        if signature_algorithm != "hmac_sha256":
+            raise ValueError("Unsupported liveness signature algorithm: %s" % signature_algorithm)
+        if not self._verify_hmac_sha256_signature(verification_payload, signature, signing_secret):
+            raise ValueError("Liveness provider signature verification failed.")
+        return verification_payload
+
+    def _mock_liveness_provider_response(self, verify_payload, signing_secret):
+        challenge_id = (verify_payload.get("challenge_id") or "").strip()
+        nonce = (verify_payload.get("nonce") or "").strip()
+        prompts = verify_payload.get("prompt_sequence") or []
+        capture_image = (verify_payload.get("capture_image") or "").strip()
+        face_match_passed = bool(verify_payload.get("face_match_passed"))
+        try:
+            face_match_distance = float(verify_payload.get("face_match_distance"))
+        except (TypeError, ValueError):
+            face_match_distance = None
+        try:
+            face_match_threshold = float(verify_payload.get("face_match_threshold"))
+        except (TypeError, ValueError):
+            face_match_threshold = 0.45
+        if face_match_threshold <= 0:
+            face_match_threshold = 0.45
+
+        # Dev fallback only: external provider can be wired with G2P_LIVENESS_VERIFY_URL.
+        passed = bool(challenge_id and nonce and prompts and capture_image and face_match_passed)
+        message = (
+            "Face match + liveness challenge verified."
+            if passed
+            else "Face match or liveness verification failed. Capture a new photo and try again."
+        )
+        verification_payload = {
+            "challenge_id": challenge_id,
+            "nonce": nonce,
+            "passed": passed,
+            "score": 1.0 if passed else 0.0,
+            "face_match_passed": bool(face_match_passed),
+            "face_match_distance": face_match_distance,
+            "face_match_threshold": face_match_threshold,
+            "checked_at": fields.Datetime.to_string(fields.Datetime.now()),
+            "provider_reference": "local-mock-%s" % uuid4().hex[:12],
+            "message": message,
+        }
+        signature = hmac.new(
+            signing_secret.encode("utf-8"),
+            self._canonical_json_bytes(verification_payload),
+            hashlib.sha256,
+        ).hexdigest()
+        return {
+            "verification": verification_payload,
+            "signature_algorithm": "hmac_sha256",
+            "signature": signature,
+        }
+
+    def _call_liveness_provider_verify(self, verify_payload):
+        config = self._get_liveness_config()
+        signing_secret = config["signing_secret"]
+        verify_url = config["verify_url"]
+        allow_local_provider = bool(config["allow_local_provider"])
+
+        if not signing_secret:
+            raise ValueError("Liveness signing secret is not configured.")
+
+        if verify_url:
+            try:
+                response = requests.post(
+                    verify_url,
+                    json=verify_payload,
+                    headers={"Content-Type": "application/json", "Accept": "application/json"},
+                    timeout=config["verify_timeout"],
+                )
+            except requests.RequestException as exc:
+                raise ValueError("Liveness provider request failed: %s" % exc) from exc
+
+            try:
+                provider_response = response.json()
+            except ValueError as exc:
+                raise ValueError("Liveness provider returned a non-JSON response.") from exc
+
+            if not response.ok:
+                provider_message = ""
+                if isinstance(provider_response, dict):
+                    provider_message = (
+                        provider_response.get("message")
+                        or provider_response.get("error")
+                        or ""
+                    )
+                provider_message = (provider_message or "").strip()
+                if not provider_message:
+                    provider_message = "Liveness provider returned HTTP %s." % response.status_code
+                raise ValueError(provider_message)
+        elif allow_local_provider:
+            provider_response = self._mock_liveness_provider_response(verify_payload, signing_secret)
+        else:
+            raise ValueError("Liveness provider URL is not configured.")
+
+        return self._verify_provider_signed_payload(provider_response, signing_secret)
 
 
     def _make_fayda_transaction_id(self):
@@ -361,63 +663,93 @@ class G2PATIConsentController(http.Controller):
 
 
 
-    def _extract_face_match_values(self, post, farmer, has_camera_capture):
-        allowed_statuses = {
-            "not_attempted",
-            "matched",
-            "not_matched",
-            "no_reference",
-            "no_face_detected",
-            "error",
-        }
-        status = (post.get("face_match_status") or "not_attempted").strip().lower()
-        if status not in allowed_statuses:
-            status = "error"
-
-        values = {"face_match_status": status}
-        message = (post.get("face_match_message") or "").strip()
-        if message:
-            values["face_match_message"] = message[:1024]
-
-        checked_at_raw = (post.get("face_match_checked_at") or "").strip()
-        if checked_at_raw:
-            checked_at = fields.Datetime.to_datetime(checked_at_raw)
-            if checked_at:
-                values["face_match_checked_at"] = fields.Datetime.to_string(checked_at)
-
-        distance_raw = (post.get("face_match_distance") or "").strip()
-        if distance_raw:
-            try:
-                distance = float(distance_raw)
-            except (TypeError, ValueError):
-                distance = None
-            if distance is not None and distance >= 0:
-                values["face_match_distance"] = distance
-
-        threshold_raw = (post.get("face_match_threshold") or "").strip()
-        if threshold_raw:
-            try:
-                threshold = float(threshold_raw)
-            except (TypeError, ValueError):
-                threshold = None
-            if threshold is not None and 0 < threshold <= 1.5:
-                values["face_match_threshold"] = threshold
+    def _extract_liveness_values(self, post, farmer, partner, has_camera_capture):
+        challenge_id = (post.get("liveness_challenge_id") or "").strip()
+        verification_token = (post.get("liveness_verification_token") or "").strip()
+        values = {"face_match_status": "not_attempted"}
 
         if not has_camera_capture:
+            values["face_match_message"] = "No camera capture found for face + liveness verification."
+            return values, False, None
+
+        if not challenge_id or not verification_token:
             values["face_match_status"] = "not_attempted"
-            return values, False
+            values["face_match_message"] = "Liveness verification token missing."
+            return values, False, challenge_id or None
 
-        if not farmer.image_1920 and values["face_match_status"] == "matched":
-            values["face_match_status"] = "no_reference"
+        session_store = self._prune_liveness_session_store()
+        session_entry = session_store.get(challenge_id)
+        if not isinstance(session_entry, dict):
+            values["face_match_status"] = "error"
+            values["face_match_message"] = "Liveness challenge was not found or expired."
+            return values, False, challenge_id
 
-        auto_approve = (
-            values.get("face_match_status") == "matched"
-            and values.get("face_match_distance") is not None
-            and values.get("face_match_threshold") is not None
-            and values["face_match_distance"] <= values["face_match_threshold"]
-            and bool(farmer.image_1920)
+        if (
+            session_entry.get("partner_id") != partner.id
+            or session_entry.get("farmer_id") != farmer.id
+        ):
+            values["face_match_status"] = "error"
+            values["face_match_message"] = "Liveness verification does not match the selected farmer."
+            return values, False, challenge_id
+
+        expires_at = self._parse_session_datetime(session_entry.get("expires_at"))
+        if expires_at and expires_at < fields.Datetime.now():
+            values["face_match_status"] = "error"
+            values["face_match_message"] = "Liveness challenge expired. Capture a new challenge."
+            return values, False, challenge_id
+
+        if session_entry.get("verification_token") != verification_token:
+            values["face_match_status"] = "error"
+            values["face_match_message"] = "Invalid liveness verification token."
+            return values, False, challenge_id
+
+        if session_entry.get("status") != "verified":
+            values["face_match_status"] = "error"
+            values["face_match_message"] = "Liveness verification is not complete."
+            return values, False, challenge_id
+
+        if not session_entry.get("face_match_passed"):
+            values["face_match_status"] = "error"
+            values["face_match_message"] = "Face match is required together with liveness verification."
+            return values, False, challenge_id
+
+        if session_entry.get("consumed"):
+            values["face_match_status"] = "error"
+            values["face_match_message"] = "Liveness verification token has already been used."
+            return values, False, challenge_id
+
+        checked_at = fields.Datetime.now()
+        session_entry["consumed"] = True
+        session_entry["consumed_at"] = fields.Datetime.to_string(checked_at)
+        self._mark_session_modified()
+
+        provider_reference = (session_entry.get("provider_reference") or "").strip()
+        message = "Face match + liveness challenge verified."
+        if provider_reference:
+            message = "%s Provider ref: %s." % (message, provider_reference)
+        try:
+            face_match_distance = float(session_entry.get("face_match_distance"))
+        except (TypeError, ValueError):
+            face_match_distance = None
+        try:
+            face_match_threshold = float(session_entry.get("face_match_threshold"))
+        except (TypeError, ValueError):
+            face_match_threshold = 0.45
+        if face_match_threshold <= 0:
+            face_match_threshold = 0.45
+        if face_match_distance is None:
+            face_match_distance = 0.0
+
+        values.update(
+            {
+                "face_match_status": "matched",
+                "face_match_distance": face_match_distance,
+                "face_match_threshold": face_match_threshold,
+                "face_match_checked_at": fields.Datetime.to_string(checked_at),
+                "face_match_message": message[:1024],
+            }
         )
-        return values, auto_approve
+        return values, True, challenge_id
 
     def _serialize_consent_request(self, req):
         created_at = req.created_at
@@ -529,6 +861,10 @@ class G2PATIConsentController(http.Controller):
             offset=request_offset,
         )
         data_fields = partner.allowed_data_field_ids
+        consent_reasons = request.env["g2p.consent.reason"].sudo().search(
+            [("active", "=", True)],
+            order="name asc",
+        )
         review_request = request.env["g2p.consent.request"].browse()
         review_id = kw.get("review_id") or request.params.get("review_id")
         if review_id:
@@ -549,6 +885,7 @@ class G2PATIConsentController(http.Controller):
                 "consent_partner": partner,
                 "consent_requests": consent_requests,
                 "data_fields": data_fields,
+                "consent_reasons": consent_reasons,
                 "review_request": review_request,
                 "pager": pager,
                 "view_mode": view_mode,
@@ -1152,6 +1489,283 @@ class G2PATIConsentController(http.Controller):
             message="OTP verified successfully.",
         )
 
+    @http.route("/consent/liveness/request_challenge", type="json", auth="user")
+    def consent_liveness_request_challenge(self, farmer_id=None, **kw):
+        partner = self._get_consent_partner()
+        if not partner:
+            return self._error("Access denied", code=403)
+
+        try:
+            farmer_id = int(farmer_id or 0)
+        except (TypeError, ValueError):
+            farmer_id = 0
+        if not farmer_id:
+            return self._error("Select a farmer before requesting liveness challenge.")
+
+        farmer = (
+            request.env["res.partner"]
+            .sudo()
+            .search(self._approved_farmer_domain() + [("id", "=", farmer_id)], limit=1)
+        )
+        if not farmer:
+            return self._error("Approved farmer not found.")
+
+        config = self._get_liveness_config()
+        challenge_id = self._make_liveness_challenge_id()
+        nonce = self._make_liveness_nonce()
+        prompt_sequence = self._random_liveness_prompt_sequence()
+        issued_at = fields.Datetime.now()
+        expires_at = issued_at + timedelta(seconds=config["ttl_seconds"])
+
+        session_store = self._prune_liveness_session_store()
+        session_store[challenge_id] = {
+            "status": "issued",
+            "partner_id": partner.id,
+            "farmer_id": farmer.id,
+            "nonce": nonce,
+            "prompt_sequence": prompt_sequence,
+            "issued_at": fields.Datetime.to_string(issued_at),
+            "expires_at": fields.Datetime.to_string(expires_at),
+            "verification_token": "",
+            "verified_at": False,
+            "consumed": False,
+            "consumed_at": False,
+            "provider_reference": False,
+            "face_match_passed": False,
+            "face_match_distance": False,
+            "face_match_threshold": 0.45,
+            "message": "Liveness challenge issued.",
+        }
+        self._mark_session_modified()
+
+        return self._success(
+            data={
+                "challenge_id": challenge_id,
+                "nonce": nonce,
+                "prompt_sequence": prompt_sequence,
+                "issued_at": fields.Datetime.to_string(issued_at),
+                "expires_at": fields.Datetime.to_string(expires_at),
+                "ttl_seconds": config["ttl_seconds"],
+            },
+            message="Liveness challenge issued. Complete the prompt and capture your photo.",
+        )
+
+    @http.route("/consent/liveness/verify_challenge", type="json", auth="user")
+    def consent_liveness_verify_challenge(
+        self,
+        farmer_id=None,
+        challenge_id=None,
+        capture_image=None,
+        captured_at=None,
+        face_match_passed=None,
+        face_match_distance=None,
+        face_match_threshold=None,
+        **kw
+    ):
+        partner = self._get_consent_partner()
+        if not partner:
+            return self._error("Access denied", code=403)
+
+        try:
+            farmer_id = int(farmer_id or 0)
+        except (TypeError, ValueError):
+            farmer_id = 0
+        if not farmer_id:
+            return self._error("Select a farmer before verifying liveness.")
+
+        farmer = (
+            request.env["res.partner"]
+            .sudo()
+            .search(self._approved_farmer_domain() + [("id", "=", farmer_id)], limit=1)
+        )
+        if not farmer:
+            return self._error("Approved farmer not found.")
+
+        challenge_id = (challenge_id or "").strip()
+        if not challenge_id:
+            return self._error("Liveness challenge ID is required.")
+
+        image_payload = (capture_image or "").strip()
+        if not image_payload:
+            return self._error("Capture a photo before verifying liveness.")
+
+        raw_base64 = image_payload.split(",", 1)[1] if "," in image_payload else image_payload
+        approx_bytes = int((len(raw_base64) * 3) / 4) if raw_base64 else 0
+        if approx_bytes > self._MAX_ATTACHMENT_SIZE:
+            return self._error("Captured image exceeds the allowed size.")
+
+        session_store = self._prune_liveness_session_store()
+        session_entry = session_store.get(challenge_id)
+        if not isinstance(session_entry, dict):
+            return self._error("Liveness challenge was not found or expired.")
+
+        if (
+            session_entry.get("partner_id") != partner.id
+            or session_entry.get("farmer_id") != farmer.id
+        ):
+            return self._error("Liveness challenge does not match the selected farmer.", code=403)
+
+        expires_at = self._parse_session_datetime(session_entry.get("expires_at"))
+        if expires_at and expires_at < fields.Datetime.now():
+            session_entry["status"] = "expired"
+            session_entry["message"] = "Liveness challenge expired."
+            self._mark_session_modified()
+            return self._error("Liveness challenge expired. Request a new challenge.")
+
+        if session_entry.get("consumed"):
+            return self._error("Liveness challenge already used. Request a new challenge.")
+
+        existing_token = (session_entry.get("verification_token") or "").strip()
+        if (
+            session_entry.get("status") == "verified"
+            and existing_token
+            and session_entry.get("face_match_passed")
+        ):
+            return self._success(
+                data={
+                    "challenge_id": challenge_id,
+                    "verification_token": existing_token,
+                    "verified_at": session_entry.get("verified_at") or "",
+                    "provider_reference": session_entry.get("provider_reference") or "",
+                    "prompt_sequence": session_entry.get("prompt_sequence") or [],
+                    "face_match_distance": session_entry.get("face_match_distance"),
+                    "face_match_threshold": session_entry.get("face_match_threshold"),
+                },
+                message="Face match + liveness challenge already verified.",
+            )
+
+        def _as_bool(raw_value):
+            if isinstance(raw_value, bool):
+                return raw_value
+            text = str(raw_value or "").strip().lower()
+            return text in {"1", "true", "t", "yes", "y", "on"}
+
+        def _as_float(raw_value, default=None):
+            try:
+                return float(raw_value)
+            except (TypeError, ValueError):
+                return default
+
+        client_face_match_passed = _as_bool(face_match_passed)
+        client_face_match_distance = _as_float(face_match_distance, None)
+        client_face_match_threshold = _as_float(face_match_threshold, 0.45)
+        if not client_face_match_threshold or client_face_match_threshold <= 0:
+            client_face_match_threshold = 0.45
+
+        verify_payload = {
+            "challenge_id": challenge_id,
+            "nonce": session_entry.get("nonce") or "",
+            "partner_id": partner.id,
+            "farmer_id": farmer.id,
+            "prompt_sequence": session_entry.get("prompt_sequence") or [],
+            "capture_image": image_payload,
+            "captured_at": (captured_at or "").strip() or fields.Datetime.to_string(fields.Datetime.now()),
+            "face_match_passed": client_face_match_passed,
+            "face_match_distance": client_face_match_distance,
+            "face_match_threshold": client_face_match_threshold,
+        }
+
+        try:
+            verification_payload = self._call_liveness_provider_verify(verify_payload)
+        except ValueError as exc:
+            session_entry["status"] = "error"
+            session_entry["message"] = str(exc)[:1024]
+            self._mark_session_modified()
+            return self._error(str(exc), code=500)
+
+        provider_challenge_id = (verification_payload.get("challenge_id") or "").strip()
+        if provider_challenge_id and provider_challenge_id != challenge_id:
+            session_entry["status"] = "error"
+            session_entry["message"] = "Provider challenge mismatch."
+            self._mark_session_modified()
+            return self._error("Provider challenge mismatch.", code=400)
+
+        provider_nonce = (verification_payload.get("nonce") or "").strip()
+        expected_nonce = (session_entry.get("nonce") or "").strip()
+        if provider_nonce and provider_nonce != expected_nonce:
+            session_entry["status"] = "error"
+            session_entry["message"] = "Provider nonce mismatch."
+            self._mark_session_modified()
+            return self._error("Provider nonce mismatch.", code=400)
+
+        provider_liveness_passed = bool(verification_payload.get("passed"))
+        provider_face_match_passed = verification_payload.get("face_match_passed")
+        if provider_face_match_passed in (None, ""):
+            provider_face_match_passed = client_face_match_passed
+        else:
+            provider_face_match_passed = _as_bool(provider_face_match_passed)
+
+        provider_face_match_distance = _as_float(
+            verification_payload.get("face_match_distance"),
+            client_face_match_distance,
+        )
+        provider_face_match_threshold = _as_float(
+            verification_payload.get("face_match_threshold"),
+            client_face_match_threshold,
+        )
+        if not provider_face_match_threshold or provider_face_match_threshold <= 0:
+            provider_face_match_threshold = 0.45
+        if provider_face_match_distance is not None and provider_face_match_distance < 0:
+            provider_face_match_distance = None
+        if (
+            provider_face_match_passed
+            and provider_face_match_distance is not None
+            and provider_face_match_distance > provider_face_match_threshold
+        ):
+            provider_face_match_passed = False
+
+        passed = bool(provider_liveness_passed and provider_face_match_passed)
+
+        provider_message = str(verification_payload.get("message") or "").strip()
+        if not provider_message:
+            if not provider_liveness_passed:
+                provider_message = "Liveness verification failed. Capture a new image and try again."
+            elif not provider_face_match_passed:
+                provider_message = "Face match failed. Retake and align to the selected farmer."
+            else:
+                provider_message = "Face match + liveness challenge verified."
+        checked_at = fields.Datetime.to_datetime(verification_payload.get("checked_at")) or fields.Datetime.now()
+
+        if not passed:
+            session_entry["status"] = "failed"
+            session_entry["message"] = provider_message[:1024]
+            session_entry["verified_at"] = False
+            session_entry["verification_token"] = ""
+            session_entry["face_match_passed"] = bool(provider_face_match_passed)
+            session_entry["face_match_distance"] = provider_face_match_distance
+            session_entry["face_match_threshold"] = provider_face_match_threshold
+            self._mark_session_modified()
+            return self._error(provider_message, code=400)
+
+        verification_token = uuid4().hex
+        provider_reference = str(verification_payload.get("provider_reference") or "").strip()
+        session_entry["status"] = "verified"
+        session_entry["message"] = provider_message[:1024]
+        session_entry["verified_at"] = fields.Datetime.to_string(checked_at)
+        session_entry["verification_token"] = verification_token
+        session_entry["provider_reference"] = provider_reference
+        session_entry["score"] = verification_payload.get("score")
+        session_entry["face_match_passed"] = True
+        session_entry["face_match_distance"] = provider_face_match_distance
+        session_entry["face_match_threshold"] = provider_face_match_threshold
+        session_entry["consumed"] = False
+        session_entry["consumed_at"] = False
+        self._mark_session_modified()
+
+        return self._success(
+            data={
+                "challenge_id": challenge_id,
+                "verification_token": verification_token,
+                "verified_at": fields.Datetime.to_string(checked_at),
+                "score": verification_payload.get("score"),
+                "provider_reference": provider_reference,
+                "prompt_sequence": session_entry.get("prompt_sequence") or [],
+                "face_match_distance": provider_face_match_distance,
+                "face_match_threshold": provider_face_match_threshold,
+            },
+            message=provider_message,
+        )
+
     @http.route("/consent/request/submit", type="http", auth="user", methods=["POST"], csrf=True)
     def consent_request_submit(self, **post):
         """Create a consent request from portal form (with optional attachment)."""
@@ -1197,9 +1811,26 @@ class G2PATIConsentController(http.Controller):
                 return _reject("farmer_not_found")
 
             consent_type = post.get("consent_type", "specific") or "specific"
-            purpose = (post.get("purpose") or "").strip()
-            if not purpose:
-                return _reject("missing_purpose")
+            consent_reason = request.env["g2p.consent.reason"].sudo().browse()
+            consent_reason_id = post.get("consent_reason_id")
+            if consent_reason_id:
+                try:
+                    consent_reason_id = int(consent_reason_id)
+                except (TypeError, ValueError):
+                    return _reject("invalid_consent_reason")
+                consent_reason = request.env["g2p.consent.reason"].sudo().search(
+                    [
+                        ("id", "=", consent_reason_id),
+                        ("active", "=", True),
+                    ],
+                    limit=1,
+                )
+                if not consent_reason:
+                    return _reject("invalid_consent_reason")
+            legacy_purpose = (post.get("purpose") or "").strip()
+            if not consent_reason and not legacy_purpose:
+                return _reject("missing_consent_reason")
+            purpose = consent_reason.name if consent_reason else legacy_purpose
             validity_months = post.get("validity_months")
             try:
                 validity_months = int(validity_months) if validity_months else 12
@@ -1238,6 +1869,7 @@ class G2PATIConsentController(http.Controller):
                 "farmer_id": farmer_id,
                 "consent_type": consent_type,
                 "purpose": purpose,
+                "consent_reason_id": consent_reason.id or False,
                 "validity_from": validity_from,
                 "validity_to": validity_to,
                 "originated_from": "partner",
@@ -1252,6 +1884,7 @@ class G2PATIConsentController(http.Controller):
             auto_approve_requested = False
             auto_approve_method = ""
             otp_transaction_id = None
+            liveness_challenge_id = None
             try:
                 files = request.httprequest.files or {}
                 upload = files.get("attachment")
@@ -1295,12 +1928,13 @@ class G2PATIConsentController(http.Controller):
                             return _reject("invalid_camera_timestamp")
                         vals["portal_capture_taken_at"] = fields.Datetime.to_string(capture_dt)
 
-                face_match_vals, face_match_auto_approve = self._extract_face_match_values(
+                liveness_vals, liveness_auto_approve, liveness_challenge_id = self._extract_liveness_values(
                     post,
                     farmer,
+                    partner,
                     has_camera_capture=bool(camera_data_b64),
                 )
-                vals.update(face_match_vals)
+                vals.update(liveness_vals)
 
                 fayda_otp_vals, otp_auto_approve, otp_transaction_id = self._extract_fayda_otp_values(
                     post,
@@ -1311,9 +1945,9 @@ class G2PATIConsentController(http.Controller):
                 if otp_auto_approve:
                     auto_approve_requested = True
                     auto_approve_method = "otp"
-                elif face_match_auto_approve:
+                elif liveness_auto_approve:
                     auto_approve_requested = True
-                    auto_approve_method = "face_match"
+                    auto_approve_method = "liveness"
 
                 lat_raw = (post.get("camera_capture_latitude") or "").strip()
                 lon_raw = (post.get("camera_capture_longitude") or "").strip()
@@ -1371,7 +2005,7 @@ class G2PATIConsentController(http.Controller):
                         failure_note = "Fayda OTP passed, but automatic approval failed: %s" % approval_error
                         message_field = "fayda_otp_message"
                     else:
-                        failure_note = "Face match passed, but automatic approval failed: %s" % approval_error
+                        failure_note = "Face + liveness verification passed, but automatic approval failed: %s" % approval_error
                         message_field = "face_match_message"
                     existing_message = (getattr(consent, message_field) or "").strip()
                     combined_message = failure_note if not existing_message else "%s\n%s" % (existing_message, failure_note)
@@ -1380,6 +2014,10 @@ class G2PATIConsentController(http.Controller):
             if otp_transaction_id:
                 session_store = self._get_fayda_otp_session_store()
                 if session_store.pop(otp_transaction_id, None) is not None:
+                    self._mark_session_modified()
+            if liveness_challenge_id:
+                liveness_store = self._get_liveness_session_store()
+                if liveness_store.pop(liveness_challenge_id, None) is not None:
                     self._mark_session_modified()
             
             _logger.info(
@@ -1432,6 +2070,26 @@ class G2PATIConsentController(http.Controller):
         if not partner_record.active:
             return self._error("Consent partner is inactive")
 
+        consent_reason = request.env["g2p.consent.reason"].sudo().browse()
+        consent_reason_id = payload.get("consent_reason_id")
+        if consent_reason_id:
+            try:
+                consent_reason_id = int(consent_reason_id)
+            except (TypeError, ValueError):
+                return self._error("Invalid consent_reason_id")
+            consent_reason = request.env["g2p.consent.reason"].sudo().search(
+                [("id", "=", consent_reason_id)],
+                limit=1,
+            )
+            if not consent_reason:
+                return self._error("Consent reason not found")
+
+        purpose = (payload.get("purpose") or "").strip()
+        if consent_reason:
+            purpose = consent_reason.name
+        if not purpose:
+            return self._error("consent_reason_id is required")
+
         vals = {
             "partner_record_id": partner_record.id,
             "farmer_id": farmer.id,
@@ -1440,7 +2098,8 @@ class G2PATIConsentController(http.Controller):
             "consent_provider_person_id": payload.get("consent_provider_person_id"),
             "consent_target_object_ids": payload.get("consent_target_object_ids"),
             "attribute_lists": payload.get("attribute_lists"),
-            "purpose": payload.get("purpose"),
+            "purpose": purpose,
+            "consent_reason_id": consent_reason.id or False,
             "originated_from": payload.get("originated_from"),
             "validity_from": payload.get("validity_from"),
             "validity_to": payload.get("validity_to"),

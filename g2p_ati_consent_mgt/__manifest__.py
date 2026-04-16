@@ -20,6 +20,7 @@
         "security/consent_model_access.xml",
         "views/res_partner_views.xml",
         "views/portal_role_views.xml",
+        "views/consent_reason_views.xml",
         "views/create_portal_user_wizard_views.xml",
         "views/consent_request_views.xml",
         "views/consent_receipt_views.xml",
