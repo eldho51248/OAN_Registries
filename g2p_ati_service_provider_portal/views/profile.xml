@@ -6,9 +6,10 @@
             <div class="container-adjuster ati-sp-profile-page">
                 <style>
                     .ati-sp-profile-page {
-                        width: min(1120px, calc(100% - 32px));
+                        width: min(1160px, 100%);
                         margin: 0 auto;
-                        padding: 2rem 0 3rem;
+                        padding: 2rem 2rem 3rem;
+                        box-sizing: border-box;
                     }
                     .ati-sp-profile-page .all-title,
                     .ati-sp-profile-breadcrumb {
@@ -119,8 +120,8 @@
                     }
                     @media (max-width: 767.98px) {
                         .ati-sp-profile-page {
-                            width: calc(100% - 20px);
-                            padding: 1.2rem 0 2rem;
+                            width: 100%;
+                            padding: 1.2rem 1rem 2rem;
                         }
                         .ati-sp-profile-hero {
                             flex-direction: column;

@@ -19,15 +19,6 @@
           border-bottom: 1px solid rgba(0, 145, 71, 0.12);
           box-shadow: 0 6px 18px rgba(0, 145, 71, 0.04);
         }
-        .header-container::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 3px;
-          background: #009147;
-        }
         .header-container .nav {
           position: relative;
           z-index: 1101;
@@ -92,6 +83,7 @@
           display: inline-flex !important;
           align-items: center !important;
           justify-content: center !important;
+          text-align: center !important;
           line-height: 1;
           vertical-align: middle;
           transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
@@ -103,13 +95,17 @@
           box-shadow: 0 14px 28px rgba(0, 145, 71, 0.12) !important;
         }
         .ati-topbar-language .button span {
-          display: inline-block !important;
+          display: inline-flex !important;
           visibility: visible !important;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
           color: #2f7a49;
           font-size: 0.94rem;
           font-weight: 700;
           line-height: 1;
           white-space: nowrap;
+          text-align: center;
         }
         .ati-language-flag {
           display: none;
@@ -223,69 +219,121 @@
           background: rgba(0, 145, 71, 0.08);
           color: #17633f;
         }
+        .notification_dd {
+          z-index: 1205 !important;
+          background: #ffffff !important;
+          border: 1px solid rgba(0, 145, 71, 0.12) !important;
+          border-radius: 16px !important;
+          box-shadow: 0 18px 30px rgba(0, 145, 71, 0.12) !important;
+          overflow: hidden;
+        }
+        .notification_dd .ati-topbar-dropdown-header,
+        .notification_dd .notification_ul,
+        .notification_dd li,
+        .notification_dd li.show_all,
+        .notification_dd li a,
+        .notification_dd li span,
+        .notification_dd li p {
+          background: #ffffff !important;
+        }
         .ati-mobile-menu {
           display: none;
         }
         .ati-mobile-menu-panel {
-          position: absolute;
-          top: 0;
-          right: 0;
-          width: min(320px, calc(100vw - 28px));
-          height: 100%;
-          padding: 1.1rem 1rem 1rem;
-          background: #ffffff;
-          box-shadow: -14px 0 32px rgba(0, 145, 71, 0.12);
-          transform: translateX(100%);
-          transition: transform 0.28s ease;
-          overflow-y: auto;
+          width: min(390px, calc(100vw - 28px));
+          max-width: 100%;
+          pointer-events: auto;
         }
-        .ati-mobile-menu.is-open .ati-mobile-menu-panel {
+        .ati-mobile-menu-shell {
+          display: block;
+          width: 100%;
+          min-height: 420px;
+          max-height: calc(100vh - 36px);
+          transform: translateX(112%);
+          transition: transform 0.32s ease;
+          pointer-events: auto;
+        }
+        .ati-mobile-menu.is-open .ati-mobile-menu-shell {
           transform: translateX(0);
+        }
+        .ati-mobile-menu-content {
+          position: relative;
+          min-width: 0;
+          padding: 1.15rem 1rem 1rem;
+          border-radius: 28px;
+          background: #ffffff;
+          box-shadow: -18px 22px 42px rgba(0, 145, 71, 0.12);
+          overflow-y: auto;
         }
         .ati-mobile-menu-close {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          width: 36px;
-          height: 36px;
-          margin-left: auto;
-          margin-bottom: 1rem;
-          border: 1px solid rgba(0, 145, 71, 0.12);
-          border-radius: 999px;
-          background: rgba(0, 145, 71, 0.04);
-          color: #355241;
-          font-size: 1.25rem;
+          width: 44px;
+          height: 44px;
+          border-radius: 18px;
+          position: absolute;
+          top: 1rem;
+          right: 1rem;
+          z-index: 3;
+          border: 1px solid rgba(0, 145, 71, 0.16);
+          background: rgba(0, 145, 71, 0.08);
+          color: #17633f;
+          font-size: 1.35rem;
           line-height: 1;
           cursor: pointer;
+          box-shadow: 0 12px 24px rgba(0, 145, 71, 0.1);
+          transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+        }
+        .ati-mobile-menu-close:hover,
+        .ati-mobile-menu-close:focus {
+          transform: translateY(-1px);
+          background: rgba(0, 145, 71, 0.14);
+          color: #0f5b34;
         }
         .ati-mobile-menu-profile {
+          position: relative;
           display: flex;
           align-items: center;
-          gap: 0.9rem;
-          margin-bottom: 1rem;
-          padding: 0.95rem;
-          border: 1px solid rgba(0, 145, 71, 0.1);
-          border-radius: 20px;
-          background: linear-gradient(180deg, rgba(0, 145, 71, 0.07), rgba(0, 145, 71, 0.02));
+          gap: 0.95rem;
+          margin-bottom: 0.9rem;
+          padding: 0.9rem 0 1rem;
+        }
+        .ati-mobile-menu-profile::before {
+          content: "";
+          position: absolute;
+          top: -0.25rem;
+          left: -1rem;
+          width: 82px;
+          height: 82px;
+          border-radius: 26px;
+          background: rgba(0, 145, 71, 0.06);
         }
         .ati-mobile-menu-profile-avatar {
-          width: 58px;
-          height: 58px;
+          position: relative;
+          z-index: 1;
+          width: 62px;
+          height: 62px;
           border-radius: 999px;
           border: 1px solid rgba(0, 145, 71, 0.16);
           object-fit: cover;
-          box-shadow: 0 8px 18px rgba(0, 145, 71, 0.1);
+          box-shadow: 0 10px 20px rgba(0, 145, 71, 0.1);
           flex: 0 0 auto;
+        }
+        .ati-mobile-menu-profile-content {
+          position: relative;
+          z-index: 1;
+          min-width: 0;
         }
         .ati-mobile-menu-profile-name {
           color: #1c2c25;
-          font-size: 1rem;
+          font-size: 1.08rem;
           font-weight: 700;
-          line-height: 1.2;
+          line-height: 1.25;
         }
         .ati-mobile-menu-profile-subtitle {
-          margin-top: 0.2rem;
-          color: #6a7e74;
+          margin-top: 0.18rem;
+          color: #809287;
           font-size: 0.84rem;
           font-weight: 500;
           word-break: break-word;
@@ -293,26 +341,26 @@
         .ati-mobile-menu .ati-mobile-menu-list {
           display: flex;
           flex-direction: column;
-          gap: 0.75rem;
+          margin-top: 0.35rem;
+          border-top: 1px solid rgba(0, 145, 71, 0.1);
         }
         .ati-mobile-menu .ati-mobile-menu-link {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          min-height: 48px;
-          padding: 0.85rem 0.95rem;
-          border: 1px solid rgba(0, 145, 71, 0.12);
-          border-radius: 14px;
-          background: rgba(0, 145, 71, 0.04);
+          min-height: 58px;
+          padding: 0 0.2rem;
+          border-bottom: 1px solid rgba(0, 145, 71, 0.1);
+          background: transparent;
           color: #355241;
-          font-size: 0.95rem;
+          font-size: 0.96rem;
           font-weight: 600;
           text-decoration: none;
         }
         .ati-mobile-menu .ati-mobile-menu-link:hover,
         .ati-mobile-menu .ati-mobile-menu-link:focus {
-          background: rgba(0, 145, 71, 0.08);
           color: #17633f;
+          background: rgba(0, 145, 71, 0.04);
         }
         .ati-mobile-menu .ati-mobile-menu-label {
           display: inline-flex;
@@ -336,35 +384,42 @@
           line-height: 22px;
           text-align: center;
         }
-        @media (max-width: 767.98px) {
+        @media (max-width: 991.98px) {
           .header-container {
             overflow: visible;
           }
           .header-container .nav {
             position: relative;
-            justify-content: space-between;
+            justify-content: flex-start;
             flex-wrap: nowrap;
+            gap: 0.85rem;
           }
           .ati-portal-logo-link {
             display: inline-flex !important;
             align-items: center;
-            flex: 0 0 auto;
-            max-width: calc(100% - 58px);
+            flex: 1 1 auto;
+            min-width: 0;
+            max-width: calc(100% - 56px);
+            margin-right: auto;
             position: relative;
             z-index: 1202;
+            overflow: visible;
           }
           .header-container .nav .main-logo {
             display: block !important;
             visibility: visible !important;
             opacity: 1 !important;
-            max-width: 100%;
-            max-height: 36px;
-            height: auto;
+            width: auto !important;
+            max-width: min(205px, calc(100vw - 92px)) !important;
+            max-height: 46px !important;
+            height: auto !important;
+            object-fit: contain;
           }
           body.ati-sp-portal .header-container .nav > #hamburger-icon,
           #hamburger-icon {
             display: inline-flex !important;
             margin-left: auto !important;
+            margin-right: 0 !important;
             width: 42px;
             height: 42px;
             position: relative;
@@ -372,6 +427,7 @@
             visibility: visible !important;
             opacity: 1 !important;
             order: 99;
+            flex: 0 0 auto;
             align-items: center;
             justify-content: center;
             border-radius: 12px;
@@ -419,11 +475,14 @@
             left: 0;
             z-index: 2000;
             display: none;
+            align-items: flex-start;
+            justify-content: flex-end;
+            padding: 18px 14px;
             background: rgba(28, 44, 37, 0.12);
             backdrop-filter: blur(4px);
           }
           .ati-mobile-menu.is-open {
-            display: block;
+            display: flex;
           }
         }
       </style>
@@ -552,28 +611,43 @@
     <xpath expr="//body" position="inside">
       <div class="ati-mobile-menu" id="ati-mobile-menu" aria-hidden="true">
         <div class="ati-mobile-menu-panel" role="dialog" aria-modal="true" aria-label="Mobile Menu">
-          <button type="button" class="ati-mobile-menu-close" aria-label="Close menu">&#215;</button>
-          <div class="ati-mobile-menu-profile">
-            <img
-              t-attf-src="/web/image?model=res.users&amp;field=avatar_128&amp;id={{request.env.uid}}"
-              alt="User"
-              class="ati-mobile-menu-profile-avatar"
-            />
-            <div class="ati-mobile-menu-profile-content">
-              <div class="ati-mobile-menu-profile-name"><t t-esc="env.user.name or 'Portal User'" /></div>
-              <div class="ati-mobile-menu-profile-subtitle"><t t-esc="env.user.login or env.user.email or ''" /></div>
+          <div class="ati-mobile-menu-shell">
+            <div class="ati-mobile-menu-content">
+              <button type="button" class="ati-mobile-menu-close" aria-label="Close menu">&#215;</button>
+              <div class="ati-mobile-menu-profile">
+                <img
+                  t-attf-src="/web/image?model=res.users&amp;field=avatar_128&amp;id={{request.env.uid}}"
+                  alt="User"
+                  class="ati-mobile-menu-profile-avatar"
+                />
+                <div class="ati-mobile-menu-profile-content">
+                  <div class="ati-mobile-menu-profile-name"><t t-esc="env.user.name or 'Portal User'" /></div>
+                  <div class="ati-mobile-menu-profile-subtitle"><t t-esc="env.user.login or env.user.email or ''" /></div>
+                </div>
+              </div>
+              <div class="ati-mobile-menu-list">
+               
+                <a href="/serviceprovider/update/suggests" class="ati-mobile-menu-link">
+                  <span class="ati-mobile-menu-label">
+                    <img src="/g2p_ati_service_provider_portal/static/src/img/notification.png" alt="Notifications" />
+                    Notifications
+                  </span>
+                  <span class="ati-mobile-menu-count" id="ati-mobile-menu-count" style="display: none;">0</span>
+                </a>
+                <a href="/portal/myprofile" class="ati-mobile-menu-link">
+                  <span class="ati-mobile-menu-label">
+                    <i class="fa fa-user" aria-hidden="true" style="margin-right: 0.85rem; width: 18px; text-align: center;"></i>
+                    My Profile
+                  </span>
+                </a>
+                <a href="/web/session/logout?redirect=/serviceprovider/login" class="ati-mobile-menu-link">
+                  <span class="ati-mobile-menu-label">
+                    <i class="fa fa-sign-out" aria-hidden="true" style="margin-right: 0.85rem; width: 18px; text-align: center;"></i>
+                    Logout
+                  </span>
+                </a>
+              </div>
             </div>
-          </div>
-          <div class="ati-mobile-menu-list">
-            <a href="/serviceprovider/update/suggests" class="ati-mobile-menu-link">
-              <span class="ati-mobile-menu-label">
-                <img src="/g2p_ati_service_provider_portal/static/src/img/notification.png" alt="Notifications" />
-                Notifications
-              </span>
-              <span class="ati-mobile-menu-count" id="ati-mobile-menu-count" style="display: none;">0</span>
-            </a>
-            <a href="/portal/myprofile" class="ati-mobile-menu-link">My Profile</a>
-            <a href="/web/session/logout?redirect=/serviceprovider/login" class="ati-mobile-menu-link">Logout</a>
           </div>
         </div>
       </div>
@@ -613,9 +687,9 @@
       </script>
 
       <script>
-        $(document).ready(function() {
+        document.addEventListener('DOMContentLoaded', function() {
           function forceAtiHeaderControls() {
-            const isMobile = window.matchMedia('(max-width: 767.98px)').matches;
+            const isMobile = window.matchMedia('(max-width: 991.98px)').matches;
             const languageButton = document.getElementById('language-dropdown-button');
             const languageSpan = languageButton ? languageButton.querySelector('span') : null;
             const languageImage = languageButton ? languageButton.querySelector('img') : null;
@@ -646,20 +720,7 @@
           forceAtiHeaderControls();
           window.addEventListener('resize', forceAtiHeaderControls);
 
-          const languageButton = document.getElementById('language-dropdown-button');
-          if (languageButton &amp;&amp; window.MutationObserver) {
-            const observer = new MutationObserver(function() {
-              forceAtiHeaderControls();
-            });
-            observer.observe(languageButton, {
-              childList: true,
-              subtree: true,
-              characterData: true,
-              attributes: true,
-            });
-          }
-
-          const mobileBreakpoint = window.matchMedia('(max-width: 767.98px)');
+          const mobileBreakpoint = window.matchMedia('(max-width: 991.98px)');
           const hamburger = document.getElementById('hamburger-icon');
           const mobileMenu = document.getElementById('ati-mobile-menu');
           const mobileMenuPanel = mobileMenu ? mobileMenu.querySelector('.ati-mobile-menu-panel') : null;
@@ -694,6 +755,7 @@
             mobileMenu.setAttribute('aria-hidden', 'true');
             hamburger.classList.remove('active');
             hamburger.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
           }
 
           function syncHeaderLayout() {
@@ -730,20 +792,11 @@
               hamburger.classList.toggle('active', isOpen);
               hamburger.setAttribute('aria-expanded', String(isOpen));
               mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+              document.body.style.overflow = isOpen ? 'hidden' : '';
             }
 
             hamburger.addEventListener('click', function(event) {
               toggleMobileMenu(event);
-            });
-
-            hamburger.addEventListener('touchend', function(event) {
-              toggleMobileMenu(event);
-            }, {passive: false});
-
-            hamburger.addEventListener('pointerup', function(event) {
-              if (event.pointerType === 'touch') {
-                toggleMobileMenu(event);
-              }
             });
 
             hamburger.addEventListener('keydown', function(event) {
@@ -760,15 +813,32 @@
               });
             }
 
-            document.addEventListener('click', function(event) {
+            if (mobileMenu) {
+              mobileMenu.addEventListener('click', function(event) {
+                if (!mobileBreakpoint.matches || !mobileMenu.classList.contains('is-open')) {
+                  return;
+                }
+                const closeTrigger = event.target.closest('.ati-mobile-menu-close');
+                if (closeTrigger) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  closeMobileMenu();
+                  return;
+                }
+                if (
+                  mobileMenuPanel &amp;&amp;
+                  !mobileMenuPanel.contains(event.target)
+                ) {
+                  closeMobileMenu();
+                }
+              });
+            }
+
+            document.addEventListener('keydown', function(event) {
               if (!mobileBreakpoint.matches || !mobileMenu.classList.contains('is-open')) {
                 return;
               }
-              if (
-                mobileMenuPanel &amp;&amp;
-                !mobileMenuPanel.contains(event.target) &amp;&amp;
-                !hamburger.contains(event.target)
-              ) {
+              if (event.key === 'Escape') {
                 closeMobileMenu();
               }
             });

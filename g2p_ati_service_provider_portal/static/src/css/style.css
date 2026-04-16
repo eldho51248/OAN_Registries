@@ -1263,7 +1263,7 @@ hr {
 } */
 
 .nav-user .language-box {
-    height: 0px;
+    left: auto !important;
     margin-left: 0px;
     margin-top: 14px;
     margin-bottom: 0px;
