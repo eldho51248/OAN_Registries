@@ -483,15 +483,11 @@ class G2PRespartnerIntegration(models.Model):
         store=True,
         readonly=True,
     )
-
-
-
-    @api.model
     def write(self, values):
         result = super().write(values)
 
-        if "asigned_region" or "language_skills" in  values:
-            self.clear_caches()
+        if "asigned_region" in values or "language_skills" in values:
+            self.env.registry.clear_cache()
 
         return result
 

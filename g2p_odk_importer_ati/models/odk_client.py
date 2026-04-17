@@ -224,7 +224,10 @@ class OdkImportInherit(models.Model):
 
         language_id = self.process_many2one_field("g2p.lang", individual.get("primary_Language"))
         if language_id:
-            vals["primary_Language"] = language_id
+            if language_id == "other":
+                other_json["Primary Language"] = individual.get("primary_Language")
+            else:
+                vals["primary_Language"] = language_id
 
         vals["given_name"] = individual.get("given_name")
         vals["family_name"] = individual.get("family_name")
@@ -503,7 +506,8 @@ class OdkImportInherit(models.Model):
 
         language_id = self.process_many2one_field("g2p.lang", head.get("primary_Language"))
         if language_id:
-            vals["primary_Language"] = language_id
+            if language_id != "other":
+                vals["primary_Language"] = language_id
 
         if enumerator:
             vals["enumerator_id"] = enumerator.id
