@@ -1,0 +1,31 @@
+@keyframes zoomInOut {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1); /* Zoom in */
+    }
+    100% {
+        transform: scale(1); /* Zoom out */
+    }
+}
+
+.loading-image-g2p-logo {
+    width: auto;
+    height: auto;
+    animation: zoomInOut 3s infinite;
+}
+
+.fade-in-g2p {
+    animation: fadeInAnimation 0.5s ease-in-out forwards;
+    opacity: 0;
+}
+
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
