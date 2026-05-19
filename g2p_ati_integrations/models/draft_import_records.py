@@ -166,6 +166,16 @@ class G2PDraftRecord(models.Model):
         if activities:
             activities.action_done()
 
+    def _get_db_import_source_id(self):
+        source = self.env.ref("g2p_ati.import_source_db_import", raise_if_not_found=False)
+        if not source:
+            source = (
+                self.env["g2p.import.source"]
+                .sudo()
+                .search([("code", "=", "db_import")], limit=1)
+            )
+        return source.id if source else False
+
     def _notify_draft_owner_rejected(self, reason):
         self.ensure_one()
         owner_user = self.create_uid
@@ -219,6 +229,10 @@ class G2PDraftRecord(models.Model):
 
         if valid_data:
             valid_data["db_import"] = "yes"
+            valid_data.pop("rec_import_source", None)
+            db_import_source_id = self._get_db_import_source_id()
+            if db_import_source_id:
+                valid_data["rec_import_source"] = db_import_source_id
             valid_data["name"] = f"{given_name} {family_name} {gf_name_en}".upper()
             
             import_record = self.sudo().import_record_id
