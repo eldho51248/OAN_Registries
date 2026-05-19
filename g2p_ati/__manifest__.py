@@ -51,6 +51,7 @@
         "views/land_info.xml",
         "views/web_login.xml",
         "views/main_menu.xml",
+        "views/import_source_views.xml",
         "wizard/rejection_reason_wizard.xml",
     ],
     "assets": {
