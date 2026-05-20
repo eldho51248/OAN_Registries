@@ -14,7 +14,7 @@ class G2PCropInformation(models.Model):
     _name = "g2p.crop.information"
     _rec_name = "partner_id"
 
-    partner_id = fields.Many2one("res.partner", string="Farmer", required=True, index=True)
+    partner_id = fields.Char(string="Farmer", required=True, index=True)
     farmer_id = fields.Char(string="Farmer ID", readonly=True)
     farmer_fyda_id = fields.Char(string="Fyda ID")
     crop = fields.Many2one("g2p.crop", required=True, index=True)
