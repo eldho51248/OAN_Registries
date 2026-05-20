@@ -16,12 +16,12 @@
                 <field name="ownership_type" />
               
                 <field name="land_kebele"/>
-<!--                 <field name="land_certificate" /> -->
-<!--                 <field name="document_slug" column_invisible="1" /> -->
-<!--                 <field name="document_mimetype" column_invisible="1" /> -->
-<!--                 <field name="document_name" column_invisible="1" /> -->
-<!--                 <field name="document_id" column_invisible="1" /> -->
-<!--                 <field name="document_url" column_invisible="1" /> -->
+                <field name="land_certificate" />
+                <field name="document_slug" column_invisible="1" />
+                <field name="document_mimetype" column_invisible="1" />
+                <field name="document_name" column_invisible="1" />
+                <field name="document_id" column_invisible="1" />
+                <field name="document_url" column_invisible="1" />
                 <widget name="g2p_ati_document_preview" />
                 
                   <field name="remark" />
@@ -40,6 +40,7 @@
         <field name="arch" type="xml">
             <tree create="false" delete="false" edit="false">
                 <field name="farmer_id" />
+                <field name="farmer_fyda_id" />
                 <field name="partner_id" />
                 <field name="crop" />
                 <field name="collected_gc" />
@@ -57,7 +58,7 @@
         <field name="priority" eval="16" />
         <field name="active" eval="True" />
         <field name="arch" type="xml">
-            <tree create="false" delete="false" edit="false">
+            <tree editable="bottom">
                 <field name="farmer_id" />
                 <field name="partner_id" />
                 <field name="livestock_type" />
