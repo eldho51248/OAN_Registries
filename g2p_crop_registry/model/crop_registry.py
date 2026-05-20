@@ -7,21 +7,20 @@ class G2PCrop(models.Model):
     _name = 'g2p.crop.registry'
     _description = 'G2p Crop Registry'
 
-    farmer_id = fields.Char(string="Farmer ID")
-    fyda_id = fields.Char(string="Fayda ID")
-    farmer_display_id = fields.Char(string='Farmer Name')
+    farmer_id = fields.Char(string="Farmer ID",required=True)
+    fyda_id = fields.Char(string="Fayda ID",required=True)
+    farmer_display_id = fields.Char(string='Farmer Name',required=True)
     zone_name_id = fields.Many2one('g2p.zone',
-        string='Zone Name',
+        string='Zone',
         store=True
     )
     woreda_name_id = fields.Many2one('g2p.woreda',
-        string='Woreda Name',
+        string='Woreda',
         store=True
     )
     kebele_name = fields.Char(
-        store=True
+        string='Kebele',
     )
-    kebele_code = fields.Char(string="Kebele Code")
     land_id = fields.Char(string="Land ID")
     land_area = fields.Float(string="Land Area")
     owner_name = fields.Char(string="Owner Name")
@@ -30,7 +29,6 @@ class G2PCrop(models.Model):
     ('leased', 'Leased'),
     ('government', 'Government')
     ])
-    land_certificate = fields.Char(string="Land Certificate NO")
     soil_fertility = fields.Selection([
     ('low', 'Low'),
     ('medium', 'Medium'),
@@ -76,13 +74,10 @@ class G2PCrop(models.Model):
     ], string="Livestock Water Source")
     cultivation_land = fields.Boolean(string="Cultivation Land")
     cultivation_area = fields.Float(string="Cultivation Area")
-    cultivation_crop_name_id = fields.Many2one('g2p.crop', string="Cultivation Crop Name")
     sown_land = fields.Boolean(string="Sown Land")
     sown_area = fields.Float(string="Sown Area")
-    sown_crop_name_id = fields.Many2one('g2p.crop', string="Sown Crop Name")
     harvested_land = fields.Boolean(string="Harvested Land")
     harvested_area = fields.Float(string="Harvested Area")
-    harvested_crop_name_id = fields.Many2one('g2p.crop', string="Harvested Crop Name")
     irrigation_type = fields.Selection([
     ('rainfed', 'Rainfed'),
     ('drip', 'Drip'),
@@ -90,23 +85,13 @@ class G2PCrop(models.Model):
     ('flood', 'Flood'),
     ], string="Irrigation Type")
     surveyor_name = fields.Char(string="Surveyor Name")
-    surveyor_fullname = fields.Char(string="Surveyor Full Name")
     surveyor_mobile_number = fields.Char(string="Surveyor Mobile Number")
     supervisor_name = fields.Char(string="Supervisor Name")
-    supervisor_fullname = fields.Char(string="Supervisor Full Name")
     supervisor_mobile_number = fields.Char(string="Supervisor Mobile Number")
     first_approvel_status = fields.Selection([
     ('draft', 'Draft'),
-    ('approved', 'Approved'),
-    ('rejected', 'Rejected')
     ], string="First approvel status")
-    second_approvel_status = fields.Selection([
-    ('draft', 'Draft'),
-    ('approved', 'Approved'),
-    ('rejected', 'Rejected')
-    ], string="Second approvel status")
-    verifier_name = fields.Char(string="Verifier Name")
-    verifier_mobile_number = fields.Char(string="Verifier Mobile Number")
+
 
     region_name_id = fields.Many2one('g2p.region', string="Region",
         store=True
@@ -137,10 +122,10 @@ class G2PCrop(models.Model):
         for rec in self:
             rec.total_farmers = rec.male_farmers + rec.female_farmers
 
-    @api.constrains('surveyor_mobile_number', 'supervisor_mobile_number', 'verifier_mobile_number')
+    @api.constrains('surveyor_mobile_number', 'supervisor_mobile_number')
     def _check_mobile_numbers(self):
         for rec in self:
-            for field in ['surveyor_mobile_number', 'supervisor_mobile_number', 'verifier_mobile_number']:
+            for field in ['surveyor_mobile_number', 'supervisor_mobile_number']:
                 number = rec[field]
                 if number:
                     if not re.match(r'^(\+251[79]\d{8}|0[79]\d{8})$', number):
@@ -157,6 +142,7 @@ class G2PCrop(models.Model):
             'crop': record.crop_name_id.id,
             'farmer_fyda_id': record.fyda_id,
             'season':record.crop_season_id.id,
+            'states':record.first_approvel_status,
         })
         return record
 
@@ -173,3 +159,23 @@ class G2PCrop(models.Model):
                 rec.crop_category_id = rec.crop_name_id.category.id
             else:
                 rec.crop_category_id = False
+
+    @api.constrains('farmer_id', 'fyda_id')
+    def _check_ids(self):
+        for rec in self:
+
+            # Farmer ID validation -> FR- + 10 digits
+            if rec.farmer_id:
+                farmer_pattern = r'^FR-\d{10}$'
+                if not re.match(farmer_pattern, rec.farmer_id):
+                    raise ValidationError(
+                        "Farmer ID must be in this format: FR-1234567890"
+                    )
+
+            # Fayda ID validation -> FAN- + 16 digits
+            if rec.fyda_id:
+                fyda_pattern = r'^FAN-\d{16}$'
+                if not re.match(fyda_pattern, rec.fyda_id):
+                    raise ValidationError(
+                        "Fayda ID must be in this format: FAN-1234567890123456"
+                    )
