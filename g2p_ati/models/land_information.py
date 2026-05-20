@@ -16,12 +16,12 @@ class G2PLandInformation(models.Model):
     ownership_type = fields.Selection(
         selection=[("owner", "Owner"), ("tenant", "Tenant"), ("crop_share", "Crop Sharing"), ("family_gift", "Family Gift")], required=True
     )
-   document_slug = fields.Char(related="land_certificate.slug")
-   document_mimetype = fields.Char(related="land_certificate.mimetype")
-   document_url = fields.Char(related="land_certificate.url")
-   document_name = fields.Char(related="land_certificate.name")
-   document_id = fields.Integer(related="land_certificate.id")
-   land_kebele = fields.Many2one('g2p.kebele', string="Land Kebele is in")
+    document_slug = fields.Char(related="land_certificate.slug")
+    document_mimetype = fields.Char(related="land_certificate.mimetype")
+    document_url = fields.Char(related="land_certificate.url")
+    document_name = fields.Char(related="land_certificate.name")
+    document_id = fields.Integer(related="land_certificate.id")
+    land_kebele = fields.Many2one('g2p.kebele', string="Land Kebele is in")
 
 
     @api.onchange("total_land_area")
