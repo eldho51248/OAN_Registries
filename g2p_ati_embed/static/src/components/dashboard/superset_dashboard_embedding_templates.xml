@@ -43,8 +43,33 @@
       </t>
 
       <t t-elif="!state.isLoading and state.dashboardUrl">
-          <div>
-              <iframe t-att-src="state.dashboardUrl" style="width:100%; height:100vh;" />
+          <div class="g2p_superset_dashboard_shell">
+              <div t-if="state.isFrameLoading" class="g2p_superset_dashboard_loading">
+                  <div class="loading-image-g2p-logo">
+                      <img
+                            style="max-height: 52px; max-width: 52px;"
+                            src="/g2p_ati_embed/static/description/icon.png"
+                        />
+                  </div>
+                  <span>Loading Superset Dashboard</span>
+              </div>
+              <div class="g2p_superset_dashboard_toolbar">
+                  <button
+                        class="g2p_superset_dashboard_reload"
+                        title="Reload dashboard"
+                        t-on-click="reloadDashboard"
+                    >
+                      Reload
+                  </button>
+              </div>
+              <iframe
+                    t-att-data-iframe-key="state.iframeKey"
+                    t-att-src="state.iframeUrl"
+                    class="g2p_superset_dashboard_iframe"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    t-on-load="onIframeLoad"
+                    t-on-error="onIframeError"
+                ></iframe>
           </div>
       </t>
 
