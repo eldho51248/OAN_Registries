@@ -8,7 +8,7 @@ class G2PCrop(models.Model):
     _description = 'G2p Crop Registry'
 
     farmer_id = fields.Char(string="Farmer ID")
-    fyda_id = fields.Char(string="Fyda ID")
+    fyda_id = fields.Char(string="Fayda ID")
     farmer_display_id = fields.Many2one('res.partner',
         string='Farmer Name',
         store=True
