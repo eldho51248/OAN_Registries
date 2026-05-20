@@ -52,7 +52,7 @@ class G2PCrop(models.Model):
     ('other', 'Other'),
     ], string="Current Land Use")
     crop_name_id = fields.Many2one('g2p.crop', string="Crop Name")
-    crop_category_id = fields.Many2one('g2p.crop.category', string="Crop Category",readonly=True)
+    crop_category_id = fields.Many2one('g2p.crop.category', string="Crop Category")
     crop_variety_id = fields.Many2one("g2p.crop.variety",string="Crop Variety")
     crop_area = fields.Float(string="Crop Area")
     crop_season_id = fields.Many2one('g2p.season', string="Crop Season")
