@@ -38,12 +38,10 @@
                                 <field name="zone_name_id"/>
                                 <field name="woreda_name_id"/>
                                 <field name="kebele_name"/>
-                                <field name="kebele_code"/>
                                 <field name="land_id"/>
                                 <field name="land_area"/>
                                 <field name="owner_name"/>
                                 <field name="ownership_type"/>
-                                <field name="land_certificate"/>
                                 <field name="soil_fertility"/>
                                 <field name="current_land_use"/>
                                 <field name="crop_name_id"/>
@@ -51,6 +49,23 @@
                                 <field name="crop_variety_id" domain="[('crop_id', '=', crop_name_id)]"/>
                                 <field name="crop_area"/>
                                 <field name="crop_season_id"/>
+                                <field name="live_stock_type_id"/>
+                                <field name="live_stock_number"/>
+                                <field name="live_stock_water_source"/>
+                            </group>
+                            <group>
+                                <field name="cultivation_land"/>
+                                <field name="cultivation_area"/>
+                                <field name="sown_land"/>
+                                <field name="sown_area"/>
+                                <field name="harvested_land"/>
+                                <field name="harvested_area"/>
+                                <field name="irrigation_type"/>
+                                <field name="surveyor_name"/>
+                                <field name="surveyor_mobile_number"/>
+                                <field name="supervisor_name"/>
+                                <field name="supervisor_mobile_number"/>
+                                <field name="first_approvel_status"/>
                                 <field name="crop_produce_min"/>
                                 <field name="crop_produce_max"/>
                                 <field name="crop_wholesale_min"/>
@@ -58,31 +73,6 @@
                                 <field name="crop_retail_min"/>
                                 <field name="crop_retail_max"/>
                                 <field name="crop_volume"/>
-                                <field name="live_stock_type_id"/>
-                                <field name="live_stock_number"/>
-                            </group>
-                            <group>
-                                <field name="live_stock_water_source"/>
-                                <field name="cultivation_land"/>
-                                <field name="cultivation_area"/>
-                                <field name="cultivation_crop_name_id"/>
-                                <field name="sown_land"/>
-                                <field name="sown_area"/>
-                                <field name="sown_crop_name_id"/>
-                                <field name="harvested_land"/>
-                                <field name="harvested_area"/>
-                                <field name="harvested_crop_name_id"/>
-                                <field name="irrigation_type"/>
-                                <field name="surveyor_name"/>
-                                <field name="surveyor_fullname"/>
-                                <field name="surveyor_mobile_number"/>
-                                <field name="supervisor_name"/>
-                                <field name="supervisor_fullname"/>
-                                <field name="supervisor_mobile_number"/>
-                                <field name="first_approvel_status"/>
-                                <field name="second_approvel_status"/>
-                                <field name="verifier_name"/>
-                                <field name="verifier_mobile_number"/>
                             </group>
                         </group>
                         <notebook>
@@ -155,9 +145,6 @@
                             name="first_approved"
                             domain="[('first_approvel_status', '=', True)]"/>
 
-                    <filter string="Approved Level 2"
-                            name="second_approved"
-                            domain="[('second_approvel_status', '=', True)]"/>
 
                     <!-- Group By -->
                     <group expand="0" string="Group By">
