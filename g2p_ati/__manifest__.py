@@ -30,6 +30,7 @@
         "data/primary_commodity.xml",
         "data/water_source.xml",
         "data/crop_variety_data.xml",
+        "data/season_data.xml",
         # "data/farmer_id_cron_job.xml",
         "views/seasons.xml",
         "views/farmer_profile_menu.xml",
