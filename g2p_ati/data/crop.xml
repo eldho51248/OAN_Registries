@@ -32,12 +32,12 @@
     <record id="adzuki_bean" model="g2p.crop">
         <field name="name">Adzuki Bean</field>
         <field name="code">adzuki_bean</field>
-        <field name="category" ref="crop_category_none"/>
+        <field name="category" ref="crop_category_Pulse_crops"/>
     </record>
     <record id="alfalfa" model="g2p.crop">
         <field name="name">Alfalfa (Medicago Sativa)</field>
         <field name="code">alfalfa</field>
-        <field name="category" ref="crop_category_none"/>
+        <field name="category" ref="crop_category_forage_and_pasture"/>
     </record>
     <record id="african_marigold" model="g2p.crop">
         <field name="name">African Marigold</field>
@@ -58,7 +58,7 @@
     <record id="avocado" model="g2p.crop">
         <field name="name">Avocado</field>
         <field name="code">avocado</field>
-        <field name="category" ref="crop_category_none"/>
+        <field name="category" ref="crop_category_fruit_crops"/>
     </record>
     <record id="banana" model="g2p.crop">
         <field name="name">Banana</field>
