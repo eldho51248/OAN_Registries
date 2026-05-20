@@ -1,12 +1,12 @@
 .o_g2p_ati_home_menu {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     box-sizing: border-box;
     min-height: 100%;
     height: 100%;
     overflow-y: auto;
-    padding: 48px 24px;
+    padding: 72px 24px 48px;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -90,7 +90,7 @@ body.o_g2p_ati_home_menu_open {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-content: center;
+    align-content: flex-start;
     gap: 24px 18px;
     width: 100%;
     max-width: 980px;
