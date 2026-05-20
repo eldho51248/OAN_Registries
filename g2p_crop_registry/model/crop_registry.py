@@ -49,7 +49,7 @@ class G2PCrop(models.Model):
     ('other', 'Other'),
     ], string="Current Land Use")
     crop_name_id = fields.Many2one('g2p.crop', string="Crop Name")
-    crop_category_id = fields.Many2one('g2p.crop.category', string="Crop Category")
+    crop_category_id = fields.Many2one('g2p.crop.category', string="Crop Category",readonly=True)
     crop_variety_id = fields.Many2one("g2p.crop.variety",string="Crop Variety")
     crop_area = fields.Float(string="Crop Area")
     crop_season_id = fields.Many2one('g2p.season', string="Crop Season")
@@ -164,3 +164,12 @@ class G2PCrop(models.Model):
     def _onchange_crop_id(self):
         self.crop_variety_id = False
         return {'domain': {'crop_variety_id': [('crop_id', '=', self.crop_name_id.id)]}}
+
+
+    @api.onchange('crop_name_id')
+    def _onchange_crop_name_id(self):
+        for rec in self:
+            if rec.crop_name_id:
+                rec.crop_category_id = rec.crop_name_id.category.id
+            else:
+                rec.crop_category_id = False
