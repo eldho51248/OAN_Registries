@@ -9,10 +9,7 @@ class G2PCrop(models.Model):
 
     farmer_id = fields.Char(string="Farmer ID")
     fyda_id = fields.Char(string="Fayda ID")
-    farmer_display_id = fields.Many2one('res.partner',
-        string='Farmer Name',
-        store=True
-    )
+    farmer_display_id = fields.Char(string='Farmer Name')
     zone_name_id = fields.Many2one('g2p.zone',
         string='Zone Name',
         store=True
@@ -52,7 +49,7 @@ class G2PCrop(models.Model):
     ('other', 'Other'),
     ], string="Current Land Use")
     crop_name_id = fields.Many2one('g2p.crop', string="Crop Name")
-    crop_category_id = fields.Many2one('g2p.crop.category', string="Crop Variety")
+    crop_category_id = fields.Many2one('g2p.crop.category', string="Crop Category")
     crop_variety_id = fields.Many2one("g2p.crop.variety",string="Crop Variety")
     crop_area = fields.Float(string="Crop Area")
     crop_season_id = fields.Many2one('g2p.season', string="Crop Season")
@@ -156,7 +153,7 @@ class G2PCrop(models.Model):
         record = super(G2PCrop, self).create(vals)
         self.env['g2p.crop.information'].create({
             'farmer_id': record.farmer_id,
-            'partner_id': record.farmer_display_id.id,  # now populated
+            'partner_id': record.farmer_display_id,
             'crop': record.crop_name_id.id,
             'farmer_fyda_id': record.fyda_id,
             'season':record.crop_season_id.id,
