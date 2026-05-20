@@ -146,8 +146,10 @@ class G2PCrop(models.Model):
             for field in ['surveyor_mobile_number', 'supervisor_mobile_number', 'verifier_mobile_number']:
                 number = rec[field]
                 if number:
-                    if not re.match(r'^\d{10}$', number):
+                    if not re.match(r'^(\+251[79]\d{8}|0[79]\d{8})$', number):
                         raise ValidationError("Please enter a valid mobile number")
+
+
 
     @api.model
     def create(self, vals):
