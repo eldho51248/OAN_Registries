@@ -166,10 +166,4 @@ class G2PCrop(models.Model):
         self.crop_variety_id = False
         return {'domain': {'crop_variety_id': [('crop_id', '=', self.crop_name_id.id)]}}
 
-    @api.onchange('crop_name_id')
-    def _onchange_crop_name_id(self):
-        for rec in self:
-            if rec.crop_name_id:
-                rec.crop_category_id = rec.crop_name_id.category.id
-            else:
-                rec.crop_category_id = False
+
