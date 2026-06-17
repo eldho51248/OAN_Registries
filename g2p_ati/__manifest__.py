@@ -48,6 +48,7 @@
         "views/group_membership.xml",
         "views/crop_category.xml",
         "views/crop.xml",
+        "views/crop_variety.xml",
         "views/land_info.xml",
         "views/web_login.xml",
         "views/main_menu.xml",
