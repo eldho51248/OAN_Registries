@@ -48,47 +48,47 @@ class ResPartner(models.Model):
                     vals["edit_state"] = "locked"
                 vals["edit_count"] = record.edit_count + 1
 
-        if self.env.user.has_group("base.group_portal") and record.edit_state == "locked":
-            if "given_name" in vals:
+            if self.env.user.has_group("base.group_portal") and record.edit_state == "locked":
+                if "given_name" in vals:
+                    for partner in self:
+                        self.env["res.partner.change.request"].create(
+                            {
+                                "partner_id": partner.id,
+                                "requested_by": user.id,
+                                "new_values": CustomJSONEncoder.python_dict_to_json_dict(sanitized_vals),
+                                # "update_message": update_message,
+                                "state": "pending",
+                            }
+                        )
+                        vals["state"] = "update_requested"
+                        # Return a meaningful value; for example, the count of records 'affected'
+                    return super().write(state)
+                else:
+                    return super().write(vals)
+
+            elif (
+                self.env.context.get("bypass_write")
+                or record.edit_state != "locked"
+                or self.env.is_superuser()
+                or user.has_group("g2p_ati.group_data_validator")
+                or user.has_group("g2p_registry_base.group_g2p_admin")
+            ):
+                # vals["state"] = "approved"
+                # Allow write operations if the bypass context is set
+                return super().write(vals)
+            else:
+                # Create a change request for each record that is being updated
                 for partner in self:
                     self.env["res.partner.change.request"].create(
                         {
                             "partner_id": partner.id,
-                            "requested_by": user.id,
-                            "new_values": CustomJSONEncoder.python_dict_to_json_dict(sanitized_vals),
+                            "new_values": CustomJSONEncoder.python_dict_to_json_dict(vals),
                             # "update_message": update_message,
                             "state": "pending",
                         }
                     )
-                    vals["state"] = "update_requested"
                     # Return a meaningful value; for example, the count of records 'affected'
                 return super().write(state)
-            else:
-                return super().write(vals)
-
-        elif (
-            self.env.context.get("bypass_write")
-            or record.edit_state != "locked"
-            or self.env.is_superuser()
-            or user.has_group("g2p_ati.group_data_validator")
-            or user.has_group("g2p_registry_base.group_g2p_admin")
-        ):
-            # vals["state"] = "approved"
-            # Allow write operations if the bypass context is set
-            return super().write(vals)
-        else:
-            # Create a change request for each record that is being updated
-            for partner in self:
-                self.env["res.partner.change.request"].create(
-                    {
-                        "partner_id": partner.id,
-                        "new_values": CustomJSONEncoder.python_dict_to_json_dict(vals),
-                        # "update_message": update_message,
-                        "state": "pending",
-                    }
-                )
-                # Return a meaningful value; for example, the count of records 'affected'
-            return super().write(state)
 
 
 class ResPartnerChangeRequest(models.Model):
