@@ -1961,7 +1961,10 @@ class G2PATIConsentController(http.Controller):
         auto_approval_failed = False
         if auto_approve_requested:
             try:
-                consent.action_approve()
+                approval_record = consent
+                if self._is_synchronous_consent_enabled():
+                    approval_record = consent.with_context(skip_consent_websub_publish=True)
+                approval_record.action_approve()
                 approval_flag_field = (
                     "auto_approved_via_otp"
                     if auto_approve_method == "otp"
@@ -2208,14 +2211,21 @@ class G2PATIConsentController(http.Controller):
                 auto_approved, auto_approve_method or "none"
             )
 
-            return self._success({
+            response_data = {
                 "consent_id": consent.id,
                 "status": consent.status,
                 "auto_approved": auto_approved,
                 "auto_approval_failed": auto_approval_failed,
                 "auto_approve_method": auto_approve_method or None,
-                "error_details": consent.face_match_message if auto_approval_failed else None
-            })
+                "error_details": consent.face_match_message if auto_approval_failed else None,
+            }
+            if self._is_synchronous_consent_enabled() and consent.status == "approved":
+                response_data["respond_data"] = self._build_api_consent_response_data(
+                    consent,
+                    include_respond_data=True,
+                ).get("respond_data") or {}
+
+            return self._success(response_data)
 
         except Exception as e:
             _logger.error("Error in submit_consent API: %s", e, exc_info=True)
@@ -2358,7 +2368,7 @@ class G2PATIConsentController(http.Controller):
         return self._success(
             self._build_api_consent_response_data(
                 consent,
-                include_respond_data=synchronous_consent,
+                include_respond_data=True,
             ),
             message="Consent request approved",
         )
