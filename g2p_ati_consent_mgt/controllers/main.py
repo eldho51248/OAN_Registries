@@ -19,6 +19,7 @@ _logger = logging.getLogger(__name__)
 
 
 class G2PATIConsentController(http.Controller):
+    SYNCHRONOUS_CONSENT = "SYNCHRONOUS_CONSENT"
     _MAX_ATTACHMENT_SIZE = 10 * 1024 * 1024  # 10MB
     _REQUESTS_PAGE_SIZE = 10
     _TABLE_FETCH_SIZE = 10
@@ -173,6 +174,9 @@ class G2PATIConsentController(http.Controller):
         if value in (None, ""):
             return default
         return str(value).strip().lower() in ("1", "true", "yes", "on")
+
+    def _is_synchronous_consent_enabled(self):
+        return self._env_flag_enabled(os.getenv(self.SYNCHRONOUS_CONSENT))
 
     def _get_farmer_primary_phone(self, farmer):
         if not farmer:
@@ -764,6 +768,17 @@ class G2PATIConsentController(http.Controller):
             "created_at": created_at or "",
             "review_url": "/consent/management/review/%s?view=table" % req.id,
         }
+
+    def _build_api_consent_response_data(self, consent, include_respond_data=False):
+        data = {
+            "id": consent.id,
+            "consent_creation_request_id": consent.consent_creation_request_id,
+            "status": consent.status,
+        }
+        if include_respond_data:
+            payload = consent.sudo()._build_consent_websub_payload()
+            data["respond_data"] = payload.get("selected_data") or {}
+        return data
 
     def _find_farmer(self, payload):
         """Find farmer by farmer_db_id, farmer_id, or national_id/UID.
@@ -2135,11 +2150,7 @@ class G2PATIConsentController(http.Controller):
         )
 
         return self._success(
-            {
-                "id": consent.id,
-                "consent_creation_request_id": consent.consent_creation_request_id,
-                "status": consent.status,
-            },
+            self._build_api_consent_response_data(consent),
             message="Consent request created",
         )
 
@@ -2165,13 +2176,17 @@ class G2PATIConsentController(http.Controller):
         if not consent:
             return self._error("Consent request not found", code=404)
 
-        consent.action_approve()
+        synchronous_consent = self._is_synchronous_consent_enabled()
+        if synchronous_consent:
+            consent.with_context(skip_consent_websub_publish=True).action_approve()
+        else:
+            consent.action_approve()
+
         return self._success(
-            {
-                "id": consent.id,
-                "consent_creation_request_id": consent.consent_creation_request_id,
-                "status": consent.status,
-            },
+            self._build_api_consent_response_data(
+                consent,
+                include_respond_data=synchronous_consent,
+            ),
             message="Consent request approved",
         )
 
