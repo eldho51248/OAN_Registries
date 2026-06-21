@@ -249,8 +249,8 @@ class G2PATIConsentController(http.Controller):
     def _get_fayda_otp_session_store(self):
         store = request.session.get(self._FAYDA_OTP_SESSION_KEY)
         if not isinstance(store, dict):
-            store = {}
-            request.session[self._FAYDA_OTP_SESSION_KEY] = store
+            request.session[self._FAYDA_OTP_SESSION_KEY] = {}
+            store = request.session.get(self._FAYDA_OTP_SESSION_KEY) or {}
         return store
 
     def _get_liveness_config(self):
@@ -305,8 +305,8 @@ class G2PATIConsentController(http.Controller):
     def _get_liveness_session_store(self):
         store = request.session.get(self._LIVENESS_SESSION_KEY)
         if not isinstance(store, dict):
-            store = {}
-            request.session[self._LIVENESS_SESSION_KEY] = store
+            request.session[self._LIVENESS_SESSION_KEY] = {}
+            store = request.session.get(self._LIVENESS_SESSION_KEY) or {}
         return store
 
     def _parse_session_datetime(self, value):
@@ -343,7 +343,7 @@ class G2PATIConsentController(http.Controller):
         return store
 
     def _mark_session_modified(self):
-        if not getattr(request, "session", None):
+        if getattr(request, "session", None) is None:
             return
         if hasattr(request.session, "is_dirty"):
             request.session.is_dirty = True
@@ -768,15 +768,15 @@ class G2PATIConsentController(http.Controller):
             "review_url": "/consent/management/review/%s?view=table" % req.id,
         }
 
-    def _build_api_consent_response_data(self, consent, include_respond_data=False):
+    def _build_api_consent_response_data(self, consent, include_response_data=False):
         data = {
             "id": consent.id,
             "consent_creation_request_id": consent.consent_creation_request_id,
             "status": consent.status,
         }
-        if include_respond_data:
+        if include_response_data:
             payload = consent.sudo()._build_consent_websub_payload()
-            data["respond_data"] = payload.get("selected_data") or {}
+            data["response_data"] = payload.get("selected_data") or {}
         return data
 
     def _find_farmer(self, payload):
@@ -2220,10 +2220,10 @@ class G2PATIConsentController(http.Controller):
                 "error_details": consent.face_match_message if auto_approval_failed else None,
             }
             if self._is_synchronous_consent_enabled() and consent.status == "approved":
-                response_data["respond_data"] = self._build_api_consent_response_data(
+                response_data["response_data"] = self._build_api_consent_response_data(
                     consent,
-                    include_respond_data=True,
-                ).get("respond_data") or {}
+                    include_response_data=True,
+                ).get("response_data") or {}
 
             return self._success(response_data)
 
@@ -2368,7 +2368,7 @@ class G2PATIConsentController(http.Controller):
         return self._success(
             self._build_api_consent_response_data(
                 consent,
-                include_respond_data=True,
+                include_response_data=True,
             ),
             message="Consent request approved",
         )
