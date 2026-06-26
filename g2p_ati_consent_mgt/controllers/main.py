@@ -1248,7 +1248,7 @@ class G2PATIConsentController(http.Controller):
         return request.make_response(image_data, headers=headers)
 
     @http.route("/consent/search_farmer", type="json", auth="user")
-    def consent_search_farmer(self, farmer_id=None, national_id=None, uid=None, query=None, **kw):
+   def consent_search_farmer(self, farmer_id=None, national_id=None, uid=None, query=None, **kw):
         """Search farmers by Farmer ID/UID and return only approved farmer records."""
         if not self._get_consent_partner():
             return self._error("Access denied", code=403)
@@ -1280,11 +1280,17 @@ class G2PATIConsentController(http.Controller):
         for reg in reg_id_obj.search([("value", "=", search_value)], limit=100):
             if reg.partner_id:
                 partner_ids.add(reg.partner_id.id)
+        # 4) By land_id
+        land_info_obj = request.env["g2p.land.information"].sudo()
+        for land in land_info_obj.search([("land_id", "=", search_value)], limit=100):
+            if land.partner_id:
+                partner_ids.add(land.partner_id.id)
 
         if not partner_ids:
             return self._success(data={"farmers": []})
 
         farmers = partner_obj.search(base_domain + [("id", "in", list(partner_ids))], limit=10)
+
         def _serialize_farmer(partner):
             otp_identity = self._get_farmer_fayda_identifier(partner)
             return {
@@ -1299,6 +1305,7 @@ class G2PATIConsentController(http.Controller):
                 "otp_identifier_source": otp_identity.get("identifier_source") or "",
                 "otp_available": otp_identity.get("available") or False,
             }
+
         return self._success(
             data={
                 "farmers": [_serialize_farmer(p) for p in farmers]
