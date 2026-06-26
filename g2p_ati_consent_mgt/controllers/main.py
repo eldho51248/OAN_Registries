@@ -1248,7 +1248,7 @@ class G2PATIConsentController(http.Controller):
         return request.make_response(image_data, headers=headers)
 
     @http.route("/consent/search_farmer", type="json", auth="user")
-   def consent_search_farmer(self, farmer_id=None, national_id=None, uid=None, query=None, **kw):
+    def consent_search_farmer(self, farmer_id=None, national_id=None, uid=None, query=None, **kw):
         """Search farmers by Farmer ID/UID and return only approved farmer records."""
         if not self._get_consent_partner():
             return self._error("Access denied", code=403)
